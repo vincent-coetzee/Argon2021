@@ -1,0 +1,17 @@
+//
+//
+//
+//
+
+export module People(Professions)
+    {
+    export enumeration Profession
+        {
+        #none
+        #doctor
+        #doctorSpecialist
+        #plumber
+        #electrician
+        #softwareDeveloper
+        }
+    }

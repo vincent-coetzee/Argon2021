@@ -8,9 +8,8 @@
 import Cocoa
 
 @main
-class AppDelegate: NSObject, NSApplicationDelegate {
-
-
+class AppDelegate: NSObject, NSApplicationDelegate
+    {
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
@@ -20,6 +19,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Insert code here to tear down your application
     }
 
+    @IBAction
+    func onNewProjectClicked(_ sender:Any?)
+        {
+        print("hello")
+        }
 
-}
+    @IBAction
+    func onOpenProjectClicked(_ sender:Any?)
+        {
+        print("hello")
+        }
+    }
 

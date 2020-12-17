@@ -1,0 +1,21 @@
+    
+export module Location(Location)
+    {
+    export Coordinate
+        {
+        meta slot zero = Coordinate(hours::0,minutes::0,second::0)
+        
+        slot hours::Integer = 0
+        slot minutes::Integer = 0
+        slot seconds::Integer = 0
+        }
+        
+    export value Location
+        {
+        meta slot zero = Location(longitude::zero,latitude::zero)
+        
+        slot latitude::Coordinate = ::zero
+        slot longitude::Coordinate = ::zero
+        }
+    }
+

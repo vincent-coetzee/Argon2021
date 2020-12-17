@@ -1,0 +1,60 @@
+
+
+export module Location
+    {
+    export class Country
+        {
+        meta slot none = Country(name::"NONE",abbreviation::"NONE")
+        
+        slot name::String = ""
+        slot abbreviation::String = ""
+        
+        virtual slot isNone::Boolean
+            {
+            read
+                {
+                return(this->name == "NONE")
+                }
+            }
+        }
+        
+    Country(name::String,abbreviation::String)
+        {
+        this->name = name
+        this->abbreviation = abbreviation
+        }
+        
+    export class Region
+        {
+        meta slot none = Region(name::"NONE",abbreviation::"NONE",country::none)
+    
+        slot name::String = ""
+        slot abbreviation::String = ""
+        slot country::Country = ::none
+        
+        Region(name::String,abbreviation::String,country::Country)
+            {
+            this->name = name
+            this->abbreviation = abbreviation
+            this->country = country
+            }
+        }
+        
+    export class City
+        {
+        meta slot none = City(name::"NONE",abbreviation::"NONE",region::none,country::none)
+        
+        slot name::String = ""
+        slot abbreviation::String = ""
+        slot region::Region = ::none
+        slot country::Country = ::none
+        
+        City(name::String,abbreviation::String,region::Region,country::Country)
+            {
+            this->name = name
+            this->abbreviation = abbreviation
+            this->region = region
+            this->country = country
+            }
+        }
+    }

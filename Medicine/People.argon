@@ -1,0 +1,54 @@
+
+export module People
+    {
+    import People(Professions)
+    
+    slot version = Version(major::1,minor::1,bug::1)
+    
+    export class Entity
+        {
+        slot name::String = ""
+        }
+        
+    export class Individual::(Entity)
+        {
+        slot lastName::String = ""
+        }
+        
+    export class Person::(Individual)
+        {
+        slot profession::People::Professions::Profession = ::none
+        }
+        
+    export value Relationship
+        {
+        slot name::String = "Relationship"
+        }
+        
+    export value Union<Element>::(Relationship)
+        {
+        meta slot isLegallyBinding::Bollean = #true
+        //
+        // The use of the assumed scope for ::none in the case of the
+        // first slot below wjere the type of the slot is a generic type
+        // means the compiler will look for an implementation
+        // of ::none of some sort that is contained within a reachable scope.
+        //
+        slot first::Element = ::none
+        slot second::Element = ::none
+        //
+        // Define a maker for this object
+        //
+        Union<Element>(first::Element,second::Element)
+            {
+            this->first = first
+            this->second = second
+            this->name = "Union"
+            }
+        }
+        
+    export infix ***(person::Person,spouseToBe::Person) -> Union<Person>
+        {
+        return(Union<Person>(first::person,second::spouseToBe))
+        }
+    }

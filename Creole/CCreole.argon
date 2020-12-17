@@ -1,0 +1,31 @@
+
+
+export module Creole
+    {
+    public class CObject
+        {
+        }
+        
+    public CStruct::CObject
+        {
+        }
+        
+    public CUnion::CObject
+        {
+        }
+        
+    public Pointer<T::(CObject)>
+        {
+        virtual slot object::T
+            {
+            read
+                {
+                return(this->0 to T)
+                }
+            write(value)
+                {
+                this->0 = value
+                }
+            }
+        }
+    }
