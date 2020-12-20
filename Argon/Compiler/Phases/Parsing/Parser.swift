@@ -1083,18 +1083,13 @@ internal class Parser:CompilerPhase
         
     private func parseType() throws -> Type
         {
-        if self.token.isDoubleBackSlash || self.token.isBackSlash
+        if self.token.isDoubleBackSlash || self.token.isBackSlash || self.token.isIdentifier
             {
-            var name = Name()
-            while self.token.isDoubleBackSlash || self.token.isBackSlash
+            if !self.token.isIdentifier
                 {
                 self.advance()
-                if self.token.isIdentifier
-                    {
-                    name = name + self.token.identifier
-                    self.advance()
-                    }
                 }
+            let name = try self.parseName()
             if let object = Module.innerScope.lookup(name:name)?.first
                 {
                 return(object.type)
@@ -1104,28 +1099,6 @@ internal class Parser:CompilerPhase
                 return(object.type)
                 }
             return(.fullyQualifiedName(name))
-            }
-        else if self.token.isIdentifier
-            {
-            var name = Name(self.token.identifier)
-            self.advance()
-            while self.token.isBackSlash
-                {
-                self.advance()
-                if self.token.isIdentifier
-                    {
-                    name = name + self.token.identifier
-                    self.advance()
-                    }
-                }
-            if let object = Module.innerScope.lookup(name:name)?.first
-                {
-                return(object.type)
-                }
-            else
-                {
-                return(.fullyQualifiedName(name))
-                }
             }
         else if self.token.isNativeType
             {
@@ -1384,6 +1357,10 @@ internal class Parser:CompilerPhase
         
     private func parseName() throws -> Name
         {
+        if self.token.isDoubleBackSlash || self.token.isBackSlash
+            {
+            self.advance()
+            }
         var name = Name()
         while self.token.isIdentifier
             {
@@ -2220,6 +2197,20 @@ internal class Parser:CompilerPhase
         
     func parsePrimaryTerm() throws -> Expression
         {
+        if self.token.isTypeKeyword
+            {
+            let type = try self.parseType()
+            if self.token.isLeftPar
+                {
+                var arguments = Arguments()
+                try self.parseParentheses
+                    {
+                    arguments = try self.parseArguments()
+                    }
+                return(.typeMakerInvocation(type,arguments))
+                }
+            return(.literalType(type))
+            }
         if self.token.isTrue || self.token.isFalse
             {
             let local = self.token.isTrue

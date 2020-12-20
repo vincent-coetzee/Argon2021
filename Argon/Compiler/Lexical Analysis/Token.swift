@@ -1792,8 +1792,6 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         {
         switch(self)
             {
-            case .keyword(let keyword,_):
-                return(keyword == .this)
             case .nativeType(let value,_):
                 switch(value)
                     {
@@ -1847,10 +1845,11 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
                         return(true)
                     case .Dictionary:
                         return(true)
+                    case .Pointer:
+                        return(true)
                     default:
                         break
                     }
-                print(value)
             default:
                 return(false)
             }

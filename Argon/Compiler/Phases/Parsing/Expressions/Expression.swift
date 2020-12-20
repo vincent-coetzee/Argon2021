@@ -33,6 +33,7 @@ public indirect enum Expression:Equatable
     case identifier(String)
     case integer(Argon.Integer)
     case literalArray([Expression])
+    case literalType(Type)
     case logicalOperation(Expression,Token.Symbol,Expression)
     case makerInvocation(String,Arguments)
     case methodInvocation(Method,Arguments)
@@ -53,6 +54,7 @@ public indirect enum Expression:Equatable
     case This
     case time(Expression,Expression,Expression)
     case tuple([Expression])
+    case typeMakerInvocation(Type,Arguments)
     case unaryOperation(Token.Symbol,Expression)
     case variableInvocation(Variable,Arguments)
     case undefinedValue(String)
@@ -122,6 +124,8 @@ public indirect enum Expression:Equatable
                 return(v.type.slotType(name))
             case .class(let c):
                 return(Type.class(c))
+            case .literalType(let t):
+                return(t)
             case .literalArray(let c):
                 var type:Type = .void
                 if let first = c.first
@@ -137,6 +141,8 @@ public indirect enum Expression:Equatable
                 return(Type.module(m))
             case .expression(let term):
                 return(Type.expression(term))
+            case .typeMakerInvocation(let type,let arguments):
+                return(Type.composite(baseTypes: [type] + arguments.map{$0.type}))
             case .makerInvocation(let name,let arguments):
                 return(Type.composite(baseTypes: arguments.map{$0.type}))
             case .additionOperation(let lhs,let o,let rhs):
