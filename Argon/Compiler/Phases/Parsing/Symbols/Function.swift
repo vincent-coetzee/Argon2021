@@ -8,7 +8,11 @@
 
 import Foundation
 
-public class Function:Method
+public class Function:MethodInstance
     {
     var cName:String? = nil
+    }
+
+public class ModuleFunction:Function
+    {
     }

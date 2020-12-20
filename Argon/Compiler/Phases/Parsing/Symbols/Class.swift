@@ -16,6 +16,7 @@ public class Class:Symbol
     internal static let instanceClass = Class(shortName:"Instance").parentClass(.rootClass)
     internal static let voidClass = Class(shortName:"Void").parentClass(.rootClass)
     internal static let valueClass = Class(shortName:"Value").parentClass(.rootClass)
+    internal static let enumerationClass = Class(shortName:"Enumeration").parentClass(.valueClass)
     internal static let bitValueClass = Class(shortName:"BitValue").parentClass(.valueClass)
     internal static let nilClass = Class(shortName:"Nil").parentClass(.rootClass)
     internal static let booleanClass = Class(shortName:"Boolean").parentClass(.valueClass)
@@ -49,7 +50,7 @@ public class Class:Symbol
     internal static let float32Class = Class(shortName:"Float32").parentClass(.bitValueClass)
     internal static let float64Class = Class(shortName:"Float64").parentClass(.bitValueClass)
     internal static let float16Class = Class(shortName:"Float16").parentClass(.bitValueClass)
-    internal static let collectionClass = Class(shortName:"Collection").parentClass(.instanceClass).slot("count",.integer).slot("elementType",.typeClass)
+    internal static let collectionClass = Class(shortName:"Collection").parentClass(.instanceClass).slot(Identifier("count"),.integer).slot(Identifier("elementType"),.typeClass)
     internal static let arrayClass = ArrayClass(shortName:"Array",indexType:.unbounded,elementType:.void).parentClass(.collectionClass)
     internal static let setClass = SetClass(shortName:"Set",elementType:.void).parentClass(.collectionClass)
     internal static let listClass = ListClass(shortName:"List",elementType:.void).parentClass(.collectionClass)
@@ -71,10 +72,16 @@ public class Class:Symbol
     internal var _parentClasses = Classes()
     private var _type:Type?
     internal var generics = GenericTypes()
-    internal var slots = Slots()
+    internal var slots:[String:Slot] = [:]
     internal var makers = ClassMakers()
     internal var hollowMethods:[HollowMethod] = []
+    internal var symbols:[String:Symbol] = [:]
     
+    internal var isGeneric:Bool
+        {
+        return(!self.generics.isEmpty)
+        }
+        
     internal override var type:Type
         {
         if self._type == nil
@@ -85,10 +92,10 @@ public class Class:Symbol
         }
         
     @discardableResult
-    internal func slot(_ name:String,_ type:Type) -> Class
+    internal func slot(_ name:Identifier,_ type:Type) -> Class
         {
         let slot = Slot(shortName: name, type: type, attributes: .readonly)
-        self.slots.append(slot)
+        self.slots[slot.shortName] = slot
         return(self)
         }
         
@@ -103,9 +110,18 @@ public class Class:Symbol
             {
             return(self.type)
             }
-        if let name = slotNames.first,let slot = self.slots.first(where: {$0.shortName == name})
+        if let name = slotNames.first,let slot = self.slots.values.first(where: {$0.shortName == name})
             {
             return(slot.slotType(Array<String>(slotNames.dropFirst())))
+            }
+        return(Type.undefined)
+        }
+        
+    internal func slotType(_ slotName:String) -> Type
+        {
+        if let slot = self.slots.values.first(where: {$0.shortName == slotName})
+            {
+            return(slot.slotType(Array<String>()))
             }
         return(Type.undefined)
         }
@@ -119,7 +135,7 @@ public class Class:Symbol
     internal func parentClass(_ parent:Class) -> Class
         {
         self._parentClasses.append(parent)
-        self.slot("superclasses",.array(indexType: .unbounded,elementType: Class.classClass.type))
+//        self.slot("superclasses",.array(indexType: .unbounded,elementType: Class.classClass.type))
         return(self)
         }
         
@@ -132,8 +148,10 @@ public class Class:Symbol
         {
         self.generics = generics
         super.init(shortName:shortName)
-        self.slots.append(Slot(shortName:"class",type:.class(RootModule.rootModule.classClass),container:self,attributes: .readonly))
-        self.slots.append(Slot(shortName:"superclasses",type:RootModule.rootModule.arrayClass.typeWithIndex(.unbounded),container:self,attributes: .readonly))
+        var slot = Slot(name:Name("class"),type:.class(RootModule.rootModule.classClass),container:self,attributes: .readonly)
+        self.slots[slot.shortName] = slot
+        slot = Slot(name:Name("superclasses"),type:RootModule.rootModule.arrayClass.typeWithIndex(Type.ArrayIndexType.unbounded),container:self,attributes:.readonly)
+        self.slots[slot.shortName] = slot
         }
         
     init(shortName:String)
@@ -149,12 +167,29 @@ public class Class:Symbol
         
     func appendSlot(_ slot:Slot)
         {
-        self.slots.append(slot)
+        self.slots[slot.shortName] = slot
+        slot.symbolAdded(to: self)
+        }
+        
+    func appendConstant(_ constant:Constant)
+        {
+        self.symbols[constant.shortName] = constant
+        constant.symbolAdded(to: self)
         }
         
     func appendMaker(_ maker:ClassMaker)
         {
         self.makers.append(maker)
+        maker.symbolAdded(to: self)
+        }
+        
+    override func lookup(shortName: String) -> SymbolSet?
+        {
+        if let slot = self.slots[shortName]
+            {
+            return(SymbolSet(slot))
+            }
+        return(self.parentScope?.lookup(shortName:shortName))
         }
     }
 

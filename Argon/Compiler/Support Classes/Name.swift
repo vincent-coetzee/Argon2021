@@ -8,7 +8,7 @@
 
 import Foundation
     
-public struct Name:Hashable
+public struct Name:Hashable,ExpressibleByArrayLiteral
     {
     public static func +(lhs:Name,rhs:String) -> Name
         {
@@ -20,6 +20,30 @@ public struct Name:Hashable
         return(Name(lhs.components + rhs.components))
         }
 
+    @discardableResult
+    public static func +=(lhs:inout Name,rhs:String) -> Name
+        {
+        var total = lhs.components
+        total.append(rhs)
+        lhs = Name(total)
+        return(lhs)
+        }
+        
+    public typealias ArrayLiteralElement = String
+    
+    public init(arrayLiteral arrayLiteralElement:String...)
+        {
+        for element in arrayLiteralElement
+            {
+            self.components.append(element)
+            }
+        }
+        
+    public var isEmpty:Bool
+        {
+        return(self.components.isEmpty)
+        }
+        
     public var count:Int
         {
         return(self.components.count)
@@ -52,13 +76,18 @@ public struct Name:Hashable
         return(self.components.last!)
         }
         
+    public var names:[String]
+        {
+        return(self.components)
+        }
+        
     private var components:[String] = []
     
     public func withoutFirst() -> Name
         {
         if self.components.count < 1
             {
-            fatalError("Attempt to drop first element of name when name has 0 length.")
+            return(self)
             }
         return(Name(Array(self.components.dropFirst())))
         }
@@ -67,7 +96,7 @@ public struct Name:Hashable
         {
         if self.components.count < 1
             {
-            fatalError("Attempt to drop first element of name when name has 0 length.")
+            return(self)
             }
         return(Name(Array(self.components.dropLast())))
         }
@@ -80,5 +109,10 @@ public struct Name:Hashable
     public init(_ piece:String)
         {
         self.components = piece.components(separatedBy: "::")
+        }
+        
+    public init()
+        {
+        self.components = []
         }
     }

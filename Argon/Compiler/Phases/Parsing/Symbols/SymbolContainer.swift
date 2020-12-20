@@ -15,7 +15,7 @@ public class SymbolContainer:Symbol
         return(true)
         }
         
-    private var symbols:[String:SymbolSet] = [:]
+    internal var symbols:[String:SymbolSet] = [:]
         
     internal override func addSymbol(_ symbol:Symbol)
         {

@@ -8,9 +8,9 @@
 
 import Foundation
 
-internal indirect enum Type:Equatable
+public indirect enum Type:Equatable
     {
-    internal enum ArrayIndexType:Equatable
+    public enum ArrayIndexType:Equatable
         {
         case enumeration(Enumeration)
         case bounded(lowerBound:Argon.Integer,upperBound:Argon.Integer)
@@ -19,7 +19,7 @@ internal indirect enum Type:Equatable
         case none
         }
         
-    case alias(baseType:Type,name:String)
+    case type(baseType:Type,name:String)
     case all
     case array(indexType:ArrayIndexType,elementType:Type)
     case binaryOperation(Type,Token.Symbol,Type)
@@ -28,7 +28,7 @@ internal indirect enum Type:Equatable
     case byte
     case character
     case `class`(Class)
-    case typeClass
+    case constant(Type)
     case closure(Closure)
     case composite(baseTypes:[Type])
     case date
@@ -40,6 +40,7 @@ internal indirect enum Type:Equatable
     case float64
     case float32
     case float16
+    case fullyQualifiedName(Name)
     case function(Function)
     case identifier
     case integer
@@ -59,9 +60,11 @@ internal indirect enum Type:Equatable
     case set(elementType:Type)
     case slot(Slot)
     case string
+    case subRange(Type,Token.Symbol,Argon.Integer,Argon.Integer)
     case symbol
     case time
     case tree(keyType:Type,valueType:Type)
+    case typeClass
     case typeParameter(constraintTypes:[Type],name:String)
     case tuple([Type])
     case uinteger
@@ -73,14 +76,52 @@ internal indirect enum Type:Equatable
     case undefined
     case void
 
-//    internal func classType:Type
-//        {
-//        switch(self)
-//            {
-//            case .array:
-//                return(.class(Class.arrayClass))
-//            }
-//        }
+    public var typeCanBeReduced:Bool
+        {
+        switch(self)
+            {
+            case .type(let base,_):
+                return(base.typeCanBeReduced)
+            case .boolean:
+                return(true)
+            case .byte:
+                return(true)
+            case .character:
+                return(true)
+            case .date:
+                return(true)
+            case .time:
+                return(true)
+            case .integer:
+                return(true)
+            case .integer64:
+                return(true)
+            case .integer32:
+                return(true)
+            case .integer16:
+                return(true)
+            case .integer8:
+                return(true)
+            case .uinteger:
+                return(true)
+            case .uinteger64:
+                return(true)
+            case .uinteger32:
+                return(true)
+            case .uinteger16:
+                return(true)
+            case .uinteger8:
+                return(true)
+            case .enumeration:
+                return(true)
+            case .dateTime:
+                return(true)
+            case .constant(let value):
+                return(value.typeCanBeReduced)
+            default:
+                return(false)
+            }
+        }
         
     internal func slotType(_ slotNames:[String]) -> Type
         {
@@ -88,6 +129,17 @@ internal indirect enum Type:Equatable
             {
             case .class(let aClass):
                 return(aClass.slotType(slotNames))
+            default:
+                fatalError("Attempt to find slotTypes of type that is not a class but is \(self)")
+            }
+        }
+        
+    internal func slotType(_ slotName:String) -> Type
+        {
+        switch(self)
+            {
+            case .class(let aClass):
+                return(aClass.slotType(slotName))
             default:
                 fatalError("Attempt to find slotTypes of type that is not a class but is \(self)")
             }

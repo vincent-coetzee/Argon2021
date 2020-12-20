@@ -8,6 +8,6 @@
 
 import Foundation
 
-internal class ValueClass:Class
+public class ValueClass:Class
     {
     }

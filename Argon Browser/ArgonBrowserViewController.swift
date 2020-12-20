@@ -20,25 +20,33 @@ class ArgonBrowserViewController: NSViewController
     private var tokenStream = TokenStream(source:"")
     private var selectedFile = SourceFile()
     
+    private var currentSource:String = ""
+    private var currentTokens:[Token] = []
+    private var currentRange:NSRange = NSRange(location: 0,length: 0)
+    
     override func viewDidLoad()
         {
         super.viewDidLoad()
-        self.initTokenStyles()
+        TokenStyle.initStyles()
         self.initOutliner()
         self.initTextView()
         }
     
     private func initTokenStyles()
         {
-        styles.append(TokenStyle(type:.keyword,foreground: NSColor.argonPink,font:NSFont.tokenFont))
-        styles.append(TokenStyle(type:.comment,foreground: NSColor.argonPurple,font:NSFont.tokenFont))
-        styles.append(TokenStyle(type:.nativeType,foreground: NSColor.argonCoral,font:NSFont.tokenFont))
-        styles.append(TokenStyle(type:.identifier,foreground: NSColor.argonYellow,font:NSFont.tokenFont))
-        styles.append(TokenStyle(type:.symbol,foreground: NSColor.argonBlue,font:NSFont.tokenFont))
-        styles.append(TokenStyle(type:.float,foreground: NSColor.argonCyan,font:NSFont.tokenFont))
-        styles.append(TokenStyle(type:.string,foreground: NSColor.argonRed,font:NSFont.tokenFont))
-        styles.append(TokenStyle(type:.integer,foreground: NSColor.argonGreen,font:NSFont.tokenFont))
-        styles.append(TokenStyle(type:.hashString,foreground: NSColor.argonBlue,font:NSFont.tokenFont))
+//        styles.append(TokenStyle(type:.keyword,foreground: NSColor.argonPink,font:NSFont.tokenFont))
+//        styles.append(TokenStyle(type:.comment,foreground: NSColor.argonPurple,font:NSFont.tokenFont))
+//        styles.append(TokenStyle(type:.nativeType,foreground: NSColor.argonCoral,font:NSFont.tokenFont))
+//        styles.append(TokenStyle(type:.identifier,foreground: NSColor.argonZomp,font:NSFont.tokenFont))
+////        styles.append(TokenStyle(type:.symbol,foreground: NSColor.argonBlue,font:NSFont.tokenFont))
+//        styles.append(TokenStyle(type:.symbol,foreground: NSColor.argonLawnGreen,font:NSFont.tokenFont))
+//        styles.append(TokenStyle(type:.float,foreground: NSColor.argonCyan,font:NSFont.tokenFont))
+//        styles.append(TokenStyle(type:.string,foreground: NSColor.argonBlue,font:NSFont.tokenFont))
+//        styles.append(TokenStyle(type:.integer,foreground: NSColor.argonGreen,font:NSFont.tokenFont))
+//        styles.append(TokenStyle(type:.hashString,foreground: NSColor.argonDeepOrange,font:NSFont.tokenFont))
+        self.textView.selectedTextAttributes = [.backgroundColor:NSColor.argonSizzlingRed,.foregroundColor:NSColor.black]
+        self.textView.markedTextAttributes = [.backgroundColor:NSColor.argonDeepOrange,.foregroundColor:NSColor.black]
+        self.textView.typingAttributes = [.backgroundColor:NSColor.black,.foregroundColor:NSColor.white,.font:NSFont(name: "Menlo",size: 14)]
         }
         
     private func initTextView()
@@ -66,7 +74,7 @@ class ArgonBrowserViewController: NSViewController
             self.outlineView.reloadData()
             }
         self.textView.lnv_setUpLineNumberView()
-        self.outlineView.rowHeight = 50
+        self.outlineView.rowHeight = 30
         }
     }
     
@@ -123,54 +131,38 @@ extension ArgonBrowserViewController:NSOutlineViewDelegate
         let sourceItem = item as! SourceProvider
         self.selectedFile = item as! SourceFile
         let source = sourceItem.source
-        self.textView.font = NSFont(name:"Menlo",size:14)!
         self.tokenStream.reset(source:source)
+        let compiler = Compiler()
+        let module = compiler.compile(source: source)
+        print(module)
         let tokens = self.tokenStream.tokens(withComments: true)
-        let attributedString = NSMutableAttributedString(string:source,attributes:[:])
-        attributedString.beginEditing()
-        for style in self.styles
-            {
-            style.apply(tokens:tokens,string: attributedString)
-            }
-        attributedString.endEditing()
-        DispatchQueue.main.async
-            {
-            self.textView.textStorage?.setAttributedString(attributedString)
-            }
+        self.textView.string = source
+        TokenStyle.updateStyle(tokens: tokens, of: self.textView)
         }
     }
 
 extension ArgonBrowserViewController:NSTextViewDelegate
     {
+    public func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool
+        {
+        let affectedRange = affectedCharRange
+        return(true)
+        }
+        
     public func textDidChange(_ notification:Notification)
         {
         let source = self.textView.attributedString()
-        self.textView.resetTextAttributes()
-        self.tokenStream.reset(source:source.string)
-        let tokens = self.tokenStream.tokens(withComments: true)
-        let attributedString = NSMutableAttributedString(attributedString:source)
-        attributedString.beginEditing()
-        for style in self.styles
+        if source.string == self.currentSource
             {
-            style.apply(tokens:tokens,string: attributedString)
+            return
             }
-        attributedString.endEditing()
+        self.currentSource = source.string
+        let tokens = TokenStream(source: self.currentSource).tokens(withComments: true)
+        self.tokenStream.reset(source:source.string)
+        
         DispatchQueue.main.async
             {
-            self.textView.textStorage?.font = NSFont(name:"Menlo",size:14)!
-            self.textView.textStorage?.foregroundColor = NSColor.white
-            self.textView.textStorage?.setAttributedString(attributedString)
+            TokenStyle.updateStyle(tokens: tokens, of: self.textView)
             }
-        }
-    }
-
-extension NSTextView
-    {
-    func resetTextAttributes()
-        {
-        let range = NSRange(location: 0,length: self.string.count)
-        self.setFont(NSFont(name:"Menlo",size:14)!,range: range)
-        self.setTextColor(NSColor.white,range: range)
-        self.backgroundColor = NSColor.black
         }
     }

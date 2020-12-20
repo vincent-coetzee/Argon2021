@@ -49,7 +49,7 @@ public class Symbol:ParseNode,Equatable,Hashable
     internal var name:Name
         {
         let aName = self.parent?.name
-        return(aName == nil ? Name(self.shortName) : aName! + ("::" + self.shortName))
+        return(aName == nil ? Name(self.shortName) : (aName! + ("->" + self.shortName)))
         }
     
     public static func ==(lhs:Symbol,rhs:Symbol) -> Bool
@@ -69,6 +69,13 @@ public class Symbol:ParseNode,Equatable,Hashable
         super.init()
         }
     
+    internal init(name:Name,parent:Symbol? = nil)
+        {
+        self.shortName = name.first
+        self.parent = parent
+        super.init()
+        }
+        
     internal required init()
         {
         self.shortName = ""
@@ -99,5 +106,10 @@ public class Symbol:ParseNode,Equatable,Hashable
         {
         hasher.combine(self.shortName)
         hasher.combine(self.index)
+        }
+        
+    internal func symbolAdded(to node:ParseNode)
+        {
+        self.parent = node as? Symbol
         }
     }

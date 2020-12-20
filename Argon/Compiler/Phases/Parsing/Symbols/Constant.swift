@@ -1,18 +1,28 @@
 //
-//  LocalVariable.swift
+//  Constant.swift
 //  Argon
 //
-//  Created by Vincent Coetzee on 2020/12/06.
-//  Copyright © 2020 Vincent Coetzee. All rights reserved.
+//  Created by Vincent Coetzee on 2020/12/19.
 //
 
 import Foundation
 
-internal class LocalVariable:Variable
+public class Constant:Variable
     {
+    internal override var type:Type
+        {
+        get
+            {
+            return(.constant(self._type))
+            }
+        set
+            {
+            }
+        }
+        
     override init(name:Name,type:Type)
         {
-        super.init(shortName:name.first,type:type)
+        super.init(name:name,type:type)
         }
     
     override init(shortName:Identifier,type:Type)

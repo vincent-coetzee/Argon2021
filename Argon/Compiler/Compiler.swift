@@ -29,6 +29,11 @@ internal class Compiler
             }
         }
         
+    internal init()
+        {
+        self.path = ""
+        }
+        
     internal func sourceFiles() -> [SourceFile]
         {
         return(self.sourceTree.children)
@@ -47,5 +52,11 @@ internal class Compiler
             try phase.process(using:self)
             thePhase = phase.nextPhase
             }
+        }
+        
+    internal func compile(source:String) -> Module?
+        {
+        let parser = Parser()
+        return(try? parser.parseModule(source:source))
         }
     }

@@ -41,9 +41,4 @@ public class ParseNode:Scope
     internal required init()
         {
         }
-        
-    internal func populate(from:Parser) throws
-        {
-        fatalError("\(#function) in \(type(of:self)) should have been overriden")
-        }
     }

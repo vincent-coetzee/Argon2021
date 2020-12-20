@@ -8,12 +8,12 @@
 
 import Foundation
 
-public class ClassMaker:Method
+public class ClassMaker:MethodInstance
     {
     init(shortName:String,parameters:Parameters,block:Block)
         {
         super.init(shortName:shortName)
-        self.parameters = parameters
+        self._parameters = parameters
         self.block = block
         }
     

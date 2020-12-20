@@ -21,6 +21,8 @@ public indirect enum Expression:Equatable
     case castOperation(Expression,Expression)
     case closure(Closure)
     case closureInvocation(Closure,Arguments)
+    case date(Expression,Expression,Expression)
+    case dateTime(Expression,Expression)
     case enumeration(Enumeration)
     case enumerationCase(Enumeration,EnumerationCase)
     case error(String)
@@ -32,7 +34,7 @@ public indirect enum Expression:Equatable
     case integer(Argon.Integer)
     case literalArray([Expression])
     case logicalOperation(Expression,Token.Symbol,Expression)
-    case makeInvocation(Class,Arguments)
+    case makerInvocation(String,Arguments)
     case methodInvocation(Method,Arguments)
     case method(Method)
     case module(Module)
@@ -41,7 +43,7 @@ public indirect enum Expression:Equatable
     case none
     case powerOperation(Expression,Token.Symbol,Expression)
     case relationalOperation(Expression,Token.Symbol,Expression)
-    case readSlots(Expression,[String])
+    case slot(Expression,Expression)
     case readSubscript(Expression,Expression)
     case readVariable(Variable)
     case shiftOperation(Expression,Token.Symbol,Expression)
@@ -49,6 +51,7 @@ public indirect enum Expression:Equatable
     case string(String)
     case this
     case This
+    case time(Expression,Expression,Expression)
     case tuple([Expression])
     case unaryOperation(Token.Symbol,Expression)
     case variableInvocation(Variable,Arguments)
@@ -76,6 +79,12 @@ public indirect enum Expression:Equatable
                 return(Type.boolean)
             case .byte:
                 return(Type.byte)
+            case .date:
+                return(Type.date)
+            case .time:
+                return(Type.time)
+            case .dateTime:
+                return(Type.dateTime)
             case .character:
                 return(Type.character)
             case .symbol:
@@ -104,8 +113,13 @@ public indirect enum Expression:Equatable
                 return(v.type)
             case .readSubscript(let v,_):
                 return(v.type)
-            case .readSlots(let v,let slots):
-                return(v.type.slotType(slots))
+            case .slot(let v,let slotName):
+                var name:String = ""
+                if case let Expression.identifier(aName) = slotName
+                    {
+                    name = aName
+                    }
+                return(v.type.slotType(name))
             case .class(let c):
                 return(Type.class(c))
             case .literalArray(let c):
@@ -123,6 +137,8 @@ public indirect enum Expression:Equatable
                 return(Type.module(m))
             case .expression(let term):
                 return(Type.expression(term))
+            case .makerInvocation(let name,let arguments):
+                return(Type.composite(baseTypes: arguments.map{$0.type}))
             case .additionOperation(let lhs,let o,let rhs):
                 return(Type.binaryOperation(lhs.type,o,rhs.type))
             case .shiftOperation(let lhs,let o,let rhs):
@@ -143,8 +159,6 @@ public indirect enum Expression:Equatable
                 return(Type.binaryOperation(any.type,Token.Symbol.cast,aClass.type))
             case .powerOperation(let lhs,_ , let rhs):
                 return(Type.binaryOperation(lhs.type,Token.Symbol.pow,rhs.type))
-            case .makeInvocation(let aClass,let arguments):
-                return(Type.composite(baseTypes:arguments.typesPrefixed(by:aClass.type)))
             case .tuple(let expressions):
                 return(.tuple(expressions.map{$0.type}))
             case .error:

@@ -25,10 +25,6 @@ public class Argument:Symbol
         super.init(shortName: tag ?? "")
         }
     
-    internal override func populate(from parser: Parser)
-        {
-        }
-    
     internal required init()
         {
         self.value = Expression.none
@@ -40,9 +36,6 @@ public class Argument:Symbol
 
 internal class NakedArgument:Argument
     {
-    internal override func populate(from parser: Parser)
-        {
-        }
     }
 
 public typealias Arguments = Array<Argument>

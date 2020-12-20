@@ -8,7 +8,30 @@
 
 import Foundation
 
-public indirect enum CompilerError:Error,Equatable
+public class CompilerError:Error,Equatable
+    {
+    public static func ==(lhs:CompilerError,rhs:CompilerError) -> Bool
+        {
+        return(lhs.code == rhs.code && lhs.location == rhs.location)
+        }
+        
+    let code:SystemError
+    let location:SourceLocation
+    
+    init(error:SystemError,location:SourceLocation)
+        {
+        self.code = error
+        self.location = location
+        }
+        
+    init(_ error:SystemError,_ location:SourceLocation)
+        {
+        self.code = error
+        self.location = location
+        }
+    }
+    
+public enum SystemError:Equatable
     {
     case unknownError
     case invalidCharacter(Swift.Character)
@@ -54,8 +77,8 @@ public indirect enum CompilerError:Error,Equatable
     case enumerationExpected
     case invalidArrayIndexType
     case commaExpected
-    case aliasExpected
-    case asExpected
+    case typeExpected
+    case isExpected
     case aliasNameExpected
     case literalValueExpected
     case dictionaryExpected
@@ -99,4 +122,11 @@ public indirect enum CompilerError:Error,Equatable
     case stringLiteralOrVariableExpected
     case dateComponentSeparatorExpected
     case timeComponentSeparatorExpected
+    case dateOrTimeExpressionExpected
+    case typeCanNotBeReduced(Type)
+    case fullOrHalfRangeExpected
+    case tagExpected
+    case classElementExpected
+    case valueElementExpected
+    case nameCanNotBeFound(Name)
     }

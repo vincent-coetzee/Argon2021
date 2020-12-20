@@ -10,9 +10,66 @@ import AppKit
 
 public class TokenStyle
     {
+    public static var styles = [Token.TokenType:TokenStyle]()
+
+    static func initStyles()
+        {
+        styles[.keyword] = TokenStyle(type:.keyword,foreground: NSColor.argonSizzlingRed,font:NSFont.tokenFont)
+        styles[.comment] = TokenStyle(type:.comment,foreground: NSColor.argonPurple,font:NSFont.tokenFont)
+        styles[.nativeType] = TokenStyle(type:.nativeType,foreground: NSColor.argonCoral,font:NSFont.tokenFont)
+        styles[.identifier] = TokenStyle(type:.identifier,foreground: NSColor.argonZomp,font:NSFont.tokenFont)
+//        styles.append(TokenStyle(type:.symbol,foreground: NSColor.argonBlue,font:NSFont.tokenFont))
+        styles[.symbol] = TokenStyle(type:.symbol,foreground: NSColor.argonYellow,font:NSFont.tokenFont)
+        styles[.true] = TokenStyle(type:.symbol,foreground: NSColor.argonCheese,font:NSFont.tokenFont)
+        styles[.false] = TokenStyle(type:.symbol,foreground: NSColor.argonCheese,font:NSFont.tokenFont)
+        styles[.float] = TokenStyle(type:.float,foreground: NSColor.argonCyan,font:NSFont.tokenFont)
+        styles[.string] = TokenStyle(type:.string,foreground: NSColor.argonPink,font:NSFont.tokenFont)
+        styles[.integer] = TokenStyle(type:.integer,foreground: NSColor.argonGreen,font:NSFont.tokenFont)
+        styles[.hashString] = TokenStyle(type:.hashString,foreground: NSColor.argonDeepOrange,font:NSFont.tokenFont)
+        }
+        
+    public static func updateStyle(tokens:[Token],of textView:NSTextView)
+        {
+        let font = NSFont(name: "Menlo",size: 14)
+        textView.font = font
+        let attributedString = textView.textStorage
+        let string = attributedString!.string
+        let count = string.count
+        for token in tokens
+            {
+            let type = token.tokenType
+            if let style = self.styles[type]
+                {
+                let attributes = style.attributes
+                var theRange = NSRange(location: token.location.tokenStart,length: token.location.tokenStop - token.location.tokenStart)
+                if token.location.tokenStop <= count
+                    {
+                    attributedString?.setAttributes(attributes, range: theRange)
+                    }
+                else
+                    {
+                    print("Error")
+                    }
+                }
+            }
+        }
+        
+    var attributes:[NSAttributedString.Key:Any]
+        {
+        if self._attributes == nil
+            {
+            self._attributes = [NSAttributedString.Key:Any]()
+            self._attributes?[.font] = self.font
+            self._attributes?[.backgroundColor] = NSColor.black
+            self._attributes?[.foregroundColor] = self.foregroundColor
+            }
+        return(self._attributes)!
+        }
+        
     let tokenType:Token.TokenType
     let foregroundColor:NSColor
     let font:NSFont
+    private var _attributes:[NSAttributedString.Key:Any]? = nil
     
     init(type:Token.TokenType,foreground:NSColor,font:NSFont)
         {
@@ -21,7 +78,7 @@ public class TokenStyle
         self.font = font
         }
         
-    func apply(tokens:[Token],string:NSMutableAttributedString)
+    func apply(tokens:[Token],to string:NSMutableAttributedString)
         {
         let selectedTokens = tokens.filter{$0.isTokenType(self.tokenType)}
         let ranges = selectedTokens.map{NSRange(location:$0.location.tokenStart,length:$0.location.tokenStop - $0.location.tokenStart + 1)}

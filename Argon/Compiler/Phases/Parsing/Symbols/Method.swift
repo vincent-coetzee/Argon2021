@@ -1,72 +1,29 @@
 //
 //  Method.swift
-//  spark
+//  Argon
 //
-//  Created by Vincent Coetzee on 28/05/2020.
-//  Copyright © 2020 Vincent Coetzee. All rights reserved.
+//  Created by Vincent Coetzee on 2020/12/20.
 //
 
 import Foundation
 
 public class Method:Symbol
     {
-    internal var owner:Symbol?
-    internal var functionName:String?
-    internal var returnType:Type
-    internal var parameters:[Parameter] = []
-    internal var block = Block()
+    private var instances:[MethodInstance] = []
     
-    internal override func pushScope()
+    public init(shortName:String)
         {
-        self.push()
-        }
-    
-    internal override func popScope()
-        {
-        self.pop()
-        }
-    
-    internal override func addSymbol(_ symbol: Symbol)
-        {
-        self.block.addSymbol(symbol)
-        }
-
-    internal override func addStatement(_ statement: Statement)
-        {
-        self.block.addStatement(statement)
-        }
-    
-    internal init(shortName:String,owner:Symbol? = nil)
-        {
-        self.owner = owner
-        self.returnType = .class(Module.rootModule.voidClass)
-        super.init(shortName: shortName)
+        super.init(shortName:shortName)
         }
         
     internal required init()
         {
-        self.owner = RootModule.rootModule.nilInstance
-        self.returnType = .class(Module.rootModule.voidClass)
-        super.init()
+        fatalError("init() has not been implemented")
         }
         
-    internal override func lookup(shortName:String) -> SymbolSet?
+    public func addInstance(_ instance:MethodInstance)
         {
-        return(self.block.lookup(shortName:shortName))
+        self.instances.append(instance)
+        instance.symbolAdded(to: self)
         }
-    }
-
-public class HollowMethod:Method
-    {
-    var parms:[ParameterName]
-    
-    init(_ name:String,_ parameters:[ParameterName])
-        {
-        self.parms = parameters
-        super.init(shortName:name)
-        }
-    
-    internal required init() {
-        fatalError("init() has not been implemented")
-    }
 }

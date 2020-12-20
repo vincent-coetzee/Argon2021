@@ -10,7 +10,7 @@ import Foundation
 
 internal typealias ParameterTuple = (String?,Type)
 
-internal class Parameter:Variable
+public class Parameter:Variable
     {
     internal var showTag:Bool
     private var hasTag:Bool
@@ -60,4 +60,4 @@ internal class NakedParameter:Parameter
     {
     }
 
-typealias Parameters = Array<Parameter>
+public typealias Parameters = Array<Parameter>

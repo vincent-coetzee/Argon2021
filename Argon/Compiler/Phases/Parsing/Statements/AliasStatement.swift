@@ -10,9 +10,9 @@ import Foundation
 
 internal class AliasStatement:Statement
     {
-    private let alias:Alias
+    private let alias:TypeSymbol
     
-    init(alias:Alias)
+    init(alias:TypeSymbol)
         {
         self.alias = alias
         }

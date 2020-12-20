@@ -18,6 +18,8 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             }
             
         case none = ""
+        case backSlash = "\\"
+        case doubleBackSlash = "\\\\"
         case leftParenthesis = "("
         case rightParenthesis = ")"
         case leftBrace = "{"
@@ -77,7 +79,6 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         case abstract
         case All
         case Array
-        case alias
         case `as`
         case BitField
         case BitSet
@@ -86,11 +87,14 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         case Byte
         case Character
         case `class`
+        case constant
         case Date
         case DateTime
         case Dictionary
         case `else`
+        case entry
         case enumeration
+        case exit
         case export
         case Float
         case Float16
@@ -159,6 +163,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         case times
         case to
         case Tuple
+        case type
         case UInteger
         case UInteger64
         case UInteger32
@@ -177,46 +182,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         case write
         }
         
-
-        
-    public static func ==(lhs:Token,rhs:Token) -> Bool
-        {
-        switch(lhs,rhs)
-            {
-            case (.none,.none):
-                return(true)
-            case let (.comment(s1,_),.comment(s2,_)):
-                return(s1 == s2)
-            case (.end,.end):
-                return(true)
-            case let (.identifier(s1,_),.identifier(s2,_)):
-                return(s1 == s2)
-            case let (.keyword(s1,_),.keyword(s2,_)):
-                return(s1 == s2)
-            case let (.symbol(s1,_),.symbol(s2,_)):
-                return(s1 == s2)
-            case let (.hashString(s1,_),.hashString(s2,_)):
-                return(s1 == s2)
-            case let (.string(s1,_),.string(s2,_)):
-                return(s1 == s2)
-            case let (.integer(s1,_),.integer(s2,_)):
-                return(s1 == s2)
-            case let (.float(s1,_),.float(s2,_)):
-                return(s1 == s2)
-            case let (.text(s1,_),.text(s2,_)):
-                return(s1 == s2)
-            case let (.nativeType(s1,_),.nativeType(s2,_)):
-                return(s1 == s2)
-            case let (.tag(s1,_),.tag(s2,_)):
-                 return(s1 == s2)
-            case let (.operator(s1,_),.operator(s2,_)):
-                return(s1 == s2)
-            default:
-                return(false)
-            }
-        }
-        
-    enum TokenType
+    public enum TokenType
         {
         case none
         case comment
@@ -261,7 +227,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
     case tag(String,SourceLocation)
     case `operator`(String,SourceLocation)
     case marker
-    case error(CompilerError,SourceLocation)
+    case error(CompilerError)
     
     public init(_ symbol:String,_ location:SourceLocation)
         {
@@ -319,7 +285,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             return(type == .operator)
         case .marker:
             return(type == .marker)
-        case .error(_, _):
+        case .error(_):
             return(type == .error)
             }
         }
@@ -337,7 +303,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         
     public var isSlotKeyword:Bool
         {
-        return(self.isKeyword && (self.keyword == .class || self.keyword == .slot))
+        return(self.isKeyword && (self.keyword == .class || self.keyword == .slot || self.keyword == .virtual))
         }
         
     public var debugDescription:String
@@ -353,7 +319,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
                 return("#true")
             case .false:
                 return("#false")
-            case .error(let error,_):
+            case .error(let error):
                 return(".error(\(error))")
             case .hashString(let string,_):
                 return(".symbolString(\(string))")
@@ -440,6 +406,55 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
                 return(26)
             case .error:
                 return(-1)
+            }
+        }
+        
+    public var tokenType:Token.TokenType
+        {
+        switch(self)
+            {
+            case .text:
+                return(.text)
+            case .comment:
+                return(.comment)
+            case .end:
+                return(.end)
+            case .identifier:
+                return(.identifier)
+            case .keyword:
+                return(.keyword)
+            case .symbol:
+                return(.symbol)
+            case .string:
+                return(.string)
+            case .integer:
+                return(.integer)
+            case .float:
+                return(.float)
+            case .hashString:
+                return(.hashString)
+            case .nativeType:
+                return(.nativeType)
+            case .byte:
+                return(.byte)
+            case .true:
+                return(.true)
+            case .tag:
+                return(.tag)
+            case .false:
+                return(.false)
+            case .none:
+                return(.none)
+            case .operator:
+                return(.operator)
+            case .character(_, _):
+                return(.character)
+            case .boolean(_, _):
+                return(.boolean)
+            case .marker:
+                return(.marker)
+            case .error:
+                return(.error)
             }
         }
         
@@ -537,8 +552,8 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
                 return(location)
             case .byte(_,let location):
                 return(location)
-            case .error(_,let location):
-                return(location)
+            case .error(_):
+                return(.zero)
             case .hashString(_,let location):
                 return(location)
             case .comment(_,let location):
@@ -743,12 +758,12 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             }
         }
         
-    public var isAlias:Bool
+    public var isType:Bool
         {
         switch(self)
             {
             case .keyword(let value,_):
-                return(value == .alias)
+                return(value == .type)
             default:
                 return(false)
             }
@@ -902,6 +917,17 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             }
         }
         
+    public var isIs:Bool
+        {
+        switch(self)
+            {
+            case .keyword(let value,_):
+                return(value == .is)
+            default:
+                return(false)
+            }
+        }
+        
     public var isNil:Bool
         {
         switch(self)
@@ -946,67 +972,67 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             }
         }
         
-    public var isType:Bool
-        {
-        switch(self)
-            {
-            case .nativeType(let kind,_):
-                switch(kind)
-                    {
-                    case .Integer64:
-                        fallthrough
-                    case .UInteger64:
-                        fallthrough
-                    case .Integer:
-                        fallthrough
-                    case .UInteger:
-                        fallthrough
-                    case .Integer32:
-                        fallthrough
-                    case .UInteger32:
-                        fallthrough
-                    case .Integer16:
-                        fallthrough
-                    case .UInteger16:
-                        fallthrough
-                    case .Integer8:
-                        fallthrough
-                    case .UInteger8:
-                        fallthrough
-                    case .String:
-                        fallthrough
-                    case .Array:
-                        fallthrough
-                    case .Date:
-                        fallthrough
-                    case .List:
-                        fallthrough
-                    case .Set:
-                        fallthrough
-                    case .BitSet:
-                        fallthrough
-                    case .Dictionary:
-                        fallthrough
-                    case .Boolean:
-                        fallthrough
-                    case .Character:
-                        fallthrough
-                    case .Float:
-                        fallthrough
-                    case .Float16:
-                        return(true)
-                    case .Float32:
-                        fallthrough
-                    case .Float64:
-                        return(true)
-                    default:
-                        break
-                    }
-        default:
-            return(false)
-            }
-        return(false)
-        }
+//    public var isType:Bool
+//        {
+//        switch(self)
+//            {
+//            case .nativeType(let kind,_):
+//                switch(kind)
+//                    {
+//                    case .Integer64:
+//                        fallthrough
+//                    case .UInteger64:
+//                        fallthrough
+//                    case .Integer:
+//                        fallthrough
+//                    case .UInteger:
+//                        fallthrough
+//                    case .Integer32:
+//                        fallthrough
+//                    case .UInteger32:
+//                        fallthrough
+//                    case .Integer16:
+//                        fallthrough
+//                    case .UInteger16:
+//                        fallthrough
+//                    case .Integer8:
+//                        fallthrough
+//                    case .UInteger8:
+//                        fallthrough
+//                    case .String:
+//                        fallthrough
+//                    case .Array:
+//                        fallthrough
+//                    case .Date:
+//                        fallthrough
+//                    case .List:
+//                        fallthrough
+//                    case .Set:
+//                        fallthrough
+//                    case .BitSet:
+//                        fallthrough
+//                    case .Dictionary:
+//                        fallthrough
+//                    case .Boolean:
+//                        fallthrough
+//                    case .Character:
+//                        fallthrough
+//                    case .Float:
+//                        fallthrough
+//                    case .Float16:
+//                        return(true)
+//                    case .Float32:
+//                        fallthrough
+//                    case .Float64:
+//                        return(true)
+//                    default:
+//                        break
+//                    }
+//        default:
+//            return(false)
+//            }
+//        return(false)
+//        }
         
     public var isIntegerNumber:Bool
         {
@@ -1187,6 +1213,28 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             }
         }
         
+    public var isEntry:Bool
+        {
+        switch(self)
+            {
+            case .keyword(let value,_):
+                return(value == .entry)
+            default:
+                return(false)
+            }
+        }
+        
+    public var isExit:Bool
+        {
+        switch(self)
+            {
+            case .keyword(let value,_):
+                return(value == .exit)
+            default:
+                return(false)
+            }
+        }
+        
     public var isFalse:Bool
         {
         switch(self)
@@ -1198,12 +1246,23 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             }
         }
         
-    public var isAbstract:Bool
+    public var isBackSlash:Bool
         {
         switch(self)
             {
-            case .keyword(let value,_):
-                return(value == .abstract)
+            case .symbol(let value,_):
+                return(value == .backSlash)
+            default:
+                return(false)
+            }
+        }
+        
+    public var isDoubleBackSlash:Bool
+        {
+        switch(self)
+            {
+            case .symbol(let value,_):
+                return(value == .doubleBackSlash)
             default:
                 return(false)
             }
@@ -2085,6 +2144,17 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             }
         }
     
+    public var isPointer:Bool
+        {
+        switch(self)
+            {
+            case .keyword(let value,_):
+                return(value == .Pointer)
+            default:
+                return(false)
+            }
+        }
+        
     public var isPower:Bool
         {
         switch(self)
@@ -2350,13 +2420,25 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         }
         
     public var isAs:Bool
-        {        switch(self)
-                {
-                case .keyword(let value,_):
-                    return(value == .as)
-                default:
-                    return(false)
-                }
+        {
+        switch(self)
+            {
+            case .keyword(let value,_):
+                return(value == .as)
+            default:
+                return(false)
+            }
+        }
+        
+    public var isConstant:Bool
+        {
+        switch(self)
+            {
+            case .keyword(let value,_):
+                return(value == .constant)
+            default:
+                return(false)
+            }
         }
         
     public var isAssign:Bool
@@ -2496,7 +2578,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         switch(self)
             {
             case .keyword(let value,_):
-                return(value == .module || value == .let || value == .method || value == .alias || value == .class || value == .enumeration || value == .slot)
+                return(value == .module || value == .let || value == .method || value == .type || value == .class || value == .enumeration || value == .slot)
             default:
                 return(false)
             }

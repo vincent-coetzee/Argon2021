@@ -8,14 +8,22 @@
 
 import Foundation
 
-internal class Slot:Variable
+public class Slot:Variable
     {
     public var container:Symbol?
     internal let attributes:SlotAttributes
     internal var virtualReadBlock = VirtualSlotBlock()
     internal var virtualWriteBlock = VirtualSlotBlock()
         
-    internal init(shortName:String,type:Type,container:Symbol? = nil,attributes:SlotAttributes)
+    internal init(name:Name,type:Type,container:Symbol? = nil,attributes:SlotAttributes)
+        {
+        self.container = container
+        self.attributes = attributes
+        super.init(shortName: name.first,type: type)
+        self._type = type
+        }
+        
+    internal init(shortName:Identifier,type:Type,container:Symbol? = nil,attributes:SlotAttributes)
         {
         self.container = container
         self.attributes = attributes

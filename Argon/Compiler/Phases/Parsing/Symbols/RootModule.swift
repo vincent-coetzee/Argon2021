@@ -43,6 +43,7 @@ public class RootModule:Module
     public let tupleClass = Class.tupleClass
     public let moduleClass = Class.moduleClass
     public let arrayClass = Class.arrayClass
+    public let enumerationClass = Class.enumerationClass
     
     public var nilInstance:Symbol
         {

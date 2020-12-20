@@ -150,6 +150,7 @@ public class TokenStream:Equatable
         lineStart = 0
         lineLength = 0
         startIndex = 0
+        characterOffset = 0
         line = 1
         self.currentChar = Unicode.Scalar(" ")
         offset = source.startIndex
@@ -207,30 +208,6 @@ public class TokenStream:Equatable
             }
         return(source.unicodeScalars[index])
         }
-        
-//    public func stringUntilPercent() -> String
-//        {
-//        var string = ""
-//        while !atEnd && self.currentChar != "%"
-//            {
-//            string += String(self.currentChar)
-//            self.nextChar()
-//            }
-//        self.nextChar()
-//        return(string)
-//        }
-    
-//    public func stringUntilRightParenthesis() -> String
-//        {
-//        var string = ""
-//        while !atEnd && self.currentChar != ")"
-//            {
-//            string += String(self.currentChar)
-//            self.nextChar()
-//            }
-//        self.nextChar()
-//        return(string)
-//        }
         
     public func rewindChar()
         {
@@ -393,44 +370,6 @@ public class TokenStream:Equatable
             {
             return(self.nextString())
             }
-        //
-        // Handle $ for escaping bytes
-        //
-//        else if self.currentChar == "$"
-//            {
-//            nextChar()
-//            var number:Argon.UInteger8 = 0
-//            while digits.contains(self.currentChar) && !atEnd
-//                {
-//                number *= 10
-//                number += Argon.UInteger8(String(self.currentChar))!
-//                self.nextChar()
-//                }
-//            return(Token.byte(number,self.sourceLocation()))
-//            }
-//        //
-//        // Handle % for escaping characters
-//        //
-//        else if self.currentChar == "%"
-//            {
-//            nextChar()
-//            if self.currentChar == "("
-//                {
-//                var string = ""
-//                nextChar()
-//                while self.currentChar != ")" && !atEnd
-//                    {
-//                    string += String(self.currentChar)
-//                    self.nextChar()
-//                    }
-//                if self.currentChar == ")"
-//                    {
-//                    self.nextChar()
-//                    }
-//                return(Token.character(string.first!.utf16.first!,self.sourceLocation()))
-//                }
-//            return(Token.symbol(.modulus,self.sourceLocation()))
-//            }
         else if symbols.contains(self.currentChar)
             {
             return(self.nextSymbol())
@@ -460,7 +399,7 @@ public class TokenStream:Equatable
                 return(.hashString(string,self.sourceLocation()))
                 }
             }
-        return(.error(.invalidCharacter(Character(self.currentChar)),self.sourceLocation()))
+        return(.error(CompilerError(.invalidCharacter(Character(self.currentChar)),self.sourceLocation())))
         }
     
     private func nextString() -> Token
@@ -549,39 +488,33 @@ public class TokenStream:Equatable
                 {
                 number *= 10
                 number += Int(String(self.currentChar))!
-                nextChar()
+                self.nextChar()
                 }
             }
         if self.currentChar == "."
             {
             self.nextChar()
-            if self.currentChar == "."
-                {
-                nextChar()
-                if self.currentChar == "."
-                    {
-                    nextChar()
-                     self.pushBack(.symbol(.fullRange,self.sourceLocation()))
-                    }
-                self.pushBack(.symbol(.halfRange,self.sourceLocation()))
-                return(.integer(Argon.Integer(number),self.sourceLocation()))
-                }
+            var isFloat = false
             var factor = Double(0.0)
             var divisor = 10
             while (digits.contains(self.currentChar) || self.currentChar == "_") && !atEnd
                 {
+                isFloat = true
                 if self.currentChar == "_"
                     {
-                    nextChar()
+                    self.nextChar()
                     }
                 if digits.contains(self.currentChar)
                     {
                     factor += Double(String(self.currentChar))! / Double(divisor)
                     divisor *= 10
-                    nextChar()
+                    self.nextChar()
                     }
                 }
-            return(.float(Double(Double(number)+factor),self.sourceLocation()))
+            if isFloat
+                {
+                return(.float(Double(Double(number)+factor),self.sourceLocation()))
+                }
             }
         return(.integer(Argon.Integer(number),self.sourceLocation()))
         }
@@ -639,7 +572,7 @@ public class TokenStream:Equatable
             currentString.append(String(self.currentChar))
             self.nextChar()
             }
-        while isIdentifierCharacter(self.currentChar) && !self.atEnd && !self.atEndOfLine
+        while alphanumerics.contains(self.currentChar) && !self.atEnd && !self.atEndOfLine
         if self.currentChar == ":" && self.currentString != "otherwise"
             {
             let nextOne = self.peekChar(at: 0)
@@ -672,45 +605,28 @@ public class TokenStream:Equatable
             }
         }
     
-    @inline(__always)
-    private func isIdentifierCharacter(_ character:Unicode.Scalar) -> Bool
-        {
-        if alphanumerics.contains(character)
-            {
-            return(true)
-            }
-        if character == "_"
-            {
-            return(true)
-            }
-        return(false)
-        }
-    
     private func nextSymbol() -> Token
         {
         var operatorString:String = ""
-        
         if self.currentChar == "."
             {
             self.nextChar()
-            let location = self.sourceLocation()
             if self.currentChar == "."
                 {
                 self.nextChar()
                 if self.currentChar == "."
                     {
                     self.nextChar()
-                    return(.symbol(.fullRange,location))
+                    return(.symbol(.fullRange,self.sourceLocation()))
                     }
-                return(.symbol(.halfRange,location))
+                return(.symbol(.halfRange,self.sourceLocation()))
                 }
             return(.symbol(.stop,self.sourceLocation()))
             }
         if self.currentChar == "("
             {
-            let location = self.sourceLocation()
             self.nextChar()
-            return(.symbol(.leftParenthesis,location))
+            return(.symbol(.leftParenthesis,self.sourceLocation()))
             }
         else if self.currentChar == ")"
             {
@@ -720,8 +636,7 @@ public class TokenStream:Equatable
         else if self.currentChar == "}"
             {
             self.nextChar()
-            let location = self.sourceLocation()
-            return(.symbol(.rightBrace,location))
+            return(.symbol(.rightBrace,self.sourceLocation()))
             }
         else if self.currentChar == "{"
             {
@@ -741,11 +656,10 @@ public class TokenStream:Equatable
         else if self.currentChar == "/"
             {
             self.nextChar()
-            let location = self.sourceLocation()
             if self.currentChar == "="
                 {
                 self.nextChar()
-                return(.symbol(.divEquals,location))
+                return(.symbol(.divEquals,self.sourceLocation()))
                 }
             else
                 {
@@ -754,18 +668,16 @@ public class TokenStream:Equatable
             }
         else if self.currentChar == ","
             {
-            let location = self.sourceLocation()
             self.nextChar()
-            return(.symbol(.comma,location))
+            return(.symbol(.comma,self.sourceLocation()))
             }
         else if self.currentChar == ">"
             {
             self.nextChar()
-            let location = self.sourceLocation()
             if self.currentChar == "="
                 {
                 self.nextChar()
-                return(.symbol(.rightBrocketEquals,location))
+                return(.symbol(.rightBrocketEquals,self.sourceLocation()))
                 }
             else
                 {
@@ -775,13 +687,12 @@ public class TokenStream:Equatable
         else if self.currentChar == ":"
             {
             self.nextChar()
-            let location = self.sourceLocation()
             if self.currentChar == ":"
                 {
                 self.nextChar()
-                return(.symbol(.gluon,location))
+                return(.symbol(.gluon,self.sourceLocation()))
                 }
-            return(.symbol(.colon,location))
+            return(.symbol(.colon,self.sourceLocation()))
             }
         else if self.currentChar == "="
             {
@@ -791,49 +702,46 @@ public class TokenStream:Equatable
         else if self.currentChar == "&"
             {
             self.nextChar()
-            let location = self.sourceLocation()
             if self.currentChar == "&"
                 {
                 self.nextChar()
-                return(.symbol(.and,location))
+                return(.symbol(.and,self.sourceLocation()))
                 }
             else if self.currentChar == "="
                 {
                 self.nextChar()
-                return(.symbol(.bitAndEquals,location))
+                return(.symbol(.bitAndEquals,self.sourceLocation()))
                 }
             else
                 {
-                return(.symbol(.bitAnd,location))
+                return(.symbol(.bitAnd,self.sourceLocation()))
                 }
             }
         else if self.currentChar == "|"
             {
             self.nextChar()
-            let location = self.sourceLocation()
             if self.currentChar == "|"
                 {
                 self.nextChar()
-                return(.symbol(.or,location))
+                return(.symbol(.or,self.sourceLocation()))
                 }
             else if self.currentChar == "="
                 {
                 self.nextChar()
-                return(.symbol(.bitOrEquals,location))
+                return(.symbol(.bitOrEquals,self.sourceLocation()))
                 }
             else
                 {
-                return(.symbol(.bitOr,location))
+                return(.symbol(.bitOr,self.sourceLocation()))
                 }
             }
         else if self.currentChar == "+"
             {
             self.nextChar()
-            let location = self.sourceLocation()
             if self.currentChar == "="
                 {
                 self.nextChar()
-                return(.symbol(.addEquals,location))
+                return(.symbol(.addEquals,self.sourceLocation()))
                 }
             else
                 {
@@ -843,30 +751,28 @@ public class TokenStream:Equatable
         else if self.currentChar == "-"
             {
             self.nextChar()
-            let location = self.sourceLocation()
             if self.currentChar == "="
                 {
                 self.nextChar()
-                return(.symbol(.subEquals,location))
+                return(.symbol(.subEquals,self.sourceLocation()))
                 }
             else if self.currentChar == ">"
                 {
                 self.nextChar()
-                return(.symbol(.rightArrow,location))
+                return(.symbol(.rightArrow,self.sourceLocation()))
                 }
             else
                 {
-                return(.symbol(.sub,location))
+                return(.symbol(.sub,self.sourceLocation()))
                 }
             }
         else if self.currentChar == "*"
             {
             self.nextChar()
-            let location = self.sourceLocation()
             if self.currentChar == "="
                 {
                 self.nextChar()
-                return(.symbol(.mulEquals,location))
+                return(.symbol(.mulEquals,self.sourceLocation()))
                 }
             else
                 {
@@ -875,11 +781,10 @@ public class TokenStream:Equatable
         else if self.currentChar == "~"
             {
             self.nextChar()
-            let location = self.sourceLocation()
             if self.currentChar == "="
                 {
                 self.nextChar()
-                return(.symbol(.bitNotEquals,location))
+                return(.symbol(.bitNotEquals,self.sourceLocation()))
                 }
             else
                 {
@@ -888,12 +793,12 @@ public class TokenStream:Equatable
             }
         else if !self.operatorSymbols.contains(self.currentChar)
             {
-            return(.error(.invalidSymbolCharacter(Character(self.currentChar)),self.sourceLocation()))
+            return(.error(CompilerError(.invalidSymbolCharacter(Character(self.currentChar)),self.sourceLocation())))
             }
         while self.operatorSymbols.contains(self.currentChar)
             {
             operatorString += String(self.currentChar)
-            nextChar()
+            self.nextChar()
             }
         if let symbolType = Token.Symbol(rawValue: operatorString)
             {
@@ -931,7 +836,7 @@ public class TokenStream:Equatable
             {
             self.keywords.append(keyword.rawValue)
             }
-        self.nativeTypes.append(contentsOf: ["Object","Instance","Value","Void","Date","Tuple","Float16","Float","Float32","Float64","String","List","Array","Dictionary","BitSet","BitSet","Set","Boolean","Integer","UInteger","Integer64","Integer32","Integer16","Integer8","UInteger64","UInteger32","UInteger16","UInteger8","Character","Byte","Symbol"])
+        self.nativeTypes.append(contentsOf: ["Object","Instance","Value","Void","Date","Tuple","Float16","Float","Float32","Float64","String","List","Array","Dictionary","BitSet","Set","Boolean","Integer","UInteger","Integer64","Integer32","Integer16","Integer8","UInteger64","UInteger32","UInteger16","UInteger8","Character","Byte","Symbol"])
         }
     }
 

@@ -16,4 +16,5 @@ public indirect enum LValue
     case variable(String)
     case tuple([LValue])
     case compound([LValue])
+    case keyword(Token.Keyword)
     }

@@ -12,6 +12,8 @@ public class Module:SymbolContainer
     {
     public static let rootModule = RootModule(shortName: "Argon")
         
+    public static let rootScope = Module.rootModule
+    
     internal override func pushScope()
         {
         self.push()
@@ -21,10 +23,10 @@ public class Module:SymbolContainer
         {
         self.pop()
         }
-        
-    private var slices:[String:ModuleSlice] = [:]
     
     public private(set) var genericTypes:[GenericType] = []
+    private var exitFunction:ModuleFunction?
+    private var entryFunction:ModuleFunction?
     
     public override var isModuleLevelSymbol:Bool
         {
@@ -34,43 +36,58 @@ public class Module:SymbolContainer
     internal override func addSymbol(_ symbol:Symbol)
         {
         super.addSymbol(symbol)
-        if symbol is ModuleSlice
-            {
-            (symbol as! ModuleSlice).module = self
-            self.slices[symbol.shortName] = (symbol as! ModuleSlice)
-            }
+        symbol.symbolAdded(to: self)
         }
         
     internal override func lookup(name:Name) -> SymbolSet?
         {
-        if name.count == 0
+        var theName = name
+        var entity:Symbol? = self
+        while !theName.isEmpty && entity != nil
             {
-            return(SymbolSet(self))
-            }
-        for slice in self.slices.values
-            {
-            if let set = slice.lookup(name: name)
+            if let object = entity?.lookup(shortName: theName.first)?.first
                 {
-                return(set)
+                entity = object
+                theName = theName.withoutFirst()
+                }
+            else
+                {
+                entity = nil
                 }
             }
-        return(nil as SymbolSet?)
+        return(entity == nil ? nil : SymbolSet(entity!))
         }
         
     internal override func lookup(shortName:String) -> SymbolSet?
         {
-        for slice in self.slices.values
-            {
-            if let set = slice.lookup(shortName: shortName)
-                {
-                return(set)
-                }
-            }
         if let set = super.lookup(shortName: shortName)
             {
             return(set)
             }
         return(self.parentScope?.lookup(shortName: shortName))
+        }
+        
+    internal func addSymbol(_ symbol:Symbol,atName name:Name) throws
+        {
+        if let entity = Module.rootScope.lookup(name: name.withoutLast())?.first
+            {
+            symbol.shortName = name.last
+            entity.addSymbol(symbol)
+            }
+        else
+            {
+            throw(CompilerError(.nameCanNotBeFound(name),SourceLocation.zero))
+            }
+        }
+        
+    func setEntry(_ function:ModuleFunction)
+        {
+        self.entryFunction = function
+        }
+        
+    func setExit(_ function:ModuleFunction)
+        {
+        self.exitFunction = function
         }
     }
 

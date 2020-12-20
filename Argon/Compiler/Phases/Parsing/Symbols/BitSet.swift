@@ -19,6 +19,12 @@ public class BitSetField
         self.name = name
         self.offset = offset
         }
+        
+    init(name:Name,offset:Expression)
+        {
+        self.name = name.first
+        self.offset = offset
+        }
     }
     
 public class BitSet:Symbol

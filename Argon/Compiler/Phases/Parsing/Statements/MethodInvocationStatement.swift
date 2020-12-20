@@ -11,3 +11,19 @@ import Foundation
 internal class MethodInvocationStatement:ControlFlowStatement
     {
     }
+
+internal class InvocationStatement:MethodInvocationStatement
+    {
+    let name:Name
+    let arguments:Arguments
+    
+    init(name:Name,arguments:Arguments)
+        {
+        self.name = name
+        self.arguments = arguments
+        }
+    
+    required init() {
+        fatalError("init() has not been implemented")
+    }
+}

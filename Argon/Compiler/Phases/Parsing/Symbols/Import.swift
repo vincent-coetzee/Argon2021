@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class ModuleImport:Symbol
+public class Import:Symbol
     {
     let path:String?
     
@@ -17,6 +17,12 @@ public class ModuleImport:Symbol
         super.init(shortName:shortName)
         }
     
+    init(name:Name,path:String?)
+        {
+        self.path = path
+        super.init(shortName:name.first)
+        }
+        
     internal required init() {
         fatalError("init() has not been implemented")
     }

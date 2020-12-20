@@ -52,12 +52,15 @@ public class Variable:Symbol
         super.init(shortName:shortName)
         }
         
+    internal init(name:Name,type:Type)
+        {
+        self._type = type
+        super.init(shortName:name.first)
+        }
+        
     internal required init()
         {
         self._type = RootModule.rootModule.nilInstance.type
         super.init()
         }
     }
-
-
-

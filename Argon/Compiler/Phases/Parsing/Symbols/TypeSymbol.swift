@@ -8,8 +8,13 @@
 
 import Foundation
 
-internal class Alias:Symbol
+internal class TypeSymbol:Symbol
     {
+    override internal var type:Type
+        {
+        return(self.baseType)
+        }
+        
     internal var baseType:Type
     
     internal init(shortName:String,baseType:Type)
@@ -18,6 +23,12 @@ internal class Alias:Symbol
         super.init(shortName: shortName)
         }
     
+    internal init(name:Name,baseType:Type)
+        {
+        self.baseType = baseType
+        super.init(shortName: name.first)
+        }
+        
     internal required init()
         {
         self.baseType = .class(Module.rootModule.nilClass)
@@ -32,9 +43,5 @@ internal class Alias:Symbol
     internal override func popScope()
         {
         super.pop()
-        }
-        
-    internal override func populate(from parser:Parser)
-        {
         }
     }
