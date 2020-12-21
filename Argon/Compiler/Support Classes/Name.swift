@@ -55,7 +55,7 @@ public struct Name:Hashable,ExpressibleByArrayLiteral
             {
             return("")
             }
-        return(self.components.joined(separator: "::"))
+        return("\\\\"+self.components.joined(separator: "\\"))
         }
         
     public var first:String

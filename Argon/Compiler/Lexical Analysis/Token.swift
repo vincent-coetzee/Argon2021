@@ -1,5 +1,5 @@
 //
-//  NeonToken.swift
+//  Token.swift
 //  Neon
 //
 //  Created by Vincent Coetzee on 30/11/2019.
@@ -177,7 +177,6 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         case Void
         case when
         case `while`
-        case with
         case word
         case write
         }
@@ -527,7 +526,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             case .hashString(let string,_):
                 return(string)
             default:
-                fatalError("This should not be called on a NeonToken of class \(Swift.type(of: self))")
+                fatalError("This should not be called on a Token of class \(Swift.type(of: self))")
             }
         }
         
@@ -538,7 +537,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             case .symbol(let type,_):
                 return(type.rawValue)
             default:
-                fatalError("This should not be called on a NeonToken of class \(Swift.type(of: self))")
+                fatalError("This should not be called on a Token of class \(Swift.type(of: self))")
             }
         }
         
@@ -598,7 +597,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             case .integer(let value,_):
                 return(value)
             default:
-                fatalError("This should not be called on a NeonToken of class \(Swift.type(of: self))")
+                fatalError("This should not be called on a Token of class \(Swift.type(of: self))")
             }
         }
         
@@ -609,7 +608,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             case .float(let name,_):
                 return(name)
             default:
-                fatalError("This should not be called on a NeonToken of class \(Swift.type(of: self))")
+                fatalError("This should not be called on a Token of class \(Swift.type(of: self))")
             }
         }
         
@@ -620,7 +619,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             case .operator(let name,_):
                 return(name)
             default:
-                fatalError("This should not be called on a NeonToken of class \(Swift.type(of: self))")
+                fatalError("This should not be called on a Token of class \(Swift.type(of: self))")
             }
         }
     
@@ -631,7 +630,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             case .identifier(let name,_):
                 return(name)
             default:
-                fatalError("This should not be called on a NeonToken of class \(Swift.type(of: self))")
+                fatalError("This should not be called on a Token of class \(Swift.type(of: self))")
             }
         }
 
@@ -642,7 +641,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             case .tag(let name,_):
                 return(name)
             default:
-                fatalError("This should not be called on a NeonToken of class \(Swift.type(of: self))")
+                fatalError("This should not be called on a Token of class \(Swift.type(of: self))")
             }
         }
     
@@ -655,7 +654,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             case .keyword(let name,_):
                 return(name)
             default:
-                fatalError("This should not be called on a NeonToken of class \(Swift.type(of: self))")
+                fatalError("This should not be called on a Token of class \(Swift.type(of: self))")
             }
         }
         
@@ -666,7 +665,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             case .keyword(let name,_):
                 return("\(name)")
             default:
-                fatalError("This should not be called on a NeonToken of class \(Swift.type(of: self))")
+                fatalError("This should not be called on a Token of class \(Swift.type(of: self))")
             }
         }
     
@@ -677,7 +676,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             case .symbol(let name,_):
                 return(name)
             default:
-                fatalError("This should not be called on a NeonToken of class \(Swift.type(of: self))")
+                fatalError("This should not be called on a Token of class \(Swift.type(of: self))")
             }
         }
         
@@ -688,7 +687,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             case .string(let name,_):
                 return(name)
             default:
-                fatalError("This should not be called on a NeonToken of class \(Swift.type(of: self))")
+                fatalError("This should not be called on a Token of class \(Swift.type(of: self))")
             }
         }
         
@@ -699,7 +698,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             case .integer(let value,_):
                 return(value)
             default:
-                fatalError("This should not be called on a NeonToken of class \(Swift.type(of: self))")
+                fatalError("This should not be called on a Token of class \(Swift.type(of: self))")
             }
         }
     
@@ -710,7 +709,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             case .float(let value,_):
                 return(value)
             default:
-                fatalError("This should not be called on a NeonToken of class \(Swift.type(of: self))")
+                fatalError("This should not be called on a Token of class \(Swift.type(of: self))")
             }
         }
 
@@ -1066,49 +1065,6 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
                 return(false)
             }
         }
-    
-    public var isBlockLevelToken:Bool
-        {
-        switch(self)
-            {
-            case .identifier:
-                return(true)
-            case .keyword(let value,_):
-                switch(value)
-                    {
-                    case .this:
-                        return(true)
-                    case .for:
-                        return(true)
-                    case .if:
-                        return(true)
-                    case .with:
-                        return(true)
-                    case .select:
-                        return(true)
-                    case .signal:
-                        return(true)
-                    case .handler:
-                        return(true)
-                    case .while:
-                        return(true)
-                    case .return:
-                        return(true)
-                    case .let:
-                        return(true)
-                    case .times:
-                        return(true)
-                    default:
-                        break
-                    }
-                return(false)
-            case .symbol(let value,_):
-                return(value == .assign)
-            default:
-                break
-            }
-        return(false)
-        }
         
     public var isByte:Bool
         {
@@ -1120,43 +1076,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
                 return(false)
             }
         }
-        
-    public var isVirtualSlotLevelToken:Bool
-        {
-        switch(self)
-            {
-            case .identifier:
-                return(true)
-            case .keyword(let value,_):
-                switch(value)
-                    {
-                    case .for:
-                        return(true)
-                    case .if:
-                        return(true)
-                    case .with:
-                        return(true)
-                    case .select:
-                        return(true)
-                    case .while:
-                        return(true)
-                    case .return:
-                        return(true)
-                    case .let:
-                        return(true)
-                    case .times:
-                        return(true)
-                    default:
-                        break
-                    }
-                return(false)
-            case .symbol(let value,_):
-                return(value == .assign)
-            default:
-                break
-            }
-        return(false)
-        }
+
         
     public var isReturn:Bool
         {
@@ -1455,12 +1375,12 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             }
         }
         
-    public var isWith:Bool
+    public var isUsing:Bool
         {
         switch(self)
             {
             case .keyword(let value,_):
-                return(value == .with)
+                return(value == .using)
             default:
                 return(false)
             }

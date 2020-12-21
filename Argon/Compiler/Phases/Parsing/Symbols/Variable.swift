@@ -10,6 +10,8 @@ import Foundation
 
 public class Variable:Symbol
     {
+    public static let none = Variable(shortName:"NONE",type:.void)
+    
     internal var canBeInvoked:Bool
         {
         switch(self._type)
@@ -45,6 +47,7 @@ public class Variable:Symbol
         }
         
     internal var _type:Type
+    internal var location:ValueLocation = .none
         
     internal init(shortName:String,type:Type)
         {

@@ -566,6 +566,7 @@ internal class Parser:CompilerPhase
         let name = try self.parseIdentifier()
         print("CLASS NAME IS \(name)")
         let aClass = Class(shortName:name)
+        Module.innerScope.addSymbol(aClass)
         if self.token.isLeftBrocket
             {
             var generics = GenericTypes()
@@ -622,7 +623,6 @@ internal class Parser:CompilerPhase
             while !self.token.isRightBrace
             }
         aClass.addDeclaration(location: location)
-        Module.innerScope.addSymbol(aClass)
         }
         
     private func parseSlotDeclaration() throws -> Slot
@@ -955,14 +955,9 @@ internal class Parser:CompilerPhase
                     hasTag = false
                     self.advance()
                     }
-                let name = try self.parseIdentifier()
-                if !self.token.isGluon
-                    {
-                    throw(CompilerError(.gluonExpected,self.token.location))
-                    }
-                self.advance()
+                let tag = try self.parseTag()
                 let type = try self.parseType()
-                let parameter = Parameter(shortName:name,type:type,hasTag:hasTag)
+                let parameter = Parameter(shortName:tag,type:type,hasTag:hasTag)
                 parameters.append(parameter)
                 }
             while self.token.isComma
@@ -1381,10 +1376,9 @@ internal class Parser:CompilerPhase
             {
             identifier = self.token.identifier
             self.advance()
-            if self.token.isColon
+            if self.token.isGluon
                 {
                 self.advance()
-                return("\(identifier):")
                 }
             return(identifier)
             }
@@ -1422,8 +1416,8 @@ internal class Parser:CompilerPhase
         
     internal func parseClosure() throws -> Closure
         {
-        self.advance()
         let closure = Closure()
+        closure.returnType = .void
         closure.push()
         defer
             {
@@ -1431,10 +1425,16 @@ internal class Parser:CompilerPhase
             }
         try self.parseBraces
             {
-            if self.token.isWith
+            if self.token.isUsing
                 {
                 self.advance()
                 closure.parameters = try self.parseFormalParameters()
+                if self.token.isRightArrow
+                    {
+                    self.advance()
+                    let returnType = try self.parseType()
+                    closure.returnType = returnType
+                    }
                 }
             repeat
                 {
@@ -1461,7 +1461,7 @@ internal class Parser:CompilerPhase
             }
         else if self.token.isLet
             {
-            return(try self.parseVariableStatement())
+            return(try self.parseLetStatement())
             }
         else if self.token.isSelect
             {
@@ -1513,27 +1513,90 @@ internal class Parser:CompilerPhase
             }
         else
             {
-            if self.token.isIdentifier && self.tokens[self.tokenIndex].isLeftPar
+            if self.token.isKeyword && self.token.keyword.rawValue == "write"
+                {
+                print("self halt")
+                }
+            if self.token.isDoubleBackSlash && self.tokens[self.tokenIndex].isIdentifier
                 {
                 return(try self.parseInvocationStatement())
                 }
-            return(try self.parseAssignmentStatement())
+            else if self.token.isIdentifier && self.tokens[self.tokenIndex].isLeftPar
+                {
+                return(try self.parseInvocationStatement())
+                }
+            else if self.token.isIdentifier && self.tokens[self.tokenIndex].isBackSlash
+                {
+                return(try self.parseInvocationStatement())
+                }
+            else if self.token.isKeyword && self.tokens[self.tokenIndex].isLeftPar
+                {
+                return(try self.parseInvocationStatement())
+                }
+            else
+                {
+                return(try self.parseAssignmentStatement())
+                }
             }
+        }
+        
+    private func parseName(_ string:String) throws -> Name
+        {
+        var name = Name(string)
+        while self.token.isBackSlash
+            {
+            self.advance()
+            if self.token.isIdentifier
+                {
+                name += self.token.identifier
+                self.advance()
+                }
+            }
+        return(name)
         }
         
     private func parseInvocationStatement() throws -> Statement
         {
-        let name = self.token.identifier
-        self.advance()
+        var name:Name
+        if self.token.isKeyword
+            {
+            name = Name(self.token.keyword.rawValue)
+            self.advance()
+            }
+        else if self.token.isDoubleBackSlash
+            {
+            name = try self.parseName()
+            }
+        else
+            {
+            let identifier = self.token.identifier
+            self.advance()
+            if self.token.isBackSlash
+                {
+                name = try self.parseName(identifier)
+                }
+            else
+                {
+                name = Name(identifier)
+                }
+            }
+        if !self.token.isLeftPar
+            {
+            throw(CompilerError(.leftParExpected,self.token.location))
+            }
         let arguments = try self.parseArguments()
-        return(InvocationStatement(name:Name(name),arguments:arguments))
+        return(InvocationStatement(name:name,arguments:arguments))
         }
         
-    private func parseVariableStatement() throws -> Statement
+    private func parseLetStatement() throws -> Statement
         {
         self.advance()
         let location = self.token.location
         let name = try self.parseIdentifier()
+        if name == "answer"
+            {
+            print("halt")
+            }
         let variable = Variable(shortName: name,type:.undefined)
         if self.token.isGluon
             {
@@ -1809,7 +1872,7 @@ internal class Parser:CompilerPhase
             }
         try self.parseBraces
             {
-            if !self.token.isWith
+            if !self.token.isUsing
                 {
                 throw(CompilerError(.withExpected,self.token.location))
                 }
@@ -1977,8 +2040,13 @@ internal class Parser:CompilerPhase
         
     private func parseArgument() throws -> Argument
         {
-        let tag = try self.parseTag()
-        self.advance()
+        var tag:String?
+        if self.token.isIdentifier && self.tokens[self.tokenIndex].isGluon
+            {
+            tag = self.token.identifier
+            self.advance()
+            self.advance()
+            }
         let value = try self.parseExpression()
         return(Argument(tag:tag,value:value))
         }
@@ -2116,7 +2184,6 @@ internal class Parser:CompilerPhase
         {
         if self.token.isRightArrow
             {
-            self.advance()
             return(try self.parseSlotTerm(expression: .this))
             }
         return(.this)
@@ -2290,18 +2357,61 @@ internal class Parser:CompilerPhase
             self.advance()
             return(.symbol(byteValue))
             }
-        else if self.token.isIdentifier
+        else if self.token.isIdentifier || self.token.isKeyword
             {
-            return(try self.parseIdentifierTerm(self.token.identifier))
+            let identifier = self.token.isKeyword ? self.token.keyword.rawValue : self.token.identifier
+            if identifier == "callableCode" || identifier == "write"
+                {
+                print("halt")
+                }
+            self.advance()
+            var object:Symbol?
+            if self.token.isBackSlash
+                {
+                var name = Name(identifier)
+                while self.token.isBackSlash
+                    {
+                    self.advance()
+                    if self.token.isIdentifier
+                        {
+                        name += self.token.identifier
+                        self.advance()
+                        }
+                    }
+                object = Module.innerScope.lookup(name:name)?.first
+                }
+            else
+                {
+                object = Module.innerScope.lookup(shortName: identifier)?.first
+                }
+            if object != nil
+                {
+                return(try self.parseObjectTerm(identifier,object!))
+                }
+            return(Expression.undefinedValue(name))
             }
         else if self.token.isLeftBrace
             {
             return(Expression.closure(try self.parseClosure()))
             }
+        else if self.token.isDoubleBackSlash
+            {
+            return(try self.parseQualifiedNameTerm())
+            }
         else
             {
             return(.error("Uknown term type \(self.token)"))
             }
+        }
+        
+    private func parseQualifiedNameTerm() throws -> Expression
+        {
+        let name = try self.parseName()
+        if let object = Module.rootScope.lookup(name:name)?.first
+            {
+            return(try self.parseObjectTerm(name.stringName,object))
+            }
+        return(Expression.undefinedValue(name.stringName))
         }
         
     private func parseSubscriptedTerm(expression:Expression) throws -> Expression
@@ -2328,6 +2438,7 @@ internal class Parser:CompilerPhase
             if self.token.isInteger
                 {
                 term = .slot(term,.identifier("\(self.token.integer)"))
+                self.advance()
                 }
             //
             // Else it's a normal slot
@@ -2338,7 +2449,6 @@ internal class Parser:CompilerPhase
                 term = .slot(term,.identifier(name))
                 }
             }
-        self.advance()
         return(term)
         }
         
@@ -2359,133 +2469,120 @@ internal class Parser:CompilerPhase
         return(expression)
         }
         
-    func parseMakerInvocation(identifier:String) throws -> Expression
+    func parseMakerInvocation(_ aClass:Class) throws -> Expression
         {
-        self.advance()
         let arguments = try self.parseArguments()
-        if !self.token.isRightPar
-            {
-            throw(CompilerError(.rightParExpected,self.token.location))
-            }
-        self.advance()
-        return(.makerInvocation(identifier,arguments))
+        return(.makerInvocation(aClass,arguments))
         }
         
-    func parseIdentifierTerm(_ identifier:String) throws -> Expression
+    func parseObjectTerm(_ identifier:String,_ object:Symbol) throws -> Expression
         {
-        self.advance()
-        if let object = Module.innerScope.lookup(shortName: identifier)?.first
+        if object is Variable
             {
-            if object is Variable
+            let variable = object as! Variable
+            if variable.canBeInvoked || self.token.isLeftPar
                 {
-                let variable = object as! Variable
-                if variable.canBeInvoked && self.token.isLeftPar
-                    {
-                    let arguments = try self.parseArguments()
-                    return(.variableInvocation(variable,arguments))
-                    }
-                var expression:Expression = .readVariable(variable)
-                if self.token.isLeftBracket || self.token.isRightArrow
-                    {
-                    expression = try self.parseSlotOrSubscript(expression:expression)
-                    }
-                return(expression)
+                let arguments = try self.parseArguments()
+                return(.variableInvocation(variable,arguments))
                 }
-            else if object is Class || object is ValueClass
+            var expression:Expression = .readVariable(variable)
+            if self.token.isLeftBracket || self.token.isRightArrow
                 {
-                if self.token.isLeftPar
-                    {
-                    return(try self.parseMakerInvocation(identifier:identifier))
-                    }
-                return(.class(object as! Class))
+                expression = try self.parseSlotOrSubscript(expression:expression)
                 }
-            else if object is Closure
+            return(expression)
+            }
+        else if object is Class || object is ValueClass
+            {
+            if self.token.isLeftPar
                 {
-                let closure = object as! Closure
-                var expression:Expression
-                if self.token.isLeftPar
+                return(try self.parseMakerInvocation(object as! Class))
+                }
+            return(.class(object as! Class))
+            }
+        else if object is Closure
+            {
+            let closure = object as! Closure
+            var expression:Expression
+            if self.token.isLeftPar
+                {
+                let arguments = try self.parseArguments()
+                expression = .closureInvocation(closure,arguments)
+                if self.token.isStop || self.token.isLeftBracket
                     {
-                    let arguments = try self.parseArguments()
-                    expression = .closureInvocation(closure,arguments)
-                    if self.token.isStop || self.token.isLeftBracket
-                        {
-                        expression = try self.parseSlotOrSubscript(expression: expression)
-                        }
-                    }
-                else
-                    {
-                    return(.closure (object as! Closure))
+                    expression = try self.parseSlotOrSubscript(expression: expression)
                     }
                 }
-            else if object is Method
+            else
                 {
-                let method = object as! Method
-                if self.token.isLeftPar
-                    {
-                    let arguments = try self.parseArguments()
-                    var expression = Expression.methodInvocation(method,arguments)
-                    if self.token.isStop || self.token.isLeftBracket
-                        {
-                        expression = try self.parseSlotOrSubscript(expression: expression)
-                        }
-                    return(expression)
-                    }
-                else
-                    {
-                    return(.method(object as! Method))
-                    }
+                return(.closure (object as! Closure))
                 }
-            else if object is Function
+            }
+        else if object is Method
+            {
+            let method = object as! Method
+            if self.token.isLeftPar
                 {
-                let function = object as! Function
-                if self.token.isLeftPar
-                    {
-                    let arguments = try self.parseArguments()
-                    var expression = Expression.functionInvocation(function,arguments)
-                    if self.token.isStop || self.token.isLeftBracket
-                        {
-                        expression = try self.parseSlotOrSubscript(expression: expression)
-                        }
-                    return(expression)
-                    }
-                else
-                    {
-                    return(.function(object as! Function))
-                    }
-                }
-            else if object is Module
-                {
-                let module = object as! Module
-                var expression = Expression.module(module)
-                if self.token.isStop || self.token.isLeftBracket || self.token.isRightArrow
+                let arguments = try self.parseArguments()
+                var expression = Expression.methodInvocation(method,arguments)
+                if self.token.isStop || self.token.isLeftBracket
                     {
                     expression = try self.parseSlotOrSubscript(expression: expression)
                     }
                 return(expression)
                 }
-            else if object is Enumeration
+            else
                 {
-                let enumeration = object as! Enumeration
-                let nextToken = self.token(at:1)
-                if self.token.isStop && nextToken.isIdentifier && enumeration.hasCase(named: nextToken.identifier)
+                return(.method(object as! Method))
+                }
+            }
+        else if object is Function
+            {
+            let function = object as! Function
+            if self.token.isLeftPar
+                {
+                let arguments = try self.parseArguments()
+                var expression = Expression.functionInvocation(function,arguments)
+                if self.token.isStop || self.token.isLeftBracket
                     {
-                    self.advance()
-                    self.advance()
-                    return(Expression.enumerationCase(enumeration,enumeration.enumerationCase(named:nextToken.identifier)!))
+                    expression = try self.parseSlotOrSubscript(expression: expression)
                     }
-                return(Expression.enumeration(enumeration))
+                return(expression)
                 }
             else
                 {
-                return(.identifier(identifier))
+                return(.function(object as! Function))
                 }
+            }
+        else if object is Module
+            {
+            let module = object as! Module
+            var expression = Expression.module(module)
+            if self.token.isStop || self.token.isLeftBracket || self.token.isRightArrow
+                {
+                expression = try self.parseSlotOrSubscript(expression: expression)
+                }
+            return(expression)
+            }
+        else if object is Enumeration
+            {
+            let enumeration = object as! Enumeration
+            let nextToken = self.token(at:1)
+            if self.token.isStop && nextToken.isIdentifier && enumeration.hasCase(named: nextToken.identifier)
+                {
+                self.advance()
+                self.advance()
+                return(Expression.enumerationCase(enumeration,enumeration.enumerationCase(named:nextToken.identifier)!))
+                }
+            return(Expression.enumeration(enumeration))
             }
         else
             {
             if self.token.isLeftPar
                 {
                 let arguments = try self.parseArguments()
-                return(.makerInvocation(identifier,arguments))
+                let aClass = Class(shortName:identifier)
+                return(.makerInvocation(aClass,arguments))
                 }
             return(Expression.undefinedValue(identifier))
             }

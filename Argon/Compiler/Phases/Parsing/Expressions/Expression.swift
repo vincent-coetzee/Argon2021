@@ -35,7 +35,7 @@ public indirect enum Expression:Equatable
     case literalArray([Expression])
     case literalType(Type)
     case logicalOperation(Expression,Token.Symbol,Expression)
-    case makerInvocation(String,Arguments)
+    case makerInvocation(Class,Arguments)
     case methodInvocation(Method,Arguments)
     case method(Method)
     case module(Module)

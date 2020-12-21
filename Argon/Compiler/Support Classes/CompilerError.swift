@@ -129,4 +129,5 @@ public enum SystemError:Equatable
     case classElementExpected
     case valueElementExpected
     case nameCanNotBeFound(Name)
+    case rightArrowExpected
     }

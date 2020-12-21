@@ -121,6 +121,11 @@
 		BFA4BFE3258BF5AD0040DE86 /* People(Professions).argon in Resources */ = {isa = PBXBuildFile; fileRef = BFA4BFDE258BF5AD0040DE86 /* People(Professions).argon */; };
 		BFA4BFE4258BF5AD0040DE86 /* Location(Location).argon in Resources */ = {isa = PBXBuildFile; fileRef = BFA4BFDF258BF5AD0040DE86 /* Location(Location).argon */; };
 		BFA4BFE5258BF5AD0040DE86 /* People.argon in Resources */ = {isa = PBXBuildFile; fileRef = BFA4BFE0258BF5AD0040DE86 /* People.argon */; };
+		BFD04BE02590BED5003FDD90 /* RegisterIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BDF2590BED5003FDD90 /* RegisterIndex.swift */; };
+		BFD04BE32590C378003FDD90 /* ValueLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BE22590C378003FDD90 /* ValueLocation.swift */; };
+		BFD04BE62590C3C8003FDD90 /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BE52590C3C8003FDD90 /* Register.swift */; };
+		BFD04BE92590C6E0003FDD90 /* RegisterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BE82590C6E0003FDD90 /* RegisterSet.swift */; };
+		BFD04BEC2590C730003FDD90 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BEB2590C730003FDD90 /* Address.swift */; };
 		BFD58CE1258E3B2000B2ADDD /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD58CE0258E3B2000B2ADDD /* Constant.swift */; };
 		BFD58CE8258F07DF00B2ADDD /* Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD58CE7258F07DF00B2ADDD /* Identifier.swift */; };
 		BFD58CEC258F355800B2ADDD /* Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD58CEB258F355800B2ADDD /* Method.swift */; };
@@ -248,6 +253,11 @@
 		BFA4BFDE258BF5AD0040DE86 /* People(Professions).argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "People(Professions).argon"; sourceTree = "<group>"; };
 		BFA4BFDF258BF5AD0040DE86 /* Location(Location).argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Location(Location).argon"; sourceTree = "<group>"; };
 		BFA4BFE0258BF5AD0040DE86 /* People.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = People.argon; sourceTree = "<group>"; };
+		BFD04BDF2590BED5003FDD90 /* RegisterIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterIndex.swift; sourceTree = "<group>"; };
+		BFD04BE22590C378003FDD90 /* ValueLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueLocation.swift; sourceTree = "<group>"; };
+		BFD04BE52590C3C8003FDD90 /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
+		BFD04BE82590C6E0003FDD90 /* RegisterSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSet.swift; sourceTree = "<group>"; };
+		BFD04BEB2590C730003FDD90 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
 		BFD58CE0258E3B2000B2ADDD /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		BFD58CE7258F07DF00B2ADDD /* Identifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifier.swift; sourceTree = "<group>"; };
 		BFD58CEB258F355800B2ADDD /* Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Method.swift; sourceTree = "<group>"; };
@@ -323,11 +333,11 @@
 			isa = PBXGroup;
 			children = (
 				BF08FB5D25803A6A00C4AC6F /* Argument.swift */,
-				BF08FB5E25803A6A00C4AC6F /* Type.swift */,
-				BF08FB5F25803A6A00C4AC6F /* SourceReference.swift */,
-				BF08FB6025803A6A00C4AC6F /* Name.swift */,
 				BF08FB6125803A6A00C4AC6F /* CompilerError.swift */,
 				BFD58CE7258F07DF00B2ADDD /* Identifier.swift */,
+				BF08FB6025803A6A00C4AC6F /* Name.swift */,
+				BF08FB5F25803A6A00C4AC6F /* SourceReference.swift */,
+				BF08FB5E25803A6A00C4AC6F /* Type.swift */,
 			);
 			path = "Support Classes";
 			sourceTree = "<group>";
@@ -369,6 +379,7 @@
 			isa = PBXGroup;
 			children = (
 				BF08FB7025803A6A00C4AC6F /* AddressAllocator.swift */,
+				BFD04BEB2590C730003FDD90 /* Address.swift */,
 			);
 			path = "Address Allocation";
 			sourceTree = "<group>";
@@ -387,6 +398,10 @@
 				BF08FB7425803A6A00C4AC6F /* MachineCodeGenerator.swift */,
 				BF08FB7525803A6A00C4AC6F /* ObjectFileGenerator.swift */,
 				BF08FB7625803A6A00C4AC6F /* IntermediateCodeGenerator.swift */,
+				BFD04BDF2590BED5003FDD90 /* RegisterIndex.swift */,
+				BFD04BE22590C378003FDD90 /* ValueLocation.swift */,
+				BFD04BE52590C3C8003FDD90 /* Register.swift */,
+				BFD04BE82590C6E0003FDD90 /* RegisterSet.swift */,
 			);
 			path = "Code Generation";
 			sourceTree = "<group>";
@@ -408,15 +423,15 @@
 		BF08FB7825803A6A00C4AC6F /* Blocks */ = {
 			isa = PBXGroup;
 			children = (
-				BF08FB7925803A6A00C4AC6F /* Closure.swift */,
-				BF08FB7A25803A6A00C4AC6F /* VirtualSlotReadSlotBlock.swift */,
 				BF08FB7B25803A6A00C4AC6F /* Block.swift */,
-				BF08FB7C25803A6A00C4AC6F /* VirtualSlotWriteBlock.swift */,
-				BF08FB7D25803A6A00C4AC6F /* VirtualSlotReadBlock.swift */,
-				BF08FB7E25803A6A00C4AC6F /* VirtualSlotWriteSlotBlock.swift */,
+				BF08FB7925803A6A00C4AC6F /* Closure.swift */,
 				BF08FB7F25803A6A00C4AC6F /* SlotContainer.swift */,
-				BF08FB8025803A6A00C4AC6F /* VirtualSlotBlock.swift */,
 				BF08FB8125803A6A00C4AC6F /* StatementBlock.swift */,
+				BF08FB8025803A6A00C4AC6F /* VirtualSlotBlock.swift */,
+				BF08FB7D25803A6A00C4AC6F /* VirtualSlotReadBlock.swift */,
+				BF08FB7A25803A6A00C4AC6F /* VirtualSlotReadSlotBlock.swift */,
+				BF08FB7C25803A6A00C4AC6F /* VirtualSlotWriteBlock.swift */,
+				BF08FB7E25803A6A00C4AC6F /* VirtualSlotWriteSlotBlock.swift */,
 			);
 			path = Blocks;
 			sourceTree = "<group>";
@@ -670,6 +685,7 @@
 				BF08FBD125803A6A00C4AC6F /* CompilerPhase.swift in Sources */,
 				BF08FBFA25803A6A00C4AC6F /* AliasStatement.swift in Sources */,
 				BF08FC1325803A6A00C4AC6F /* AccessModifier.swift in Sources */,
+				BFD04BE02590BED5003FDD90 /* RegisterIndex.swift in Sources */,
 				BF08FC2025803A6A00C4AC6F /* ForInductionVariable.swift in Sources */,
 				BF08FC3025803A7D00C4AC6F /* Break.m in Sources */,
 				BF08FBEC25803A6A00C4AC6F /* SymbolTable.swift in Sources */,
@@ -703,16 +719,19 @@
 				BF08FC0F25803A6A00C4AC6F /* RootModule.swift in Sources */,
 				BF08FBE825803A6A00C4AC6F /* StatementBlock.swift in Sources */,
 				BF08FC2425803A6A00C4AC6F /* Symbol.swift in Sources */,
+				BFD04BEC2590C730003FDD90 /* Address.swift in Sources */,
 				BF08FBEE25803A6A00C4AC6F /* RootScope.swift in Sources */,
 				BF08FBF425803A6A00C4AC6F /* ReturnStatement.swift in Sources */,
 				BF08FBD225803A6A00C4AC6F /* TokenStream.swift in Sources */,
 				BF08FBF825803A6A00C4AC6F /* MethodInvocationStatement.swift in Sources */,
 				BF08FC1625803A6A00C4AC6F /* Enumeration.swift in Sources */,
 				BF08FBCC25803A6A00C4AC6F /* Argument.swift in Sources */,
+				BFD04BE92590C6E0003FDD90 /* RegisterSet.swift in Sources */,
 				BF08FBE925803A6A00C4AC6F /* Scope.swift in Sources */,
 				BF08FC1925803A6A00C4AC6F /* LocalVariable.swift in Sources */,
 				BF08FBE625803A6A00C4AC6F /* SlotContainer.swift in Sources */,
 				BF979DBC25832488002AFB7F /* NSColor.swift in Sources */,
+				BFD04BE62590C3C8003FDD90 /* Register.swift in Sources */,
 				BF08FBFC25803A6A00C4AC6F /* RepeatStatement.swift in Sources */,
 				BF08FBD625803A6A00C4AC6F /* Instance.swift in Sources */,
 				BF08FBE525803A6A00C4AC6F /* VirtualSlotWriteSlotBlock.swift in Sources */,
@@ -746,6 +765,7 @@
 				BF08FBD725803A6A00C4AC6F /* SourceFile.swift in Sources */,
 				BF08FC0925803A6A00C4AC6F /* LValue.swift in Sources */,
 				BF08FC3925803AB100C4AC6F /* DisplayView.swift in Sources */,
+				BFD04BE32590C378003FDD90 /* ValueLocation.swift in Sources */,
 				BF08FC1D25803A6A00C4AC6F /* BitSet.swift in Sources */,
 				BF08FB4B25803A2900C4AC6F /* Document.swift in Sources */,
 				BF08FBDB25803A6A00C4AC6F /* AddressAllocator.swift in Sources */,
