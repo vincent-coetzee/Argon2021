@@ -31,4 +31,12 @@ internal class SymbolSet:Equatable
         {
         self.symbols.append(symbol)
         }
+        
+    internal func typeCheck() throws
+        {
+        for symbol in self.symbols
+            {
+            try symbol.typeCheck()
+            }
+        }
     }

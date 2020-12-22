@@ -17,7 +17,19 @@ internal class TypeChecker:CompilerPhase
         return(AddressAllocator())
         }
         
-    internal func process(using:Compiler) throws
+    internal func process(source:String,using compiler:Compiler) throws
         {
+        if let module = compiler.module
+            {
+            try self.typeCheck(module)
+            }
+        }
+        
+    private func typeCheck(_ module:Module) throws
+        {
+        for symbol in module.symbols.values
+            {
+            try symbol.typeCheck()
+            }
         }
     }

@@ -33,16 +33,16 @@ internal class Parser:CompilerPhase
         return(self.accessModifierStack.peek())
         }
         
-    internal func process(using compiler:Compiler) throws
+    internal func process(source:String,using compiler:Compiler) throws
         {
-        for sourceFile in compiler.sourceFiles()
+        self.loadTokens(from:source)
+        self.advance()
+        var module:Module?
+        try self.parseAccessModifier
             {
-            print("PROCESSING \(sourceFile.path)")
-            self.loadTokens(from:sourceFile)
-            self.advance()
-            try self.parse(using: compiler,sourceFile:sourceFile)
+            module = try self.parseModuleDeclaration()
             }
-        
+        compiler.module = module
         }
         
     private func loadTokens(from file:SourceFile)
@@ -408,6 +408,12 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.leftParExpected,self.token.location))
             }
         self.advance()
+        let libraryName = try self.parseIdentifier()
+        if !self.token.isComma
+            {
+            throw(CompilerError(.properFunctionNameExpected,self.token.location))
+            }
+        self.advance()
         let cName = try self.parseIdentifier()
         if !self.token.isRightPar
             {
@@ -416,6 +422,7 @@ internal class Parser:CompilerPhase
         self.advance()
         let name = try self.parseIdentifier()
         let function = Function(shortName: name, owner: nil)
+        function.libraryName = libraryName
         function.cName = cName
         let parameters = try self.parseFormalParameters()
         function.parameters = parameters
@@ -434,6 +441,16 @@ internal class Parser:CompilerPhase
         self.advance()
         let location = self.token.location
         let name = try self.parseIdentifier()
+        var theMethod:Method
+        if let method = Module.innerScope.lookup(shortName:name)?.first as? Method
+            {
+            theMethod = method
+            }
+        else
+            {
+            theMethod = Method(shortName:name)
+            Module.innerScope.addSymbol(theMethod)
+            }
         let parameters = try self.parseFormalParameters()
         var returnType:Type = .void
         if self.token.isRightArrow
@@ -441,13 +458,13 @@ internal class Parser:CompilerPhase
             self.advance()
             returnType = try self.parseType()
             }
-        let block = try self.parseBlock()
-        let method = MethodInstance(shortName:name)
-        method.block = block
-        method.returnType = returnType
-        method.parameters = parameters
-        method.addDeclaration(location: location)
-        Module.innerScope.addSymbol(method)
+        let block = try self.parseBlock(parameters:parameters)
+        let instance = MethodInstance(shortName:name)
+        instance.block = block
+        instance.returnType = returnType
+        instance.parameters = parameters
+        instance.addDeclaration(location: location)
+        theMethod.addInstance(instance)
         }
         
     private func parseEnumerationDeclaration() throws
@@ -955,10 +972,13 @@ internal class Parser:CompilerPhase
                     hasTag = false
                     self.advance()
                     }
-                let tag = try self.parseTag()
-                let type = try self.parseType()
-                let parameter = Parameter(shortName:tag,type:type,hasTag:hasTag)
-                parameters.append(parameter)
+                if !self.token.isRightPar
+                    {
+                    let tag = try self.parseTag()
+                    let type = try self.parseType()
+                    let parameter = Parameter(shortName:tag,type:type,hasTag:hasTag)
+                    parameters.append(parameter)
+                    }
                 }
             while self.token.isComma
             }
@@ -1397,6 +1417,22 @@ internal class Parser:CompilerPhase
         return(block)
         }
         
+    private func parseBlock(parameters:Parameters) throws -> Block
+        {
+        let block = Block()
+        block.push()
+        defer
+            {
+            block.pop()
+            }
+        for parameter in parameters
+            {
+            block.addSymbol(parameter)
+            }
+        try self.parseBlock(block)
+        return(block)
+        }
+        
     @discardableResult
     private func parseBlock(_ block:Block) throws -> Block
         {
@@ -1513,10 +1549,6 @@ internal class Parser:CompilerPhase
             }
         else
             {
-            if self.token.isKeyword && self.token.keyword.rawValue == "write"
-                {
-                print("self halt")
-                }
             if self.token.isDoubleBackSlash && self.tokens[self.tokenIndex].isIdentifier
                 {
                 return(try self.parseInvocationStatement())
@@ -1593,10 +1625,6 @@ internal class Parser:CompilerPhase
         self.advance()
         let location = self.token.location
         let name = try self.parseIdentifier()
-        if name == "answer"
-            {
-            print("halt")
-            }
         let variable = Variable(shortName: name,type:.undefined)
         if self.token.isGluon
             {
@@ -1874,7 +1902,7 @@ internal class Parser:CompilerPhase
             {
             if !self.token.isUsing
                 {
-                throw(CompilerError(.withExpected,self.token.location))
+                throw(CompilerError(.usingExpected,self.token.location))
                 }
             self.advance()
             var inductionVariableName:Identifier = ""
@@ -1911,6 +1939,13 @@ internal class Parser:CompilerPhase
         return(SignalStatement(signal:signal!,location:location))
         }
         
+    //
+    //
+    //for index in (from::Integer(432*19/2.4),to:200,by:3)
+    //  {
+    //
+    //  }
+    //
     private func parseForStatement() throws -> Statement
         {
         self.advance()
@@ -1931,9 +1966,9 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.fromExpected,self.token.location))
             }
         self.advance()
-        if !self.token.isColon
+        if !self.token.isGluon
             {
-            throw(CompilerError(.colonExpected,self.token.location))
+            throw(CompilerError(.gluonExpected,self.token.location))
             }
         self.advance()
         let from = try self.parseExpression()
@@ -1947,9 +1982,9 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.toExpected,self.token.location))
             }
         self.advance()
-        if !self.token.isColon
+        if !self.token.isGluon
             {
-            throw(CompilerError(.colonExpected,self.token.location))
+            throw(CompilerError(.gluonExpected,self.token.location))
             }
         self.advance()
         let to = try self.parseExpression()
@@ -1963,9 +1998,9 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.byExpected,self.token.location))
             }
         self.advance()
-        if !self.token.isColon
+        if !self.token.isGluon
             {
-            throw(CompilerError(.colonExpected,self.token.location))
+            throw(CompilerError(.gluonExpected,self.token.location))
             }
         self.advance()
         let by = try self.parseExpression()
@@ -2270,10 +2305,7 @@ internal class Parser:CompilerPhase
             if self.token.isLeftPar
                 {
                 var arguments = Arguments()
-                try self.parseParentheses
-                    {
-                    arguments = try self.parseArguments()
-                    }
+                arguments = try self.parseArguments()
                 return(.typeMakerInvocation(type,arguments))
                 }
             return(.literalType(type))
@@ -2360,10 +2392,6 @@ internal class Parser:CompilerPhase
         else if self.token.isIdentifier || self.token.isKeyword
             {
             let identifier = self.token.isKeyword ? self.token.keyword.rawValue : self.token.identifier
-            if identifier == "callableCode" || identifier == "write"
-                {
-                print("halt")
-                }
             self.advance()
             var object:Symbol?
             if self.token.isBackSlash

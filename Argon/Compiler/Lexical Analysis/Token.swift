@@ -1836,7 +1836,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         switch(self)
             {
             case .symbol(let value,_):
-                return(value == .add || value == .sub || value == .modulus)
+                return(value == .add || value == .sub)
             default:
                 return(false)
             }
@@ -1847,7 +1847,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         switch(self)
             {
             case .symbol(let value,_):
-                return(value == .add || value == .sub || value == .modulus)
+                return(value == .mul || value == .div || value == .modulus)
             default:
                 return(false)
             }

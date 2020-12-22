@@ -17,7 +17,7 @@ internal class MachineCodeGenerator:CompilerPhase
         return(ObjectFileGenerator())
         }
         
-    internal func process(using:Compiler) throws
+    internal func process(source:String,using:Compiler) throws
         {
         }
     }

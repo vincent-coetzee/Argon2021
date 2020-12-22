@@ -19,7 +19,6 @@ public indirect enum Type:Equatable
         case none
         }
         
-    case type(baseType:Type,name:String)
     case all
     case array(indexType:ArrayIndexType,elementType:Type)
     case binaryOperation(Type,Token.Symbol,Type)
@@ -30,12 +29,10 @@ public indirect enum Type:Equatable
     case `class`(Class)
     case constant(Type)
     case closure(Closure)
-    case composite(baseTypes:[Type])
     case date
     case dateTime
     case dictionary(keyType:Type,valueType:Type)
     case enumeration(Enumeration)
-    case expression(Expression)
     case float
     case float64
     case float32
@@ -51,7 +48,7 @@ public indirect enum Type:Equatable
     case list(elementType:Type)
     case literalArray(Type)
     case metaclass(Class)
-    case method(Method)
+    case method([Type],Type)
     case methodInvocation(String,[Type],Type)
     case module(Module)
     case pointer(elementType:Type)
@@ -80,8 +77,6 @@ public indirect enum Type:Equatable
         {
         switch(self)
             {
-            case .type(let base,_):
-                return(base.typeCanBeReduced)
             case .boolean:
                 return(true)
             case .byte:
@@ -151,6 +146,100 @@ public indirect enum Type:Equatable
             {
             case .array:
                 return(true)
+            default:
+                return(false)
+            }
+        }
+        
+    public func isSubtype(of type:Type) -> Bool
+        {
+        if self == type
+            {
+            return(true)
+            }
+        switch(type)
+            {
+            case .integer:
+                return(self == .integer64)
+            case .integer64:
+                return(self == .integer)
+            case .float:
+                return(self == .float64)
+            case .float64:
+                return(self == .float)
+            case .uinteger:
+                return(self == .uinteger64)
+            case .uinteger64:
+                return(self == .uinteger)
+            case .array(let index,let elementType):
+                if case let Type.array(thatIndex,thatElement) = self
+                    {
+                    return(thatIndex == index && thatElement.isSubtype(of:elementType))
+                    }
+                return(false)
+            case .list(let element):
+                if case let Type.list(thatElement) = self
+                    {
+                    return(element == thatElement)
+                    }
+                return(false)
+            case .set(let element):
+                if case let Type.set(thatElement) = self
+                    {
+                    return(element == thatElement)
+                    }
+                return(false)
+            case .dictionary(let keyElement,let valueElement):
+                if case let Type.dictionary(key,value) = self
+                    {
+                    return(keyElement.isSubtype(of:key) && valueElement.isSubtype(of:value))
+                    }
+                return(false)
+            case .class(let aClass):
+                if case let Type.class(thisClass) = self
+                    {
+                    return(aClass.isSubclass(of:thisClass))
+                    }
+                return(false)
+            case .metaclass(let aClass):
+                if case let Type.metaclass(thisClass) = self
+                    {
+                    return(aClass.isSubclass(of:thisClass))
+                    }
+                return(false)
+            case .all:
+                return(true)
+            case .closure(let closure):
+                if case let Type.closure(thatClosure) = self
+                    {
+                    return(closure.type == thatClosure.type)
+                    }
+                return(false)
+            case .pointer(let aClass):
+                if case let Type.pointer(thisClass) = self
+                    {
+                    return(aClass.isSubtype(of:thisClass))
+                    }
+                return(false)
+            case .tuple(let types):
+                if case let Type.tuple(theseTypes) = self
+                    {
+                    if types.count != theseTypes.count
+                        {
+                        return(false)
+                        }
+                    for index in 0...types.count
+                        {
+                        let type1 = types[index]
+                        let type2 = theseTypes[index]
+                        if !type1.isSubtype(of:type2)
+                            {
+                            return(false)
+                            }
+                        }
+                    return(true)
+                    }
+                return(false)
             default:
                 return(false)
             }

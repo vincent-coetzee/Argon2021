@@ -112,4 +112,9 @@ public class Symbol:ParseNode,Equatable,Hashable
         {
         self.parent = node as? Symbol
         }
+        
+    internal func typeCheck() throws
+        {
+        throw(CompilerError(.notImplemented("Symbol>>typeCheck()"),SourceLocation.zero))
+        }
     }

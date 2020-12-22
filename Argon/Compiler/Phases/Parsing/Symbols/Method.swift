@@ -11,6 +11,16 @@ public class Method:Symbol
     {
     private var instances:[MethodInstance] = []
     
+    public var parameterTypes:[Type]
+        {
+        fatalError("This should have been defined in the method instance")
+        }
+        
+    public var returnType:Type
+        {
+        fatalError("This should have been defined in the method instance")
+        }
+        
     public init(shortName:String)
         {
         super.init(shortName:shortName)
@@ -25,5 +35,13 @@ public class Method:Symbol
         {
         self.instances.append(instance)
         instance.symbolAdded(to: self)
+        }
+        
+    public override func typeCheck() throws
+        {
+        for instance in self.instances
+            {
+            try instance.typeCheck()
+            }
         }
 }

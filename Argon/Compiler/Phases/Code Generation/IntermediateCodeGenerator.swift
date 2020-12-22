@@ -17,7 +17,7 @@ internal class IntermediateCodeGenerator:CompilerPhase
         return(CodeOptimiser())
         }
         
-    internal func process(using:Compiler) throws
+    internal func process(source:String,using:Compiler) throws
         {
         }
     }

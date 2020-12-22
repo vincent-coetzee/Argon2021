@@ -89,6 +89,14 @@ public class Module:SymbolContainer
         {
         self.exitFunction = function
         }
+        
+    internal override func typeCheck() throws
+        {
+        for symbolSet in self.symbols.values
+            {
+            try symbolSet.typeCheck()
+            }
+        }
     }
 
 

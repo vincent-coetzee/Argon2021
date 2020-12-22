@@ -126,6 +126,12 @@
 		BFD04BE62590C3C8003FDD90 /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BE52590C3C8003FDD90 /* Register.swift */; };
 		BFD04BE92590C6E0003FDD90 /* RegisterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BE82590C6E0003FDD90 /* RegisterSet.swift */; };
 		BFD04BEC2590C730003FDD90 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BEB2590C730003FDD90 /* Address.swift */; };
+		BFD04BF625915714003FDD90 /* ThreeAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BF525915714003FDD90 /* ThreeAddress.swift */; };
+		BFD04BFB25915775003FDD90 /* ThreeAddressName.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BFA25915775003FDD90 /* ThreeAddressName.swift */; };
+		BFD04BFE259157A6003FDD90 /* ThreeAddressConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BFD259157A6003FDD90 /* ThreeAddressConstant.swift */; };
+		BFD04C01259157CB003FDD90 /* ThreeAddressTemporary.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04C00259157CB003FDD90 /* ThreeAddressTemporary.swift */; };
+		BFD04C0425915810003FDD90 /* ThreeAddressInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04C0325915810003FDD90 /* ThreeAddressInstruction.swift */; };
+		BFD04C07259159D7003FDD90 /* ThreeAddressOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04C06259159D7003FDD90 /* ThreeAddressOperation.swift */; };
 		BFD58CE1258E3B2000B2ADDD /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD58CE0258E3B2000B2ADDD /* Constant.swift */; };
 		BFD58CE8258F07DF00B2ADDD /* Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD58CE7258F07DF00B2ADDD /* Identifier.swift */; };
 		BFD58CEC258F355800B2ADDD /* Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD58CEB258F355800B2ADDD /* Method.swift */; };
@@ -258,6 +264,12 @@
 		BFD04BE52590C3C8003FDD90 /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 		BFD04BE82590C6E0003FDD90 /* RegisterSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSet.swift; sourceTree = "<group>"; };
 		BFD04BEB2590C730003FDD90 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
+		BFD04BF525915714003FDD90 /* ThreeAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAddress.swift; sourceTree = "<group>"; };
+		BFD04BFA25915775003FDD90 /* ThreeAddressName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAddressName.swift; sourceTree = "<group>"; };
+		BFD04BFD259157A6003FDD90 /* ThreeAddressConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAddressConstant.swift; sourceTree = "<group>"; };
+		BFD04C00259157CB003FDD90 /* ThreeAddressTemporary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAddressTemporary.swift; sourceTree = "<group>"; };
+		BFD04C0325915810003FDD90 /* ThreeAddressInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAddressInstruction.swift; sourceTree = "<group>"; };
+		BFD04C06259159D7003FDD90 /* ThreeAddressOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAddressOperation.swift; sourceTree = "<group>"; };
 		BFD58CE0258E3B2000B2ADDD /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		BFD58CE7258F07DF00B2ADDD /* Identifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifier.swift; sourceTree = "<group>"; };
 		BFD58CEB258F355800B2ADDD /* Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Method.swift; sourceTree = "<group>"; };
@@ -395,6 +407,7 @@
 		BF08FB7325803A6A00C4AC6F /* Code Generation */ = {
 			isa = PBXGroup;
 			children = (
+				BFD04BF925915732003FDD90 /* Three Address Code */,
 				BF08FB7425803A6A00C4AC6F /* MachineCodeGenerator.swift */,
 				BF08FB7525803A6A00C4AC6F /* ObjectFileGenerator.swift */,
 				BF08FB7625803A6A00C4AC6F /* IntermediateCodeGenerator.swift */,
@@ -509,16 +522,17 @@
 				BF08FBBE25803A6A00C4AC6F /* ForInductionVariable.swift */,
 				BF08FBBF25803A6A00C4AC6F /* Function.swift */,
 				BF08FBBA25803A6A00C4AC6F /* GenericType.swift */,
+				BFEE2F66258B7820006C47F6 /* Import.swift */,
 				BF08FBB325803A6A00C4AC6F /* InductionVariable.swift */,
 				BF08FB6825803A6A00C4AC6F /* Instance.swift */,
 				BF08FBB725803A6A00C4AC6F /* LocalVariable.swift */,
 				BFD58CEB258F355800B2ADDD /* Method.swift */,
 				BF08FBB625803A6A00C4AC6F /* MethodInstance.swift */,
 				BF08FBBC25803A6A00C4AC6F /* Module.swift */,
-				BFEE2F66258B7820006C47F6 /* Import.swift */,
 				BF08FBB525803A6A00C4AC6F /* Nil.swift */,
 				BF08FBAB25803A6A00C4AC6F /* Parameter.swift */,
 				BF979DC8258347D8002AFB7F /* ParameterName.swift */,
+				BFD58CF0258F98E000B2ADDD /* Pointer.swift */,
 				BF08FBAD25803A6A00C4AC6F /* RootModule.swift */,
 				BF08FBAE25803A6A00C4AC6F /* Slot.swift */,
 				BF08FBC325803A6A00C4AC6F /* SlotAttributes.swift */,
@@ -529,7 +543,6 @@
 				BF08FBC125803A6A00C4AC6F /* ValueClass.swift */,
 				BF08FBBD25803A6A00C4AC6F /* Variable.swift */,
 				BF08FBB925803A6A00C4AC6F /* VirtualSlot.swift */,
-				BFD58CF0258F98E000B2ADDD /* Pointer.swift */,
 			);
 			path = Symbols;
 			sourceTree = "<group>";
@@ -595,6 +608,19 @@
 			);
 			name = Medicine;
 			path = "../Argon Projects/Medicine";
+			sourceTree = "<group>";
+		};
+		BFD04BF925915732003FDD90 /* Three Address Code */ = {
+			isa = PBXGroup;
+			children = (
+				BFD04BF525915714003FDD90 /* ThreeAddress.swift */,
+				BFD04BFA25915775003FDD90 /* ThreeAddressName.swift */,
+				BFD04BFD259157A6003FDD90 /* ThreeAddressConstant.swift */,
+				BFD04C00259157CB003FDD90 /* ThreeAddressTemporary.swift */,
+				BFD04C0325915810003FDD90 /* ThreeAddressInstruction.swift */,
+				BFD04C06259159D7003FDD90 /* ThreeAddressOperation.swift */,
+			);
+			path = "Three Address Code";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -689,6 +715,7 @@
 				BF08FC2025803A6A00C4AC6F /* ForInductionVariable.swift in Sources */,
 				BF08FC3025803A7D00C4AC6F /* Break.m in Sources */,
 				BF08FBEC25803A6A00C4AC6F /* SymbolTable.swift in Sources */,
+				BFD04BF625915714003FDD90 /* ThreeAddress.swift in Sources */,
 				BF08FBCB25803A6A00C4AC6F /* Stack.swift in Sources */,
 				BF08FC2125803A6A00C4AC6F /* Function.swift in Sources */,
 				BF08FBDD25803A6A00C4AC6F /* MachineCodeGenerator.swift in Sources */,
@@ -713,12 +740,15 @@
 				BFD58CE8258F07DF00B2ADDD /* Identifier.swift in Sources */,
 				BF08FC1E25803A6A00C4AC6F /* Module.swift in Sources */,
 				BF08FB4725803A2900C4AC6F /* AppDelegate.swift in Sources */,
+				BFD04BFB25915775003FDD90 /* ThreeAddressName.swift in Sources */,
 				BF08FBCE25803A6A00C4AC6F /* SourceReference.swift in Sources */,
 				BF08FBD025803A6A00C4AC6F /* CompilerError.swift in Sources */,
 				BFD58CE1258E3B2000B2ADDD /* Constant.swift in Sources */,
 				BF08FC0F25803A6A00C4AC6F /* RootModule.swift in Sources */,
+				BFD04C01259157CB003FDD90 /* ThreeAddressTemporary.swift in Sources */,
 				BF08FBE825803A6A00C4AC6F /* StatementBlock.swift in Sources */,
 				BF08FC2425803A6A00C4AC6F /* Symbol.swift in Sources */,
+				BFD04C0425915810003FDD90 /* ThreeAddressInstruction.swift in Sources */,
 				BFD04BEC2590C730003FDD90 /* Address.swift in Sources */,
 				BF08FBEE25803A6A00C4AC6F /* RootScope.swift in Sources */,
 				BF08FBF425803A6A00C4AC6F /* ReturnStatement.swift in Sources */,
@@ -757,6 +787,7 @@
 				BF08FC3825803AB100C4AC6F /* SourceProvider.swift in Sources */,
 				BF08FBFD25803A6A00C4AC6F /* ElseClause.swift in Sources */,
 				BF08FBFB25803A6A00C4AC6F /* HandlerStatement.swift in Sources */,
+				BFD04BFE259157A6003FDD90 /* ThreeAddressConstant.swift in Sources */,
 				BF08FC0725803A6A00C4AC6F /* ParseNode.swift in Sources */,
 				BF08FC0125803A6A00C4AC6F /* ForkStatement.swift in Sources */,
 				BF08FBFE25803A6A00C4AC6F /* ElseIfClause.swift in Sources */,
@@ -780,6 +811,7 @@
 				BF08FBEA25803A6A00C4AC6F /* LocalScope.swift in Sources */,
 				BF08FC0D25803A6A00C4AC6F /* Parameter.swift in Sources */,
 				BF08FC1825803A6A00C4AC6F /* MethodInstance.swift in Sources */,
+				BFD04C07259159D7003FDD90 /* ThreeAddressOperation.swift in Sources */,
 				BF08FC1725803A6A00C4AC6F /* Nil.swift in Sources */,
 				BF08FC0625803A6A00C4AC6F /* WhileStatement.swift in Sources */,
 				BF08FBF925803A6A00C4AC6F /* OtherwiseClause.swift in Sources */,

@@ -170,6 +170,22 @@ public class Class:Symbol
         self.slots[slot.shortName] = slot
         slot.symbolAdded(to: self)
         }
+    
+    func isSubclass(of superclass:Class) -> Bool
+        {
+        for parent in self._parentClasses
+            {
+            if superclass == parent
+                {
+                return(true)
+                }
+            if parent.isSubclass(of:superclass)
+                {
+                return(true)
+                }
+            }
+        return(false)
+        }
         
     func appendConstant(_ constant:Constant)
         {

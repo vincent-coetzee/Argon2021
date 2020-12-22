@@ -87,7 +87,7 @@ public enum SystemError:Equatable
     case methodNameExpected
     case multiMethodNeedsDefinitionBeforeInstance(String)
     case hashStringExpected
-    case withExpected
+    case usingExpected
     case signalParameterNameExpected
     case inductionVariableNameExpected
     case inExpected
@@ -110,7 +110,7 @@ public enum SystemError:Equatable
     case moduleExpected
     case moduleElementDeclarationExpected
     case keywordExpected
-    case notImplemented
+    case notImplemented(String)
     case doubleLeftBraceExpected
     case fromExpected
     case toExpected
@@ -130,4 +130,5 @@ public enum SystemError:Equatable
     case valueElementExpected
     case nameCanNotBeFound(Name)
     case rightArrowExpected
+    case properFunctionNameExpected
     }

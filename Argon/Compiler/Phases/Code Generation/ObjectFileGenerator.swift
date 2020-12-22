@@ -17,7 +17,7 @@ internal class ObjectFileGenerator:CompilerPhase
         return(nil as CompilerPhase?)
         }
         
-    internal func process(using:Compiler) throws
+    internal func process(source:String,using:Compiler) throws
         {
         }
     }

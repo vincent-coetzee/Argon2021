@@ -10,7 +10,8 @@ import Foundation
 
 public class Function:MethodInstance
     {
-    var cName:String? = nil
+    public var cName:String? = nil
+    public var libraryName:String = ""
     }
 
 public class ModuleFunction:Function

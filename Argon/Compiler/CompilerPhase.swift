@@ -12,5 +12,5 @@ internal protocol CompilerPhase
     {
     var nextPhase:CompilerPhase? { get }
     var name:String { get }
-    func process(using: Compiler) throws
+    func process(source:String,using: Compiler) throws
     }

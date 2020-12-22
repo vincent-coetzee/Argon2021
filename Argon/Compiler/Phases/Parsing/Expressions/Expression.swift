@@ -26,7 +26,6 @@ public indirect enum Expression:Equatable
     case enumeration(Enumeration)
     case enumerationCase(Enumeration,EnumerationCase)
     case error(String)
-    case expression(Expression)
     case float(Argon.Float)
     case functionInvocation(Function,Arguments)
     case function(Function)
@@ -136,15 +135,13 @@ public indirect enum Expression:Equatable
             case .function(let f):
                 return(Type.function(f))
             case .method(let m):
-                return(Type.method(m))
+                return(Type.method(m.parameterTypes,m.returnType))
             case .module(let m):
                 return(Type.module(m))
-            case .expression(let term):
-                return(Type.expression(term))
             case .typeMakerInvocation(let type,let arguments):
-                return(Type.composite(baseTypes: [type] + arguments.map{$0.type}))
+                return(Type.method(arguments.map{$0.type},type))
             case .makerInvocation(let name,let arguments):
-                return(Type.composite(baseTypes: arguments.map{$0.type}))
+                return(Type.method(arguments.map{$0.type},.void))
             case .additionOperation(let lhs,let o,let rhs):
                 return(Type.binaryOperation(lhs.type,o,rhs.type))
             case .shiftOperation(let lhs,let o,let rhs):

@@ -17,7 +17,7 @@ internal class CodeOptimiser:CompilerPhase
         return(PeepholeCodeOptimiser())
         }
         
-    internal func process(using:Compiler) throws
+    internal func process(source:String,using:Compiler) throws
         {
         }
     }

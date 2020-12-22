@@ -75,6 +75,11 @@ public class MethodInstance:Symbol
         {
         return(self.block.lookup(shortName:shortName))
         }
+        
+    internal override func typeCheck() throws
+        {
+        
+        }
     }
 
 public class HollowMethod:MethodInstance
