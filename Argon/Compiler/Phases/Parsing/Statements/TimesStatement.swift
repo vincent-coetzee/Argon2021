@@ -20,11 +20,4 @@ internal class TimesStatement:ControlFlowStatement
         super.init()
         self.location = location
         }
-    
-    required init()
-        {
-        self.expression = Expression.none
-        self.block = Block()
-        super.init()
-        }
     }

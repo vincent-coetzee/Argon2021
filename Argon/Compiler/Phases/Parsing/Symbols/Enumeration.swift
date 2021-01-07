@@ -11,33 +11,32 @@ import Foundation
 public class Enumeration:SymbolContainer
     {
     private var cases:[EnumerationCase] = []
-    private var _type:Type
+    private var _class:Class
     
+    internal var baseClass:Class
+        {
+        return(_class)
+        }
+        
     internal override var isModuleLevelSymbol:Bool
         {
         return(true)
         }
 
-    internal override var type:Type
+    internal override var typeClass:Class
         {
-        return(self._type)
+        return(self._class)
         }
         
-    internal init(name:String,type:Type)
+    internal init(shortName:String,class:Class)
         {
-        self._type = type
-        super.init(shortName: name)
-        }
-        
-    internal required init(_ parser:Parser)
-        {
-        self._type = RootModule.rootModule.nilInstance.type
-        super.init()
+        self._class = `class`
+        super.init(shortName: shortName)
         }
     
     required init()
         {
-        self._type = .void
+        self._class = .voidClass
         super.init()
         }
     
@@ -96,10 +95,10 @@ public class Enumeration:SymbolContainer
 public class EnumerationCase:Symbol
     {
     let symbol:Argon.Symbol
-    let associatedTypes:Types
+    let associatedTypes:Classes
     let value:Expression?
     
-    init(shortName:String,symbol:Argon.Symbol,associatedTypes:Types,value:Expression?)
+    init(shortName:String,symbol:Argon.Symbol,associatedTypes:Classes,value:Expression?)
         {
         self.symbol = symbol
         self.associatedTypes = associatedTypes

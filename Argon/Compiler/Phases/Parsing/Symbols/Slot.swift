@@ -12,36 +12,31 @@ public class Slot:Variable
     {
     public var container:Symbol?
     internal let attributes:SlotAttributes
-    internal var virtualReadBlock = VirtualSlotBlock()
-    internal var virtualWriteBlock = VirtualSlotBlock()
-        
-    internal init(name:Name,type:Type,container:Symbol? = nil,attributes:SlotAttributes)
+    internal var virtualReadBlock:VirtualSlotBlock?
+    internal var virtualWriteBlock:VirtualSlotBlock?
+    
+    internal init(name:Name,class:Class,container:Symbol? = nil,attributes:SlotAttributes)
         {
         self.container = container
         self.attributes = attributes
-        super.init(shortName: name.first,type: type)
-        self._type = type
+        super.init(shortName: name.first,class: `class`)
+        self._class = `class`
         }
         
-    internal init(shortName:Identifier,type:Type,container:Symbol? = nil,attributes:SlotAttributes)
+    internal init(shortName:Identifier,class:Class,container:Symbol? = nil,attributes:SlotAttributes)
         {
         self.container = container
         self.attributes = attributes
-        super.init(shortName: shortName,type: type)
-        self._type = type
+        super.init(shortName: shortName,class: .voidClass)
+        self._class = `class`
         }
         
     internal required init()
         {
         self.container = nil
         self.attributes = []
-        super.init(shortName: "Nil",type: Argon.rootModule.nilInstance.type)
-        self._type = Argon.rootModule.nilInstance.type
-        }
-    
-    internal required init(_ parser: Parser)
-        {
-        fatalError("init(_:) has not been implemented")
+        super.init(shortName: "Nil",class: Argon.rootModule.nilClass)
+        self._class = Argon.rootModule.nilClass
         }
         
     internal func slotType(_ slotNames:[String]) -> Type
@@ -51,6 +46,11 @@ public class Slot:Variable
             return(self.type)
             }
         return(self.type.slotType(slotNames))
+        }
+        
+    internal func fieldHash(n:Int) -> Int
+        {
+        return(self.shortName.hashValue % n)
         }
     }
 

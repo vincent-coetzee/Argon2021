@@ -16,9 +16,9 @@ internal class AliasStatement:Statement
         {
         self.alias = alias
         }
-    
-    required init()
+        
+    public override func typeCheck() throws
         {
-        fatalError("init() has not been implemented")
+        throw(CompilerError(.notImplemented("AliasStatement>>typeCheck"),.zero))
         }
     }

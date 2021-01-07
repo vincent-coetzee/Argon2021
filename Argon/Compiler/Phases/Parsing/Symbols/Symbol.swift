@@ -46,6 +46,11 @@ public class Symbol:ParseNode,Equatable,Hashable
         fatalError("This should have been overridden in a subclass")
         }
         
+    internal var typeClass:Class
+        {
+        fatalError("This should have been overridden in a subclass")
+        }
+        
     internal var name:Name
         {
         let aName = self.parent?.name
@@ -73,12 +78,6 @@ public class Symbol:ParseNode,Equatable,Hashable
         {
         self.shortName = name.first
         self.parent = parent
-        super.init()
-        }
-        
-    internal required init()
-        {
-        self.shortName = ""
         super.init()
         }
     
@@ -115,6 +114,14 @@ public class Symbol:ParseNode,Equatable,Hashable
         
     internal func typeCheck() throws
         {
-        throw(CompilerError(.notImplemented("Symbol>>typeCheck()"),SourceLocation.zero))
+        }
+        
+    internal func generateIntermediateCode(in:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+        {
+        
+        }
+    internal func  sourceFileElements() -> [SourceFileElement]
+        {
+        fatalError("This should be overridden")
         }
     }

@@ -17,7 +17,27 @@ internal class AddressAllocator:CompilerPhase
         return(IntermediateCodeGenerator())
         }
         
-    internal func process(source:String,using:Compiler) throws
+    internal func process(source:String,using compiler:Compiler) throws
         {
+        for module in compiler.modules
+            {
+            try self.allocateAddresses(in:module,using:compiler)
+            }
+        }
+        
+    internal func preProcess(source:String,using compiler:Compiler) throws
+        {
+        }
+        
+    internal func postProcess(modules:Array<Module>,using compiler:Compiler) throws
+        {
+        }
+        
+    private func allocateAddresses(in module:Module,using compiler:Compiler) throws
+        {
+        for symbol in module.symbols.values
+            {
+            try symbol.allocateAddresses(using:compiler)
+            }
         }
     }

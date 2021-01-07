@@ -73,6 +73,53 @@ public indirect enum Type:Equatable
     case undefined
     case void
 
+    public var typeClass:Class
+        {
+        switch(self)
+            {
+            case .boolean:
+                return(Class.booleanClass)
+            case .byte:
+                return(Class.byteClass)
+            case .character:
+                return(Class.characterClass)
+            case .date:
+                return(Class.dateClass)
+            case .time:
+                return(Class.timeClass)
+            case .integer:
+                return(Class.integerClass)
+            case .integer64:
+                return(Class.integer64Class)
+            case .integer32:
+                return(Class.integer32Class)
+            case .integer16:
+                return(Class.integer16Class)
+            case .integer8:
+                return(Class.integer8Class)
+            case .uinteger:
+                return(Class.uIntegerClass)
+            case .uinteger64:
+                return(Class.uInteger64Class)
+            case .uinteger32:
+                return(Class.uInteger32Class)
+            case .uinteger16:
+                return(Class.uInteger16Class)
+            case .uinteger8:
+                return(Class.uInteger8Class)
+            case .enumeration:
+                return(Class.enumerationClass)
+            case .dateTime:
+                return(Class.dateTimeClass)
+            case .constant:
+                return(Class.integerClass)
+            default:
+                return(Class(shortName:"Class"))
+            }
+        }
+        
+        
+        
     public var typeCanBeReduced:Bool
         {
         switch(self)

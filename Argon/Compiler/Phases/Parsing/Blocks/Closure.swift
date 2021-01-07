@@ -10,24 +10,45 @@ import Foundation
 
 public class Closure:Symbol
     {
-    internal var returnType:Type = .void
+    internal var returnTypeClass:Class = .voidClass
     internal var parameters = Parameters()
     internal var block = Block()
     internal var symbols:[String:SymbolSet] = [:]
+    internal var marker:Int?
+    internal var ir3ABuffer = ThreeAddressInstructionBuffer()
     
+    internal override init(shortName:String = "",parent:Symbol? = nil)
+        {
+        self.marker = Argon.nextIndex()
+        super.init(shortName:shortName,parent:parent)
+        }
+    
+    internal override init(name:Name = Name(),parent:Symbol? = nil)
+        {
+        self.marker = Argon.nextIndex()
+        super.init(name:name,parent:parent)
+        }
+        
     internal override func lookup(shortName:String) -> SymbolSet?
         {
         return(self.block.lookup(shortName:shortName))
         }
 
-        
     internal override func addSymbol(_ symbol:Symbol)
         {
         self.block.addSymbol(symbol)
         }
         
-    internal override func addStatement(_ statement:Statement)
+    internal override func addStatement(_ statement:Statement?)
         {
-        self.block.addStatement(statement)
+        if let line = statement
+            {
+            self.block.addStatement(line)
+            }
+        }
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+        {
+        try self.block.generateIntermediateCode(in:module,codeHolder:CodeHolder.closure(self),into:self.ir3ABuffer,using:using)
         }
     }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal class Block:Statement,SlotContainer
+public class Block:Statement,SlotContainer
     {
     static func ==(lhs:Block,rhs:Block) -> Bool
         {
@@ -17,22 +17,25 @@ internal class Block:Statement,SlotContainer
         
     internal var statements:[Statement] = []
     internal var symbols:[String:SymbolSet] = [:]
-    
+    internal var marker:Int?
+
     init(parentScope:Scope)
         {
+        self.marker = Argon.nextIndex()
         super.init()
         self.parentScope = parentScope
         }
     
-    required init()
-        {
-        super.init()
-        }
-    
     init(inductionVariable:InductionVariable)
         {
+        self.marker = Argon.nextIndex()
         super.init()
         self.addSymbol(inductionVariable)
+        }
+        
+    override init()
+        {
+        super.init()
         }
         
     internal var lastStatement:Statement
@@ -57,9 +60,12 @@ internal class Block:Statement,SlotContainer
             }
         }
         
-    internal override func addStatement(_ statement:Statement)
+    internal override func addStatement(_ statement:Statement?)
         {
-        self.statements.append(statement)
+        if let aLine = statement
+            {
+            self.statements.append(aLine)
+            }
         }
 
     internal func setStatements(_ statements:[Statement])
@@ -74,5 +80,21 @@ internal class Block:Statement,SlotContainer
             return(set)
             }
         return(self.parentScope?.lookup(shortName:shortName))
+        }
+        
+    public override func typeCheck() throws
+        {
+        for statement in self.statements
+            {
+            try statement.typeCheck()
+            }
+        }
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+        {
+        for statement in self.statements
+            {
+            try statement.generateIntermediateCode(in: module,codeHolder:CodeHolder.block(self), into: buffer, using: using)
+            }
         }
     }

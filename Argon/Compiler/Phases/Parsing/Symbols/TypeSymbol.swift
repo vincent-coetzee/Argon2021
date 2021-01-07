@@ -10,28 +10,28 @@ import Foundation
 
 internal class TypeSymbol:Symbol
     {
-    override internal var type:Type
+    override internal var typeClass:Class
         {
         return(self.baseType)
         }
         
-    internal var baseType:Type
+    internal var baseType:Class
     
-    internal init(shortName:String,baseType:Type)
+    internal init(shortName:String,class:Class)
         {
-        self.baseType = baseType
+        self.baseType = `class`
         super.init(shortName: shortName)
         }
     
-    internal init(name:Name,baseType:Type)
+    internal init(name:Name,class:Class)
         {
-        self.baseType = baseType
+        self.baseType = `class`
         super.init(shortName: name.first)
         }
         
     internal required init()
         {
-        self.baseType = .class(Module.rootModule.nilClass)
+        self.baseType = Class.voidClass
         super.init(shortName:"")
         }
         

@@ -9,4 +9,5 @@ import Foundation
 
 public protocol ThreeAddress
     {
+    var displayString:String { get }
     }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal typealias ParameterTuple = (String?,Type)
+internal typealias ParameterTuple = (String?,Class)
 
 public class Parameter:Variable
     {
@@ -31,28 +31,28 @@ public class Parameter:Variable
         self.hasTag = tuple.0 != nil
         self.tag = tuple.0 ?? ""
         self.showTag = tuple.0 != nil
-        super.init(shortName:tuple.0 ?? "",type:tuple.1)
+        super.init(shortName:tuple.0 ?? "",class:tuple.1)
         }
         
     internal init(_ argument:Argument)
         {
         self.hasTag = argument.tag != nil
         self.showTag = true
-        super.init(shortName: argument.tag ?? "",type: argument.type)
+        super.init(shortName: argument.tag ?? "",class: argument.typeClass)
         }
         
-    internal init(shortName:String,type:Type,hasTag:Bool = true)
+    internal init(shortName:String,type:Class,hasTag:Bool = true)
         {
         self.hasTag = hasTag
         self.showTag = true
-        super.init(shortName: shortName,type: type)
+        super.init(shortName: shortName,class: type)
         }
     
     internal required init()
         {
         self.showTag = true
         self.hasTag = false
-        super.init(shortName: "",type: Type.class(RootModule.rootModule.nilClass))
+        super.init(shortName: "",class: .voidClass)
         }
     }
 

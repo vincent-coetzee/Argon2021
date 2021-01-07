@@ -17,10 +17,4 @@ internal class ElseIfClause:ElseClause
         self.condition = condition
         super.init(block:block)
         }
-    
-    required init()
-        {
-        self.condition = Expression.none
-        super.init()
-        }
     }

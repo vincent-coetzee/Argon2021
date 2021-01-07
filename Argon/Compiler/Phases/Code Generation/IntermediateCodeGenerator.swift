@@ -17,7 +17,28 @@ internal class IntermediateCodeGenerator:CompilerPhase
         return(CodeOptimiser())
         }
         
-    internal func process(source:String,using:Compiler) throws
+    internal func process(source:String,using compiler:Compiler) throws
+        {
+        for module in compiler.modules
+            {
+            try self.intermediateCodeGenerate(in:module,codeHolder:.none,into: ThreeAddressInstructionBuffer(),using:compiler)
+            }
+        }
+        
+    internal func preProcess(source:String,using compiler:Compiler) throws
         {
         }
+        
+    internal func postProcess(modules:Array<Module>,using compiler:Compiler) throws
+        {
+        }
+        
+    private func intermediateCodeGenerate(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using compiler:Compiler) throws
+        {
+        for symbol in module.symbols.values
+            {
+            try symbol.generateIntermediateCode(in:module,codeHolder:codeHolder,into:buffer,using:compiler)
+            }
+        }
     }
+

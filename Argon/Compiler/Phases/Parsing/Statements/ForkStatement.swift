@@ -18,10 +18,4 @@ internal class ForkStatement:ControlFlowStatement
         super.init()
         self.location = location
         }
-    
-    required init()
-        {
-        self.expression = Expression.none
-        super.init()
-        }
     }

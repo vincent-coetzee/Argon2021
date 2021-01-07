@@ -26,14 +26,24 @@ internal class ForInStatement:ControlFlowStatement
         super.init()
         self.location = location
         }
-    
-    required init()
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
-        self.block = Block()
-        self.inductionVariable = InductionVariable(shortName:"Error",type:.void)
-        self.from = Expression.none
-        self.to = Expression.none
-        self.by = Expression.none
-        super.init()
+        try self.by.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
+        let byTemp = buffer.lastResult
+        try self.from.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
+        let fromTemp = buffer.lastResult
+        buffer.emitInstruction(result:inductionVariable,left:fromTemp,opcode:.copy)
+        let endLabel = InstructionLabel.newLabel()
+        try self.to.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
+        let toTemp = buffer.lastResult
+        let temp = ThreeAddressTemporary.newTemporary()
+        let startLabel = InstructionLabel.newLabel()
+        buffer.emitInstruction(label:startLabel,result:temp,left:inductionVariable,opcode:.greater,right:toTemp)
+        buffer.emitInstruction(left:temp,opcode:.branchIfTrue,right:endLabel)
+        try self.block.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
+        buffer.emitInstruction(result:inductionVariable,left:inductionVariable,opcode:.add,right:byTemp)
+        buffer.emitInstruction(left:startLabel,opcode:.branch)
+        buffer.emitPendingLabel(label:endLabel)
         }
     }

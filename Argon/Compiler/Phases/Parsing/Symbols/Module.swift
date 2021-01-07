@@ -24,7 +24,7 @@ public class Module:SymbolContainer
         self.pop()
         }
     
-    public private(set) var genericTypes:[GenericType] = []
+    public private(set) var genericTypes:[GenericClass] = []
     private var exitFunction:ModuleFunction?
     private var entryFunction:ModuleFunction?
     
@@ -56,6 +56,11 @@ public class Module:SymbolContainer
                 }
             }
         return(entity == nil ? nil : SymbolSet(entity!))
+        }
+        
+    internal override var typeClass:Class
+        {
+        return(ModuleClass(shortName:self.shortName))
         }
         
     internal override func lookup(shortName:String) -> SymbolSet?
@@ -100,3 +105,10 @@ public class Module:SymbolContainer
     }
 
 
+public class ModuleClass:Class
+    {
+    public static func ==(lhs:ModuleClass,rhs:Class) -> Bool
+        {
+        return(Swift.type(of:rhs)==Swift.type(of:lhs) && rhs.shortName == lhs.shortName)
+        }
+    }

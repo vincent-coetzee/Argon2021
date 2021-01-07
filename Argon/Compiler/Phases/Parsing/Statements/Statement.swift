@@ -16,5 +16,14 @@ public class Statement:ParseNode,Equatable
         }
         
     internal var location:SourceLocation = .zero
+    
+    public func typeCheck() throws
+        {
+        }
+        
+    internal func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+        {
+        fatalError("Not implemented")
+        }
     }
 

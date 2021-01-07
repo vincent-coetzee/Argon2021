@@ -18,10 +18,8 @@ internal class SignalStatement:ControlFlowStatement
         super.init()
         self.location = location
         }
-    
-    required init()
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
-        self.signal = Expression.none
-        super.init()
         }
     }

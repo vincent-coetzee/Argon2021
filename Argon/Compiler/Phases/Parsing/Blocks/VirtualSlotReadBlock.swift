@@ -23,8 +23,8 @@ internal class VirtualSlotReadBlock:VirtualSlotBlock
         self.symbols = block.symbols
         }
         
-    required init()
+    internal override init()
         {
-        fatalError("init() has not been implemented")
+        super.init()
         }
     }

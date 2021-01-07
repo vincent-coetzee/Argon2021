@@ -34,9 +34,17 @@ internal class SymbolSet:Equatable
         
     internal func typeCheck() throws
         {
+        }
+        
+    internal func allocateAddresses(using compiler:Compiler) throws
+        {
+        }
+        
+    internal func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using compiler:Compiler) throws
+        {
         for symbol in self.symbols
             {
-            try symbol.typeCheck()
+            try symbol.generateIntermediateCode(in:module,codeHolder:codeHolder,into:buffer,using:compiler)
             }
         }
     }

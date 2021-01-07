@@ -21,6 +21,11 @@ public class Method:Symbol
         fatalError("This should have been defined in the method instance")
         }
         
+    public var returnTypeClass:Class
+        {
+        fatalError("This should have been defined in the method instance")
+        }
+        
     public init(shortName:String)
         {
         super.init(shortName:shortName)
@@ -42,6 +47,14 @@ public class Method:Symbol
         for instance in self.instances
             {
             try instance.typeCheck()
+            }
+        }
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using compiler:Compiler) throws
+        {
+        for instance in self.instances
+            {
+            try instance.generateIntermediateCode(in:module,codeHolder:codeHolder,into:buffer,using:compiler)
             }
         }
 }

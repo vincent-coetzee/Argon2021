@@ -10,7 +10,7 @@ import Foundation
 public enum ThreeAddressOperation
     {
     case operation(Token.Symbol)
-    case paramater
+    case parameter
     case invoke
     case call
     case `return`

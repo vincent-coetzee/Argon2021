@@ -22,8 +22,4 @@ internal class InvocationStatement:MethodInvocationStatement
         self.name = name
         self.arguments = arguments
         }
-    
-    required init() {
-        fatalError("init() has not been implemented")
     }
-}

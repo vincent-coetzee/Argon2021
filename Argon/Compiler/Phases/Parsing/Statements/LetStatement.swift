@@ -17,9 +17,14 @@ internal class LetStatement:Statement
         self.variable = variable
         super.init()
         }
-    
-    required init()
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
-        fatalError("init() has not been implemented")
+        if let expression = variable.initialValue
+            {
+            try expression.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
+            let result = buffer.lastResult
+            buffer.emitInstruction(ThreeAddressInstruction(result:variable,left:result,opcode:.copy))
+            }
         }
     }

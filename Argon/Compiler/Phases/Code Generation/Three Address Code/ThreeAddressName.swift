@@ -9,4 +9,8 @@ import Foundation
 
 public class ThreeAddressName:ThreeAddress
     {
+    public var displayString:String
+        {
+        return("NAME")
+        }
     }

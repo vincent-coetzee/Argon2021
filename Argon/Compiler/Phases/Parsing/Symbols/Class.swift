@@ -10,32 +10,41 @@ import Foundation
 
 public class Class:Symbol
     {
+    public static func ==(lhs:Class,rhs:Class) -> Bool
+        {
+        return(Swift.type(of:rhs)==Swift.type(of:lhs) && rhs.shortName == lhs.shortName)
+        }
+        
     internal static let rootClass = Class(shortName:"Root")
     internal static let classClass = Class(shortName:"Class").parentClass(.rootClass)
     internal static let metaClass = Class(shortName:"Metaclass").parentClass(.classClass)
-    internal static let instanceClass = Class(shortName:"Instance").parentClass(.rootClass)
+    internal static let allClass = Class(shortName:"All").parentClass(.rootClass)
     internal static let voidClass = Class(shortName:"Void").parentClass(.rootClass)
     internal static let valueClass = Class(shortName:"Value").parentClass(.rootClass)
+    internal static let constantClass = ConstantClass(shortName:"Constant").parentClass(.valueClass)
+    internal static let addressClass = AddressClass(shortName:"Address").parentClass(.valueClass)
+    internal static let objectClass = Class(shortName:"Object").parentClass(.rootClass)
     internal static let enumerationClass = Class(shortName:"Enumeration").parentClass(.valueClass)
     internal static let bitValueClass = Class(shortName:"BitValue").parentClass(.valueClass)
     internal static let nilClass = Class(shortName:"Nil").parentClass(.rootClass)
     internal static let booleanClass = Class(shortName:"Boolean").parentClass(.valueClass)
     internal static let byteClass = Class(shortName:"Byte").parentClass(.valueClass)
     internal static let characterClass = Class(shortName:"Character").parentClass(.valueClass)
-    internal static let objectClass = Class(shortName:"Object").parentClass(.instanceClass)
-    internal static let tupleClass = Class(shortName:"Tuple").parentClass(.valueClass)
+    internal static let tupleClass = Class(shortName:"Tuple").parentClass(.objectClass)
     internal static let dateClass = Class(shortName:"Date").parentClass(.valueClass)
     internal static let timeClass = Class(shortName:"Time").parentClass(.valueClass)
     internal static let dateTimeClass = Class(shortName:"DateTime").parentClass(.valueClass)
     internal static let signalClass = Class(shortName:"Signal").parentClass(.valueClass)
-    internal static let semaphoreClass = Class(shortName:"Semaphore").parentClass(.instanceClass)
-    internal static let moduleClass = Class(shortName:"Module").parentClass(.instanceClass)
-    internal static let stringClass = Class(shortName:"String").parentClass(.instanceClass)
+    internal static let semaphoreClass = Class(shortName:"Semaphore").parentClass(.objectClass)
+    internal static let moduleClass = Class(shortName:"Module").parentClass(.objectClass)
+    internal static let stringClass = Class(shortName:"String").parentClass(.valueClass)
     internal static let symbolClass = Class(shortName:"Symbol").parentClass(.stringClass)
-    internal static let lockClass = Class(shortName:"Lock").parentClass(.instanceClass)
-    internal static let threadClass = Class(shortName:"Thread").parentClass(.instanceClass)
-    internal static let methodClass = Class(shortName:"Method").parentClass(.instanceClass)
-    internal static let closureClass = Class(shortName:"Closure").parentClass(.instanceClass)
+    internal static let lockClass = Class(shortName:"Lock").parentClass(.valueClass)
+    internal static let threadClass = Class(shortName:"Thread").parentClass(.objectClass)
+    internal static let behaviorClass = Class(shortName:"Behavior").parentClass(.objectClass)
+    internal static let methodClass = Class(shortName:"Method").parentClass(.behaviorClass)
+    internal static let closureClass = Class(shortName:"Closure").parentClass(.behaviorClass)
+    internal static let functionClass = Class(shortName:"Function").parentClass(.behaviorClass)
     internal static let integerClass = Class(shortName:"Integer").parentClass(.bitValueClass)
     internal static let integer8Class = Class(shortName:"Integer8").parentClass(.bitValueClass)
     internal static let integer16Class = Class(shortName:"Integer16").parentClass(.bitValueClass)
@@ -50,12 +59,14 @@ public class Class:Symbol
     internal static let float32Class = Class(shortName:"Float32").parentClass(.bitValueClass)
     internal static let float64Class = Class(shortName:"Float64").parentClass(.bitValueClass)
     internal static let float16Class = Class(shortName:"Float16").parentClass(.bitValueClass)
-    internal static let collectionClass = Class(shortName:"Collection").parentClass(.instanceClass).slot(Identifier("count"),.integer).slot(Identifier("elementType"),.typeClass)
-    internal static let arrayClass = ArrayClass(shortName:"Array",indexType:.unbounded,elementType:.void).parentClass(.collectionClass)
-    internal static let setClass = SetClass(shortName:"Set",elementType:.void).parentClass(.collectionClass)
-    internal static let listClass = ListClass(shortName:"List",elementType:.void).parentClass(.collectionClass)
+    internal static let collectionClass = CollectionClass(shortName:"Collection").parentClass(.objectClass).slot(Identifier("count"),.integerClass).slot(Identifier("elementType"),.classClass)
+    internal static let arrayClass = ArrayClass(shortName:"Array",indexType:.unbounded, elementTypeClass: .voidClass).parentClass(.collectionClass)
+    internal static let setClass = SetClass(shortName:"Set",elementTypeClass:.voidClass).parentClass(.collectionClass)
+    internal static let listClass = ListClass(shortName:"List",elementTypeClass:.voidClass).parentClass(.collectionClass)
     internal static let bitSetClass = BitSetClass(shortName:"BitSet",keyType:.void,valueType:.void).parentClass(.collectionClass)
-    internal static let dictionaryClass = DictionaryClass(shortName:"Dictionary",keyType:.void,valueType:.void).parentClass(.collectionClass)
+    internal static let dictionaryClass = DictionaryClass(shortName:"Dictionary",keyTypeClass:.voidClass,valueTypeClass:.voidClass).parentClass(.collectionClass)
+    
+    internal static func invocationClass(_ name:String,_ kind:InvocationClass.InvocationType,_ classes:[Class],_ returnClass:Class) -> InvocationClass { InvocationClass(shortName:name,type:kind,argumentClasses:classes,returnClass:returnClass) }
     
     var parentClasses:Classes
         {
@@ -70,31 +81,27 @@ public class Class:Symbol
         }
         
     internal var _parentClasses = Classes()
-    private var _type:Type?
-    internal var generics = GenericTypes()
+    internal var generics = GenericClasses()
     internal var slots:[String:Slot] = [:]
     internal var makers = ClassMakers()
     internal var hollowMethods:[HollowMethod] = []
     internal var symbols:[String:Symbol] = [:]
+    internal var classDescriptor:ClassDescriptor?
     
     internal var isGeneric:Bool
         {
         return(!self.generics.isEmpty)
         }
         
-    internal override var type:Type
+    internal override var typeClass:Class
         {
-        if self._type == nil
-            {
-            self._type = Type.class(self)
-            }
-        return(self._type!)
+        return(self)
         }
         
     @discardableResult
-    internal func slot(_ name:Identifier,_ type:Type) -> Class
+    internal func slot(_ name:Identifier,_ class:Class) -> Class
         {
-        let slot = Slot(shortName: name, type: type, attributes: .readonly)
+        let slot = Slot(shortName: name, class: `class`, attributes: .readonly)
         self.slots[slot.shortName] = slot
         return(self)
         }
@@ -144,25 +151,38 @@ public class Class:Symbol
         return(Instance(class:self))
         }
         
-    init(shortName:String,generics:GenericTypes)
+    init(shortName:String,generics:GenericClasses)
         {
         self.generics = generics
         super.init(shortName:shortName)
-        var slot = Slot(name:Name("class"),type:.class(RootModule.rootModule.classClass),container:self,attributes: .readonly)
+        var slot = Slot(name:Name("class"),class:Class.classClass,container:self,attributes: .readonly)
         self.slots[slot.shortName] = slot
-        slot = Slot(name:Name("superclasses"),type:RootModule.rootModule.arrayClass.typeWithIndex(Type.ArrayIndexType.unbounded),container:self,attributes:.readonly)
+        slot = Slot(name:Name("superclasses"),class: (Class.arrayClass as! ArrayClass).classWithIndex(Type.ArrayIndexType.unbounded),container:self,attributes:.readonly)
         self.slots[slot.shortName] = slot
         }
         
     init(shortName:String)
         {
-        self.generics = GenericTypes()
+        self.generics = GenericClasses()
         super.init(shortName:shortName)
         }
-    
-    internal required init()
+        
+    init(shortName:String,indexType:Type.ArrayIndexType,elementType:Type)
         {
-        fatalError("init() has not been implemented")
+        self.generics = GenericClasses()
+        super.init(shortName:shortName)
+        }
+        
+    init(shortName:String,keyType:Type,valueType:Type)
+        {
+        self.generics = GenericClasses()
+        super.init(shortName:shortName)
+        }
+        
+    init(shortName:String,elementType:Type)
+        {
+        self.generics = GenericClasses()
+        super.init(shortName:shortName)
         }
         
     func appendSlot(_ slot:Slot)
@@ -187,6 +207,16 @@ public class Class:Symbol
         return(false)
         }
         
+    internal override func sourceFileElements() -> [SourceFileElement]
+        {
+        var elements:[SourceFileElement] = []
+        for slot in self.slots.values
+            {
+            elements.append(SourceFileElement(.slot(slot)))
+            }
+        return(elements)
+        }
+        
     func appendConstant(_ constant:Constant)
         {
         self.symbols[constant.shortName] = constant
@@ -207,80 +237,68 @@ public class Class:Symbol
             }
         return(self.parentScope?.lookup(shortName:shortName))
         }
+        
+    func allParentClasses() -> Set<Class>
+        {
+        var set = Set<Class>()
+        for aClass in self.parentClasses
+            {
+            set.insert(aClass)
+            for newClass in aClass.allParentClasses()
+                {
+                set.insert(newClass)
+                }
+            }
+        return(set)
+        }
+        
+    func allocateAddresses(using:Compiler) throws
+        {
+        }
+        
+    func layoutClass() throws
+        {
+        
+        }
     }
 
 typealias Classes = Array<Class>
 
-internal class CollectionClass:Class
+public class RRRCLASS:Class
     {
-    public let elementType:Type
-    
-    init(shortName:String,elementType:Type)
-        {
-        self.elementType = elementType
-        super.init(shortName:shortName)
-        }
-    
-    override init(shortName:String)
-        {
-        self.elementType = .void
-        super.init(shortName:shortName)
-        }
+    let _class:Class
+    let symbol:Token.Symbol
+    let start:Int
+    let end:Int
         
-    internal required init() {
-        fatalError("init() has not been implemented")
-    }
-    
-    internal override func typeWithIndex(_ type:Type.ArrayIndexType) -> Type
+    init(class:Class,symbol:Token.Symbol,start:Int,end:Int)
         {
-        fatalError("This should have been overridden")
+        self.symbol = symbol
+        self.start = start
+        self.end = end
+        self._class = `class`
+        super.init(shortName:Argon.nextName("SUBRANGE"))
         }
     }
 
 
-internal class ArrayClass:CollectionClass
+public class SetClass:CollectionClass
     {
-    public let indexType:Type.ArrayIndexType
-    
-    init(shortName:String,indexType:Type.ArrayIndexType,elementType:Type)
+    internal  func typeWithIndex(_ type:Type.ArrayIndexType) -> Class
         {
-        self.indexType = indexType
-        super.init(shortName:shortName,elementType:elementType)
-        }
-    
-    override init(shortName:String)
-        {
-        self.indexType = .none
-        super.init(shortName:shortName)
-        }
-        
-    internal required init() {
-        fatalError("init() has not been implemented")
-    }
-    
-    internal override func typeWithIndex(_ type:Type.ArrayIndexType) -> Type
-        {
-        return(Type.array(indexType:type,elementType:self.elementType))
+        return(SetClass(shortName:Argon.nextName("SET"),elementTypeClass:self.elementTypeClass))
         }
     }
 
-internal class SetClass:CollectionClass
+public class ListClass:CollectionClass
     {
-    internal override func typeWithIndex(_ type:Type.ArrayIndexType) -> Type
+    internal  func typeWithIndex(_ type:Type.ArrayIndexType) ->Class
         {
-        return(Type.set(elementType:self.elementType))
+        return(ListClass(shortName:Argon.nextName("LIST"),elementTypeClass:self.elementTypeClass))
         }
     }
 
-internal class ListClass:CollectionClass
-    {
-    internal override func typeWithIndex(_ type:Type.ArrayIndexType) -> Type
-        {
-        return(Type.list(elementType:self.elementType))
-        }
-    }
-
-internal class BitSetClass:CollectionClass
+public class BitSetClass:CollectionClass
     {
     public let keyType:Type
     public let valueType:Type
@@ -302,24 +320,90 @@ internal class BitSetClass:CollectionClass
         }
     }
 
-internal class DictionaryClass:CollectionClass
+
+public class InvocationClass:Class
     {
-    public let keyType:Type
-    public let valueType:Type
-    
-    init(shortName:String,keyType:Type,valueType:Type)
+    enum InvocationType
         {
-        self.keyType = keyType
-        self.valueType = valueType
+        case operation(Token.Symbol)
+        case object(String)
+        }
+        
+    let invocationType:InvocationType
+    let argumentClasses:[Class]
+    let returnClass:Class
+    
+    init(shortName:String,type:InvocationType,argumentClasses:[Class],returnClass:Class)
+        {
+        self.invocationType = type
+        self.argumentClasses = argumentClasses
+        self.returnClass = returnClass
         super.init(shortName:shortName)
         }
-    
-    internal required init() {
-        fatalError("init() has not been implemented")
     }
     
-    internal override func typeWithIndex(_ type:Type.ArrayIndexType) -> Type
+public class CrossProduct:Class
+    {
+    private var operands:[Class]
+    private var operation:Token.Symbol
+    
+    init(shortName:String,operation:Token.Symbol,operands:[Class])
         {
-        return(Type.dictionary(keyType:self.keyType,valueType:self.valueType))
+        self.operands = operands
+        self.operation = operation
+        super.init(shortName:shortName)
+        }
+    }
+
+public class TupleClass:Class
+    {
+    let elements:[Class]
+    
+    init(elements:[Class])
+        {
+        self.elements = elements
+        super.init(shortName:"TUPLE_\(Argon.nextIndex())")
+        }
+    }
+
+public class ValueClass:Class
+    {
+    }
+    
+public class AddressClass:ValueClass
+    {
+    }
+    
+public class ConstantClass:ValueClass
+    {
+    let _class:Class
+    
+    override init(shortName:String)
+        {
+        self._class = .voidClass
+        super.init(shortName:shortName)
+        }
+        
+    init(shortName:String,class:Class)
+        {
+        self._class = `class`
+        super.init(shortName:shortName)
+        }
+    }
+
+public class SequenceGeneratorClass:Class
+    {
+    let baseClass:Class
+    let start:Expression
+    let end:Expression
+    let step:Expression
+    
+    init(baseClass:Class,start:Expression,step:Expression,end:Expression)
+        {
+        self.baseClass = baseClass
+        self.start = start
+        self.step = step
+        self.end = end
+        super.init(shortName:Argon.nextName("SEQUENCE"))
         }
     }

@@ -19,9 +19,4 @@ internal class SelectStatement:Statement
         self.expression = expression
         super.init()
         }
-    
-    required init()
-        {
-        fatalError("init() has not been implemented")
-        }
     }

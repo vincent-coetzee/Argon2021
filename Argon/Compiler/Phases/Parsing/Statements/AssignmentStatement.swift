@@ -10,20 +10,30 @@ import Foundation
 
 internal class AssignmentStatement:Statement
     {
-    internal let lvalue:LValue
+    internal let lvalue:LHSValue
     internal let rvalue:Expression
     
-    internal init(lvalue:LValue,rvalue:Expression)
+    internal init(lvalue:LHSValue,rvalue:Expression)
         {
         self.lvalue = lvalue
         self.rvalue = rvalue
         super.init()
         }
-    
-    required init()
+        
+    public override func typeCheck() throws
         {
-        self.lvalue = LValue.none
-        self.rvalue = Expression.none
-        super.init()
+//        let lhsType = self.lvalue.type
+//        let rhsType = self.rvalue.type
+//        if !rhsType.isSubtype(of: lhsType)
+//            {
+//            throw(CompilerError(.typeMismatch(lhsType,rhsType),self.location))
+//            }
+        }
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+        {
+        try self.rvalue.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
+        let value = buffer.lastResult
+        try self.lvalue.generateIntermediateCode(in:module,codeHolder:codeHolder,into:buffer,using:using)
         }
     }

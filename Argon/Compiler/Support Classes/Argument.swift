@@ -13,9 +13,9 @@ public class Argument:Symbol
     internal var value:Expression
     internal var tag:String?
     
-    internal override var type:Type
+    internal override var typeClass:Class
         {
-        return(value.type)
+        return(value.typeClass)
         }
         
     internal init(tag:String? = nil,value:Expression)
@@ -27,9 +27,14 @@ public class Argument:Symbol
     
     internal required init()
         {
-        self.value = Expression.none
+        self.value = Expression()
         self.tag = nil
         super.init()
+        }
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+        {
+        try value.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
         }
     }
 

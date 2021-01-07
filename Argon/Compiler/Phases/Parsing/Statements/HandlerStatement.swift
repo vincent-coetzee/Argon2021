@@ -19,9 +19,13 @@ internal class HandlerStatement:Statement
         self.block = block
         super.init()
         }
-    
-    required init()
+        
+    func asHandlerSymbol() -> HandlerSymbol
         {
-        fatalError("init() has not been implemented")
+        return(HandlerSymbol(shortName:"_HANDLER_\(Argon.nextIndex())",inductionVariable: self.inductionVariable,block:self.block))
+        }
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+        {
         }
     }

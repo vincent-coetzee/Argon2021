@@ -14,6 +14,11 @@ public struct Argon
     
     private static var nextIndexNumber = 0
     
+    public static func nextName(_ prefix:String) -> String
+        {
+        return("\(prefix)_\(Argon.nextIndex())")
+        }
+        
     public static func nextIndex() -> Int
         {
         let index = self.nextIndexNumber
@@ -124,9 +129,9 @@ public struct Argon
             
         internal var elements = Array<Expression>()
         
-        internal var type:Type
+        internal var typeClass:Class
             {
-            return(Type.tuple(elements.map{$0.type}))
+            return(TupleClass(elements:elements.map{$0.typeClass}))
             }
             
         internal enum Element
@@ -139,4 +144,20 @@ public struct Argon
             }
         }
 
+    }
+
+extension Argon.Integer:ThreeAddress
+    {
+    public var displayString:String
+        {
+        return("\(self)")
+        }
+    }
+
+extension Argon.Float:ThreeAddress
+    {
+    public var displayString:String
+        {
+        return("\(self)")
+        }
     }

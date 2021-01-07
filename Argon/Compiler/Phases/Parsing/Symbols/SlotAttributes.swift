@@ -20,4 +20,5 @@ internal struct SlotAttributes:OptionSet
     static let virtual = SlotAttributes(rawValue: 1 << 3)
     static let module = SlotAttributes(rawValue: 1 << 4)
     static let block = SlotAttributes(rawValue: 1 << 5)
+    static let alias = SlotAttributes(rawValue: 1 << 6)
     }

@@ -74,7 +74,8 @@ class ArgonBrowserViewController: NSViewController
             self.outlineView.reloadData()
             }
         self.textView.lnv_setUpLineNumberView()
-        self.outlineView.rowHeight = 30
+        self.outlineView.rowHeight = 40
+        self.view.window?.windowController?.windowTitle(forDocumentDisplayName: self.projectURL!.path)
         }
     }
     
@@ -108,15 +109,53 @@ extension ArgonBrowserViewController:NSOutlineViewDataSource
         }
     }
     
+extension ArgonBrowserViewController:NSToolbarDelegate
+    {
+    }
+    
+extension ArgonBrowserViewController
+    {
+    @IBAction
+    func onClassClicked(_ sender:Any?)
+        {
+        }
+        
+    @IBAction
+    func onModuleClicked(_ sender:Any?)
+        {
+        }
+        
+    @IBAction
+    func onMethodClicked(_ sender:Any?)
+        {
+        }
+    
+    @IBAction
+    func onFunctionClicked(_ sender:Any?)
+        {
+        }
+        
+    @IBAction
+    func onSlotClicked(_ sender:Any?)
+        {
+        }
+        
+    @IBAction
+    func onLocalClicked(_ sender:Any?)
+        {
+        }
+        
+    @IBAction
+    func onEnumerationClicked(_ sender:Any?)
+        {
+        }
+    }
+    
 extension ArgonBrowserViewController:NSOutlineViewDelegate
     {
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?,item: Any) -> NSView?
         {
-        let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier("TableCell"), owner: nil)
-        let tableCell = (view as? NSTableCellView)?.textField!
-        tableCell!.stringValue = (item as! SourceProvider).name
-        let imageView = (view as? NSTableCellView)?.imageView
-        imageView!.image = (item as! SourceProvider).image
+        let view = SegmentView(title: (item as! SourceProvider).name, icon: (item as! SourceProvider).image)
         return(view)
         }
         
@@ -134,10 +173,10 @@ extension ArgonBrowserViewController:NSOutlineViewDelegate
         self.tokenStream.reset(source:source)
         let compiler = Compiler()
         let module = compiler.compile(source: source)
-        print(module)
         let tokens = self.tokenStream.tokens(withComments: true)
         self.textView.string = source
         TokenStyle.updateStyle(tokens: tokens, of: self.textView)
+        self.view.window?.setTitleWithRepresentedFilename(selectedFile.path)
         }
     }
 

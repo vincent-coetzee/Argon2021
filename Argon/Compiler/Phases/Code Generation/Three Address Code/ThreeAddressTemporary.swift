@@ -11,12 +11,14 @@ public class ThreeAddressTemporary:ThreeAddress
     {
     private let name:String
     
-    private static var _index = 1
+    public var displayString:String
+        {
+        return(self.name)
+        }
     
     class func newTemporary() -> ThreeAddressTemporary
         {
-        let index = self._index
-        self._index += 1
+        let index = Argon.nextIndex()
         return(ThreeAddressTemporary(name:"_TEMP_\(index)"))
         }
         

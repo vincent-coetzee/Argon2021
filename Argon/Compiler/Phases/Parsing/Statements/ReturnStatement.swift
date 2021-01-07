@@ -19,8 +19,8 @@ internal class ReturnStatement:ControlFlowStatement
         self.location = location
         }
         
-    required init()
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
-        super.init()
+        try value?.generateIntermediateCode(in:module,codeHolder:codeHolder,into:buffer,using:using)
         }
     }

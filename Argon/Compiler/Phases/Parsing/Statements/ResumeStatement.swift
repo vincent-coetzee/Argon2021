@@ -18,9 +18,9 @@ internal class ResumeStatement:ControlFlowStatement
         super.init()
         self.location = location
         }
-    
-    required init()
-        {
-        fatalError("init() has not been implemented")
-        }
+//    
+//    required init()
+//        {
+//        fatalError("init() has not been implemented")
+//        }
     }

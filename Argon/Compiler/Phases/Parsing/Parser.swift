@@ -42,7 +42,19 @@ internal class Parser:CompilerPhase
             {
             module = try self.parseModuleDeclaration()
             }
-        compiler.module = module
+        if let aModule = module
+            {
+            compiler.append(module:aModule)
+            }
+        }
+        
+    internal func preProcess(source:String,using compiler:Compiler) throws
+        {
+        }
+        
+    internal func postProcess(modules:Array<Module>,using compiler:Compiler) throws
+        {
+        print("halt")
         }
         
     private func loadTokens(from file:SourceFile)
@@ -168,6 +180,12 @@ internal class Parser:CompilerPhase
             {
             try self.parseAccessModifier
                 {
+                if self.token.isHandler
+                    {
+                    let statement = try self.parseHandlerStatement() as! HandlerStatement
+                    let symbol = statement.asHandlerSymbol()
+                    Module.innerScope.addSymbol(symbol)
+                    }
                 if self.token.isLet
                     {
                     try self.parseVariableDeclaration()
@@ -315,12 +333,12 @@ internal class Parser:CompilerPhase
         self.advance()
         let location = self.token.location
         let name = try self.parseIdentifier()
-        let localVariable = LocalVariable(shortName: name,type:.undefined)
+        let localVariable = LocalVariable(shortName: name,class:.voidClass)
         if self.token.isGluon
             {
             self.advance()
-            let type = try self.parseType()
-            localVariable.type = type
+            let type = try self.parseTypeClass()
+            localVariable._class = type
             }
         if self.token.isAssign
             {
@@ -337,12 +355,12 @@ internal class Parser:CompilerPhase
         self.advance()
         let location = self.token.location
         let name = try self.parseIdentifier()
-        let constant = Constant(shortName: name,type:.undefined)
+        let constant = Constant(shortName: name,class:.voidClass)
         if self.token.isGluon
             {
             self.advance()
-            let type = try self.parseType()
-            constant._type = type
+            let type = try self.parseTypeClass()
+            constant._class = type
             }
         if self.token.isAssign
             {
@@ -382,12 +400,12 @@ internal class Parser:CompilerPhase
         self.advance()
         let location = self.token.location
         let name = try self.parseIdentifier()
-        let variable = Variable(shortName: name,type:.undefined)
+        let variable = Variable(shortName: name,class:.voidClass)
         if self.token.isGluon
             {
             self.advance()
-            let type = try self.parseType()
-            variable.type = type
+            let type = try self.parseTypeClass()
+            variable._class = type
             }
         if self.token.isAssign
             {
@@ -417,7 +435,7 @@ internal class Parser:CompilerPhase
         let cName = try self.parseIdentifier()
         if !self.token.isRightPar
             {
-            throw(CompilerError(.rightParExpected,self.token.location))
+            throw(CompilerError(error: .rightParExpected,location: self.token.location,hint:"parseFunctionDeclaration"))
             }
         self.advance()
         let name = try self.parseIdentifier()
@@ -429,8 +447,8 @@ internal class Parser:CompilerPhase
         if self.token.isRightArrow
             {
             self.advance()
-            let type = try self.parseType()
-            function.returnType = type
+            let type = try self.parseTypeClass()
+            function.returnTypeClass = type
             }
         Module.innerScope.addSymbol(function)
         function.addDeclaration(location: location)
@@ -452,16 +470,16 @@ internal class Parser:CompilerPhase
             Module.innerScope.addSymbol(theMethod)
             }
         let parameters = try self.parseFormalParameters()
-        var returnType:Type = .void
+        var returnType:Class = .voidClass
         if self.token.isRightArrow
             {
             self.advance()
-            returnType = try self.parseType()
+            returnType = try self.parseTypeClass()
             }
         let block = try self.parseBlock(parameters:parameters)
         let instance = MethodInstance(shortName:name)
         instance.block = block
-        instance.returnType = returnType
+        instance.returnTypeClass = returnType
         instance.parameters = parameters
         instance.addDeclaration(location: location)
         theMethod.addInstance(instance)
@@ -472,13 +490,13 @@ internal class Parser:CompilerPhase
         self.advance()
         let location = self.token.location
         let name = try parseIdentifier()
-        var type:Type = .void
+        var type:Class = Class.voidClass
         if self.token.isGluon
             {
             self.advance()
-            type = try self.parseType()
+            type = try self.parseTypeClass()
             }
-        let enumeration = Enumeration(name: name, type: type)
+        let enumeration = Enumeration(shortName: name, class: type)
         try self.parseBraces
             {
             while !self.token.isRightBrace
@@ -499,7 +517,7 @@ internal class Parser:CompilerPhase
             }
         let string = self.token.hashString
         self.advance()
-        var typeList:Types = []
+        var typeList:Classes = []
         var valueExpression:Expression?
         if self.token.isLeftPar
             {
@@ -511,7 +529,7 @@ internal class Parser:CompilerPhase
                         {
                         self.advance()
                         }
-                    let type = try self.parseType()
+                    let type = try self.parseTypeClass()
                     typeList.append(type)
                     }
                 while self.token.isComma
@@ -532,10 +550,10 @@ internal class Parser:CompilerPhase
         let location = self.token.location
         let name = try self.parseIdentifier()
         print("CLASS NAME IS \(name)")
-        let aClass = ValueClass(shortName:name)
+        let aClass = Class(shortName:name)
         if self.token.isLeftBrocket
             {
-            var generics = GenericTypes()
+            var generics = GenericClasses()
             try self.parseBrockets
                 {
                 generics = try self.parseGenericTypes()
@@ -586,7 +604,7 @@ internal class Parser:CompilerPhase
         Module.innerScope.addSymbol(aClass)
         if self.token.isLeftBrocket
             {
-            var generics = GenericTypes()
+            var generics = GenericClasses()
             try self.parseBrockets
                 {
                 generics = try self.parseGenericTypes()
@@ -620,7 +638,11 @@ internal class Parser:CompilerPhase
             {
             repeat
                 {
-                if self.token.isSlotKeyword
+                if self.token.isAlias
+                    {
+                    aClass.appendSlot(try self.parseAliasSlotDeclaration())
+                    }
+                else if self.token.isSlotKeyword
                     {
                     aClass.appendSlot(try self.parseSlotDeclaration())
                     }
@@ -640,6 +662,27 @@ internal class Parser:CompilerPhase
             while !self.token.isRightBrace
             }
         aClass.addDeclaration(location: location)
+        }
+        
+    private func parseAliasSlotDeclaration() throws -> Slot
+        {
+        let location = self.token.location
+        self.advance()
+        if !self.token.isSlot
+            {
+            throw(CompilerError(.slotExpected,self.token.location))
+            }
+        self.advance()
+        let name = try self.parseIdentifier()
+        var expression:Expression?
+        if self.token.isAssign
+            {
+            self.advance()
+            expression = try self.parseExpression()
+            }
+        let slot = AliasSlot(shortName: name,attributes: .alias,expression:expression ?? VoidExpression())
+        slot.addDeclaration(location: location)
+        return(slot)
         }
         
     private func parseSlotDeclaration() throws -> Slot
@@ -663,11 +706,11 @@ internal class Parser:CompilerPhase
             }
         self.advance()
         let name = try self.parseIdentifier()
-        var type:Type = .void
+        var type:Class = .voidClass
         if self.token.isGluon
             {
             self.advance()
-            type = try self.parseType()
+            type = try self.parseTypeClass()
             }
         var initialValue:Expression?
         if self.token.isAssign
@@ -694,7 +737,7 @@ internal class Parser:CompilerPhase
                 mode.insert(SlotAttributes.class)
                 }
             mode.insert(SlotAttributes.virtual)
-            slot = VirtualSlot(shortName: name, type: type, attributes: mode)
+            slot = VirtualSlot(shortName: name, class: type, attributes: mode)
             slot.initialValue = initialValue
             slot.virtualReadBlock = readBlock!
             if let block = writeBlock
@@ -709,7 +752,7 @@ internal class Parser:CompilerPhase
                 {
                 mode.insert(SlotAttributes.class)
                 }
-            slot = Slot(shortName: name, type: type, attributes:mode)
+            slot = Slot(shortName: name, class: type, attributes:mode)
             slot.initialValue = initialValue
             }
         slot.addDeclaration(location: location)
@@ -723,14 +766,13 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.readExpected,self.token.location))
             }
         self.advance()
-        var block = try self.parseBlock()
+        let block = try self.parseBlock(Block())
         let readBlock = VirtualSlotReadBlock(block:block)
         var writeBlock:VirtualSlotWriteBlock?
         if self.token.isWrite
             {
             self.advance()
-            block = try self.parseBlock()
-            writeBlock = VirtualSlotWriteBlock(block:block)
+            writeBlock = VirtualSlotWriteBlock(block:try parseBlock(Block()))
             }
         return((readBlock,writeBlock))
         }
@@ -741,7 +783,7 @@ internal class Parser:CompilerPhase
         let name = self.token.identifier
         self.advance()
         let parameters = try self.parseFormalParameters()
-        let block = try self.parseBlock()
+        let block = try self.parseBlock(Block())
         let maker = ClassMaker(shortName: name,parameters:parameters,block:block)
         maker.addDeclaration(location: location)
         return(maker)
@@ -815,10 +857,25 @@ internal class Parser:CompilerPhase
         self.advance()
         }
         
-    private func parseGenericTypes() throws -> GenericTypes
+    private func parseBrackets(_ closure:() throws -> Void) throws
+        {
+        if !self.token.isLeftBracket
+            {
+            throw(CompilerError(.leftBracketExpected,self.token.location))
+            }
+        self.advance()
+        try closure()
+        if !self.token.isRightBracket
+            {
+            throw(CompilerError(.rightBracketExpected,self.token.location))
+            }
+        self.advance()
+        }
+        
+    private func parseGenericTypes() throws -> GenericClasses
         {
         self.advance()
-        var genericTypes = GenericTypes()
+        var genericTypes = GenericClasses()
         repeat
             {
             if self.token.isComma
@@ -826,7 +883,7 @@ internal class Parser:CompilerPhase
                 self.advance()
                 }
             let name = try self.parseIdentifier()
-            var constraints:Types = []
+            var constraints:Classes = []
             if self.token.isGluon
                 {
                 self.advance()
@@ -843,13 +900,13 @@ internal class Parser:CompilerPhase
                             {
                             self.advance()
                             }
-                        let constraint = try self.parseType()
+                        let constraint:Class = try self.parseTypeClass()
                         constraints.append(constraint)
                         }
                     while self.token.isComma
                     }
                 }
-            let generic = GenericType(shortName: name,constraints: constraints)
+            let generic = GenericClass(shortName: name,constraints: constraints)
             genericTypes.append(generic)
             }
         while self.token.isComma
@@ -860,14 +917,14 @@ internal class Parser:CompilerPhase
         {
         self.advance()
         let location = self.token.location
-        let baseType = try self.parseType()
+        let baseType = try self.parseTypeClass()
         if !self.token.isIs
             {
             throw(CompilerError(.isExpected,self.token.location))
             }
         self.advance()
         let name = try self.parseIdentifier()
-        let alias = TypeSymbol(shortName: name, baseType: baseType)
+        let alias = TypeSymbol(shortName: name, class: baseType)
         alias.addDeclaration(location: location)
         Module.innerScope.addSymbol(alias)
         }
@@ -919,11 +976,11 @@ internal class Parser:CompilerPhase
                                 }
                             let offset = self.token.integerValue
                             self.advance()
-                            bitSet.addField(BitSetField(name: name, offset: Expression.additionOperation(.bitSetField(fieldName),.add,.integer(offset))))
+                            bitSet.addField(BitSetField(name: name, offset: AdditionExpression(lhs: IdentifierExpression(identifier: fieldName),operation: .add,rhs: LiteralIntegerExpression(integer: offset))))
                             }
                         else
                             {
-                            bitSet.addField(BitSetField(name: name, offset: .bitSetField(fieldName)))
+                            bitSet.addField(BitSetField(name: name, offset: IdentifierExpression(identifier: fieldName)))
                             }
                         }
                     else if self.token.isAdd
@@ -975,7 +1032,7 @@ internal class Parser:CompilerPhase
                 if !self.token.isRightPar
                     {
                     let tag = try self.parseTag()
-                    let type = try self.parseType()
+                    let type = try self.parseTypeClass()
                     let parameter = Parameter(shortName:tag,type:type,hasTag:hasTag)
                     parameters.append(parameter)
                     }
@@ -995,87 +1052,103 @@ internal class Parser:CompilerPhase
         try closure()
         if !self.token.isRightPar
             {
-            throw(CompilerError(.rightParExpected,self.token.location))
+            throw(CompilerError(error: .rightParExpected,location: self.token.location,hint:"parseParenthses"))
             }
         self.advance()
         }
         
-    private func parseNativeType(_ aToken:Token) throws -> Type
+    private func parseParentheses<T>(_ closure:() throws -> T) throws -> T
         {
-        var aClass:Type = .void
+        if !self.token.isLeftPar
+            {
+            throw(CompilerError(.leftParExpected,self.token.location))
+            }
+        self.advance()
+        let result = try closure()
+        if !self.token.isRightPar
+            {
+            throw(CompilerError(error: .rightParExpected,location: self.token.location,hint:"parseParentheses"))
+            }
+        self.advance()
+        return(result)
+        }
+        
+    private func parseNativeTypeClass(_ aToken:Token) throws -> Class
+        {
+        var aClass:Class = .voidClass
         switch(aToken)
             {
             case .nativeType(let keyword,_):
             switch(keyword)
                 {
                 case .Integer:
-                    aClass = .integer
+                    aClass = .integerClass
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .Integer8:
-                    aClass = .integer8
+                    aClass = .integer8Class
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .Integer16:
-                    aClass = .integer16
+                    aClass = .integer16Class
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .Integer32:
-                    aClass = .integer32
+                    aClass = .integer32Class
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .Integer64:
-                    aClass = .integer64
+                    aClass = .integer64Class
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .UInteger:
-                    aClass = .uinteger
+                    aClass = .uIntegerClass
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .UInteger8:
-                    aClass = .uinteger8
+                    aClass = .uInteger8Class
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .UInteger16:
-                    aClass = .uinteger16
+                    aClass = .uInteger16Class
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .UInteger32:
-                    aClass = .uinteger32
+                    aClass = .uInteger32Class
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .UInteger64:
-                    aClass = .uinteger64
+                    aClass = .uInteger64Class
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .Float:
-                    aClass = .float
+                    aClass = .floatClass
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .Float16:
-                    aClass = .float16
+                    aClass = .float16Class
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .Float32:
-                    aClass = .float32
+                    aClass = .float32Class
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .Float64:
-                    aClass = .float64
+                    aClass = .float64Class
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .Boolean:
-                    aClass = .boolean
+                    aClass = .booleanClass
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .String:
-                    aClass = .string
+                    aClass = .stringClass
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .Character:
-                    aClass = .character
+                    aClass = .characterClass
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .Void:
-                    aClass = .void
+                    aClass = .voidClass
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .Symbol:
-                    aClass = .symbol
+                    aClass = .symbolClass
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .All:
-                    aClass = .all
+                    aClass = .allClass
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .Date:
-                    aClass = .date
+                    aClass = .dateClass
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .Time:
-                    aClass = .time
+                    aClass = .timeClass
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .DateTime:
-                    aClass = .dateTime
+                    aClass = .dateTimeClass
                     aClass = try self.parseBaseTypeReduction(aClass)
                 case .Pointer:
                     aClass = try self.parsePointerType()
@@ -1096,7 +1169,7 @@ internal class Parser:CompilerPhase
     return(aClass)
     }
         
-    private func parseType() throws -> Type
+    private func parseTypeClass() throws -> Class
         {
         if self.token.isDoubleBackSlash || self.token.isBackSlash || self.token.isIdentifier
             {
@@ -1107,17 +1180,17 @@ internal class Parser:CompilerPhase
             let name = try self.parseName()
             if let object = Module.innerScope.lookup(name:name)?.first
                 {
-                return(object.type)
+                return(object.typeClass)
                 }
             else if let object = Module.rootScope.lookup(name:name)?.first
                 {
-                return(object.type)
+                return(object.typeClass)
                 }
-            return(.fullyQualifiedName(name))
+            return(FullyQualifiedName(name:name))
             }
         else if self.token.isNativeType
             {
-            return(try self.parseNativeType(self.token))
+            return(try self.parseNativeTypeClass(self.token))
             }
         else if self.token.isPointer
             {
@@ -1127,39 +1200,39 @@ internal class Parser:CompilerPhase
                 throw(CompilerError(.leftBrocketExpected,self.token.location))
                 }
             self.advance()
-            let elementType = try self.parseType()
+            let elementType = try self.parseTypeClass()
             if !self.token.isRightBrocket
                 {
                 throw(CompilerError(.rightBrocketExpected,self.token.location))
                 }
             self.advance()
-            return(.pointer(elementType:elementType))
+            return(Pointer(shortName: Argon.nextName("POINTER"),elementType: elementType))
             }
         else if token.isLeftPar
             {
             self.advance()
-            var types = Types()
+            var types = Classes()
             repeat
                 {
                 if self.token.isComma
                     {
                     self.advance()
                     }
-                types.append(try self.parseType())
+                types.append(try self.parseTypeClass())
                 }
             while self.token.isComma
             if !self.token.isRightPar
                 {
-                throw(CompilerError(.rightParExpected,self.token.location))
+                throw(CompilerError(error: .rightParExpected,location: self.token.location,hint:"parseTypeClass"))
                 }
             self.advance()
-            return(.tuple(types))
+            return(TupleClass(elements: types))
             }
-        return(Type.undefined)
+        return(Class.voidClass)
         }
         
     @discardableResult
-    private func parseBaseTypeReduction(_ aClass:Type) throws -> Type
+    private func parseBaseTypeReduction(_ aClass:Class) throws -> Class
         {
         self.advance()
         if !self.token.isGluon
@@ -1171,28 +1244,29 @@ internal class Parser:CompilerPhase
             {
             return(aClass)
             }
-        if aClass == .string || aClass == .void || aClass == .character || aClass == .byte
+        if aClass == .stringClass || aClass == .voidClass || aClass == .characterClass || aClass == .byteClass
             {
             return(aClass)
             }
-        if aClass == .integer || aClass == .integer64 || aClass == .integer32 || aClass == .integer16 || aClass == .integer8 || aClass == .uinteger || aClass == .uinteger64 || aClass == .uinteger32 || aClass == .uinteger16 || aClass == .uinteger8 || aClass == .boolean || aClass == .date || aClass == .time || aClass == .dateTime
+        if aClass == .integerClass || aClass == .integer64Class || aClass == .integer32Class || aClass == .integer16Class || aClass == .integer8Class || aClass == .uIntegerClass || aClass == .uInteger64Class || aClass == .uInteger32Class || aClass == .uInteger16Class || aClass == .uInteger8Class || aClass == .booleanClass || aClass == .dateClass || aClass == .timeClass || aClass == .dateTimeClass
             {
-            if aClass == .date
+            if aClass == .dateClass
                 {
                 fatalError("Handle reduction of dates")
                 }
-            else if aClass == .boolean
+            else if aClass == .booleanClass
                 {
                 fatalError("Handle reduction of booleans")
                 }
-            else if aClass == .time
+            else if aClass == .timeClass
                 {
                 fatalError("Handle reduction of times")
                 }
-            else if aClass == .dateTime
+            else if aClass == .dateTimeClass
                 {
                 fatalError("Handle reduction of date times")
                 }
+            }
         if self.token.isLeftBracket
             {
             self.advance()
@@ -1219,10 +1293,10 @@ internal class Parser:CompilerPhase
                 throw(CompilerError(.rightBracketExpected,self.token.location))
                 }
             self.advance()
-            return(Type.subRange(aClass,range,startInteger,endInteger))
+            let generator = SequenceGeneratorClass(baseClass: aClass, start: LiteralIntegerExpression(integer: startInteger), step: Expression(), end: LiteralIntegerExpression(integer: endInteger))
+            return(generator)
             }
-            }
-        else if aClass.typeCanBeReduced
+        else
             {
             fatalError("This needs to be handled and is not ")
             }
@@ -1257,13 +1331,29 @@ internal class Parser:CompilerPhase
         else if self.token.isIdentifier
             {
             let name = try self.parseIdentifier()
-            return(.enumeration(Enumeration(name: name,type: Module.rootModule.enumerationClass.type)))
+            if let result = Module.innerScope.lookup(shortName:name)?.first
+                {
+                if let enumeration = result as? Enumeration
+                    {
+                    return(.enumeration(enumeration))
+                    }
+                else
+                    {
+                    throw(CompilerError(.invalidArrayIndexType(name),self.token.location))
+                    }
+                }
+            else
+                {
+                let enumeration = Enumeration(shortName:name,class: .voidClass)
+                enumeration.wasDeclaredForward = true
+                Module.innerScope.addSymbol(enumeration)
+                }
             }
         return(.none)
         }
 
     @discardableResult
-    private func parseArrayType() throws -> Type
+    private func parseArrayType() throws -> Class
         {
         self.advance()
         if !self.token.isLeftBrocket
@@ -1277,17 +1367,17 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.commaExpected,self.token.location))
             }
         self.advance()
-        let elementType = try self.parseType()
+        let elementTypeClass = try self.parseTypeClass()
         if !self.token.isRightBrocket
             {
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
         self.advance()
-        return(.array(indexType: indexType,elementType: elementType))
+        return(ArrayClass(shortName:Argon.nextName("ARRAY"),indexType: indexType,elementTypeClass: elementTypeClass))
         }
         
     @discardableResult
-    private func parsePointerType() throws -> Type
+    private func parsePointerType() throws -> Class
         {
         self.advance()
         if !self.token.isLeftBrocket
@@ -1295,16 +1385,16 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.leftBrocketExpected,self.token.location))
             }
         self.advance()
-        let elementType = try self.parseType()
+        let elementType = try self.parseTypeClass()
         if !self.token.isRightBrocket
             {
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
-        return(.pointer(elementType: elementType))
+        return(Pointer(shortName: Argon.nextName("POINTER"),elementType: elementType))
         }
 
     @discardableResult
-    private func parseListType() throws -> Type
+    private func parseListType() throws -> Class
         {
         self.advance()
         if !self.token.isLeftBrocket
@@ -1312,16 +1402,16 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.leftBrocketExpected,self.token.location))
             }
         self.advance()
-        let elementType = try self.parseType()
+        let elementTypeClass = try self.parseTypeClass()
         if !self.token.isRightBrocket
             {
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
-        return(.list(elementType:elementType))
+        return(ListClass(shortName: "LIST_\(Argon.nextIndex())",elementTypeClass:elementTypeClass))
         }
 
     @discardableResult
-    private func parseSetType() throws -> Type
+    private func parseSetType() throws -> Class
         {
         self.advance()
         if !self.token.isLeftBrocket
@@ -1329,16 +1419,16 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.leftBrocketExpected,self.token.location))
             }
         self.advance()
-        let elementType = try self.parseType()
+        let elementTypeClass = try self.parseTypeClass()
         if !self.token.isRightBrocket
             {
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
-        return(.set(elementType: elementType))
+        return(SetClass(shortName:Argon.nextName("SET"),elementTypeClass: elementTypeClass))
         }
 
     @discardableResult
-    private func parseDictionaryType() throws -> Type
+    private func parseDictionaryType() throws -> Class
         {
         self.advance()
         if !self.token.isLeftBrocket
@@ -1346,17 +1436,17 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.leftBrocketExpected,self.token.location))
             }
         self.advance()
-        let keyType = try self.parseType()
+        let keyTypeClass = try self.parseTypeClass()
         if !self.token.isComma
             {
             throw(CompilerError(.commaExpected,self.token.location))
             }
-        let valueType = try self.parseType()
+        let valueTypeClass = try self.parseTypeClass()
         if !self.token.isRightBrocket
             {
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
-        return(.dictionary(keyType:keyType,valueType:valueType))
+        return(DictionaryClass(shortName:Argon.nextName("DICTIONARY"),keyTypeClass:keyTypeClass,valueTypeClass:valueTypeClass))
         }
         
     private func parseIdentifier() throws -> Identifier
@@ -1404,27 +1494,17 @@ internal class Parser:CompilerPhase
             }
         throw(CompilerError(.tagExpected,self.token.location))
         }
-        
-    private func parseBlock() throws -> Block
-        {
-        let block = Block()
-        block.push()
-        defer
-            {
-            block.pop()
-            }
-        try self.parseBlock(block)
-        return(block)
-        }
+//
+//    private func parseBlock() throws -> Block
+//        {
+//        let block = Block()
+//        try self.parseBlock(block)
+//        return(block)
+//        }
         
     private func parseBlock(parameters:Parameters) throws -> Block
         {
         let block = Block()
-        block.push()
-        defer
-            {
-            block.pop()
-            }
         for parameter in parameters
             {
             block.addSymbol(parameter)
@@ -1436,14 +1516,16 @@ internal class Parser:CompilerPhase
     @discardableResult
     private func parseBlock(_ block:Block) throws -> Block
         {
+        block.push()
+        defer
+            {
+            block.pop()
+            }
         try self.parseBraces
             {
             repeat
                 {
-                if let statement = try self.parseStatement()
-                    {
-                    block.addStatement(statement)
-                    }
+                block.addStatement(try self.parseStatement())
                 }
             while !self.token.isRightBrace
             }
@@ -1452,8 +1534,8 @@ internal class Parser:CompilerPhase
         
     internal func parseClosure() throws -> Closure
         {
-        let closure = Closure()
-        closure.returnType = .void
+        let closure = Closure(shortName:"_CLOSURE_\(Argon.nextIndex())")
+        closure.returnTypeClass = .voidClass
         closure.push()
         defer
             {
@@ -1468,16 +1550,13 @@ internal class Parser:CompilerPhase
                 if self.token.isRightArrow
                     {
                     self.advance()
-                    let returnType = try self.parseType()
-                    closure.returnType = returnType
+                    let returnType = try self.parseTypeClass()
+                    closure.returnTypeClass = returnType
                     }
                 }
             repeat
                 {
-                if let statement = try self.parseStatement()
-                    {
-                    closure.addStatement(statement)
-                    }
+                closure.addStatement(try self.parseStatement())
                 }
             while !self.token.isRightBrace
             }
@@ -1625,12 +1704,12 @@ internal class Parser:CompilerPhase
         self.advance()
         let location = self.token.location
         let name = try self.parseIdentifier()
-        let variable = Variable(shortName: name,type:.undefined)
+        let variable = Variable(shortName: name,class:.voidClass)
         if self.token.isGluon
             {
             self.advance()
-            let type = try self.parseType()
-            variable.type = type
+            let typeClass = try self.parseTypeClass()
+            variable._class = typeClass
             }
         if self.token.isAssign
             {
@@ -1648,12 +1727,12 @@ internal class Parser:CompilerPhase
         self.advance()
         let location = self.token.location
         let name = try self.parseIdentifier()
-        let localVariable = LocalVariable(shortName: name,type:.undefined)
+        let localVariable = LocalVariable(shortName: name,class:.voidClass)
         if self.token.isGluon
             {
             self.advance()
-            let type = try self.parseType()
-            localVariable.type = type
+            let type = try self.parseTypeClass()
+            localVariable._class = type
             }
         if self.token.isAssign
             {
@@ -1667,73 +1746,75 @@ internal class Parser:CompilerPhase
         return(statement)
         }
         
-    private func parseLValue() throws -> LValue
-        {
-        var value:[LValue] = []
-        if self.token.isLeftPar
-            {
-            try self.parseParentheses
-                {
-                value.append(try self.parseLValue())
-                while self.token.isComma
-                    {
-                    self.advance()
-                    value.append(try self.parseLValue())
-                    }
-                }
-            if value.count > 1
-                {
-                return(.tuple(value))
-                }
-            }
-        if self.token.isIdentifier
-            {
-            let name = self.token.identifier
-            self.advance()
-            value.append(.variable(name))
-            }
-        if self.token.isThis || self.token.isTHIS
-            {
-            let target = LValue.keyword( self.token.keyword)
-            self.advance()
-            value.append(target)
-            }
-        if self.token.isLeftBracket
-            {
-            self.advance()
-            let index = try self.parseExpression()
-            if !self.token.isRightBracket
-                {
-                throw(CompilerError(.rightBracketExpected,self.token.location))
-                }
-            self.advance()
-            value.append(.subscript(index))
-            }
-        if self.token.isRightArrow
-            {
-            var slots:[String] = []
-            while self.token.isRightArrow
-                {
-                self.advance()
-                if self.token.isIdentifier
-                    {
-                    slots.append(self.token.identifier)
-                    self.advance()
-                    }
-                }
-            value.append(.slot(slots))
-            }
-        return(.compound(value))
-        }
+//    private func parseLValue() throws -> LValue
+//        {
+//        var value:[LValue] = []
+//        if self.token.isLeftPar
+//            {
+//            try self.parseParentheses
+//                {
+//                value.append(try self.parseLValue())
+//                while self.token.isComma
+//                    {
+//                    self.advance()
+//                    value.append(try self.parseLValue())
+//                    }
+//                }
+//            if value.count > 1
+//                {
+//                return(.tuple(value))
+//                }
+//            }
+//        if self.token.isIdentifier
+//            {
+//            let name = self.token.identifier
+//            self.advance()
+//            value.append(.variable(name))
+//            }
+//        if self.token.isThis || self.token.isTHIS
+//            {
+//            let target = LValue.keyword( self.token.keyword)
+//            self.advance()
+//            value.append(target)
+//            }
+//        if self.token.isLeftBracket
+//            {
+//            self.advance()
+//            let index = try self.parseExpression()
+//            if !self.token.isRightBracket
+//                {
+//                throw(CompilerError(.rightBracketExpected,self.token.location))
+//                }
+//            self.advance()
+//            value.append(.subscript(index))
+//            }
+//        if self.token.isRightArrow
+//            {
+//            var slots:[String] = []
+//            while self.token.isRightArrow
+//                {
+//                self.advance()
+//                if self.token.isIdentifier
+//                    {
+//                    slots.append(self.token.identifier)
+//                    self.advance()
+//                    }
+//                }
+//            value.append(.slot(slots))
+//            }
+//        return(.compound(value))
+//        }
         
     private func parseAssignmentStatement() throws -> Statement
         {
-        let value = try self.parseLValue()
+        let value = try self.parseLHSValue()
         if self.token.isAssign
             {
             self.advance()
             let rvalue = try self.parseExpression()
-            return(AssignmentStatement(lvalue:value,rvalue:rvalue))
+            let statement = AssignmentStatement(lvalue:value,rvalue:rvalue)
+            statement.location = self.token.location
+            return(statement)
             }
         throw(CompilerError(.assignExpected,self.token.location))
         }
@@ -1747,8 +1828,7 @@ internal class Parser:CompilerPhase
             {
             timesExpression = try self.parseExpression()
             }
-        let block = try self.parseBlock()
-        return(TimesStatement(expression:timesExpression!,block:block,location:location))
+        return(TimesStatement(expression:timesExpression!,block:try self.parseBlock(Block()),location:location))
         }
         
     private func parseReturnStatement() throws -> Statement
@@ -1811,14 +1891,12 @@ internal class Parser:CompilerPhase
                     {
                     whenExpression = try self.parseExpression()
                     }
-                let block = try self.parseBlock()
-                statement.whenClauses.append(WhenClause(expression:whenExpression!,block:block))
+                statement.whenClauses.append(WhenClause(expression:whenExpression!,block:try self.parseBlock(Block())))
                 }
             if self.token.isOtherwise
                 {
                 self.advance()
-                let block = try self.parseBlock()
-                statement.otherwiseClause = OtherwiseClause(block:block)
+                statement.otherwiseClause = OtherwiseClause(block:try self.parseBlock(Block()))
                 }
             }
         return(statement)
@@ -1829,8 +1907,7 @@ internal class Parser:CompilerPhase
         self.advance()
         let location = self.token.location
         let condition = try self.parseExpression()
-        let block = try parseBlock()
-        let statement = IfStatement(condition:condition,block:block)
+        let statement = IfStatement(condition:condition,block:try self.parseBlock(Block()))
         statement.location = location
         statement.push()
         defer
@@ -1844,14 +1921,12 @@ internal class Parser:CompilerPhase
                 {
                 self.advance()
                 let condition = try self.parseExpression()
-                let block = try self.parseBlock()
-                let elseIf = ElseIfClause(condition:condition,block:block)
+                let elseIf = ElseIfClause(condition: condition, block:try self.parseBlock(Block()))
                 statement.elseClauses.append(elseIf)
                 }
             else
                 {
-                let block = try self.parseBlock()
-                let clause = ElseClause(block:block)
+                let clause = ElseClause(block:try self.parseBlock(Block()))
                 statement.elseClauses.append(clause)
                 }
             }
@@ -1910,7 +1985,7 @@ internal class Parser:CompilerPhase
                 {
                 inductionVariableName = try self.parseIdentifier()
                 }
-            variable = InductionVariable(shortName:inductionVariableName,type:Type.symbol)
+            variable = InductionVariable(shortName:inductionVariableName,class:.symbolClass)
             block.addSymbol(variable!)
             repeat
                 {
@@ -2011,11 +2086,6 @@ internal class Parser:CompilerPhase
         self.advance()
         let inductionVariable = ForInductionVariable(shortName:name)
         let block = Block(inductionVariable: inductionVariable)
-        block.push()
-        defer
-            {
-            block.pop()
-            }
         try self.parseBlock(block)
         inductionVariable.addDeclaration(location: location)
         return(ForInStatement(inductionVariable:inductionVariable,from: from, to: to, by: by, block: block,location:location))
@@ -2025,7 +2095,7 @@ internal class Parser:CompilerPhase
         {
         self.advance()
         let location = self.token.location
-        let block = try self.parseBlock()
+        let block = try self.parseBlock(Block())
         if !self.token.isWhile
             {
             throw(CompilerError(.whileExpected,self.token.location))
@@ -2039,8 +2109,7 @@ internal class Parser:CompilerPhase
         self.advance()
         let location = self.token.location
         let condition = try self.parseExpression()
-        let block = try self.parseBlock()
-        return(WhileStatement(condition:condition,block:block,location:location))
+        return(WhileStatement(condition:condition,block:try self.parseBlock(Block()),location:location))
         }
         
     private func parseForkStatement() throws -> Statement
@@ -2086,142 +2155,192 @@ internal class Parser:CompilerPhase
         return(Argument(tag:tag,value:value))
         }
 
+    func parseLHSValue() throws -> LHSValue
+        {
+        var value:LHSValue?
+        if self.token.isThis || self.token.isTHIS || self.token.isSuper
+            {
+            value = .pseudoVariable(self.token.keyword)
+            self.advance()
+            }
+        else if self.token.isLeftPar
+            {
+            value = try self.parseParentheses
+                {
+                try self.parseLHSValue()
+                }
+            }
+        else if self.token.isIdentifier
+            {
+            let name = self.token.identifier
+            self.advance()
+            if let object = Module.innerScope.lookup(shortName:name)?.first as? Variable
+                {
+                value = .variable(object)
+                }
+            else
+                {
+                let variable = Variable(shortName: name, class: .voidClass)
+                variable.wasDeclaredForward = true
+                value = .variable(variable)
+                }
+            }
+        while self.token.isLeftBracket || self.token.isRightArrow
+            {
+            if self.token.isLeftBracket
+                {
+                var index:Expression?
+                try self.parseBrackets
+                    {
+                    index = try self.parseExpression()
+                    }
+                value = .arrayAccess(value!,index!)
+                }
+            else if self.token.isRightArrow
+                {
+                self.advance()
+                let slot = try self.parseExpression()
+                value = .slotAccess(value!,slot)
+                }
+            }
+        return(value!)
+        }
+        
     func parseExpression() throws -> Expression
         {
-        let lhs = try self.parseSlotExpression()
-        if self.token.isLogicalOperator
+        var lhs = try self.parseSlotExpression()
+        while self.token.isLogicalOperator
             {
             let action = self.token.symbol
             self.advance()
-            return(Expression.logicalOperation(lhs,action,try self.parseExpression()))
+            lhs = LogicalExpression(lhs: lhs,operation: action,rhs: try self.parseExpression())
             }
         return(lhs)
         }
         
     func parseSlotExpression() throws -> Expression
         {
-        let lhs = try self.parseBooleanExpression()
-        if self.token.isRightArrow
+        var lhs = try self.parseBooleanExpression()
+        while self.token.isRightArrow
             {
             self.advance()
-            return(Expression.slot(lhs,try self.parseExpression()))
+            lhs = AccessSlotExpression(target: lhs,slot:try self.parseExpression())
             }
         return(lhs)
         }
     
     func parseBooleanExpression() throws -> Expression
         {
-        let lhs = try self.parseRelationalExpression()
-        if self.token.isBooleanOperator
+        var lhs = try self.parseRelationalExpression()
+        while self.token.isBooleanOperator
             {
             let action = self.token.symbol
             self.advance()
-            return(Expression.booleanOperation(lhs,action,try self.parseExpression()))
+            lhs = BooleanExpression(lhs: lhs,operation: action,rhs: try self.parseExpression())
             }
         return(lhs)
         }
         
     func parseRelationalExpression() throws -> Expression
         {
-        let lhs = try self.parseCastExpression()
-        if self.token.isRelationalOperator
+        var lhs = try self.parseCastExpression()
+        while self.token.isRelationalOperator
             {
             let action = self.token.symbol
             self.advance()
-            return(Expression.relationalOperation(lhs,action,try self.parseExpression()))
+            lhs = RelationalExpression(lhs: lhs,operation: action,rhs: try self.parseExpression())
             }
         return(lhs)
         }
         
     func parseCastExpression() throws -> Expression
         {
-        let lhs = try self.parseBitExpression()
-        if self.token.isCastOperator
+        var lhs = try self.parseBitExpression()
+        while self.token.isCastOperator
             {
             self.advance()
-            return(Expression.castOperation(lhs,try self.parseExpression()))
+            lhs = CastExpression(lhs: lhs,rhs: try self.parseExpression())
             }
         return(lhs)
         }
         
     func parseBitExpression() throws -> Expression
         {
-        let lhs = try self.parseAdditiveExpression()
-        if self.token.isBitOperator
+        var lhs = try self.parseAdditiveExpression()
+        while self.token.isBitOperator
             {
             let action = self.token.symbol
             self.advance()
-            return(Expression.bitOperation(lhs,action,try self.parseExpression()))
+            lhs = BitExpression(lhs: lhs,operation: action,rhs: try self.parseExpression())
             }
         return(lhs)
         }
         
     func parseAdditiveExpression() throws -> Expression
         {
-        let lhs = try self.parseMultiplicativeExpression()
-        if self.token.isAdditionOperator
+        var lhs = try self.parseMultiplicativeExpression()
+        while self.token.isAdditionOperator
             {
             let action = self.token.symbol
             self.advance()
-            return(Expression.additionOperation(lhs,action,try self.parseExpression()))
+            lhs = AdditionExpression(lhs: lhs,operation: action,rhs: try self.parseExpression())
             }
         return(lhs)
         }
         
     func parseMultiplicativeExpression() throws -> Expression
         {
-        let lhs = try self.parsePowerExpression()
-        if self.token.isMultiplicationOperator
+        var lhs = try self.parsePowerExpression()
+        while self.token.isMultiplicationOperator
             {
             let action = self.token.symbol
             self.advance()
-            return(Expression.multiplicationOperation(lhs,action,try self.parseExpression()))
+            lhs = MultiplicationExpression(lhs: lhs,operation: action,rhs: try self.parseExpression())
             }
         return(lhs)
         }
         
     func parsePowerExpression() throws -> Expression
         {
-        let lhs = try self.parseShiftExpression()
-        if self.token.isPower
+        var lhs = try self.parseShiftExpression()
+        while self.token.isPower
             {
             self.advance()
-            return(Expression.powerOperation(lhs,.pow,try self.parseExpression()))
+            lhs = PowerExpression(lhs: lhs,operation: .pow,rhs: try self.parseExpression())
             }
         return(lhs)
         }
         
     func parseShiftExpression() throws -> Expression
         {
-        let lhs = try self.parseUnaryExpression()
-        if self.token.isBitShiftLeft || self.token.isBitShiftRight
+        var lhs = try self.parseUnaryExpression()
+        while self.token.isBitShiftLeft || self.token.isBitShiftRight
             {
             let action = self.token.symbol
             self.advance()
-            return(Expression.shiftOperation(lhs,action,try self.parseExpression()))
+            lhs = ShiftExpression(lhs: lhs,operation: action,rhs: try self.parseExpression())
             }
         return(lhs)
         }
         
     func parseUnaryExpression() throws -> Expression
         {
-        let lhs = try self.parsePrimaryTerm()
-        if self.token.isSub || self.token.isBitNot || self.token.isAdd || self.token.isNot
+        if self.token.isSub || self.token.isBitNot || self.token.isNot
             {
             let action = self.token.symbol
             self.advance()
-            return(Expression.unaryOperation(action,try self.parseExpression()))
+            return(UnaryExpression(lhs: try self.parseUnaryExpression(),operation: action))
             }
-        return(lhs)
+        return(try self.parsePrimaryTerm())
         }
         
     func parseThisExpression() throws -> Expression
         {
         if self.token.isRightArrow
             {
-            return(try self.parseSlotTerm(expression: .this))
+            return(try self.parseSlotTerm(expression: ThisExpression()))
             }
-        return(.this)
+        return(ThisExpression())
         }
         
     func parseTHISExpression() throws -> Expression
@@ -2229,9 +2348,9 @@ internal class Parser:CompilerPhase
         if self.token.isRightArrow
             {
             self.advance()
-            return(try self.parseSlotTerm(expression: .This))
+            return(try self.parseSlotTerm(expression: THISExpression()))
             }
-        return(.This)
+        return(THISExpression())
         }
         
     func parseTimeTerm(first:Expression) throws -> Expression
@@ -2243,7 +2362,7 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.timeComponentSeparatorExpected,self.token.location))
             }
         let third = try self.parseExpression()
-        return(.time(first,second,third))
+        return(TimeExpression(hour: first,minute: second,second: third))
         }
         
     func parseDateTerm(first:Expression) throws -> Expression
@@ -2270,9 +2389,9 @@ internal class Parser:CompilerPhase
                 }
             self.advance()
             let second = try self.parseExpression()
-            return(.dateTime(.date(first,second,third),.time(hour,minute,second)))
+            return(DateTimeExpression(date: DateExpression(day: first,month: second,year: third),time: TimeExpression(hour: hour,minute: minute,second: second)))
             }
-        return(.date(first,second,third))
+        return(DateExpression(day: first,month: second,year: third))
         }
         
     func parseDateExpression() throws -> Expression
@@ -2301,14 +2420,14 @@ internal class Parser:CompilerPhase
         {
         if self.token.isTypeKeyword
             {
-            let type = try self.parseType()
+            let type = try self.parseTypeClass()
             if self.token.isLeftPar
                 {
                 var arguments = Arguments()
                 arguments = try self.parseArguments()
-                return(.typeMakerInvocation(type,arguments))
+                return(TypeMakerInvocationExpression(class: type,arguments: arguments))
                 }
-            return(.literalType(type))
+            return(LiteralClassExpression(class:type))
             }
         if self.token.isTrue || self.token.isFalse
             {
@@ -2316,11 +2435,11 @@ internal class Parser:CompilerPhase
             self.advance()
             if local
                 {
-                return(.boolean(.trueValue))
+                return(LiteralBooleanExpression(boolean: true))
                 }
             else
                 {
-                return(.boolean(.falseValue))
+                return(LiteralBooleanExpression(boolean: false))
                 }
             }
         else if self.token.isAt
@@ -2341,7 +2460,7 @@ internal class Parser:CompilerPhase
         else if token.isNil
             {
             self.advance()
-            return(.nil(RootModule.rootModule.nilInstance))
+            return(NullExpression())
             }
         else if self.token.isLeftBracket
             {
@@ -2357,37 +2476,37 @@ internal class Parser:CompilerPhase
             {
             let byteValue = self.token.byteValue
             self.advance()
-            return(.byte(byteValue))
+            return(LiteralByteExpression(byte: byteValue))
             }
         else if self.token.isCharacter
             {
             let byteValue = self.token.characterValue
             self.advance()
-            return(.character(byteValue))
+            return(LiteralCharacterExpression(character: byteValue))
             }
         else if self.token.isIntegerNumber
             {
             let integerValue = self.token.integerValue
             self.advance()
-            return(.integer(integerValue))
+            return(LiteralIntegerExpression(integer: integerValue))
             }
         else if self.token.isFloatingPointNumber
             {
             let byteValue = self.token.floatingPointValue
             self.advance()
-            return(.float(byteValue))
+            return(LiteralFloatExpression(float: byteValue))
             }
         else if self.token.isString
             {
             let byteValue = self.token.stringValue
             self.advance()
-            return(.string(byteValue))
+            return(LiteralStringExpression(string: byteValue))
             }
         else if self.token.isHashString
             {
             let byteValue = self.token.hashStringValue
             self.advance()
-            return(.symbol(byteValue))
+            return(LiteralSymbolExpression(symbol: byteValue))
             }
         else if self.token.isIdentifier || self.token.isKeyword
             {
@@ -2416,19 +2535,27 @@ internal class Parser:CompilerPhase
                 {
                 return(try self.parseObjectTerm(identifier,object!))
                 }
-            return(Expression.undefinedValue(name))
+            let variable = Variable(shortName:identifier,class:.voidClass)
+            variable.wasDeclaredForward = true
+            return(ForwardAccessVariableExpression(variable: variable))
             }
         else if self.token.isLeftBrace
             {
-            return(Expression.closure(try self.parseClosure()))
+            return(ClosureExpression(closure: try self.parseClosure()))
             }
         else if self.token.isDoubleBackSlash
             {
             return(try self.parseQualifiedNameTerm())
             }
+        else if self.token.isRightArrow
+            {
+            self.advance()
+            let slotName = try self.parseIdentifier()
+            return(InferredAccessSlotExpression(slot: slotName))
+            }
         else
             {
-            return(.error("Uknown term type \(self.token)"))
+            return(Expression())
             }
         }
         
@@ -2439,7 +2566,7 @@ internal class Parser:CompilerPhase
             {
             return(try self.parseObjectTerm(name.stringName,object))
             }
-        return(Expression.undefinedValue(name.stringName))
+        fatalError("QualifiedNameTerm not handled properly")
         }
         
     private func parseSubscriptedTerm(expression:Expression) throws -> Expression
@@ -2451,7 +2578,7 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.rightBracketExpected,self.token.location))
             }
         self.advance()
-        return(.readSubscript(expression,index))
+        return(AccessSubscriptExpression(target: expression,subscript: index))
         }
         
     private func parseSlotTerm(expression:Expression) throws -> Expression
@@ -2465,7 +2592,7 @@ internal class Parser:CompilerPhase
             //
             if self.token.isInteger
                 {
-                term = .slot(term,.identifier("\(self.token.integer)"))
+                term = AccessSlotExpression(target: term,slot:IdentifierExpression(identifier: "\(self.token.integer)"))
                 self.advance()
                 }
             //
@@ -2474,7 +2601,7 @@ internal class Parser:CompilerPhase
             else
                 {
                 let name = try self.parseIdentifier()
-                term = .slot(term,.identifier(name))
+                term = AccessSlotExpression(target: term,slot:IdentifierExpression(identifier:name))
                 }
             }
         return(term)
@@ -2500,7 +2627,7 @@ internal class Parser:CompilerPhase
     func parseMakerInvocation(_ aClass:Class) throws -> Expression
         {
         let arguments = try self.parseArguments()
-        return(.makerInvocation(aClass,arguments))
+        return(ClassMakerInvocationExpression(class:aClass,arguments:arguments))
         }
         
     func parseObjectTerm(_ identifier:String,_ object:Symbol) throws -> Expression
@@ -2511,22 +2638,22 @@ internal class Parser:CompilerPhase
             if variable.canBeInvoked || self.token.isLeftPar
                 {
                 let arguments = try self.parseArguments()
-                return(.variableInvocation(variable,arguments))
+                return(ClosureInvocationExpression(closure:AccessVariableExpression(variable:variable),arguments:arguments))
                 }
-            var expression:Expression = .readVariable(variable)
+            var expression:Expression = AccessVariableExpression(variable:variable)
             if self.token.isLeftBracket || self.token.isRightArrow
                 {
                 expression = try self.parseSlotOrSubscript(expression:expression)
                 }
             return(expression)
             }
-        else if object is Class || object is ValueClass
+        else if object is Class 
             {
             if self.token.isLeftPar
                 {
                 return(try self.parseMakerInvocation(object as! Class))
                 }
-            return(.class(object as! Class))
+            return(ClassExpression(class:object as! Class))
             }
         else if object is Closure
             {
@@ -2535,7 +2662,7 @@ internal class Parser:CompilerPhase
             if self.token.isLeftPar
                 {
                 let arguments = try self.parseArguments()
-                expression = .closureInvocation(closure,arguments)
+                expression = ClosureInvocationExpression(closure: ClosureExpression(closure:closure),arguments:arguments)
                 if self.token.isStop || self.token.isLeftBracket
                     {
                     expression = try self.parseSlotOrSubscript(expression: expression)
@@ -2543,7 +2670,7 @@ internal class Parser:CompilerPhase
                 }
             else
                 {
-                return(.closure (object as! Closure))
+                return(ClosureExpression(closure: (object as! Closure)))
                 }
             }
         else if object is Method
@@ -2552,7 +2679,7 @@ internal class Parser:CompilerPhase
             if self.token.isLeftPar
                 {
                 let arguments = try self.parseArguments()
-                var expression = Expression.methodInvocation(method,arguments)
+                var expression:Expression = MethodInvocationExpression(methodName:method.shortName,method:method)
                 if self.token.isStop || self.token.isLeftBracket
                     {
                     expression = try self.parseSlotOrSubscript(expression: expression)
@@ -2561,7 +2688,7 @@ internal class Parser:CompilerPhase
                 }
             else
                 {
-                return(.method(object as! Method))
+                return(MethodExpression(method:object as! Method))
                 }
             }
         else if object is Function
@@ -2570,7 +2697,7 @@ internal class Parser:CompilerPhase
             if self.token.isLeftPar
                 {
                 let arguments = try self.parseArguments()
-                var expression = Expression.functionInvocation(function,arguments)
+                var expression:Expression = FunctionInvocationExpression(function: function,arguments: arguments)
                 if self.token.isStop || self.token.isLeftBracket
                     {
                     expression = try self.parseSlotOrSubscript(expression: expression)
@@ -2579,13 +2706,13 @@ internal class Parser:CompilerPhase
                 }
             else
                 {
-                return(.function(object as! Function))
+                return(FunctionInvocationExpression(function: object as! Function, arguments: []))
                 }
             }
         else if object is Module
             {
             let module = object as! Module
-            var expression = Expression.module(module)
+            var expression:Expression = ModuleExpression(module: module)
             if self.token.isStop || self.token.isLeftBracket || self.token.isRightArrow
                 {
                 expression = try self.parseSlotOrSubscript(expression: expression)
@@ -2600,9 +2727,9 @@ internal class Parser:CompilerPhase
                 {
                 self.advance()
                 self.advance()
-                return(Expression.enumerationCase(enumeration,enumeration.enumerationCase(named:nextToken.identifier)!))
+                return(EnumerationCaseExpression(name: "\(enumeration.shortName)->\(nextToken.identifier)",enumeration: enumeration,case: enumeration.enumerationCase(named:nextToken.identifier)!))
                 }
-            return(Expression.enumeration(enumeration))
+            return(EnumerationExpression(enumeration: enumeration))
             }
         else
             {
@@ -2610,11 +2737,11 @@ internal class Parser:CompilerPhase
                 {
                 let arguments = try self.parseArguments()
                 let aClass = Class(shortName:identifier)
-                return(.makerInvocation(aClass,arguments))
+                return(MakerInvocationExpression(class: aClass,arguments: arguments))
                 }
-            return(Expression.undefinedValue(identifier))
+            fatalError("ObjectTerm not handled completely - \(object)")
             }
-        return(Expression.error("Uknown identifier term \(identifier)"))
+        throw(CompilerError(.invalidTermInExpression,self.token.location))
         }
         
     private func parseParenthesizedExpression() throws -> Expression
@@ -2633,10 +2760,10 @@ internal class Parser:CompilerPhase
             }
         if !self.token.isRightPar
             {
-            throw(CompilerError(.rightParExpected,self.token.location))
+            throw(CompilerError(error: .rightParExpected,location: self.token.location,hint:"parseParenthesizedExpression"))
             }
         self.advance()
-        return(.tuple(expressions))
+        return(TupleExpression(elements:expressions))
         }
 
     private func parseBracketedExpression() throws -> Expression
@@ -2686,7 +2813,7 @@ internal class Parser:CompilerPhase
         var literals:[Expression] = []
         while self.token.isInteger
             {
-            literals.append(.integer(self.token.integer))
+            literals.append(LiteralIntegerExpression(integer:self.token.integer))
             self.advance()
             if self.token.isComma
                 {
@@ -2698,7 +2825,7 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.rightBracketExpected,self.token.location))
             }
         self.advance()
-        return(.literalArray(literals))
+        return(LiteralArrayExpression(array:literals))
         }
         
     private func parseLiteralFloatArray() throws -> Expression
@@ -2706,7 +2833,7 @@ internal class Parser:CompilerPhase
         var literals:[Expression] = []
         while self.token.isFloatingPointNumber
             {
-            literals.append(.float(self.token.floatingPointValue))
+            literals.append(LiteralFloatExpression(float:self.token.floatingPointValue))
             self.advance()
             if self.token.isComma
                 {
@@ -2718,7 +2845,7 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.rightBracketExpected,self.token.location))
             }
         self.advance()
-        return(.literalArray(literals))
+        return(LiteralArrayExpression(array:literals))
         }
         
     private func parseLiteralStringArray() throws -> Expression
@@ -2726,7 +2853,7 @@ internal class Parser:CompilerPhase
         var literals:[Expression] = []
         while self.token.isString
             {
-            literals.append(.string(self.token.string))
+            literals.append(LiteralStringExpression(string:self.token.string))
             self.advance()
             if self.token.isComma
                 {
@@ -2738,7 +2865,7 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.rightBracketExpected,self.token.location))
             }
         self.advance()
-        return(.literalArray(literals))
+        return(LiteralArrayExpression(array:literals))
         }
         
     private func parseLiteralSymbolArray() throws -> Expression
@@ -2746,7 +2873,7 @@ internal class Parser:CompilerPhase
         var literals:[Expression] = []
         while self.token.isHashString
             {
-            literals.append(.symbol(self.token.hashString))
+            literals.append(LiteralSymbolExpression(symbol:self.token.hashString))
             self.advance()
             if self.token.isComma
                 {
@@ -2758,7 +2885,7 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.rightBracketExpected,self.token.location))
             }
         self.advance()
-        return(.literalArray(literals))
+        return(LiteralArrayExpression(array:literals))
         }
         
     private func parseLiteralIdentifierArray() throws -> Expression
@@ -2766,7 +2893,7 @@ internal class Parser:CompilerPhase
         var literals:[Expression] = []
         while self.token.isIdentifier
             {
-            literals.append(.identifier(self.token.identifier))
+            literals.append(LiteralStringExpression(string:self.token.identifier))
             self.advance()
             if self.token.isComma
                 {
@@ -2778,7 +2905,7 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.rightBracketExpected,self.token.location))
             }
         self.advance()
-        return(.literalArray(literals))
+        return(LiteralArrayExpression(array:literals))
         }
         
     private func parseLiteralBooleanArray() throws -> Expression
@@ -2786,7 +2913,7 @@ internal class Parser:CompilerPhase
         var literals:[Expression] = []
         while self.token.isTrue || self.token.isFalse
             {
-            literals.append(.boolean(self.token.booleanValue))
+            literals.append(LiteralBooleanExpression(boolean:self.token.booleanValue == .trueValue))
             self.advance()
             if self.token.isComma
                 {
@@ -2798,7 +2925,7 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.rightBracketExpected,self.token.location))
             }
         self.advance()
-        return(.literalArray(literals))
+        return(LiteralArrayExpression(array:literals))
         }
         
     private func parseLiteralCharacterArray() throws -> Expression
@@ -2806,7 +2933,7 @@ internal class Parser:CompilerPhase
         var literals:[Expression] = []
         while self.token.isCharacter
             {
-            literals.append(.character(self.token.characterValue))
+            literals.append(LiteralCharacterExpression(character:self.token.characterValue))
             self.advance()
             if self.token.isComma
                 {
@@ -2818,7 +2945,7 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.rightBracketExpected,self.token.location))
             }
         self.advance()
-        return(.literalArray(literals))
+        return(LiteralArrayExpression(array:literals))
         }
         
     private func parseLiteralByteArray() throws -> Expression
@@ -2826,7 +2953,7 @@ internal class Parser:CompilerPhase
         var literals:[Expression] = []
         while self.token.isByte
             {
-            literals.append(.byte(self.token.byteValue))
+            literals.append(LiteralByteExpression(byte:self.token.byteValue))
             self.advance()
             if self.token.isComma
                 {
@@ -2838,6 +2965,6 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.rightBracketExpected,self.token.location))
             }
         self.advance()
-        return(.literalArray(literals))
+        return(LiteralArrayExpression(array:literals))
         }
     }

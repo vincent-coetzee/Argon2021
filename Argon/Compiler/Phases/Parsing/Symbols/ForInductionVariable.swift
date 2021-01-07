@@ -12,7 +12,7 @@ internal class ForInductionVariable:InductionVariable
     {
     init(shortName:String)
         {
-        super.init(shortName:shortName,type:Type.undefined)
+        super.init(shortName:shortName,class:Class.voidClass)
         }
     
     internal required init()

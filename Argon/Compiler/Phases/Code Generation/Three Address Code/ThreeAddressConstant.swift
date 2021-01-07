@@ -9,4 +9,8 @@ import Foundation
 
 public enum ThreeAddressConstant:ThreeAddress
     {
+    public var displayString:String
+        {
+        return("CONSTANT")
+        }
     }

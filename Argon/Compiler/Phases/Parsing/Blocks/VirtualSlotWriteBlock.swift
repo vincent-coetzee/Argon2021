@@ -16,9 +16,9 @@ internal class VirtualSlotWriteBlock:VirtualSlotBlock
         self.statements = block.statements
         self.symbols = block.symbols
         }
-    
-    required init()
+        
+    internal override init()
         {
-        fatalError("init() has not been implemented")
+        super.init()
         }
     }

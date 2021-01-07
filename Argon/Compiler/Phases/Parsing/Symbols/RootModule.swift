@@ -12,7 +12,6 @@ public class RootModule:Module
     {
     public let rootClass = Class.rootClass
     public let valueClass = Class.valueClass
-    public let instanceClass = Class.instanceClass
     public let metaClass = Class.metaClass
     public let classClass = Class.classClass
     public let nilClass = Class.nilClass
@@ -44,6 +43,7 @@ public class RootModule:Module
     public let moduleClass = Class.moduleClass
     public let arrayClass = Class.arrayClass
     public let enumerationClass = Class.enumerationClass
+    public let addressClass = Class.addressClass
     
     public var nilInstance:Symbol
         {
@@ -72,8 +72,8 @@ public class RootModule:Module
     internal func initRootModule() -> Self
         {
         self.addSymbol(self.rootClass)
+        self.addSymbol(self.addressClass)
         self.addSymbol(self.valueClass)
-        self.addSymbol(self.instanceClass)
         self.addSymbol(self.metaClass)
         self.addSymbol(self.classClass)
         self.addSymbol(self.nilClass)
@@ -119,6 +119,7 @@ public class RootModule:Module
         self.makeInstance(of:self.voidClass,named:"Void")
         self.makeInstance(of:self.booleanClass,named:"#true")
         self.makeInstance(of:self.booleanClass,named:"#false")
+        self.makeInstance(of:self.addressClass,named:"__handlerBaseAddress")
         let nilInstance = self.nilClass.instanciate()
         nilInstance.shortName = "nil"
         self.addSymbol(nilInstance)

@@ -28,10 +28,16 @@ public class MethodInstance:Symbol
         
     internal var owner:Symbol?
     internal var functionName:String?
-    internal var returnType:Type
+    internal var returnTypeClass:Class
     internal var _parameters = Parameters()
     internal var block = Block()
+    internal var ir3ABuffer = ThreeAddressInstructionBuffer()
     
+    internal override var typeClass:Class
+        {
+        return(MethodInstanceClass(shortName:self.shortName,argumentClasses:self._parameters.map{$0.typeClass},returnTypeClass: self.returnTypeClass))
+        }
+        
     internal override func pushScope()
         {
         self.push()
@@ -60,14 +66,14 @@ public class MethodInstance:Symbol
     internal init(shortName:String,owner:Symbol? = nil)
         {
         self.owner = owner
-        self.returnType = .class(Module.rootModule.voidClass)
+        self.returnTypeClass = .voidClass
         super.init(shortName: shortName)
         }
         
     internal required init()
         {
         self.owner = RootModule.rootModule.nilInstance
-        self.returnType = .class(Module.rootModule.voidClass)
+        self.returnTypeClass = .voidClass
         super.init()
         }
         
@@ -78,7 +84,16 @@ public class MethodInstance:Symbol
         
     internal override func typeCheck() throws
         {
+        try self.block.typeCheck()
+        }
         
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using compiler:Compiler) throws
+        {
+        for statement in self.block.statements
+            {
+            try statement.generateIntermediateCode(in:module,codeHolder:.methodInstance(self),into:self.ir3ABuffer,using:compiler)
+            }
+        self.ir3ABuffer.dump()
         }
     }
 

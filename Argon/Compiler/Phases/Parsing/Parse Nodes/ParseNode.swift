@@ -37,8 +37,8 @@ public class ParseNode:Scope
         {
         fatalError("This method \(#function) should have been overridden in a subclass")
         }
-        
-    internal required init()
-        {
-        }
+//        
+//    internal required init()
+//        {
+//        }
     }

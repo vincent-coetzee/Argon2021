@@ -11,9 +11,19 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate
     {
 
-    func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
-    }
+    func applicationDidFinishLaunching(_ aNotification: Notification)
+        {
+        let sourceItem = SourceFolder(path:"/Users/vincent/Development/Development2021/Argon Projects/Medicine/")
+        let item = sourceItem.children[0]
+        let source = item.source
+//        self.tokenStream.reset(source:source)
+        let compiler = Compiler()
+        let module = compiler.compile(source: source)
+//        if let controller = NSStoryboard.main?.instantiateController(withIdentifier:"ArgonClassBrowserControllerID") as? NSWindowController
+//            {
+//            controller.showWindow(self)
+//            }
+        }
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application

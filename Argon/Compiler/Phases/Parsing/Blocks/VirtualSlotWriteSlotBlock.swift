@@ -18,9 +18,4 @@ internal class VirtualSlotWriteSlotBlock:VirtualSlotWriteBlock
         self.slotOffset = slotOffset
         super.init()
         }
-    
-    required init()
-        {
-        fatalError("init() has not been implemented")
-        }
     }

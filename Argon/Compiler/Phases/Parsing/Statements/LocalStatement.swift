@@ -15,7 +15,7 @@ internal class LocalStatement:LetStatement
     init(localVariable:LocalVariable)
         {
         self.localVariable = localVariable
-        super.init()
+        super.init(variable:localVariable)
         }
     
     required init()

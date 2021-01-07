@@ -78,6 +78,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         {
         case abstract
         case All
+        case alias
         case Array
         case `as`
         case BitField
@@ -155,6 +156,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         case slot
         case `static`
         case String
+        case `super`
         case Symbol
         case system
         case this
@@ -1309,6 +1311,17 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             }
         }
         
+    public var isAlias:Bool
+        {
+        switch(self)
+            {
+            case .keyword(let value,_):
+                return(value == .alias)
+            default:
+                return(false)
+            }
+        }
+        
     public var isTuple:Bool
         {
         switch(self)
@@ -1546,6 +1559,17 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             {
             case .keyword(let keyword,_):
                 return(keyword == .this)
+            default:
+                return(false)
+            }
+        }
+        
+    public var isSuper:Bool
+        {
+        switch(self)
+            {
+            case .keyword(let keyword,_):
+                return(keyword == .super)
             default:
                 return(false)
             }

@@ -17,9 +17,4 @@ internal class NextStatement:ControlFlowStatement
         self.arguments = arguments
         super.init()
         }
-    
-    required init()
-        {
-        fatalError("init() has not been implemented")
-        }
     }

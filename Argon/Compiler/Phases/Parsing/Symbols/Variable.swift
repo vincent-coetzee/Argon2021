@@ -8,62 +8,50 @@
 
 import Foundation
 
-public class Variable:Symbol
+public class Variable:Symbol,ThreeAddress
     {
-    public static let none = Variable(shortName:"NONE",type:.void)
+    public static let none = Variable(shortName:"NONE",class:.voidClass)
     
+    public var displayString:String
+        {
+        return(self.shortName)
+        }
+        
     internal var canBeInvoked:Bool
         {
-        switch(self._type)
-            {
-            case .closure:
-                return(true)
-            case .function:
-                return(true)
-            case .method:
-                return(true)
-            default:
-                return(false)
-            }
+        return(self._class.shortName == "Closure" || self._class.shortName == "Function" || self._class.shortName == "Method")
         }
         
     internal var isArrayVariable:Bool
         {
-        return(self._type.isArrayType)
+        return(self._class.shortName == "Array")
         }
         
     internal var initialValue:Expression?
     
-    internal override var type:Type
+    internal override var typeClass:Class
         {
-        get
-            {
-            return(self._type)
-            }
-        set
-            {
-            self._type = newValue
-            }
+        return(self._class)
         }
         
-    internal var _type:Type
     internal var location:ValueLocation = .none
-        
-    internal init(shortName:String,type:Type)
+    internal var _class:Class
+    
+    internal init(shortName:String,class:Class)
         {
-        self._type = type
+        self._class = `class`
         super.init(shortName:shortName)
         }
         
-    internal init(name:Name,type:Type)
+    internal init(name:Name,class:Class)
         {
-        self._type = type
-        super.init(shortName:name.first)
+        self._class = `class`
+        super.init(name:name)
         }
         
     internal required init()
         {
-        self._type = RootModule.rootModule.nilInstance.type
+        self._class = RootModule.rootModule.nilInstance.typeClass
         super.init()
         }
     }

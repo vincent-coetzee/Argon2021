@@ -20,11 +20,4 @@ internal class WhileStatement:ControlFlowStatement
         super.init()
         self.location = location
         }
-    
-    required init()
-        {
-        self.condition = Expression.none
-        self.block = Block()
-        super.init()
-        }
     }

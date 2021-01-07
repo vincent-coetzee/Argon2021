@@ -17,11 +17,13 @@ public class CompilerError:Error,Equatable
         
     let code:SystemError
     let location:SourceLocation
+    var hint:String = ""
     
-    init(error:SystemError,location:SourceLocation)
+    init(error:SystemError,location:SourceLocation,hint:String)
         {
         self.code = error
         self.location = location
+        self.hint = hint
         }
         
     init(_ error:SystemError,_ location:SourceLocation)
@@ -31,7 +33,7 @@ public class CompilerError:Error,Equatable
         }
     }
     
-public enum SystemError:Equatable
+public enum SystemError:Equatable,Error
     {
     case unknownError
     case invalidCharacter(Swift.Character)
@@ -75,7 +77,6 @@ public enum SystemError:Equatable
     case enumerationCaseExpected
     case nameComponentExpected
     case enumerationExpected
-    case invalidArrayIndexType
     case commaExpected
     case typeExpected
     case isExpected
@@ -131,4 +132,9 @@ public enum SystemError:Equatable
     case nameCanNotBeFound(Name)
     case rightArrowExpected
     case properFunctionNameExpected
+    case typeMismatch(Type,Type)
+    case canNotCastPointerToClass(Class)
+    case invalidTermInExpression
+    case invalidArrayIndexType(String)
+    case invalidSlotFieldHashIndex
     }

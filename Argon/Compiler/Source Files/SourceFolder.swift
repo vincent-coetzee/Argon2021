@@ -18,6 +18,8 @@ public class SourceFolder:SourceFile
         return(result && pointer.boolValue ? SourceFolder(path:path) : SourceFile(path:path))
         }
         
+    private var _children:[SourceFile]? = nil
+    
     public override var image:NSImage
         {
         return(NSImage(named:"PinkFolder")!)
@@ -35,6 +37,10 @@ public class SourceFolder:SourceFile
         
     public override var children:[SourceFile]
         {
+        if self._children != nil
+            {
+            return(self._children!)
+            }
         let manager = FileManager.default
         var nodes:[SourceFile] = []
         guard let localPaths = try? manager.contentsOfDirectory(atPath: self.path) else
@@ -56,11 +62,17 @@ public class SourceFolder:SourceFile
                 nodes.append(file)
                 }
             }
+        self._children = nodes
         return(nodes)
         }
     
     override var isExpandable: Bool
         {
         return(self.children.count > 0)
+        }
+        
+    internal override func loadElements()
+        {
+        _ = self.children
         }
     }

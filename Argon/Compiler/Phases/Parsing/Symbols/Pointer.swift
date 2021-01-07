@@ -7,17 +7,17 @@
 
 import Foundation
 
-public class Pointer:ValueClass
+public class Pointer:Class
     {
     override internal var isGeneric:Bool
         {
         return(true)
         }
         
-    public init(shortName:String,elementType:Type)
+    public init(shortName:String,elementType:Class)
         {
         super.init(shortName:shortName)
-        self.generics.append(GenericType(elementType))
+        self.generics.append(GenericClass(elementType))
         }
     
     required init() {

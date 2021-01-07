@@ -17,12 +17,6 @@ public class ElseClause:Clause
         self.block = block
         super.init()
         }
-    
-    required init()
-        {
-        self.block = Block()
-        super.init()
-        }
     }
 
 public typealias ElseClauses = Array<ElseClause>

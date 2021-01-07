@@ -20,4 +20,12 @@ internal class MachineCodeGenerator:CompilerPhase
     internal func process(source:String,using:Compiler) throws
         {
         }
+        
+    internal func preProcess(source:String,using compiler:Compiler) throws
+        {
+        }
+        
+    internal func postProcess(modules:Array<Module>,using compiler:Compiler) throws
+        {
+        }
     }

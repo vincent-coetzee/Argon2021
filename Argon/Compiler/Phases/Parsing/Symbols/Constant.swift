@@ -9,25 +9,25 @@ import Foundation
 
 public class Constant:Variable
     {
-    internal override var type:Type
+    internal override var typeClass:Class
         {
         get
             {
-            return(.constant(self._type))
+            return(ConstantClass(shortName: Argon.nextName("CONSTANT"),class: self._class))
             }
         set
             {
             }
         }
         
-    override init(name:Name,type:Type)
+    override init(name:Name,class:Class)
         {
-        super.init(name:name,type:type)
+        super.init(name:name,class:`class`)
         }
     
-    override init(shortName:Identifier,type:Type)
+    override init(shortName:Identifier,class:Class)
         {
-        super.init(shortName:shortName,type:type)
+        super.init(shortName:shortName,class:`class`)
         }
         
     internal required init() {

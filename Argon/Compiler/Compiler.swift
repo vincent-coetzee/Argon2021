@@ -10,7 +10,14 @@ import Foundation
 
 internal class Compiler
     {
-    public var module:Module?
+    public var modules:Array<Module> = []
+    
+    internal var nextDataAddres:Address = 0
+    internal var nextStaticAddress:Address = 0
+    internal var nextClassAddress:Address = 0
+    internal var nextManagedAddress:Address = 0
+    
+    
 //    private var path = ""
 //    private var phase:CompilerPhase = Parser()
 //    private var sourceTree = SourceFolder()
@@ -55,6 +62,11 @@ internal class Compiler
 //            }
 //        }
         
+    internal func append(module:Module)
+        {
+        self.modules.append(module)
+        }
+        
     internal func compile(source:String)
         {
         do
@@ -62,7 +74,9 @@ internal class Compiler
             var currentPhase:CompilerPhase? = Parser()
             while let phase = currentPhase
                 {
+                try phase.preProcess(source:source,using:self)
                 try phase.process(source:source,using:self)
+                try phase.postProcess(modules:self.modules,using:self)
                 currentPhase = phase.nextPhase
                 }
             }
@@ -73,6 +87,11 @@ internal class Compiler
             let stop = error.location.tokenStop
             let text = source.substring(with:Range(uncheckedBounds: (lower:start,upper:stop)))
             print("ERROR IS: \(text)")
+            print("HINT: \(error.hint)")
+            }
+        catch let systemError as SystemError
+            {
+            print("Error occurred \(systemError)")
             }
         catch
             {

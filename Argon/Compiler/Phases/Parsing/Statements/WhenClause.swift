@@ -19,11 +19,6 @@ internal class WhenClause:Clause
         self.block = block
         super.init()
         }
-    
-    required init()
-        {
-        fatalError("init() has not been implemented")
-        }
     }
 
 typealias WhenClauses = Array<WhenClause>

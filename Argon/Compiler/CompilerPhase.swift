@@ -12,5 +12,7 @@ internal protocol CompilerPhase
     {
     var nextPhase:CompilerPhase? { get }
     var name:String { get }
+    func preProcess(source:String,using:Compiler) throws
     func process(source:String,using: Compiler) throws
+    func postProcess(modules:Array<Module>,using:Compiler) throws
     }

@@ -14,17 +14,17 @@ public class TokenStyle
 
     static func initStyles()
         {
-        styles[.keyword] = TokenStyle(type:.keyword,foreground: NSColor.argonSizzlingRed,font:NSFont.tokenFont)
-        styles[.comment] = TokenStyle(type:.comment,foreground: NSColor.argonPurple,font:NSFont.tokenFont)
-        styles[.nativeType] = TokenStyle(type:.nativeType,foreground: NSColor.argonCoral,font:NSFont.tokenFont)
-        styles[.identifier] = TokenStyle(type:.identifier,foreground: NSColor.argonZomp,font:NSFont.tokenFont)
+        styles[.keyword] = TokenStyle(type:.keyword,foreground: NSColor(red:128,green:189,blue:4),font:NSFont.tokenFont)
+        styles[.comment] = TokenStyle(type:.comment,foreground: NSColor(red:255,green:255,blue:255),font:NSFont.tokenFont)
+        styles[.nativeType] = TokenStyle(type:.nativeType,foreground: NSColor(red:255,green:38,blue:0),font:NSFont.tokenFont)
+        styles[.identifier] = TokenStyle(type:.identifier,foreground: NSColor(red:170,green:13,blue:145),font:NSFont.tokenFont)
 //        styles.append(TokenStyle(type:.symbol,foreground: NSColor.argonBlue,font:NSFont.tokenFont))
-        styles[.symbol] = TokenStyle(type:.symbol,foreground: NSColor.argonYellow,font:NSFont.tokenFont)
+        styles[.symbol] = TokenStyle(type:.symbol,foreground: NSColor(red:252,green:106,blue:92),font:NSFont.tokenFont)
         styles[.true] = TokenStyle(type:.symbol,foreground: NSColor.argonCheese,font:NSFont.tokenFont)
         styles[.false] = TokenStyle(type:.symbol,foreground: NSColor.argonCheese,font:NSFont.tokenFont)
         styles[.float] = TokenStyle(type:.float,foreground: NSColor.argonCyan,font:NSFont.tokenFont)
-        styles[.string] = TokenStyle(type:.string,foreground: NSColor.argonPink,font:NSFont.tokenFont)
-        styles[.integer] = TokenStyle(type:.integer,foreground: NSColor.argonGreen,font:NSFont.tokenFont)
+        styles[.string] = TokenStyle(type:.string,foreground: NSColor(red:252,green:106,blue:92),font:NSFont.tokenFont)
+        styles[.integer] = TokenStyle(type:.integer,foreground: NSColor(red:128,green:189,blue:4),font:NSFont.tokenFont)
         styles[.hashString] = TokenStyle(type:.hashString,foreground: NSColor.argonDeepOrange,font:NSFont.tokenFont)
         }
         

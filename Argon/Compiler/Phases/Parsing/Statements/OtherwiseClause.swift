@@ -17,9 +17,4 @@ internal class OtherwiseClause:Clause
         self.block = block
         super.init()
         }
-    
-    required init()
-        {
-        fatalError("init() has not been implemented")
-        }
     }
