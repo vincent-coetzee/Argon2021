@@ -22,6 +22,11 @@ internal protocol Scope:class,SymbolTable,StatementBlock
     
 extension Scope
     {
+    public static func ==(lhs:Scope,rhs:Scope) -> Bool
+        {
+        return(lhs.index == rhs.index)
+        }
+        
     internal func lookup(name:Name) -> SymbolSet?
         {
         if name.count == 0

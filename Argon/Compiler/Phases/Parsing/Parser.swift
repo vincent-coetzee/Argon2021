@@ -380,7 +380,8 @@ internal class Parser:CompilerPhase
         self.advance()
         let location = self.token.location
         let name = try self.parseIdentifier()
-        var path = ""
+        var path = "\\"
+        var isPathBased = false
         if self.token.isLeftPar
             {
             try self.parseParentheses
@@ -390,10 +391,12 @@ internal class Parser:CompilerPhase
                     throw(CompilerError(.stringLiteralOrVariableExpected,self.token.location))
                     }
                 path = self.token.string
+                isPathBased = true
                 self.advance()
                 }
             }
         let moduleImport = Import(shortName:name,path:path)
+        moduleImport.isPathBased = isPathBased
         moduleImport.addDeclaration(location: location)
         Module.innerScope.addSymbol(moduleImport)
         }
@@ -576,7 +579,15 @@ internal class Parser:CompilerPhase
                 {
                 if self.token.isSlotKeyword
                     {
-                    aClass.appendSlot(try self.parseSlotDeclaration(slotAttributes: [.value]))
+                    let slot = try self.parseSlotDeclaration(slotAttributes: [.value])
+                    if slot.isClassSlot
+                        {
+                        aClass.addClassSlot(slot)
+                        }
+                    else
+                        {
+                        aClass.addMetaSlot(slot)
+                        }
                     }
                 else if self.token.isIdentifier && self.token.identifier == aClass.shortName
                     {
@@ -643,11 +654,27 @@ internal class Parser:CompilerPhase
                 {
                 if self.token.isAlias
                     {
-                    aClass.appendSlot(try self.parseAliasSlotDeclaration())
+                    let slot = try self.parseAliasSlotDeclaration()
+                    if slot.isClassSlot
+                        {
+                        aClass.addClassSlot(slot)
+                        }
+                    else
+                        {
+                        aClass.addMetaSlot(slot)
+                        }
                     }
                 else if self.token.isSlotKeyword
                     {
-                    aClass.appendSlot(try self.parseSlotDeclaration(slotAttributes: [.class]))
+                    let slot = try self.parseSlotDeclaration(slotAttributes: [.class])
+                    if slot.isClassSlot
+                        {
+                        aClass.addClassSlot(slot)
+                        }
+                    else
+                        {
+                        aClass.addMetaSlot(slot)
+                        }
                     }
                 else if self.token.isIdentifier && self.token.identifier == aClass.shortName
                     {
@@ -2090,6 +2117,7 @@ internal class Parser:CompilerPhase
             }
         self.advance()
         let inductionVariable = ForInductionVariable(shortName:name)
+        inductionVariable.definingScope = Module.innerScope
         let block = Block(inductionVariable: inductionVariable)
         try self.parseBlock(block)
         inductionVariable.addDeclaration(location: location)
@@ -2231,7 +2259,7 @@ internal class Parser:CompilerPhase
         while self.token.isRightArrow
             {
             self.advance()
-            lhs = AccessSlotExpression(target: lhs,slot:try self.parseExpression())
+            lhs = SlotExpression(target: lhs,slot:try self.parseExpression())
             }
         return(lhs)
         }
@@ -2369,7 +2397,7 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.timeComponentSeparatorExpected,self.token.location))
             }
         let third = try self.parseExpression()
-        return(TimeExpression(hour: first,minute: second,second: third))
+        return(TimeValueExpression(hour: first,minute: second,second: third))
         }
         
     func parseDateTerm(first:Expression) throws -> Expression
@@ -2396,9 +2424,9 @@ internal class Parser:CompilerPhase
                 }
             self.advance()
             let second = try self.parseExpression()
-            return(DateTimeExpression(date: DateExpression(day: first,month: second,year: third),time: TimeExpression(hour: hour,minute: minute,second: second)))
+            return(DateTimeValueExpression(date: DateValueExpression(day: first,month: second,year: third),time: TimeValueExpression(hour: hour,minute: minute,second: second)))
             }
-        return(DateExpression(day: first,month: second,year: third))
+        return(DateValueExpression(day: first,month: second,year: third))
         }
         
     func parseDateExpression() throws -> Expression
@@ -2549,7 +2577,7 @@ internal class Parser:CompilerPhase
                 }
             let variable = Variable(shortName:identifier,class:.voidClass)
             variable.wasDeclaredForward = true
-            return(ForwardAccessVariableExpression(variable: variable))
+            return(ForwardVariableExpression(variable: variable))
             }
         else if self.token.isLeftBrace
             {
@@ -2563,7 +2591,7 @@ internal class Parser:CompilerPhase
             {
             self.advance()
             let slotName = try self.parseIdentifier()
-            return(InferredAccessSlotExpression(slot: slotName))
+            return(InferredSlotExpression(slot: slotName))
             }
         else
             {
@@ -2591,7 +2619,7 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.rightBracketExpected,self.token.location))
             }
         self.advance()
-        return(AccessSubscriptExpression(target: expression,subscript: index))
+        return(SubscriptExpression(target: expression,subscript: index))
         }
         
     private func parseSlotTerm(expression:Expression) throws -> Expression
@@ -2605,7 +2633,7 @@ internal class Parser:CompilerPhase
             //
             if self.token.isInteger
                 {
-                term = AccessSlotExpression(target: term,slot:IdentifierExpression(identifier: "\(self.token.integer)"))
+                term = SlotExpression(target: term,slot:IdentifierExpression(identifier: "\(self.token.integer)"))
                 self.advance()
                 }
             //
@@ -2614,7 +2642,7 @@ internal class Parser:CompilerPhase
             else
                 {
                 let name = try self.parseIdentifier()
-                term = AccessSlotExpression(target: term,slot:IdentifierExpression(identifier:name))
+                term = SlotExpression(target: term,slot:IdentifierExpression(identifier:name))
                 }
             }
         return(term)
@@ -2740,9 +2768,9 @@ internal class Parser:CompilerPhase
                 {
                 self.advance()
                 self.advance()
-                return(EnumerationCaseExpression(name: "\(enumeration.shortName)->\(nextToken.identifier)",enumeration: enumeration,case: enumeration.enumerationCase(named:nextToken.identifier)!))
+                return(EnumerationCaseValueExpression(name: "\(enumeration.shortName)->\(nextToken.identifier)",enumeration: enumeration,case: enumeration.enumerationCase(named:nextToken.identifier)!))
                 }
-            return(EnumerationExpression(enumeration: enumeration))
+            return(LiteralEnumerationExpression(enumeration: enumeration))
             }
         else
             {

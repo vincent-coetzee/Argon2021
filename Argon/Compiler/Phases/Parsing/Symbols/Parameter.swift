@@ -12,6 +12,11 @@ internal typealias ParameterTuple = (String?,Class)
 
 public class Parameter:Variable
     {
+    public override var displayString:String
+        {
+        return("PARM(\(self.shortName))")
+        }
+        
     internal var showTag:Bool
     private var hasTag:Bool
     private var tag:String = ""
@@ -49,6 +54,13 @@ public class Parameter:Variable
         super.init(shortName: shortName,class: type)
         }
     
+    internal init(_ shortName:String,_ type:Class,_ hasTag:Bool = true)
+        {
+        self.hasTag = hasTag
+        self.showTag = true
+        super.init(shortName: shortName,class: type)
+        }
+        
     internal required init()
         {
         self.showTag = true
@@ -58,7 +70,7 @@ public class Parameter:Variable
         
     override func generateIntermediateCodeLoad(target:ThreeAddress,into buffer:ThreeAddressInstructionBuffer)
         {
-        buffer.emitInstruction(result:target,left:IndirectMemoryRegisterOffsetAddress(baseRegister:Register.sp,offsetRegister:Register.bp,offset:self.stackOffsetFromBasePointer),opcode:.assign)
+        buffer.emitInstruction(result:target,left:self,opcode:.assign)
         }
     }
 
@@ -66,4 +78,8 @@ internal class NakedParameter:Parameter
     {
     }
 
+internal class VariadicParameter:Parameter
+    {
+    }
+    
 public typealias Parameters = Array<Parameter>

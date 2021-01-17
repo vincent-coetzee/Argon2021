@@ -15,58 +15,61 @@ public class Class:Symbol,ThreeAddress
         return(Swift.type(of:rhs)==Swift.type(of:lhs) && rhs.shortName == lhs.shortName)
         }
         
-    internal static let rootClass = Class(shortName:"Root")
-    internal static let classClass = Class(shortName:"Class").parentClass(.rootClass)
-    internal static let metaClass = Class(shortName:"Metaclass").parentClass(.classClass)
-    internal static let allClass = Class(shortName:"All").parentClass(.rootClass)
-    internal static let voidClass = Class(shortName:"Void").parentClass(.rootClass)
-    internal static let valueClass = Class(shortName:"Value").parentClass(.rootClass)
-    internal static let constantClass = ConstantClass(shortName:"Constant").parentClass(.valueClass)
-    internal static let addressClass = AddressClass(shortName:"Address").parentClass(.valueClass)
-    internal static let objectClass = Class(shortName:"Object").parentClass(.rootClass)
-    internal static let enumerationClass = Class(shortName:"Enumeration").parentClass(.valueClass)
-    internal static let bitValueClass = Class(shortName:"BitValue").parentClass(.valueClass)
-    internal static let nilClass = Class(shortName:"Nil").parentClass(.rootClass)
-    internal static let booleanClass = Class(shortName:"Boolean").parentClass(.valueClass)
-    internal static let byteClass = Class(shortName:"Byte").parentClass(.valueClass)
-    internal static let characterClass = Class(shortName:"Character").parentClass(.valueClass)
-    internal static let tupleClass = Class(shortName:"Tuple").parentClass(.objectClass)
-    internal static let dateClass = Class(shortName:"Date").parentClass(.valueClass)
-    internal static let timeClass = Class(shortName:"Time").parentClass(.valueClass)
-    internal static let dateTimeClass = Class(shortName:"DateTime").parentClass(.valueClass)
-    internal static let signalClass = Class(shortName:"Signal").parentClass(.valueClass)
-    internal static let semaphoreClass = Class(shortName:"Semaphore").parentClass(.objectClass)
-    internal static let moduleClass = Class(shortName:"Module").parentClass(.objectClass)
-    internal static let stringClass = Class(shortName:"String").parentClass(.valueClass)
-    internal static let symbolClass = Class(shortName:"Symbol").parentClass(.stringClass)
-    internal static let lockClass = Class(shortName:"Lock").parentClass(.valueClass)
-    internal static let threadClass = Class(shortName:"Thread").parentClass(.objectClass)
-    internal static let behaviorClass = Class(shortName:"Behavior").parentClass(.objectClass)
-    internal static let methodClass = Class(shortName:"Method").parentClass(.behaviorClass)
-    internal static let closureClass = Class(shortName:"Closure").parentClass(.behaviorClass)
-    internal static let functionClass = Class(shortName:"Function").parentClass(.behaviorClass)
-    internal static let integerClass = Class(shortName:"Integer").parentClass(.bitValueClass)
-    internal static let integer8Class = Class(shortName:"Integer8").parentClass(.bitValueClass)
-    internal static let integer16Class = Class(shortName:"Integer16").parentClass(.bitValueClass)
-    internal static let integer32Class = Class(shortName:"Integer32").parentClass(.bitValueClass)
-    internal static let integer64Class = Class(shortName:"Integer64").parentClass(.bitValueClass)
-    internal static let uIntegerClass = Class(shortName:"UInteger").parentClass(.bitValueClass)
-    internal static let uInteger8Class = Class(shortName:"UInteger8").parentClass(.bitValueClass)
-    internal static let uInteger16Class = Class(shortName:"UInteger16").parentClass(.bitValueClass)
-    internal static let uInteger32Class = Class(shortName:"UInteger32").parentClass(.bitValueClass)
-    internal static let uInteger64Class = Class(shortName:"UInteger64").parentClass(.bitValueClass)
-    internal static let floatClass = Class(shortName:"Float").parentClass(.bitValueClass)
-    internal static let float32Class = Class(shortName:"Float32").parentClass(.bitValueClass)
-    internal static let float64Class = Class(shortName:"Float64").parentClass(.bitValueClass)
-    internal static let float16Class = Class(shortName:"Float16").parentClass(.bitValueClass)
-    internal static let collectionClass = CollectionClass(shortName:"Collection").parentClass(.objectClass).slot(Identifier("count"),.integerClass).slot(Identifier("elementType"),.classClass)
-    internal static let arrayClass = ArrayClass(shortName:"Array",indexType:.unbounded, elementTypeClass: .voidClass).parentClass(.collectionClass)
-    internal static let setClass = SetClass(shortName:"Set",elementTypeClass:.voidClass).parentClass(.collectionClass)
-    internal static let listClass = ListClass(shortName:"List",elementTypeClass:.voidClass).parentClass(.collectionClass)
-    internal static let bitSetClass = BitSetClass(shortName:"BitSet",keyType:.void,valueType:.void).parentClass(.collectionClass)
-    internal static let dictionaryClass = DictionaryClass(shortName:"Dictionary",keyTypeClass:.voidClass,valueTypeClass:.voidClass).parentClass(.collectionClass)
+    public static let rootClass = Class(shortName:"Root")
+    public static let classClass = Class(shortName:"Class").parentClass(.rootClass)
+    public static let metaClass = Class(shortName:"Metaclass").parentClass(.classClass)
+    public static let allClass = Class(shortName:"All").parentClass(.rootClass)
+    public static let voidClass = Class(shortName:"Void").parentClass(.rootClass)
+    public static let valueClass = Class(shortName:"Value").parentClass(.rootClass)
+    public static let constantClass = ConstantClass(shortName:"Constant").parentClass(.valueClass)
+    public static let addressClass = AddressClass(shortName:"Address").parentClass(.valueClass)
+    public static let objectClass = Class(shortName:"Object").parentClass(.rootClass)
+    public static let enumerationClass = Class(shortName:"Enumeration").parentClass(.valueClass)
+    public static let bitValueClass = Class(shortName:"BitValue").parentClass(.valueClass)
+    public static let nilClass = Class(shortName:"Nil").parentClass(.rootClass)
+    public static let booleanClass = Class(shortName:"Boolean").parentClass(.valueClass)
+    public static let byteClass = Class(shortName:"Byte").parentClass(.valueClass)
+    public static let characterClass = Class(shortName:"Character").parentClass(.valueClass)
+    public static let tupleClass = Class(shortName:"Tuple").parentClass(.objectClass)
+    public static let conduitClass = Class(shortName:"Conduit").parentClass(.objectClass)
+    public static let keyedConduitClass = Class(shortName:"KeyedConduit").parentClass(.conduitClass)
+    public static let sequentialConduitClass = Class(shortName:"SequentialConduitClass").parentClass(.conduitClass)
+    public static let dateClass = Class(shortName:"Date").parentClass(.valueClass)
+    public static let timeClass = Class(shortName:"Time").parentClass(.valueClass)
+    public static let dateTimeClass = Class(shortName:"DateTime").parentClass(.valueClass)
+    public static let signalClass = Class(shortName:"Signal").parentClass(.valueClass)
+    public static let semaphoreClass = Class(shortName:"Semaphore").parentClass(.objectClass)
+    public static let moduleClass = Class(shortName:"Module").parentClass(.objectClass)
+    public static let stringClass = Class(shortName:"String").parentClass(.valueClass)
+    public static let symbolClass = Class(shortName:"Symbol").parentClass(.stringClass)
+    public static let lockClass = Class(shortName:"Lock").parentClass(.valueClass)
+    public static let threadClass = Class(shortName:"Thread").parentClass(.objectClass)
+    public static let behaviorClass = Class(shortName:"Behavior").parentClass(.objectClass)
+    public static let methodClass = Class(shortName:"Method").parentClass(.behaviorClass)
+    public static let closureClass = Class(shortName:"Closure").parentClass(.behaviorClass)
+    public static let functionClass = Class(shortName:"Function").parentClass(.behaviorClass)
+    public static let integerClass = Class(shortName:"Integer").parentClass(.bitValueClass)
+    public static let integer8Class = Class(shortName:"Integer8").parentClass(.bitValueClass)
+    public static let integer16Class = Class(shortName:"Integer16").parentClass(.bitValueClass)
+    public static let integer32Class = Class(shortName:"Integer32").parentClass(.bitValueClass)
+    public static let integer64Class = Class(shortName:"Integer64").parentClass(.bitValueClass)
+    public static let uIntegerClass = Class(shortName:"UInteger").parentClass(.bitValueClass)
+    public static let uInteger8Class = Class(shortName:"UInteger8").parentClass(.bitValueClass)
+    public static let uInteger16Class = Class(shortName:"UInteger16").parentClass(.bitValueClass)
+    public static let uInteger32Class = Class(shortName:"UInteger32").parentClass(.bitValueClass)
+    public static let uInteger64Class = Class(shortName:"UInteger64").parentClass(.bitValueClass)
+    public static let floatClass = Class(shortName:"Float").parentClass(.bitValueClass)
+    public static let float32Class = Class(shortName:"Float32").parentClass(.bitValueClass)
+    public static let float64Class = Class(shortName:"Float64").parentClass(.bitValueClass)
+    public static let float16Class = Class(shortName:"Float16").parentClass(.bitValueClass)
+    public static let collectionClass = CollectionClass(shortName:"Collection").parentClass(.objectClass).slot(Identifier("count"),.integerClass).slot(Identifier("elementType"),.classClass)
+    public static let arrayClass = ArrayClass(shortName:"Array",indexType:.unbounded, elementTypeClass: .voidClass).parentClass(.collectionClass)
+    public static let setClass = SetClass(shortName:"Set",elementTypeClass:.voidClass).parentClass(.collectionClass)
+    public static let listClass = ListClass(shortName:"List",elementTypeClass:.voidClass).parentClass(.collectionClass)
+    public static let bitSetClass = BitSetClass(shortName:"BitSet",keyType:.void,valueType:.void).parentClass(.collectionClass)
+    public static let dictionaryClass = DictionaryClass(shortName:"Dictionary",keyTypeClass:.voidClass,valueTypeClass:.voidClass).parentClass(.collectionClass)
     
-    internal static func invocationClass(_ name:String,_ kind:InvocationClass.InvocationType,_ classes:[Class],_ returnClass:Class) -> InvocationClass { InvocationClass(shortName:name,type:kind,argumentClasses:classes,returnClass:returnClass) }
+    public static func invocationClass(_ name:String,_ kind:InvocationClass.InvocationType,_ classes:[Class],_ returnClass:Class) -> InvocationClass { InvocationClass(shortName:name,type:kind,argumentClasses:classes,returnClass:returnClass) }
     
     public var displayString:String
         {
@@ -87,7 +90,8 @@ public class Class:Symbol,ThreeAddress
         
     internal var _parentClasses = Classes()
     internal var generics = GenericClasses()
-    internal var slots:[String:Slot] = [:]
+    internal var classSlots:[String:Slot] = [:]
+    internal var metaSlots:[String:Slot] = [:]
     internal var makers = ClassMakers()
     internal var hollowMethods:[HollowMethod] = []
     internal var symbols:[String:Symbol] = [:]
@@ -107,7 +111,7 @@ public class Class:Symbol,ThreeAddress
     internal func slot(_ name:Identifier,_ class:Class) -> Class
         {
         let slot = Slot(shortName: name, class: `class`, attributes: .readonly)
-        self.slots[slot.shortName] = slot
+        self.classSlots[slot.shortName] = slot
         return(self)
         }
         
@@ -122,7 +126,7 @@ public class Class:Symbol,ThreeAddress
             {
             return(self.type)
             }
-        if let name = slotNames.first,let slot = self.slots.values.first(where: {$0.shortName == name})
+        if let name = slotNames.first,let slot = self.classSlots.values.first(where: {$0.shortName == name})
             {
             return(slot.slotType(Array<String>(slotNames.dropFirst())))
             }
@@ -131,7 +135,7 @@ public class Class:Symbol,ThreeAddress
         
     internal func slotType(_ slotName:String) -> Type
         {
-        if let slot = self.slots.values.first(where: {$0.shortName == slotName})
+        if let slot = self.classSlots.values.first(where: {$0.shortName == slotName})
             {
             return(slot.slotType(Array<String>()))
             }
@@ -161,9 +165,9 @@ public class Class:Symbol,ThreeAddress
         self.generics = generics
         super.init(shortName:shortName)
         var slot = Slot(name:Name("class"),class:Class.classClass,container:self,attributes: .readonly)
-        self.slots[slot.shortName] = slot
+        self.classSlots[slot.shortName] = slot
         slot = Slot(name:Name("superclasses"),class: (Class.arrayClass as! ArrayClass).classWithIndex(Type.ArrayIndexType.unbounded),container:self,attributes:.readonly)
-        self.slots[slot.shortName] = slot
+        self.classSlots[slot.shortName] = slot
         }
         
     init(shortName:String)
@@ -190,9 +194,15 @@ public class Class:Symbol,ThreeAddress
         super.init(shortName:shortName)
         }
         
-    func appendSlot(_ slot:Slot)
+    func addClassSlot(_ slot:Slot)
         {
-        self.slots[slot.shortName] = slot
+        self.classSlots[slot.shortName] = slot
+        slot.symbolAdded(to: self)
+        }
+        
+    func addMetaSlot(_ slot:Slot)
+        {
+        self.metaSlots[slot.shortName] = slot
         slot.symbolAdded(to: self)
         }
     
@@ -215,7 +225,7 @@ public class Class:Symbol,ThreeAddress
     internal override func sourceFileElements() -> [SourceFileElement]
         {
         var elements:[SourceFileElement] = []
-        for slot in self.slots.values
+        for slot in self.classSlots.values
             {
             elements.append(SourceFileElement(.slot(slot)))
             }
@@ -236,7 +246,7 @@ public class Class:Symbol,ThreeAddress
         
     override func lookup(shortName: String) -> SymbolSet?
         {
-        if let slot = self.slots[shortName]
+        if let slot = self.classSlots[shortName]
             {
             return(SymbolSet(slot))
             }
@@ -264,6 +274,14 @@ public class Class:Symbol,ThreeAddress
     func layoutClass() throws
         {
         
+        }
+        
+    @discardableResult
+    func placeholderSlot(_ name:String,`class`:Class,attributes:SlotAttributes = [.class]) -> Class
+        {
+        let slot = SystemPlaceholderSlot(shortName:name,class: `class`,container:self,attributes: attributes)
+        self.addClassSlot(slot)
+        return(self)
         }
     }
 
@@ -328,7 +346,7 @@ public class BitSetClass:CollectionClass
 
 public class InvocationClass:Class
     {
-    enum InvocationType
+    public enum InvocationType
         {
         case operation(Token.Symbol)
         case object(String)

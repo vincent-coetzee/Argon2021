@@ -8,13 +8,19 @@
 
 import Foundation
 
-internal class OtherwiseClause:Clause
+internal class OtherwiseClause:SelectElementClause
     {
-    private let block:Block
-    
     init(location:SourceLocation = .zero,block:Block)
         {
-        self.block = block
         super.init(location:location)
+        self.block = block
+        }
+        
+        
+    override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler,subject:ThreeAddress,exitLabel:InstructionLabel,successLabel:InstructionLabel) throws
+        {
+        try self.block.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
+        buffer.emitInstruction(opcode:.branch,right:successLabel,comment:"JUMP TO END OF SELECT STATEMENT")
+        
         }
     }

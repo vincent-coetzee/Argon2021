@@ -42,12 +42,13 @@ public class ThreeAddressInstruction:Instruction
         case notEquals
         case assign
         case greaterthan
+        case greaterthanequal
+        case lessthan
+        case lessthanequal
         case branchIfTrue
         case branchIfFalse
         case branch
         case nop
-        case push
-        case pop
         case call
         case slot
         case addressOf
@@ -60,7 +61,7 @@ public class ThreeAddressInstruction:Instruction
         case ret
         case comment
         case mov
-        case offsetIntoStack
+        case parameter
         }
         
     let result:ThreeAddress?
@@ -154,6 +155,10 @@ public class ThreeAddressInstruction:Instruction
         if let left = self.left
             {
             string += "\(left.displayString) "
+            }
+        if self.opcode == .assign
+            {
+            return(self.stringAdjustedForComment(string))
             }
         string += "\(opcode.rawValue.uppercased()) "
         if let right = self.right

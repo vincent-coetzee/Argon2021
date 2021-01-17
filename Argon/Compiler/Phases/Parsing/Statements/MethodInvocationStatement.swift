@@ -31,7 +31,7 @@ internal class InvocationStatement:MethodInvocationStatement
         buffer.emitInstruction(result:temp,opcode:.addressOf,right:name)
         for argument in self.arguments
             {
-            buffer.emitInstruction(opcode:.push,right:argument)
+            buffer.emitInstruction(opcode:.parameter,right:argument)
             }
         buffer.emitInstruction(opcode:.invokeAddress,right:temp)
         }

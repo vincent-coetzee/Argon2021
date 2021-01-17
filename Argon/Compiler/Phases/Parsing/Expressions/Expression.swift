@@ -146,8 +146,16 @@ public class BinaryExpression:Expression
                 code = .equals
             case .notEquals:
                 code = .notEquals
+            case .rightBrocket:
+                code = .greaterthan
+            case .rightBrocketEquals:
+                code = .greaterthanequal
+                case .leftBrocket:
+                code = .lessthan
+            case .leftBrocketEquals:
+                code = .lessthanequal
             default:
-                code = .not
+                fatalError("This should not happen")
             }
         buffer.emitInstruction(ThreeAddressInstruction(result: temp, left: lhsResult, opcode: code, right: rhsResult))
         }
@@ -219,7 +227,7 @@ public class ScalarExpression:Expression
     {
     }
 
-public class EnumerationExpression:ScalarExpression
+public class LiteralEnumerationExpression:LiteralExpression
     {
     public override var typeClass:Class
         {
@@ -237,7 +245,7 @@ public class EnumerationExpression:ScalarExpression
         }
     }
     
-public class EnumerationCaseExpression:ScalarExpression
+public class EnumerationCaseValueExpression:ScalarExpression
     {
     public override var typeClass:Class
         {
@@ -257,7 +265,7 @@ public class EnumerationCaseExpression:ScalarExpression
         }
     }
     
-public class PsuedoVariableExpression:ScalarExpression
+public class PsuedoVariableValuexpression:ScalarExpression
     {
     public var displayString:String
         {
@@ -265,7 +273,7 @@ public class PsuedoVariableExpression:ScalarExpression
         }
     }
     
-public class ThisExpression:PsuedoVariableExpression,ThreeAddress
+public class ThisExpression:PsuedoVariableValuexpression,ThreeAddress
     {
     public override var displayString:String
         {
@@ -273,7 +281,7 @@ public class ThisExpression:PsuedoVariableExpression,ThreeAddress
         }
     }
     
-public class THISExpression:PsuedoVariableExpression,ThreeAddress
+public class THISExpression:PsuedoVariableValuexpression,ThreeAddress
     {
     public override var displayString:String
         {
@@ -281,7 +289,7 @@ public class THISExpression:PsuedoVariableExpression,ThreeAddress
         }
     }
     
-public class SuperExpression:PsuedoVariableExpression,ThreeAddress
+public class SuperExpression:PsuedoVariableValuexpression,ThreeAddress
     {
     public override var displayString:String
         {
@@ -297,7 +305,7 @@ public class UndefinedExpression:Expression
     {
     }
     
-public class LiteralClassExpression:Expression
+public class LiteralClassExpression:LiteralExpression
     {
     let _class:Class
     
@@ -399,7 +407,7 @@ public class LiteralIntegerExpression:LiteralExpression
         
     internal override func generateIntermediatePushCode(into buffer:ThreeAddressInstructionBuffer)
         {
-        buffer.emitInstruction(opcode:.push,right:self.integer)
+        buffer.emitInstruction(opcode:.parameter,right:self.integer)
         }
     }
     
@@ -456,7 +464,7 @@ public class LiteralArrayExpression:LiteralExpression
         }
     }
     
-public class FunctionExpression:ScalarExpression
+public class FunctionExpression:ExecutableExpression
     {
     public override var typeClass:Class
         {
@@ -494,7 +502,7 @@ public class IdentifierExpression:Expression
         }
     }
     
-public class InvocationExpression:Expression
+public class InvocationExpression:ExecutableExpression
     {
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
@@ -521,7 +529,8 @@ public class MethodInvocationExpression:InvocationExpression
 
         for argument in self.arguments
             {
-            argument.generateIntermediatePushCode(into:buffer)
+//            argument.generateIntermediatePushCode(into:buffer)
+            buffer.emitInstruction(opcode:.parameter,right:argument)
             }
         let temp = ThreeAddressTemporary.newTemporary()
         buffer.emitInstruction(result:temp,opcode:.addressOf,right:method!)
@@ -558,7 +567,8 @@ public class ClosureInvocationExpression:InvocationExpression
         {
         for argument in self.arguments
             {
-            buffer.emitInstruction(opcode:.push,right:argument)
+//            buffer.emitInstruction(opcode:.push,right:argument)
+            buffer.emitInstruction(opcode:.parameter,right:argument)
             }
         try self.closure.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
         let closureResult = buffer.lastResult
@@ -584,9 +594,9 @@ public class ClassMakerInvocationExpression:InvocationExpression
             {
             try argument.generateIntermediateCode(in:module,codeHolder:codeHolder,into:buffer,using:using)
             let result = buffer.lastResult
-            buffer.emitInstruction(opcode:.push,right:result)
+            buffer.emitInstruction(opcode:.parameter,right:result)
             }
-        buffer.emitInstruction(opcode:.push,right:theClass)
+        buffer.emitInstruction(opcode:.parameter,right:theClass)
         let result = ThreeAddressTemporary.newTemporary()
         buffer.emitInstruction(result:result,left:"class_maker",opcode: .call)
         }
@@ -610,10 +620,10 @@ public class TypeMakerInvocationExpression:InvocationExpression
             {
             try argument.generateIntermediateCode(in:module,codeHolder:codeHolder,into:buffer,using:using)
             let result = buffer.lastResult
-            buffer.emitInstruction(opcode:.push,right:result)
+            buffer.emitInstruction(opcode:.parameter,right:result)
             }
         let name = theClass.shortName
-        buffer.emitInstruction(opcode:.push,right:name)
+        buffer.emitInstruction(opcode:.parameter,right:name)
         let result = ThreeAddressTemporary.newTemporary()
         buffer.emitInstruction(result:result,left:"type_maker",opcode: .call)
         }
@@ -632,7 +642,15 @@ public class MakerInvocationExpression:InvocationExpression
         }
     }
     
-public class MethodExpression:Expression
+public class VectorExpression:Expression
+    {
+    }
+    
+public class ExecutableExpression:VectorExpression
+    {
+    }
+    
+public class MethodExpression:ExecutableExpression
     {
     let method:Method
     
@@ -703,7 +721,7 @@ public class VariableExpression:AccessExpression
         }
     }
     
-public class ForwardAccessVariableExpression:AccessExpression
+public class ForwardVariableExpression:AccessExpression
     {
     let variable:Variable
     
@@ -720,7 +738,7 @@ public class ForwardAccessVariableExpression:AccessExpression
         }
     }
     
-public class AccessSlotExpression:AccessExpression
+public class SlotExpression:AccessExpression
     {
     let target:Expression
     let slot:Expression
@@ -734,6 +752,7 @@ public class AccessSlotExpression:AccessExpression
         
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
+        buffer.emitComment("This code needs to be cleaned up")
         try self.target.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
         let targetAddress = buffer.lastResult
         try self.slot.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
@@ -742,7 +761,7 @@ public class AccessSlotExpression:AccessExpression
         }
     }
     
-public class InferredAccessSlotExpression:AccessExpression
+public class InferredSlotExpression:AccessExpression
     {
     let slot:String
     
@@ -753,7 +772,7 @@ public class InferredAccessSlotExpression:AccessExpression
         }
     }
     
-public class AccessSubscriptExpression:AccessExpression
+public class SubscriptExpression:AccessExpression
     {
     let target:Expression
     let `subscript`:Expression
@@ -764,10 +783,15 @@ public class AccessSubscriptExpression:AccessExpression
         self.`subscript` = `subscript`
         super.init()
         }
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+        {
+        buffer.emitComment("Need to generate code for subscript access")
+        }
     }
     
     
-public class BooleanScalarExpression:ScalarExpression
+public class BooleanValueExpression:ScalarExpression
     {
     let booleanValue:Bool
     
@@ -778,7 +802,7 @@ public class BooleanScalarExpression:ScalarExpression
         }
     }
 
-public class TupleExpression:ScalarExpression
+public class TupleExpression:VectorExpression
     {
     let elements:[Expression]
     
@@ -789,7 +813,7 @@ public class TupleExpression:ScalarExpression
         }
     }
     
-public class DateExpression:ScalarExpression
+public class DateValueExpression:ScalarExpression
     {
     let day:Expression
     let month:Expression
@@ -804,7 +828,7 @@ public class DateExpression:ScalarExpression
         }
     }
 
-public class TimeExpression:ScalarExpression
+public class TimeValueExpression:ScalarExpression
     {
     let hour:Expression
     let minute:Expression
@@ -821,7 +845,7 @@ public class TimeExpression:ScalarExpression
         }
     }
 
-public class DateTimeExpression:ScalarExpression
+public class DateTimeValueExpression:ScalarExpression
     {
     let date:Expression
     let time:Expression

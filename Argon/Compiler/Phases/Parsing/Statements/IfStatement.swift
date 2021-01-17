@@ -23,6 +23,7 @@ internal class IfStatement:ControlFlowStatement
         
     internal override func addSymbol(_ symbol: Symbol)
         {
+        symbol.definingScope = self
         self.block.addSymbol(symbol)
         }
     

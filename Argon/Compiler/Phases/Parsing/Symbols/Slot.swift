@@ -10,6 +10,16 @@ import Foundation
 
 public class Slot:Variable
     {
+    public var isClassSlot:Bool
+        {
+        return(self.attributes.contains(.class))
+        }
+        
+    public var isMetaSlot:Bool
+        {
+        return(self.attributes.contains(.meta))
+        }
+        
     public var container:Symbol?
     internal let attributes:SlotAttributes
     internal var virtualReadBlock:VirtualSlotBlock?

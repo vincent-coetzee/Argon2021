@@ -12,7 +12,7 @@ public class Argument:Symbol,ThreeAddress
     {
     public var displayString:String
         {
-        return(self.tag ?? "argument\(self.argumentIndex)")
+        return("ARG(\(self.tag ?? String(self.argumentIndex)))")
         }
         
     internal var value:Expression

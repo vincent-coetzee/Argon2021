@@ -14,6 +14,11 @@ public class Module:SymbolContainer
         
     public static let rootScope = Module.rootModule
     
+    public var exportedSymbols:[Symbol]
+        {
+        return(self.symbols.values.flatMap{$0.symbols}.filter{$0.accessLevel == .export})
+        }
+        
     internal override func pushScope()
         {
         self.push()
@@ -29,6 +34,8 @@ public class Module:SymbolContainer
     private var entryFunction:ModuleFunction?
     private var moduleKey = UUID()
     private var versionKey:SemanticVersionNumber = .one
+    private var moduleSlots:[String:Slot] = [:]
+    private var imports = ImportVector()
     
     public override var isModuleLevelSymbol:Bool
         {
@@ -37,8 +44,17 @@ public class Module:SymbolContainer
         
     internal override func addSymbol(_ symbol:Symbol)
         {
+        symbol.definingScope = self
         super.addSymbol(symbol)
         symbol.symbolAdded(to: self)
+        if symbol is Slot
+            {
+            self.moduleSlots[symbol.shortName] = (symbol as! Slot)
+            }
+        if symbol is Import
+            {
+            self.imports += symbol as! Import
+            }
         }
         
     internal override func lookup(name:Name) -> SymbolSet?
@@ -103,6 +119,54 @@ public class Module:SymbolContainer
             {
             try symbolSet.typeCheck()
             }
+        }
+        
+    @discardableResult
+    func placeholderMethodInstance(_ name:String,_ returnType:Class = .voidClass,_ parameters:Parameter...) -> Self
+        {
+        var genericMethod:Method
+        if let method = self.lookup(shortName:name)?.first as? Method
+            {
+            genericMethod = method
+            }
+        else
+            {
+            genericMethod = SystemPlaceholderMethod(shortName:name)
+            genericMethod.accessLevel = .export
+            self.addSymbol(genericMethod)
+            }
+        let instance = SystemPlaceholderMethodInstance(shortName: name)
+        instance.parameters = parameters
+        instance.returnTypeClass = returnType
+        genericMethod.addInstance(instance)
+        return(self)
+        }
+        
+    @discardableResult
+    func placeholderClass(_ name:String,parents:[Class]) -> Class
+        {
+        let aClass = SystemPlaceholderClass(shortName: name)
+        aClass.accessLevel = .export
+        aClass.parentClasses = parents
+        self.addSymbol(aClass)
+        return(aClass)
+        }
+        
+    @discardableResult
+    func placeholderSlot(_ name:String,`class`:Class,attributes:SlotAttributes = [.class]) -> Module
+        {
+        let slot = SystemPlaceholderSlot(shortName:name,class: `class`,container:self,attributes: attributes)
+        slot.accessLevel = .protected
+        self.addSymbol(slot)
+        return(self)
+        }
+        
+    @discardableResult
+    func placeholderEnumeration(_ name:String,`class`:Class) -> Enumeration
+        {
+        let anEnum = SystemPlaceholderEnumeration(shortName:"ConduitSink",class:.uIntegerClass)
+        anEnum.accessLevel = .export
+        return(anEnum)
         }
     }
 

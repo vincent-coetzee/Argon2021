@@ -31,6 +31,7 @@ internal class LocalScope:Scope
         
     internal func addSymbol(_ symbol: Symbol)
         {
+        symbol.definingScope = self
         if let set = self.symbols[symbol.shortName]
             {
             set.append(symbol)

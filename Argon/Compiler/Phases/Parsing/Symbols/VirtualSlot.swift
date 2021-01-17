@@ -11,3 +11,13 @@ import Foundation
 internal class VirtualSlot:Slot
     {
     }
+
+internal class ModuleSlot:Slot
+    {
+    }
+    
+internal class MetaSlot:Slot
+    {
+    }
+
+

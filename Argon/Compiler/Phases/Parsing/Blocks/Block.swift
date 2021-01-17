@@ -65,6 +65,7 @@ public class Block:Statement,SlotContainer
 
     internal override func addSymbol(_ symbol:Symbol)
         {
+        symbol.definingScope = self
         if let set = self.symbols[symbol.shortName]
             {
             set.append(symbol)
@@ -112,6 +113,5 @@ public class Block:Statement,SlotContainer
             {
             try statement.generateIntermediateCode(in: module,codeHolder:CodeHolder.block(self), into: buffer, using: using)
             }
-        buffer.emitInstruction(opcode:.ret)
         }
     }

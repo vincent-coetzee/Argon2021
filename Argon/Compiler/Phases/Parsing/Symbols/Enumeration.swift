@@ -8,8 +8,10 @@
 
 import Foundation
 
-public class Enumeration:SymbolContainer
+public class Enumeration:Class
     {
+    internal static let conduitSinkEnumeration = Enumeration(shortName:"ConduitSink",class:.uIntegerClass).case("#none",value:0).case("#memory",value:1).case("#socket",value:2).case("#file",value:3)
+    
     private var cases:[EnumerationCase] = []
     private var _class:Class
     
@@ -37,7 +39,7 @@ public class Enumeration:SymbolContainer
     required init()
         {
         self._class = .voidClass
-        super.init()
+        super.init(shortName:"")
         }
     
     func addCase(_ enumCase:EnumerationCase)
@@ -90,6 +92,20 @@ public class Enumeration:SymbolContainer
         {
         self.pop()
         }
+        
+    internal func `case`(_ symbol:Argon.Symbol,associatedTypes:Classes = [],value:Expression?  = nil) -> Enumeration
+        {
+        let aCase = EnumerationCase(shortName: symbol, symbol: symbol, associatedTypes:associatedTypes, value: value)
+        self.addCase(aCase)
+        return(self)
+        }
+        
+    internal func `case`(_ symbol:Argon.Symbol,associatedTypes:Classes = [],value:Int) -> Enumeration
+        {
+        let aCase = EnumerationCase(shortName: symbol, symbol: symbol, associatedTypes:associatedTypes, value: LiteralIntegerExpression(integer:Argon.Integer(value)))
+        self.addCase(aCase)
+        return(self)
+        }
     }
 
 public class EnumerationCase:Symbol
@@ -98,7 +114,7 @@ public class EnumerationCase:Symbol
     let associatedTypes:Classes
     let value:Expression?
     
-    init(shortName:String,symbol:Argon.Symbol,associatedTypes:Classes,value:Expression?)
+    init(shortName:String,symbol:Argon.Symbol,associatedTypes:Classes = [],value:Expression?  = nil)
         {
         self.symbol = symbol
         self.associatedTypes = associatedTypes
@@ -106,6 +122,14 @@ public class EnumerationCase:Symbol
         super.init(shortName:shortName)
         }
     
+    init(symbol:Argon.Symbol,associatedTypes:Classes = [],value:Expression?  = nil)
+        {
+        self.symbol = symbol
+        self.associatedTypes = associatedTypes
+        self.value = value
+        super.init(shortName:symbol)
+        }
+        
     internal required init() {
         fatalError("init() has not been implemented")
     }

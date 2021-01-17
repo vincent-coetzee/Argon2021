@@ -138,6 +138,13 @@
 		BF5AFF8A25A5DD2B00CED0AC /* RowMorph.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5AFF8925A5DD2B00CED0AC /* RowMorph.swift */; };
 		BF600B4625A7595300930318 /* ColumnMorph.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF600B4525A7595300930318 /* ColumnMorph.swift */; };
 		BF600B4C25A7ABF000930318 /* CodeHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF600B4B25A7ABF000930318 /* CodeHolder.swift */; };
+		BF64815C25B41A7C00D75675 /* SelectElementClause.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF64815B25B41A7C00D75675 /* SelectElementClause.swift */; };
+		BF64816025B45CBC00D75675 /* SystemPlaceholderSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF64815F25B45CBC00D75675 /* SystemPlaceholderSlot.swift */; };
+		BF64816325B45CD900D75675 /* SystemPlaceholderMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF64816225B45CD900D75675 /* SystemPlaceholderMethod.swift */; };
+		BF64816625B45CFC00D75675 /* SystemPlaceholderMethodInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF64816525B45CFC00D75675 /* SystemPlaceholderMethodInstance.swift */; };
+		BF64816925B45D6B00D75675 /* SystemPlaceholderClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF64816825B45D6B00D75675 /* SystemPlaceholderClass.swift */; };
+		BF64816C25B45DE100D75675 /* SystemPlaceholderModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF64816B25B45DE100D75675 /* SystemPlaceholderModule.swift */; };
+		BF64816F25B4660900D75675 /* SystemPlaceholderEnumeration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF64816E25B4660900D75675 /* SystemPlaceholderEnumeration.swift */; };
 		BF7952BA2592A54D00B90AE3 /* AliasSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7952B92592A54D00B90AE3 /* AliasSlot.swift */; };
 		BF85B1C425B1208C00C40C03 /* SemanticVersionNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF85B1C325B1208C00C40C03 /* SemanticVersionNumber.swift */; };
 		BF85B1C725B126CA00C40C03 /* RelocatableReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF85B1C625B126CA00C40C03 /* RelocatableReference.swift */; };
@@ -314,6 +321,13 @@
 		BF5AFF8925A5DD2B00CED0AC /* RowMorph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowMorph.swift; sourceTree = "<group>"; };
 		BF600B4525A7595300930318 /* ColumnMorph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnMorph.swift; sourceTree = "<group>"; };
 		BF600B4B25A7ABF000930318 /* CodeHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeHolder.swift; sourceTree = "<group>"; };
+		BF64815B25B41A7C00D75675 /* SelectElementClause.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectElementClause.swift; sourceTree = "<group>"; };
+		BF64815F25B45CBC00D75675 /* SystemPlaceholderSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPlaceholderSlot.swift; sourceTree = "<group>"; };
+		BF64816225B45CD900D75675 /* SystemPlaceholderMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPlaceholderMethod.swift; sourceTree = "<group>"; };
+		BF64816525B45CFC00D75675 /* SystemPlaceholderMethodInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPlaceholderMethodInstance.swift; sourceTree = "<group>"; };
+		BF64816825B45D6B00D75675 /* SystemPlaceholderClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPlaceholderClass.swift; sourceTree = "<group>"; };
+		BF64816B25B45DE100D75675 /* SystemPlaceholderModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPlaceholderModule.swift; sourceTree = "<group>"; };
+		BF64816E25B4660900D75675 /* SystemPlaceholderEnumeration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPlaceholderEnumeration.swift; sourceTree = "<group>"; };
 		BF7952B92592A54D00B90AE3 /* AliasSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasSlot.swift; sourceTree = "<group>"; };
 		BF85B1C325B1208C00C40C03 /* SemanticVersionNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticVersionNumber.swift; sourceTree = "<group>"; };
 		BF85B1C625B126CA00C40C03 /* RelocatableReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelocatableReference.swift; sourceTree = "<group>"; };
@@ -567,6 +581,7 @@
 				BF08FB9725803A6A00C4AC6F /* RepeatStatement.swift */,
 				BF08FB9F25803A6A00C4AC6F /* ResumeStatement.swift */,
 				BF08FB8F25803A6A00C4AC6F /* ReturnStatement.swift */,
+				BF64815B25B41A7C00D75675 /* SelectElementClause.swift */,
 				BF08FB8E25803A6A00C4AC6F /* SelectStatement.swift */,
 				BF08FB9125803A6A00C4AC6F /* SignalStatement.swift */,
 				BF08FB9E25803A6A00C4AC6F /* Statement.swift */,
@@ -600,11 +615,12 @@
 			children = (
 				BF08FBB125803A6A00C4AC6F /* AccessModifier.swift */,
 				BF7952B92592A54D00B90AE3 /* AliasSlot.swift */,
-				BF45F1DF2593EF6000376006 /* ClassLayout.swift */,
 				BF45F1D92593E3D300376006 /* ArrayClass.swift */,
 				BF08FBBB25803A6A00C4AC6F /* BitSet.swift */,
 				BF08FBB825803A6A00C4AC6F /* Class.swift */,
+				BF45F1DF2593EF6000376006 /* ClassLayout.swift */,
 				BF08FBC425803A6A00C4AC6F /* ClassMaker.swift */,
+				BF600B4B25A7ABF000930318 /* CodeHolder.swift */,
 				BF45F1D62593E3BC00376006 /* CollectionClass.swift */,
 				BFD58CE0258E3B2000B2ADDD /* Constant.swift */,
 				BF45F1DC2593E3F500376006 /* DictionaryClass.swift */,
@@ -613,10 +629,12 @@
 				BF08FBBE25803A6A00C4AC6F /* ForInductionVariable.swift */,
 				BF08FBBF25803A6A00C4AC6F /* Function.swift */,
 				BF08FBBA25803A6A00C4AC6F /* GenericClass.swift */,
+				BF45F1E82596783800376006 /* HandlerSymbol.swift */,
 				BFEE2F66258B7820006C47F6 /* Import.swift */,
 				BF08FBB325803A6A00C4AC6F /* InductionVariable.swift */,
 				BF08FB6825803A6A00C4AC6F /* Instance.swift */,
 				BF08FBB725803A6A00C4AC6F /* LocalVariable.swift */,
+				BF45F1E52596629100376006 /* Metaclass.swift */,
 				BFD58CEB258F355800B2ADDD /* Method.swift */,
 				BFE0A08F2593AC5E00B85ADF /* MethodClass.swift */,
 				BF08FBB625803A6A00C4AC6F /* MethodInstance.swift */,
@@ -630,13 +648,16 @@
 				BF08FBC325803A6A00C4AC6F /* SlotAttributes.swift */,
 				BF08FBC225803A6A00C4AC6F /* Symbol.swift */,
 				BF08FBAC25803A6A00C4AC6F /* SymbolContainer.swift */,
+				BF64816825B45D6B00D75675 /* SystemPlaceholderClass.swift */,
+				BF64816E25B4660900D75675 /* SystemPlaceholderEnumeration.swift */,
+				BF64816225B45CD900D75675 /* SystemPlaceholderMethod.swift */,
+				BF64816525B45CFC00D75675 /* SystemPlaceholderMethodInstance.swift */,
+				BF64816B25B45DE100D75675 /* SystemPlaceholderModule.swift */,
+				BF64815F25B45CBC00D75675 /* SystemPlaceholderSlot.swift */,
 				BF08FBB025803A6A00C4AC6F /* TypeSymbol.swift */,
 				BF08FBAA25803A6A00C4AC6F /* UndefinedSymbol.swift */,
 				BF08FBBD25803A6A00C4AC6F /* Variable.swift */,
 				BF08FBB925803A6A00C4AC6F /* VirtualSlot.swift */,
-				BF45F1E52596629100376006 /* Metaclass.swift */,
-				BF45F1E82596783800376006 /* HandlerSymbol.swift */,
-				BF600B4B25A7ABF000930318 /* CodeHolder.swift */,
 			);
 			path = Symbols;
 			sourceTree = "<group>";
@@ -844,6 +865,7 @@
 				BF08FBCB25803A6A00C4AC6F /* Stack.swift in Sources */,
 				BF08FC2125803A6A00C4AC6F /* Function.swift in Sources */,
 				BF08FBDD25803A6A00C4AC6F /* MachineCodeGenerator.swift in Sources */,
+				BF64816025B45CBC00D75675 /* SystemPlaceholderSlot.swift in Sources */,
 				BF08FBF125803A6A00C4AC6F /* TimesStatement.swift in Sources */,
 				BF45F1E62596629100376006 /* Metaclass.swift in Sources */,
 				BF4458D225A264A200CB52BE /* SharedObject.swift in Sources */,
@@ -853,6 +875,7 @@
 				BFE0A0932593B2C700B85ADF /* LHSValue.swift in Sources */,
 				BF85B1C425B1208C00C40C03 /* SemanticVersionNumber.swift in Sources */,
 				BF979DB925832410002AFB7F /* NSFont+Extension.swift in Sources */,
+				BF64815C25B41A7C00D75675 /* SelectElementClause.swift in Sources */,
 				BF08FBF225803A6A00C4AC6F /* AssignmentStatement.swift in Sources */,
 				BF08FC3625803AB100C4AC6F /* NSTextView+Extensions.swift in Sources */,
 				BFEE2F67258B7820006C47F6 /* Import.swift in Sources */,
@@ -894,6 +917,7 @@
 				BF4458C725A1F2CF00CB52BE /* SegmentView.swift in Sources */,
 				BF600B4C25A7ABF000930318 /* CodeHolder.swift in Sources */,
 				BF08FBE925803A6A00C4AC6F /* Scope.swift in Sources */,
+				BF64816F25B4660900D75675 /* SystemPlaceholderEnumeration.swift in Sources */,
 				BF08FC1925803A6A00C4AC6F /* LocalVariable.swift in Sources */,
 				BF08FBE625803A6A00C4AC6F /* SlotContainer.swift in Sources */,
 				BF979DBC25832488002AFB7F /* NSColor.swift in Sources */,
@@ -901,8 +925,10 @@
 				BF08FBFC25803A6A00C4AC6F /* RepeatStatement.swift in Sources */,
 				BF08FBD625803A6A00C4AC6F /* Instance.swift in Sources */,
 				BFE0A0992593DA7600B85ADF /* ThreeAddressInstructionBuffer.swift in Sources */,
+				BF64816C25B45DE100D75675 /* SystemPlaceholderModule.swift in Sources */,
 				BF7952BA2592A54D00B90AE3 /* AliasSlot.swift in Sources */,
 				BF08FBE525803A6A00C4AC6F /* VirtualSlotWriteSlotBlock.swift in Sources */,
+				BF64816625B45CFC00D75675 /* SystemPlaceholderMethodInstance.swift in Sources */,
 				BF5AFF8725A57C2E00CED0AC /* DisclosureArrowLayer.swift in Sources */,
 				BF979DC9258347D8002AFB7F /* ParameterName.swift in Sources */,
 				BFD58CEC258F355800B2ADDD /* Method.swift in Sources */,
@@ -940,6 +966,7 @@
 				BF08FBFE25803A6A00C4AC6F /* ElseIfClause.swift in Sources */,
 				BF08FC0525803A6A00C4AC6F /* LocalStatement.swift in Sources */,
 				BF5AFF7D25A53C3C00CED0AC /* LayoutModifier.swift in Sources */,
+				BF64816925B45D6B00D75675 /* SystemPlaceholderClass.swift in Sources */,
 				BF45F1D72593E3BC00376006 /* CollectionClass.swift in Sources */,
 				BF45F1DA2593E3D300376006 /* ArrayClass.swift in Sources */,
 				BF08FBF725803A6A00C4AC6F /* ForInStatement.swift in Sources */,
@@ -975,6 +1002,7 @@
 				BF08FC1725803A6A00C4AC6F /* Nil.swift in Sources */,
 				BF08FC0625803A6A00C4AC6F /* WhileStatement.swift in Sources */,
 				BF08FBF925803A6A00C4AC6F /* OtherwiseClause.swift in Sources */,
+				BF64816325B45CD900D75675 /* SystemPlaceholderMethod.swift in Sources */,
 				BF08FC0225803A6A00C4AC6F /* Clause.swift in Sources */,
 				BF08FBE325803A6A00C4AC6F /* VirtualSlotWriteBlock.swift in Sources */,
 				BF08FBE425803A6A00C4AC6F /* VirtualSlotReadBlock.swift in Sources */,

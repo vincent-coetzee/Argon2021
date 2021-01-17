@@ -107,15 +107,12 @@ public class MethodInstance:Symbol
             parameterOffset += Argon.kWordSizeInBytes
             }
         
-        self.ir3ABuffer.emitInstruction(opcode:.push,right:Register.bp,comment:"SAVE POINTER TO PREVIOUS FRAME")
-        self.ir3ABuffer.emitInstruction(left:Register.sp,opcode:.mov,right:Register.bp,comment:"MAKE THIS FRAME AVAILABLE")
-        self.ir3ABuffer.emitInstruction(result:Register.sp,left:Register.sp,opcode:.sub,right:self.stackLocalStorageSizeInBytes,comment:"ADJUST SP DOWN FOR LOCAL STORAGE")
+        self.ir3ABuffer.emitInstruction(opcode:.enter,right:self.stackLocalStorageSizeInBytes,comment:"ENTER METHOD, SET UP FRAME")
         for statement in self.block.statements
             {
             try statement.generateIntermediateCode(in:module,codeHolder:.methodInstance(self),into:self.ir3ABuffer,using:compiler)
             }
-        self.ir3ABuffer.emitInstruction(result:Register.sp,left:Register.sp,opcode:.add,right:self.stackLocalStorageSizeInBytes,comment:"RELEASE LOCAL STORAGE")
-        self.ir3ABuffer.emitInstruction(opcode:.pop,right:Register.bp,comment:"RESTORE BASE POINTER")
+        self.ir3ABuffer.emitInstruction(opcode:.leave,right:self.stackLocalStorageSizeInBytes,comment:"LEAVE METHOD, TIDY UP FRAME")
         if self.block.lastStatementIsNotReturn
             {
             self.ir3ABuffer.emitInstruction(opcode:.ret)

@@ -43,6 +43,11 @@ public class ThreeAddressInstructionBuffer
         self.emitInstruction(ThreeAddressInstruction(label:label,result:result,left:left,opcode:opcode,right:right,comment:comment))
         }
         
+    func emitComment(_ comment:String? = nil)
+        {
+        self.emitInstruction(ThreeAddressInstruction(opcode:.comment,right:comment))
+        }
+        
     func emitPendingLocation(_ location:SourceLocation)
         {
         self.pendingLocation = location

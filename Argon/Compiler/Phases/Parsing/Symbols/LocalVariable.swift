@@ -10,6 +10,11 @@ import Foundation
 
 internal class LocalVariable:Variable
     {
+    public override var displayString:String
+        {
+        return("LOCAL(\(self.shortName))")
+        }
+        
     internal var stackOffsetFromBasePointer:Int = 0
     
     override init(name:Name,class:Class)
@@ -28,6 +33,6 @@ internal class LocalVariable:Variable
     
     override func generateIntermediateCodeLoad(target:ThreeAddress,into buffer:ThreeAddressInstructionBuffer)
         {
-        buffer.emitInstruction(result:target,left:IndirectMemoryRegisterOffsetAddress(baseRegister:Register.sp,offsetRegister:Register.bp,offset:self.stackOffsetFromBasePointer),opcode:.assign)
+        buffer.emitInstruction(result:target,left:self,opcode:.assign)
         }
 }

@@ -69,7 +69,7 @@ public class RootModule:Module
         return(self.lookup(shortName:"Void")!.first as! Instance)
         }
         
-    internal func initRootModule() -> Self
+    private func initBaseClasses()
         {
         self.addSymbol(self.rootClass)
         self.addSymbol(self.addressClass)
@@ -109,7 +109,13 @@ public class RootModule:Module
         self.addSymbol(self.uintegerClass)
         self.addSymbol(Class.tupleClass)
         self.addSymbol(Class.moduleClass)
+        }
+        
+    internal func initRootModule() -> Self
+        {
+        self.initBaseClasses()
         self.initInstances()
+        self.initSystemModules()
         return(self)
         }
         
@@ -133,5 +139,40 @@ public class RootModule:Module
         instance.shortName = named
         self.addSymbol(instance)
         return(instance)
+        }
+        
+    private func initSystemModules()
+        {
+        let systemModule = self.placeholderModule("System",in:self)
+        let conduitsModule = self.placeholderModule("Conduits",in:systemModule)
+        let sinks = conduitsModule.placeholderEnumeration("Sink",class: .uIntegerClass).case("#none",value:0).case("#memory",value:1).case("#socket",value:2).case("#file",value:3)
+        let conduitMode = conduitsModule.placeholderEnumeration("ConduitMode",class: .uIntegerClass).case("#none",value:0).case("#read",value:1).case("#write",value:2).case("#readwrite",value:3).case("#extend",value:4).case("#text",value:5).case("#raw",value:6)
+        let sinksModule = self.placeholderModule("Sinks",in:conduitsModule)
+        let conduitClass = conduitsModule.placeholderClass("Conduit",parents:[.objectClass]).placeholderSlot("sink",class:sinks).placeholderSlot("atEnd",class:.booleanClass).placeholderSlot("count",class:.integerClass)
+        conduitClass.placeholderSlot("isReadConduit",class:.booleanClass).placeholderSlot("isWriteConduit",class:.booleanClass).placeholderSlot("isOpen",class:.booleanClass).placeholderSlot("isClosed",class:.booleanClass)
+        conduitsModule.placeholderMethodInstance("open",.booleanClass,Parameter("mode", conduitMode, true))
+        let readConduit = conduitsModule.placeholderClass("ReadConduit",parents:[conduitClass])
+        readConduit.placeholderSlot("isRead",class:.booleanClass)
+        let writeConduit = conduitsModule.placeholderClass("WriteConduit",parents:[conduitClass])
+        writeConduit.placeholderSlot("isWrite",class:.booleanClass)
+        self.placeholderModule("Memory",in:sinksModule)
+        self.placeholderModule("File",in:sinksModule)
+        self.placeholderModule("Socket",in:sinksModule)
+        conduitsModule.placeholderMethodInstance("write",.integerClass,Parameter("conduit",conduitClass,false),Parameter("format",.stringClass,true),VariadicParameter("arguments",.allClass,false))
+        }
+        
+    @discardableResult
+    private func placeholderModule(_ name:String,in parentModule:Module? = nil) -> Module
+        {
+        let searchModule = parentModule == nil ? self : parentModule!
+        if let oldModule = searchModule.lookup(shortName:name)?.first as? Module
+            {
+            return(oldModule)
+            }
+        let module = SystemPlaceholderModule(shortName:name)
+        searchModule.addSymbol(module)
+        module.parentScope = searchModule
+        module.parent = searchModule
+        return(module)
         }
     }

@@ -26,6 +26,7 @@ internal class SymbolScope:Scope
         
     internal func addSymbol(_ symbol:Symbol)
         {
+        symbol.definingScope = self
         if symbol.isModuleLevelSymbol
             {
             self.parentScope?.addSymbol(symbol)

@@ -137,4 +137,5 @@ public enum SystemError:Equatable,Error
     case invalidTermInExpression
     case invalidArrayIndexType(String)
     case invalidSlotFieldHashIndex
+    case selectRequiresAtLeastOneWhenClause
     }

@@ -15,6 +15,12 @@ public class Symbol:ParseNode,Equatable,Hashable
     internal var references:[SourceReference] = []
     internal var accessLevel = AccessModifier.public
     internal var parent:Symbol?
+    internal var definingScope:Scope?
+    
+    public var isPlaceholder:Bool
+        {
+        return(false)
+        }
         
     internal var isScope:Bool
         {

@@ -24,4 +24,27 @@ internal class SelectStatement:Statement
         {
         return(self.parentScope?.lookup(shortName:shortName))
         }
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+        {
+        if self.whenClauses.isEmpty
+            {
+            throw(CompilerError(error: .selectRequiresAtLeastOneWhenClause, location: self.location, hint: "select.whenClauses is empty"))
+            }
+        let exitLabel = InstructionLabel.newLabel()
+        let successLabel = InstructionLabel.newLabel()
+        var lastClause:SelectElementClause? = nil
+        for clause in self.whenClauses
+            {
+            lastClause?.nextClause = clause
+            lastClause = clause
+            }
+        if self.otherwiseClause != nil
+            {
+            lastClause?.nextClause = self.otherwiseClause
+            }
+        try expression.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
+        let result = buffer.lastResult
+        try self.whenClauses.first!.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using,subject:result,exitLabel:exitLabel,successLabel:successLabel)
+        }
     }
