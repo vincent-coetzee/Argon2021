@@ -13,11 +13,11 @@ internal class WhenClause:Clause
     private let expression:Expression
     private let block:Block
     
-    init(expression:Expression,block:Block)
+    init(location:SourceLocation = .zero,expression:Expression,block:Block)
         {
         self.expression = expression
         self.block = block
-        super.init()
+        super.init(location:location)
         }
     }
 

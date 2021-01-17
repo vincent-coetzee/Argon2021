@@ -1665,6 +1665,17 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             }
         }
         
+    public var isHollowVariableIdentifier:Bool
+        {
+        switch(self)
+            {
+            case .identifier(let value,_):
+                return(value == "?")
+            default:
+                return(false)
+            }
+        }
+        
     public var isBitNot:Bool
         {
         switch(self)

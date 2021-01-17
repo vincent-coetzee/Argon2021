@@ -10,17 +10,22 @@ import Foundation
 
 internal class ReturnStatement:ControlFlowStatement
     {
+    internal override var isReturnStatement:Bool
+        {
+        return(true)
+        }
+        
     internal var value:Expression?
     
-    init(value:Expression,location:SourceLocation)
+    init(location:SourceLocation = .zero,value:Expression)
         {
         self.value = value
-        super.init()
-        self.location = location
+        super.init(location:location)
         }
         
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
+        buffer.emitPendingLocation(self.location)
         try value?.generateIntermediateCode(in:module,codeHolder:codeHolder,into:buffer,using:using)
         }
     }

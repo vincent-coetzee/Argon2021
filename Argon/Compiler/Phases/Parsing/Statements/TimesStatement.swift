@@ -13,11 +13,11 @@ internal class TimesStatement:ControlFlowStatement
     private let expression:Expression
     private let block:Block
     
-    init(expression:Expression,block:Block,location:SourceLocation = .zero)
+    init(location:SourceLocation = .zero,expression:Expression,block:Block)
         {
         self.expression = expression
         self.block = block
-        super.init()
+        super.init(location:location)
         self.location = location
         }
     }

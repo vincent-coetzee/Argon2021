@@ -12,9 +12,9 @@ internal class ElseIfClause:ElseClause
     {
     private let condition:Expression
 
-    init(condition:Expression,block:Block)
+    init(location:SourceLocation = .zero,condition:Expression,block:Block)
         {
         self.condition = condition
-        super.init(block:block)
+        super.init(location:location,block:block)
         }
     }

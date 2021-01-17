@@ -14,9 +14,14 @@ internal class SelectStatement:Statement
     internal var whenClauses = WhenClauses()
     internal var otherwiseClause:OtherwiseClause?
     
-    init(expression:Expression)
+    init(location:SourceLocation = .zero,expression:Expression)
         {
         self.expression = expression
-        super.init()
+        super.init(location:location)
+        }
+        
+    override func lookup(shortName: String) -> SymbolSet?
+        {
+        return(self.parentScope?.lookup(shortName:shortName))
         }
     }

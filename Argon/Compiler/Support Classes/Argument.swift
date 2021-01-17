@@ -8,20 +8,27 @@
 
 import Foundation
 
-public class Argument:Symbol
+public class Argument:Symbol,ThreeAddress
     {
+    public var displayString:String
+        {
+        return(self.tag ?? "argument\(self.argumentIndex)")
+        }
+        
     internal var value:Expression
     internal var tag:String?
+    internal var argumentIndex:Int
     
     internal override var typeClass:Class
         {
         return(value.typeClass)
         }
         
-    internal init(tag:String? = nil,value:Expression)
+    internal init(tag:String? = nil,value:Expression,index:Int)
         {
         self.tag = tag
         self.value = value
+        self.argumentIndex = index
         super.init(shortName: tag ?? "")
         }
     
@@ -29,12 +36,18 @@ public class Argument:Symbol
         {
         self.value = Expression()
         self.tag = nil
+        self.argumentIndex = 0
         super.init()
         }
         
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
         try value.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
+        }
+        
+    internal func generateIntermediatePushCode(into buffer:ThreeAddressInstructionBuffer)
+        {
+        self.value.generateIntermediatePushCode(into:buffer)
         }
     }
 

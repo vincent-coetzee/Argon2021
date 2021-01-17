@@ -16,7 +16,8 @@ public struct InstructionLabel:ThreeAddress
         
     public var displayString:String
         {
-        return("LABEL\(index)")
+        let string = String(format:"l_%06d",self.index)
+        return(string)
         }
         
     public let index:Int
@@ -26,6 +27,12 @@ public struct InstructionLabel:ThreeAddress
         {
         self.index = index
         self.instruction = instruction
+        }
+        
+    init()
+        {
+        self.index = Argon.nextIndex()
+        self.instruction = nil
         }
         
     mutating func setInstruction(_ instruction:Instruction)

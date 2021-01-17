@@ -19,7 +19,7 @@ public class ThreeAddressTemporary:ThreeAddress
     class func newTemporary() -> ThreeAddressTemporary
         {
         let index = Argon.nextIndex()
-        return(ThreeAddressTemporary(name:"_TEMP_\(index)"))
+        return(ThreeAddressTemporary(name:"t_\(index)"))
         }
         
     init(name:String)

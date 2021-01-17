@@ -9,6 +9,7 @@
 import Foundation
 import AppKit
 
+    
 public class SourceFile:SourceProvider
     {
     public var image:NSImage

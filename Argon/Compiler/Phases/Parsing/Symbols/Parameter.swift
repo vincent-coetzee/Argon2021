@@ -15,6 +15,7 @@ public class Parameter:Variable
     internal var showTag:Bool
     private var hasTag:Bool
     private var tag:String = ""
+    internal var stackOffsetFromBasePointer:Int = 0
     
     internal override func pushScope()
         {
@@ -53,6 +54,11 @@ public class Parameter:Variable
         self.showTag = true
         self.hasTag = false
         super.init(shortName: "",class: .voidClass)
+        }
+        
+    override func generateIntermediateCodeLoad(target:ThreeAddress,into buffer:ThreeAddressInstructionBuffer)
+        {
+        buffer.emitInstruction(result:target,left:IndirectMemoryRegisterOffsetAddress(baseRegister:Register.sp,offsetRegister:Register.bp,offset:self.stackOffsetFromBasePointer),opcode:.assign)
         }
     }
 

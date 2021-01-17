@@ -12,9 +12,9 @@ internal class OtherwiseClause:Clause
     {
     private let block:Block
     
-    init(block:Block)
+    init(location:SourceLocation = .zero,block:Block)
         {
         self.block = block
-        super.init()
+        super.init(location:location)
         }
     }

@@ -27,6 +27,8 @@ public class Module:SymbolContainer
     public private(set) var genericTypes:[GenericClass] = []
     private var exitFunction:ModuleFunction?
     private var entryFunction:ModuleFunction?
+    private var moduleKey = UUID()
+    private var versionKey:SemanticVersionNumber = .one
     
     public override var isModuleLevelSymbol:Bool
         {

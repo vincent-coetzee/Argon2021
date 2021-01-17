@@ -51,10 +51,10 @@ public class TokenStream:Equatable
     private let digits = NSCharacterSet.decimalDigits
     private let whitespace = NSCharacterSet.whitespaces
     private let newline = NSCharacterSet.newlines
-    private let symbols = CharacterSet(charactersIn: "=<>-+*/%!&|^\\/~:.,$()[]:.{},@?")
+    private let symbols = CharacterSet(charactersIn: "=<>-+*/%!&|^\\/~:.,$()[]:.{},@")
     private let hexDigits = CharacterSet(charactersIn: "ABCDEF0123456789_")
     private let binaryDigits = CharacterSet(charactersIn: "01_")
-    private let operatorSymbols = CharacterSet(charactersIn: "=<-+*/%!&|^\\~@$?")
+    private let operatorSymbols = CharacterSet(charactersIn: "=<-+*/%!&|^\\~@$")
     private var tokenStart:Int = 0
     private var tokenStop:Int = 0
     private var lineStart:Int = 0
@@ -358,7 +358,7 @@ public class TokenStream:Equatable
             }
         currentString = ""
         startIndex = characterOffset
-        if letters.contains(self.currentChar) || self.currentChar == "$"
+        if letters.contains(self.currentChar) || self.currentChar == "$" || self.currentChar == "?"
             {
             return(self.nextIdentifier())
             }
@@ -573,6 +573,10 @@ public class TokenStream:Equatable
             self.nextChar()
             }
         while alphanumerics.contains(self.currentChar) && !self.atEnd && !self.atEndOfLine
+        if currentString == "?"
+            {
+            return(.identifier("?",self.sourceLocation()))
+            }
         if self.currentChar == ":" && self.currentString != "otherwise"
             {
             let nextOne = self.peekChar(at: 0)

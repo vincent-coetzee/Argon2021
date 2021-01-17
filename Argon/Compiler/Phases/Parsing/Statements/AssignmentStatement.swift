@@ -13,11 +13,11 @@ internal class AssignmentStatement:Statement
     internal let lvalue:LHSValue
     internal let rvalue:Expression
     
-    internal init(lvalue:LHSValue,rvalue:Expression)
+    internal init(location:SourceLocation = .zero,lvalue:LHSValue,rvalue:Expression)
         {
         self.lvalue = lvalue
         self.rvalue = rvalue
-        super.init()
+        super.init(location:location)
         }
         
     public override func typeCheck() throws
@@ -32,8 +32,11 @@ internal class AssignmentStatement:Statement
         
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
+        buffer.emitPendingLocation(self.location)
         try self.rvalue.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
         let value = buffer.lastResult
         try self.lvalue.generateIntermediateCode(in:module,codeHolder:codeHolder,into:buffer,using:using)
+        let address = buffer.lastResult
+        buffer.emitInstruction(left:address,opcode:.setWordAtAddress,right:value)
         }
     }

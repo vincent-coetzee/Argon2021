@@ -13,11 +13,10 @@ internal class RepeatStatement:ControlFlowStatement
     private let condition:Expression
     private let block:Block
     
-    init(condition:Expression,block:Block,location:SourceLocation = .zero)
+    init(location:SourceLocation = .zero,condition:Expression,block:Block)
         {
         self.condition = condition
         self.block = block
-        super.init()
-        self.location = location
+        super.init(location:location)
         }
     }

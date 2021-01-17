@@ -15,10 +15,20 @@ public class Statement:ParseNode,Equatable
         fatalError("Function \(#function) should not have been called")
         }
         
+    internal var isReturnStatement:Bool
+        {
+        return(false)
+        }
+        
     internal var location:SourceLocation = .zero
     
     public func typeCheck() throws
         {
+        }
+        
+    public init(location:SourceLocation = .zero)
+        {
+        self.location = location
         }
         
     internal func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws

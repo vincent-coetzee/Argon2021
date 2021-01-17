@@ -8,8 +8,13 @@
 
 import Foundation
 
-public class Closure:Symbol
+public class Closure:Symbol,ThreeAddress
     {
+    public var displayString: String
+        {
+        return("CLOSURE_\(self.index)")
+        }
+    
     internal var returnTypeClass:Class = .voidClass
     internal var parameters = Parameters()
     internal var block = Block()

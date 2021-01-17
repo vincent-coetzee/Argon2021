@@ -9,7 +9,7 @@ import Foundation
 
 public class ThreeAddressInstruction:Instruction
     {
-    internal enum InstructionCode
+    internal enum InstructionCode:String
         {
         case add
         case sub
@@ -40,17 +40,27 @@ public class ThreeAddressInstruction:Instruction
         case shiftRightEquals
         case equals
         case notEquals
-        case copy
-        case greater
+        case assign
+        case greaterthan
         case branchIfTrue
         case branchIfFalse
         case branch
         case nop
-        case parameter
+        case push
+        case pop
         case call
         case slot
-        case address
-        case assign
+        case addressOf
+        case invoke
+        case invokeAddress
+        case loadSuperAddress
+        case loadThisAddress
+        case loadTHISAddress
+        case setWordAtAddress
+        case ret
+        case comment
+        case mov
+        case offsetIntoStack
         }
         
     let result:ThreeAddress?
@@ -58,8 +68,10 @@ public class ThreeAddressInstruction:Instruction
     let right:ThreeAddress?
     let opcode:InstructionCode
     public var labels = InstructionLabels()
+    public var location:SourceLocation?
+    public var comment:String?
     
-    init(label:InstructionLabel? = nil,result:ThreeAddress? = nil,left:ThreeAddress,opcode:InstructionCode,right:ThreeAddress? = nil)
+    init(label:InstructionLabel? = nil,result:ThreeAddress? = nil,left:ThreeAddress? = nil,opcode:InstructionCode,right:ThreeAddress? = nil,comment:String? = nil)
         {
         self.result = result
         self.left = left
@@ -69,6 +81,7 @@ public class ThreeAddressInstruction:Instruction
             {
             self.labels.append(theLabel)
             }
+        self.comment = comment
         }
         
     init(opcode:InstructionCode)
@@ -84,29 +97,69 @@ public class ThreeAddressInstruction:Instruction
         self.labels.append(label)
         }
         
+    public func setLocation(_ label:SourceLocation)
+        {
+        self.location = label
+        }
+        
+    private func stringAdjustedForComment(_ string:String) -> String
+        {
+        if self.comment == nil
+            {
+            return(string)
+            }
+        let extra = 50 - string.count
+        var newString = string
+        for _ in 0..<extra
+            {
+            newString += " "
+            }
+        return(newString + "// " + self.comment!)
+        }
+        
     var displayString:String
         {
         var string = ""
+        if let position = self.location
+            {
+            let line = String(format:"%05d",position.line)
+            string += "\(line)  "
+            }
+        else
+            {
+            string += "       "
+            }
+        if self.opcode == .comment
+            {
+            string += "            ##\n"
+            string += "                   ## \(self.right ?? "")\n"
+            string += "                   ##"
+            return(self.stringAdjustedForComment(string))
+            }
         if !self.labels.isEmpty
             {
             for label in self.labels
                 {
-                string += "LABEL_\(label.index):\n"
+                string += "\(label.displayString):   "
                 }
+            }
+        else
+            {
+            string += "            "
             }
         if let result = self.result
             {
-            string += "\(result)"
+            string += "\(result.displayString) = "
             }
         if let left = self.left
             {
-            string += " \(left)"
+            string += "\(left.displayString) "
             }
-        string += " \(opcode) "
+        string += "\(opcode.rawValue.uppercased()) "
         if let right = self.right
             {
-            string += "\(right)"
+            string += "\(right.displayString)"
             }
-        return(string)
+        return(self.stringAdjustedForComment(string))
         }
     }

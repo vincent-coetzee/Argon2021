@@ -14,11 +14,11 @@ internal class IfStatement:ControlFlowStatement
     private let block:Block
     internal var elseClauses = ElseClauses()
     
-    init(condition:Expression,block:Block)
+    init(location:SourceLocation = .zero,condition:Expression,block:Block)
         {
         self.condition = condition
         self.block = block
-        super.init()
+        super.init(location:location)
         }
         
     internal override func addSymbol(_ symbol: Symbol)
@@ -38,12 +38,12 @@ internal class IfStatement:ControlFlowStatement
         
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
+        buffer.emitPendingLocation(self.location)
         let label = InstructionLabel.newLabel()
         try self.condition.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
         let value = buffer.lastResult
         buffer.emitInstruction(left:value,opcode:.branchIfFalse,right:label)
         try self.block.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
         buffer.emitPendingLabel(label: label)
-        buffer.emitInstruction(opcode:.nop)
         }
     }

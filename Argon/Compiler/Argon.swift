@@ -10,6 +10,8 @@ import Foundation
 
 public struct Argon
     {
+    internal static let kWordSizeInBytes:Int = 8
+    
     internal static let rootModule = RootModule.rootModule
     
     private static var nextIndexNumber = 0

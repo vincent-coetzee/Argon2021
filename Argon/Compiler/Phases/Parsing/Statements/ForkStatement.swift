@@ -12,10 +12,9 @@ internal class ForkStatement:ControlFlowStatement
     {
     internal let expression:Expression
     
-    init(expression:Expression,location:SourceLocation = .zero)
+    init(location:SourceLocation = .zero,expression:Expression)
         {
         self.expression = expression
-        super.init()
-        self.location = location
+        super.init(location:location)
         }
     }

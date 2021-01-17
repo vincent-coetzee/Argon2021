@@ -10,6 +10,13 @@ import Foundation
 
 public class Expression:Equatable
     {
+    private let location:SourceLocation
+    
+    public var isHollowVariableExpression:Bool
+        {
+        return(false)
+        }
+        
     public var typeClass:Class
         {
         return(Class.voidClass)
@@ -24,10 +31,27 @@ public class Expression:Equatable
         {
         fatalError("Not Implemnted")
         }
+        
+    init(location:SourceLocation = .zero)
+        {
+        self.location = location
+        }
+        
+    internal func generateIntermediatePushCode(into buffer:ThreeAddressInstructionBuffer)
+        {
+        fatalError("This should have been overridden")
+        }
     }
     
 public class VoidExpression:Expression
     {
+    }
+    
+public class EmptyExpression:Expression
+    {
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+        {
+        }
     }
     
 public class NullExpression:Expression
@@ -333,7 +357,7 @@ public class LiteralStringExpression:LiteralExpression
         
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
-        buffer.emitInstruction(result:ThreeAddressTemporary.newTemporary(),left:self.string,opcode:.copy)
+        buffer.emitInstruction(result:ThreeAddressTemporary.newTemporary(),left:self.string,opcode:.assign)
         }
     }
     
@@ -370,7 +394,12 @@ public class LiteralIntegerExpression:LiteralExpression
         
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
-        buffer.emitInstruction(result:ThreeAddressTemporary.newTemporary(),left:self.integer,opcode:.copy)
+        buffer.emitInstruction(result:ThreeAddressTemporary.newTemporary(),left:self.integer,opcode:.assign)
+        }
+        
+    internal override func generateIntermediatePushCode(into buffer:ThreeAddressInstructionBuffer)
+        {
+        buffer.emitInstruction(opcode:.push,right:self.integer)
         }
     }
     
@@ -407,7 +436,7 @@ public class LiteralFloatExpression:LiteralExpression
         
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
-        buffer.emitInstruction(result:ThreeAddressTemporary.newTemporary(),left:self.float,opcode:.copy)
+        buffer.emitInstruction(result:ThreeAddressTemporary.newTemporary(),left:self.float,opcode:.assign)
         }
     }
     
@@ -458,6 +487,11 @@ public class IdentifierExpression:Expression
         self.identifier = identifier
         super.init()
         }
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+        {
+        buffer.emitInstruction(result:ThreeAddressTemporary.newTemporary(),opcode:.addressOf,right:self.identifier)
+        }
     }
     
 public class InvocationExpression:Expression
@@ -472,12 +506,26 @@ public class MethodInvocationExpression:InvocationExpression
     {
     let method:Method?
     let methodName:String
+    let arguments:Arguments
     
-    init(methodName:String,method:Method?)
+    init(methodName:String,method:Method?,arguments:Arguments)
         {
+        self.arguments = arguments
         self.methodName = methodName
         self.method = method
         super.init()
+        }
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+        {
+
+        for argument in self.arguments
+            {
+            argument.generateIntermediatePushCode(into:buffer)
+            }
+        let temp = ThreeAddressTemporary.newTemporary()
+        buffer.emitInstruction(result:temp,opcode:.addressOf,right:method!)
+        buffer.emitInstruction(result:ThreeAddressTemporary.newTemporary(),left:temp,opcode:.invoke)
         }
     }
     
@@ -505,6 +553,17 @@ public class ClosureInvocationExpression:InvocationExpression
         self.arguments = arguments
         super.init()
         }
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+        {
+        for argument in self.arguments
+            {
+            buffer.emitInstruction(opcode:.push,right:argument)
+            }
+        try self.closure.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
+        let closureResult = buffer.lastResult
+        buffer.emitInstruction(result:ThreeAddressTemporary.newTemporary(),left:closureResult,opcode:.invoke)
+        }
     }
     
 public class ClassMakerInvocationExpression:InvocationExpression
@@ -525,10 +584,9 @@ public class ClassMakerInvocationExpression:InvocationExpression
             {
             try argument.generateIntermediateCode(in:module,codeHolder:codeHolder,into:buffer,using:using)
             let result = buffer.lastResult
-            buffer.emitInstruction(left:result,opcode:.parameter)
+            buffer.emitInstruction(opcode:.push,right:result)
             }
-        let name = theClass.shortName
-        buffer.emitInstruction(left:name,opcode:.parameter)
+        buffer.emitInstruction(opcode:.push,right:theClass)
         let result = ThreeAddressTemporary.newTemporary()
         buffer.emitInstruction(result:result,left:"class_maker",opcode: .call)
         }
@@ -552,10 +610,10 @@ public class TypeMakerInvocationExpression:InvocationExpression
             {
             try argument.generateIntermediateCode(in:module,codeHolder:codeHolder,into:buffer,using:using)
             let result = buffer.lastResult
-            buffer.emitInstruction(left:result,opcode:.parameter)
+            buffer.emitInstruction(opcode:.push,right:result)
             }
         let name = theClass.shortName
-        buffer.emitInstruction(left:name,opcode:.parameter)
+        buffer.emitInstruction(opcode:.push,right:name)
         let result = ThreeAddressTemporary.newTemporary()
         buffer.emitInstruction(result:result,left:"type_maker",opcode: .call)
         }
@@ -619,14 +677,19 @@ public class ClosureExpression:Expression
         
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
-        try self.closure.generateIntermediateCode(in:module,codeHolder:codeHolder,into:buffer,using:using)
+        buffer.emitInstruction(result:ThreeAddressTemporary.newTemporary(),opcode:.addressOf,right:closure)
         }
     }
     
-public class AccessVariableExpression:AccessExpression
+public class VariableExpression:AccessExpression
     {
     let variable:Variable
     
+    public override var isHollowVariableExpression:Bool
+        {
+        return(self.variable.isHollowVariable)
+        }
+        
     init(variable:Variable)
         {
         self.variable = variable
@@ -636,7 +699,7 @@ public class AccessVariableExpression:AccessExpression
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
         let temp = ThreeAddressTemporary.newTemporary()
-        buffer.emitInstruction(result:temp,left:variable,opcode:.copy)
+        self.variable.generateIntermediateCodeLoad(target:temp,into:buffer)
         }
     }
     
@@ -653,7 +716,7 @@ public class ForwardAccessVariableExpression:AccessExpression
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
         let temp = ThreeAddressTemporary.newTemporary()
-        buffer.emitInstruction(result:temp,left:variable,opcode:.copy)
+        buffer.emitInstruction(result:temp,left:variable,opcode:.assign)
         }
     }
     
@@ -667,6 +730,15 @@ public class AccessSlotExpression:AccessExpression
         self.target = target
         self.slot = slot
         super.init()
+        }
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+        {
+        try self.target.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
+        let targetAddress = buffer.lastResult
+        try self.slot.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
+        let slotAddress = buffer.lastResult
+        buffer.emitInstruction(result: ThreeAddressTemporary.newTemporary(), left: slotAddress, opcode: .slot, right: targetAddress)
         }
     }
     
@@ -739,13 +811,13 @@ public class TimeExpression:ScalarExpression
     let second:Expression
     let millisecond:Expression?
     
-    init(hour:Expression,minute:Expression,second:Expression,millisecond:Expression? = nil)
+    init(location:SourceLocation = .zero,hour:Expression,minute:Expression,second:Expression,millisecond:Expression? = nil)
         {
         self.hour = hour
         self.minute = minute
         self.second = second
         self.millisecond = millisecond
-        super.init()
+        super.init(location:location)
         }
     }
 

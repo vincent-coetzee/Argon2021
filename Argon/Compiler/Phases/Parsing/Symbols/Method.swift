@@ -7,8 +7,13 @@
 
 import Foundation
 
-public class Method:Symbol
+public class Method:Symbol,ThreeAddress
     {
+    public var displayString: String
+        {
+        return(self.shortName)
+        }
+        
     private var instances:[MethodInstance] = []
     
     public var parameterTypes:[Type]

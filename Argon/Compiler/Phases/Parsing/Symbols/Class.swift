@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Class:Symbol
+public class Class:Symbol,ThreeAddress
     {
     public static func ==(lhs:Class,rhs:Class) -> Bool
         {
@@ -68,6 +68,11 @@ public class Class:Symbol
     
     internal static func invocationClass(_ name:String,_ kind:InvocationClass.InvocationType,_ classes:[Class],_ returnClass:Class) -> InvocationClass { InvocationClass(shortName:name,type:kind,argumentClasses:classes,returnClass:returnClass) }
     
+    public var displayString:String
+        {
+        return("$\(self.shortName)")
+        }
+        
     var parentClasses:Classes
         {
         get

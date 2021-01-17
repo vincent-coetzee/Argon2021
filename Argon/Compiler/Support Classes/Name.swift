@@ -8,8 +8,13 @@
 
 import Foundation
     
-public struct Name:Hashable,ExpressibleByArrayLiteral
+public struct Name:Hashable,ExpressibleByArrayLiteral,ThreeAddress
     {
+    public var displayString:String
+        {
+        return(self.stringName)
+        }
+        
     public static func +(lhs:Name,rhs:String) -> Name
         {
         return(Name(lhs.components + [rhs]))

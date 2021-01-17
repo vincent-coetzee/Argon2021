@@ -139,6 +139,8 @@
 		BF600B4625A7595300930318 /* ColumnMorph.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF600B4525A7595300930318 /* ColumnMorph.swift */; };
 		BF600B4C25A7ABF000930318 /* CodeHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF600B4B25A7ABF000930318 /* CodeHolder.swift */; };
 		BF7952BA2592A54D00B90AE3 /* AliasSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7952B92592A54D00B90AE3 /* AliasSlot.swift */; };
+		BF85B1C425B1208C00C40C03 /* SemanticVersionNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF85B1C325B1208C00C40C03 /* SemanticVersionNumber.swift */; };
+		BF85B1C725B126CA00C40C03 /* RelocatableReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF85B1C625B126CA00C40C03 /* RelocatableReference.swift */; };
 		BF979DB52580F8ED002AFB7F /* TokenStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF979DB42580F8ED002AFB7F /* TokenStyle.swift */; };
 		BF979DB925832410002AFB7F /* NSFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF979DB825832410002AFB7F /* NSFont+Extension.swift */; };
 		BF979DBC25832488002AFB7F /* NSColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF979DBB25832488002AFB7F /* NSColor.swift */; };
@@ -149,6 +151,8 @@
 		BFA4BFE3258BF5AD0040DE86 /* People(Professions).argon in Resources */ = {isa = PBXBuildFile; fileRef = BFA4BFDE258BF5AD0040DE86 /* People(Professions).argon */; };
 		BFA4BFE4258BF5AD0040DE86 /* Location(Location).argon in Resources */ = {isa = PBXBuildFile; fileRef = BFA4BFDF258BF5AD0040DE86 /* Location(Location).argon */; };
 		BFA4BFE5258BF5AD0040DE86 /* People.argon in Resources */ = {isa = PBXBuildFile; fileRef = BFA4BFE0258BF5AD0040DE86 /* People.argon */; };
+		BFBB0F3A25B39293008F8E3E /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBB0F3925B39293008F8E3E /* Int+Extensions.swift */; };
+		BFBB0F3D25B3A41F008F8E3E /* IndirectMemoryRegisterOffsetAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBB0F3C25B3A41F008F8E3E /* IndirectMemoryRegisterOffsetAddress.swift */; };
 		BFD04BE02590BED5003FDD90 /* RegisterIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BDF2590BED5003FDD90 /* RegisterIndex.swift */; };
 		BFD04BE32590C378003FDD90 /* ValueLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BE22590C378003FDD90 /* ValueLocation.swift */; };
 		BFD04BE62590C3C8003FDD90 /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BE52590C3C8003FDD90 /* Register.swift */; };
@@ -311,6 +315,8 @@
 		BF600B4525A7595300930318 /* ColumnMorph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnMorph.swift; sourceTree = "<group>"; };
 		BF600B4B25A7ABF000930318 /* CodeHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeHolder.swift; sourceTree = "<group>"; };
 		BF7952B92592A54D00B90AE3 /* AliasSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasSlot.swift; sourceTree = "<group>"; };
+		BF85B1C325B1208C00C40C03 /* SemanticVersionNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticVersionNumber.swift; sourceTree = "<group>"; };
+		BF85B1C625B126CA00C40C03 /* RelocatableReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelocatableReference.swift; sourceTree = "<group>"; };
 		BF979DB42580F8ED002AFB7F /* TokenStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStyle.swift; sourceTree = "<group>"; };
 		BF979DB825832410002AFB7F /* NSFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSFont+Extension.swift"; sourceTree = "<group>"; };
 		BF979DBB25832488002AFB7F /* NSColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSColor.swift; sourceTree = "<group>"; };
@@ -321,6 +327,8 @@
 		BFA4BFDE258BF5AD0040DE86 /* People(Professions).argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "People(Professions).argon"; sourceTree = "<group>"; };
 		BFA4BFDF258BF5AD0040DE86 /* Location(Location).argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Location(Location).argon"; sourceTree = "<group>"; };
 		BFA4BFE0258BF5AD0040DE86 /* People.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = People.argon; sourceTree = "<group>"; };
+		BFBB0F3925B39293008F8E3E /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
+		BFBB0F3C25B3A41F008F8E3E /* IndirectMemoryRegisterOffsetAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndirectMemoryRegisterOffsetAddress.swift; sourceTree = "<group>"; };
 		BFD04BDF2590BED5003FDD90 /* RegisterIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterIndex.swift; sourceTree = "<group>"; };
 		BFD04BE22590C378003FDD90 /* ValueLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueLocation.swift; sourceTree = "<group>"; };
 		BFD04BE52590C3C8003FDD90 /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
@@ -363,7 +371,7 @@
 				BFA4BFDB258BF5AD0040DE86 /* Medicine */,
 				BF3B7FD625893CA900582C17 /* Argon */,
 				BF3B7FCE2589356500582C17 /* Creole */,
-				BF979DB7258323F4002AFB7F /* AppKit + Extensions */,
+				BF979DB7258323F4002AFB7F /* AppKit + Swift + Extensions */,
 				BF08FC3C25803BDA00C4AC6F /* Argon Browser */,
 				BF08FB4525803A2900C4AC6F /* Argon */,
 				BF08FB4425803A2900C4AC6F /* Products */,
@@ -419,6 +427,8 @@
 				BF08FB6025803A6A00C4AC6F /* Name.swift */,
 				BF08FB5F25803A6A00C4AC6F /* SourceReference.swift */,
 				BF08FB5E25803A6A00C4AC6F /* Type.swift */,
+				BF85B1C325B1208C00C40C03 /* SemanticVersionNumber.swift */,
+				BF85B1C625B126CA00C40C03 /* RelocatableReference.swift */,
 			);
 			path = "Support Classes";
 			sourceTree = "<group>";
@@ -487,6 +497,7 @@
 				BFD04BE82590C6E0003FDD90 /* RegisterSet.swift */,
 				BFE0A09B2593DAE200B85ADF /* InstructionLabel.swift */,
 				BFE0A09E2593DAF800B85ADF /* Instruction.swift */,
+				BFBB0F3C25B3A41F008F8E3E /* IndirectMemoryRegisterOffsetAddress.swift */,
 			);
 			path = "Code Generation";
 			sourceTree = "<group>";
@@ -697,13 +708,14 @@
 			path = "Argon Class Browser";
 			sourceTree = "<group>";
 		};
-		BF979DB7258323F4002AFB7F /* AppKit + Extensions */ = {
+		BF979DB7258323F4002AFB7F /* AppKit + Swift + Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				BF979DB825832410002AFB7F /* NSFont+Extension.swift */,
 				BF979DBB25832488002AFB7F /* NSColor.swift */,
+				BFBB0F3925B39293008F8E3E /* Int+Extensions.swift */,
 			);
-			path = "AppKit + Extensions";
+			path = "AppKit + Swift + Extensions";
 			sourceTree = "<group>";
 		};
 		BFA4BFDB258BF5AD0040DE86 /* Medicine */ = {
@@ -839,6 +851,7 @@
 				BF08FC0025803A6A00C4AC6F /* LetStatement.swift in Sources */,
 				BF08FBD925803A6A00C4AC6F /* SourceFolder.swift in Sources */,
 				BFE0A0932593B2C700B85ADF /* LHSValue.swift in Sources */,
+				BF85B1C425B1208C00C40C03 /* SemanticVersionNumber.swift in Sources */,
 				BF979DB925832410002AFB7F /* NSFont+Extension.swift in Sources */,
 				BF08FBF225803A6A00C4AC6F /* AssignmentStatement.swift in Sources */,
 				BF08FC3625803AB100C4AC6F /* NSTextView+Extensions.swift in Sources */,
@@ -908,6 +921,7 @@
 				BF08FBEF25803A6A00C4AC6F /* WhenClause.swift in Sources */,
 				BF08FBDE25803A6A00C4AC6F /* ObjectFileGenerator.swift in Sources */,
 				BF08FC1525803A6A00C4AC6F /* InductionVariable.swift in Sources */,
+				BFBB0F3A25B39293008F8E3E /* Int+Extensions.swift in Sources */,
 				BF45F1DD2593E3F500376006 /* DictionaryClass.swift in Sources */,
 				BF08FC0825803A6A00C4AC6F /* Expression.swift in Sources */,
 				BF5AFF8025A53C6F00CED0AC /* LayoutDimension.swift in Sources */,
@@ -917,6 +931,7 @@
 				BF5AFF5225A2F13F00CED0AC /* BrowserItem.swift in Sources */,
 				BF08FC3825803AB100C4AC6F /* SourceProvider.swift in Sources */,
 				BF08FBFD25803A6A00C4AC6F /* ElseClause.swift in Sources */,
+				BFBB0F3D25B3A41F008F8E3E /* IndirectMemoryRegisterOffsetAddress.swift in Sources */,
 				BF08FBFB25803A6A00C4AC6F /* HandlerStatement.swift in Sources */,
 				BF5AFF8A25A5DD2B00CED0AC /* RowMorph.swift in Sources */,
 				BFD04BFE259157A6003FDD90 /* ThreeAddressConstant.swift in Sources */,
@@ -963,6 +978,7 @@
 				BF08FC0225803A6A00C4AC6F /* Clause.swift in Sources */,
 				BF08FBE325803A6A00C4AC6F /* VirtualSlotWriteBlock.swift in Sources */,
 				BF08FBE425803A6A00C4AC6F /* VirtualSlotReadBlock.swift in Sources */,
+				BF85B1C725B126CA00C40C03 /* RelocatableReference.swift in Sources */,
 				BF08FC2925803A6A00C4AC6F /* PeepholeCodeOptimiser.swift in Sources */,
 				BF08FBCD25803A6A00C4AC6F /* Type.swift in Sources */,
 			);

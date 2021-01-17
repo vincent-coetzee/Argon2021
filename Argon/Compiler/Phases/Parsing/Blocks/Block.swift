@@ -15,6 +15,21 @@ public class Block:Statement,SlotContainer
         return(lhs.statements == rhs.statements && lhs.symbols == rhs.symbols)
         }
         
+    internal var lastStatementIsNotReturn:Bool
+        {
+        if self.statements.isEmpty
+            {
+            return(true)
+            }
+        let last = self.statements.last!
+        return(!last.isReturnStatement)
+        }
+        
+    internal var blockLocalVariables:[LocalVariable]
+        {
+        return(self.symbols.values.flatMap{$0.symbols}.filter{$0 is LocalVariable}.map{$0 as! LocalVariable})
+        }
+        
     internal var statements:[Statement] = []
     internal var symbols:[String:SymbolSet] = [:]
     internal var marker:Int?
@@ -33,9 +48,9 @@ public class Block:Statement,SlotContainer
         self.addSymbol(inductionVariable)
         }
         
-    override init()
+    override init(location:SourceLocation = .zero)
         {
-        super.init()
+        super.init(location:location)
         }
         
     internal var lastStatement:Statement
@@ -92,9 +107,11 @@ public class Block:Statement,SlotContainer
         
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
+        // TODO: Add check for reachability of artifical return I add at end here
         for statement in self.statements
             {
             try statement.generateIntermediateCode(in: module,codeHolder:CodeHolder.block(self), into: buffer, using: using)
             }
+        buffer.emitInstruction(opcode:.ret)
         }
     }

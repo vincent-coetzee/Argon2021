@@ -13,11 +13,11 @@ internal class HandlerStatement:Statement
     internal let inductionVariable:InductionVariable
     internal let block:Block
         
-    init(inductionVariable:InductionVariable,block:Block)
+    init(location:SourceLocation = .zero,inductionVariable:InductionVariable,block:Block)
         {
         self.inductionVariable = inductionVariable
         self.block = block
-        super.init()
+        super.init(location:location)
         }
         
     func asHandlerSymbol() -> HandlerSymbol

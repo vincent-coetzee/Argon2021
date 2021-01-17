@@ -12,11 +12,10 @@ internal class ResumeStatement:ControlFlowStatement
     {
     private let signal:Expression
     
-    init(signal:Expression,location:SourceLocation = .zero)
+    init(location:SourceLocation = .zero,signal:Expression)
         {
         self.signal = signal
-        super.init()
-        self.location = location
+        super.init(location:location)
         }
 //    
 //    required init()

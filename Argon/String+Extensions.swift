@@ -11,6 +11,6 @@ extension String:ThreeAddress
     {
     public var displayString:String
         {
-        return(self)
+        return(#""\#(self)""#)
         }
     }

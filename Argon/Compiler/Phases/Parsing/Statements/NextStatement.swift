@@ -12,9 +12,9 @@ internal class NextStatement:ControlFlowStatement
     {
     private let arguments:Arguments
     
-    init(arguments:Arguments)
+    init(location:SourceLocation = .zero,arguments:Arguments)
         {
         self.arguments = arguments
-        super.init()
+        super.init(location:location)
         }
     }

@@ -16,15 +16,15 @@ internal class VirtualSlotReadBlock:VirtualSlotBlock
         self.setStatements(statements)
         }
     
-    internal init(block:Block)
+    internal init(location:SourceLocation = .zero,block:Block)
         {
-        super.init()
+        super.init(location:location)
         self.statements = block.statements
         self.symbols = block.symbols
         }
         
-    internal override init()
+    override init(location:SourceLocation = .zero)
         {
-        super.init()
+        super.init(location:location)
         }
     }

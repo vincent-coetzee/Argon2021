@@ -17,6 +17,11 @@ public class Variable:Symbol,ThreeAddress
         return(self.shortName)
         }
         
+    internal var isHollowVariable:Bool
+        {
+        return(false)
+        }
+        
     internal var canBeInvoked:Bool
         {
         return(self._class.shortName == "Closure" || self._class.shortName == "Function" || self._class.shortName == "Method")
@@ -53,5 +58,20 @@ public class Variable:Symbol,ThreeAddress
         {
         self._class = RootModule.rootModule.nilInstance.typeClass
         super.init()
+        }
+        
+    func generateIntermediateCodeLoad(target:ThreeAddress,into buffer:ThreeAddressInstructionBuffer)
+        {
+        buffer.emitInstruction(result:target,left:self,opcode:.assign)
+        }
+    }
+
+public class HollowVariable:Variable
+    {
+    public static let sharedInstance = HollowVariable(shortName:"?",class:.voidClass)
+    
+    internal override var isHollowVariable:Bool
+        {
+        return(true)
         }
     }
