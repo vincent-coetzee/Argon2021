@@ -571,7 +571,7 @@ internal class Parser:CompilerPhase
             self.advance()
             let name = try self.parseIdentifier()
             let superclass = self.lookupClass(shortName: name)
-            aClass.parentClasses = [superclass]
+            aClass.superclasses = [superclass]
             }
         try self.parseBraces
             {
@@ -580,13 +580,13 @@ internal class Parser:CompilerPhase
                 if self.token.isSlotKeyword
                     {
                     let slot = try self.parseSlotDeclaration(slotAttributes: [.value])
-                    if slot.isClassSlot
+                    if slot.isRegularSlot
                         {
                         aClass.addClassSlot(slot)
                         }
                     else
                         {
-                        aClass.addMetaSlot(slot)
+                        aClass.addClassSlot(slot)
                         }
                     }
                 else if self.token.isIdentifier && self.token.identifier == aClass.shortName
@@ -635,7 +635,7 @@ internal class Parser:CompilerPhase
                 {
                 try self.parseParentheses
                     {
-                    aClass.parentClasses = try self.parseSuperclasses()
+                    aClass.superclasses = try self.parseSuperclasses()
                     }
                 }
             //
@@ -645,7 +645,7 @@ internal class Parser:CompilerPhase
                 {
                 let name = try self.parseIdentifier()
                 let superclass = self.lookupClass(shortName: name)
-                aClass.parentClasses = [superclass]
+                aClass.superclasses = [superclass]
                 }
             }
         try self.parseBraces
@@ -655,25 +655,25 @@ internal class Parser:CompilerPhase
                 if self.token.isAlias
                     {
                     let slot = try self.parseAliasSlotDeclaration()
-                    if slot.isClassSlot
+                    if slot.isRegularSlot
+                        {
+                        aClass.addRegularSlot(slot)
+                        }
+                    else if slot.isClassSlot
                         {
                         aClass.addClassSlot(slot)
-                        }
-                    else
-                        {
-                        aClass.addMetaSlot(slot)
                         }
                     }
-                else if self.token.isSlotKeyword
+                else if self.token.isSlotKeyword || self.token.isVirtual || self.token.isClass
                     {
                     let slot = try self.parseSlotDeclaration(slotAttributes: [.class])
-                    if slot.isClassSlot
+                    if slot.isRegularSlot
                         {
-                        aClass.addClassSlot(slot)
+                        aClass.addRegularSlot(slot)
                         }
                     else
                         {
-                        aClass.addMetaSlot(slot)
+                        aClass.addClassSlot(slot)
                         }
                     }
                 else if self.token.isIdentifier && self.token.identifier == aClass.shortName
@@ -719,17 +719,19 @@ internal class Parser:CompilerPhase
         {
         var slotMode = slotAttributes
         let location = self.token.location
-        var isClassSlot = false
-        var isVirtualSlot = false
         if self.token.isVirtual
             {
-            isVirtualSlot = true
+            slotMode.insert(.virtual)
             self.advance()
             }
         if self.token.isClass
             {
-            isClassSlot = true
+            slotMode.insert(.class)
             self.advance()
+            }
+        else
+            {
+            slotMode.insert(.regular)
             }
         if !self.token.isSlot
             {
@@ -753,21 +755,15 @@ internal class Parser:CompilerPhase
         var writeBlock:VirtualSlotWriteBlock?
         if self.token.isLeftBrace
             {
-            isVirtualSlot = true
             try self.parseBraces
                 {
                 (readBlock,writeBlock) = try self.parseVirtualSlotBlocks()
                 }
             }
         var slot:Slot
-        if isVirtualSlot
+        if slotMode.contains(.virtual)
             {
             slotMode.insert(writeBlock == nil ? SlotAttributes.readonly : SlotAttributes.readwrite)
-            if isClassSlot
-                {
-                slotMode.insert(SlotAttributes.class)
-                }
-            slotMode.insert(SlotAttributes.virtual)
             slot = VirtualSlot(shortName: name, class: type, attributes: slotMode)
             slot.initialValue = initialValue
             slot.virtualReadBlock = readBlock!
@@ -779,10 +775,6 @@ internal class Parser:CompilerPhase
         else
             {
             slotMode.insert(SlotAttributes.readwrite)
-            if isClassSlot
-                {
-                slotMode.insert(SlotAttributes.class)
-                }
             slot = Slot(shortName: name, class: type, attributes: slotMode)
             slot.initialValue = initialValue
             }
@@ -1204,7 +1196,7 @@ internal class Parser:CompilerPhase
         
     private func parseTypeClass() throws -> Class
         {
-        if self.token.isDoubleBackSlash || self.token.isBackSlash || self.token.isIdentifier
+        if self.token.isForwardSlash || self.token.isIdentifier
             {
             if !self.token.isIdentifier
                 {
@@ -1495,7 +1487,7 @@ internal class Parser:CompilerPhase
         
     private func parseName() throws -> Name
         {
-        if self.token.isDoubleBackSlash || self.token.isBackSlash
+        if self.token.isForwardSlash
             {
             self.advance()
             }
@@ -1504,7 +1496,7 @@ internal class Parser:CompilerPhase
             {
             name = name + self.token.identifier
             self.advance()
-            if self.token.isBackSlash
+            if self.token.isForwardSlash
                 {
                 self.advance()
                 }
@@ -1661,7 +1653,7 @@ internal class Parser:CompilerPhase
             }
         else
             {
-            if self.token.isDoubleBackSlash && self.tokens[self.tokenIndex].isIdentifier
+            if self.tokens[self.tokenIndex].isIdentifier
                 {
                 return(try self.parseInvocationStatement())
                 }
@@ -1669,7 +1661,7 @@ internal class Parser:CompilerPhase
                 {
                 return(try self.parseInvocationStatement())
                 }
-            else if self.token.isIdentifier && self.tokens[self.tokenIndex].isBackSlash
+            else if self.token.isIdentifier && self.tokens[self.tokenIndex].isForwardSlash
                 {
                 return(try self.parseInvocationStatement())
                 }
@@ -1687,7 +1679,7 @@ internal class Parser:CompilerPhase
     private func parseName(_ string:String) throws -> Name
         {
         var name = Name(string)
-        while self.token.isBackSlash
+        while self.token.isForwardSlash
             {
             self.advance()
             if self.token.isIdentifier
@@ -1707,7 +1699,7 @@ internal class Parser:CompilerPhase
             name = Name(self.token.keyword.rawValue)
             self.advance()
             }
-        else if self.token.isDoubleBackSlash
+        else if self.token.isForwardSlash
             {
             name = try self.parseName()
             }
@@ -1715,7 +1707,7 @@ internal class Parser:CompilerPhase
             {
             let identifier = self.token.identifier
             self.advance()
-            if self.token.isBackSlash
+            if self.token.isForwardSlash
                 {
                 name = try self.parseName(identifier)
                 }
@@ -2553,10 +2545,10 @@ internal class Parser:CompilerPhase
             let identifier = self.token.isKeyword ? self.token.keyword.rawValue : self.token.identifier
             self.advance()
             var object:Symbol?
-            if self.token.isBackSlash
+            if self.token.isForwardSlash
                 {
                 var name = Name(identifier)
-                while self.token.isBackSlash
+                while self.token.isForwardSlash
                     {
                     self.advance()
                     if self.token.isIdentifier
@@ -2583,7 +2575,7 @@ internal class Parser:CompilerPhase
             {
             return(ClosureExpression(closure: try self.parseClosure()))
             }
-        else if self.token.isDoubleBackSlash
+        else if self.token.isForwardSlash
             {
             return(try self.parseQualifiedNameTerm())
             }

@@ -15,6 +15,7 @@ public class Import:Symbol
             {
             return(module.exportedSymbols.reduce(into:[:]){ dictionary,symbol in dictionary[symbol.shortName] = symbol})
             }
+        return([:])
         }
         
     let path:String?
@@ -39,7 +40,7 @@ public class Import:Symbol
         {
         self.path = nil
         super.init(shortName:shortName)
-        self.importedModule = Module.rootModule.lookup
+//        self.importedModule = Module.rootModule.lookup
         }
         
     private func loadModule()
@@ -87,5 +88,6 @@ public struct ImportVector
                 let cachedSymbols = section.exportedSymbolsByShortName
                 }
             }
+        return(SymbolSet())
         }
     }

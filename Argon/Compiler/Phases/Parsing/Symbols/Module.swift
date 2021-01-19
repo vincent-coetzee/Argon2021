@@ -51,10 +51,15 @@ public class Module:SymbolContainer
             {
             self.moduleSlots[symbol.shortName] = (symbol as! Slot)
             }
-        if symbol is Import
+        else if symbol is Import
             {
             self.imports += symbol as! Import
             }
+        }
+        
+    internal func lookupClass(_ name:String) -> Class?
+        {
+        return(self.lookup(name: Name(name))?.first as? Class)
         }
         
     internal override func lookup(name:Name) -> SymbolSet?
@@ -147,7 +152,7 @@ public class Module:SymbolContainer
         {
         let aClass = SystemPlaceholderClass(shortName: name)
         aClass.accessLevel = .export
-        aClass.parentClasses = parents
+        aClass.superclasses = parents
         self.addSymbol(aClass)
         return(aClass)
         }

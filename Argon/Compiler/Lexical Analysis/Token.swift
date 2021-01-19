@@ -18,8 +18,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             }
             
         case none = ""
-        case backSlash = "\\"
-        case doubleBackSlash = "\\\\"
+        case doubleForwardSlash = "//"
         case leftParenthesis = "("
         case rightParenthesis = ")"
         case leftBrace = "{"
@@ -1168,23 +1167,23 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             }
         }
         
-    public var isBackSlash:Bool
+    public var isForwardSlash:Bool
         {
         switch(self)
             {
             case .symbol(let value,_):
-                return(value == .backSlash)
+                return(value == .div)
             default:
                 return(false)
             }
         }
         
-    public var isDoubleBackSlash:Bool
+    public var isForwardBackSlash:Bool
         {
         switch(self)
             {
             case .symbol(let value,_):
-                return(value == .doubleBackSlash)
+                return(value == .doubleForwardSlash)
             default:
                 return(false)
             }
@@ -2324,17 +2323,6 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             {
             case .keyword(let value,_):
                 return(value == .open)
-            default:
-                return(false)
-            }
-        }
-
-    public var isForwardSlash:Bool
-        {
-        switch(self)
-            {
-            case .symbol(let value,_):
-                return(value == .div)
             default:
                 return(false)
             }

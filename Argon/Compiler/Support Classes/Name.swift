@@ -60,7 +60,11 @@ public struct Name:Hashable,ExpressibleByArrayLiteral,ThreeAddress
             {
             return("")
             }
-        return("\\\\"+self.components.joined(separator: "\\"))
+        if self.components.count == 1
+            {
+            return("/\(self.components.first!)")
+            }
+        return("//"+self.components.joined(separator: "/"))
         }
         
     public var first:String
@@ -113,7 +117,11 @@ public struct Name:Hashable,ExpressibleByArrayLiteral,ThreeAddress
         
     public init(_ piece:String)
         {
-        self.components = piece.components(separatedBy: "::")
+        self.components = piece.components(separatedBy: "/")
+        if self.components.count > 0 && self.components.first!.isEmpty
+            {
+            self.components = Array(self.components.dropFirst())
+            }
         }
         
     public init()

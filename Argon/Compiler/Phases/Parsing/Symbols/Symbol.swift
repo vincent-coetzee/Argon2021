@@ -130,4 +130,8 @@ public class Symbol:ParseNode,Equatable,Hashable
         {
         fatalError("This should be overridden")
         }
+        
+    internal func allocateAddresses(using compiler:Compiler) throws
+        {
+        }
     }

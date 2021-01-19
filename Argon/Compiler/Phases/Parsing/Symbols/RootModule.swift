@@ -144,7 +144,27 @@ public class RootModule:Module
     private func initSystemModules()
         {
         let systemModule = self.placeholderModule("System",in:self)
-        let conduitsModule = self.placeholderModule("Conduits",in:systemModule)
+        let socketsModule = self.placeholderModule("Sockets",in:systemModule)
+        self.initSocketsModule(in: systemModule)
+        self.initConduitsModule(in: systemModule)
+        self.initIOModule(in: systemModule)
+       }
+        
+    private func initIOModule(in module:Module)
+        {
+        let ioModule = self.placeholderModule("IO",in: module)
+        let conduitClass = self.lookupClass("/System/Conduits/Conduit")!
+        ioModule.placeholderMethodInstance("write",.integerClass,Parameter("conduit",conduitClass,false),Parameter("format",.stringClass,true),VariadicParameter("arguments",.allClass,false))
+        }
+        
+    private func initSocketsModule(in module:Module)
+        {
+        let socketsModule = self.placeholderModule("Sockets",in: module)
+        }
+        
+    private func initConduitsModule(in module:Module)
+        {
+        let conduitsModule = self.placeholderModule("Conduits",in: module)
         let sinks = conduitsModule.placeholderEnumeration("Sink",class: .uIntegerClass).case("#none",value:0).case("#memory",value:1).case("#socket",value:2).case("#file",value:3)
         let conduitMode = conduitsModule.placeholderEnumeration("ConduitMode",class: .uIntegerClass).case("#none",value:0).case("#read",value:1).case("#write",value:2).case("#readwrite",value:3).case("#extend",value:4).case("#text",value:5).case("#raw",value:6)
         let sinksModule = self.placeholderModule("Sinks",in:conduitsModule)
@@ -158,7 +178,6 @@ public class RootModule:Module
         self.placeholderModule("Memory",in:sinksModule)
         self.placeholderModule("File",in:sinksModule)
         self.placeholderModule("Socket",in:sinksModule)
-        conduitsModule.placeholderMethodInstance("write",.integerClass,Parameter("conduit",conduitClass,false),Parameter("format",.stringClass,true),VariadicParameter("arguments",.allClass,false))
         }
         
     @discardableResult

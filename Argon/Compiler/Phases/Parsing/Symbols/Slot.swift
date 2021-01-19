@@ -10,16 +10,49 @@ import Foundation
 
 public class Slot:Variable
     {
+
+//long hashVal = 0;
+//	while (*key != ’/0’) {
+//		hashVal = (hashVal << 4) + *(key++);
+//		long g = hashval & 0xF0000000L;
+//		if (g != 0) hashVal ^= g >>> 24;
+//		hashVal &= ~g;
+//	}
+//	return hashVal;
+    
+    public var slotNameHornerHashValue:Int
+        {
+        var hashValue:UInt = 0
+        for character in self.slotName
+            {
+            let value = character.unicodeScalars.reduce(into:0) {t,c in t += c.value}
+            hashValue = (hashValue << 4) + UInt(value)
+            let intermediate = hashValue & 0xF0000000
+            if intermediate != 0
+                {
+                hashValue ^= intermediate >> 24
+                }
+            hashValue &= ~intermediate
+            }
+        return(Int(hashValue))
+        }
+        
+    public var isRegularSlot:Bool
+        {
+        return(self.attributes.contains(.regular))
+        }
+        
     public var isClassSlot:Bool
         {
         return(self.attributes.contains(.class))
         }
         
-    public var isMetaSlot:Bool
+    public var slotName:String
         {
-        return(self.attributes.contains(.meta))
+        return(self.container!.shortName + "\\" + self.shortName)
         }
         
+    public var slotOffset:Int = 0
     public var container:Symbol?
     internal let attributes:SlotAttributes
     internal var virtualReadBlock:VirtualSlotBlock?

@@ -27,6 +27,10 @@ internal class SymbolSet:Equatable
         self.symbols.append(symbol)
         }
         
+    internal init()
+        {
+        }
+        
     internal func append(_ symbol:Symbol)
         {
         self.symbols.append(symbol)
@@ -38,6 +42,10 @@ internal class SymbolSet:Equatable
         
     internal func allocateAddresses(using compiler:Compiler) throws
         {
+        for symbol in self.symbols
+            {
+            try symbol.allocateAddresses(using:compiler)
+            }
         }
         
     internal func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using compiler:Compiler) throws
