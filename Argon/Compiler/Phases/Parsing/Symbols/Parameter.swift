@@ -68,9 +68,23 @@ public class Parameter:Variable
         super.init(shortName: "",class: .voidClass)
         }
         
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
+        
     override func generateIntermediateCodeLoad(target:ThreeAddress,into buffer:ThreeAddressInstructionBuffer)
         {
         buffer.emitInstruction(result:target,left:self,opcode:.assign)
+        }
+        
+    public override func write(file: ObjectFile) throws
+        {
+        try super.write(file:file)
+        try file.write(self.showTag)
+        try file.write(self.hasTag)
+        try file.write(self.tag)
+        try file.write(self.stackOffsetFromBasePointer)
         }
     }
 

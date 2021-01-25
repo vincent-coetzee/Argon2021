@@ -8,8 +8,19 @@
 
 import Foundation
 
-public class Symbol:ParseNode,Equatable,Hashable
+public class Symbol:ParseNode,Equatable,Hashable,Record
     {
+    public var className:String
+        {
+        return("\(Swift.type(of:self))")
+        }
+        
+    public var recordKind:RecordKind
+        {
+        fatalError("This should heva been overridden")
+        }
+        
+    public let id:UUID
     internal var shortName:String
     internal var wasDeclaredForward = false
     internal var references:[SourceReference] = []
@@ -17,6 +28,20 @@ public class Symbol:ParseNode,Equatable,Hashable
     internal var parent:Symbol?
     internal var definingScope:Scope?
     
+    public var module:Module
+        {
+        var object = self.parent
+        while object != nil && !(object is Module)
+            {
+            object = object?.parent
+            }
+        if object == nil
+            {
+            fatalError("Can not find containing module for \(self)")
+            }
+        return(object as! Module)
+        }
+        
     public var isPlaceholder:Bool
         {
         return(false)
@@ -77,6 +102,7 @@ public class Symbol:ParseNode,Equatable,Hashable
         {
         self.shortName = shortName
         self.parent = parent
+        self.id = UUID()
         super.init()
         }
     
@@ -84,9 +110,26 @@ public class Symbol:ParseNode,Equatable,Hashable
         {
         self.shortName = name.first
         self.parent = parent
+        self.id = UUID()
         super.init()
         }
+        
+    required public init(file:ObjectFile) throws
+        {
+        fatalError("Should have been overriden")
+        }
     
+    public func write(file: ObjectFile) throws
+        {
+        try file.write(self.id)
+        try file.write(self.accessLevel)
+        try file.write(self.className)
+        try file.write(self.shortName)
+        try file.write(self.index)
+        try file.write(self.parent?.index ?? 0)
+        try file.write(self.references)
+        }
+        
     internal func addRead(location:SourceLocation)
         {
         self.references.append(.read(location))
@@ -133,5 +176,10 @@ public class Symbol:ParseNode,Equatable,Hashable
         
     internal func allocateAddresses(using compiler:Compiler) throws
         {
+        }
+    
+    public func dump()
+        {
+        print("\(Swift.type(of:self)) \(self.shortName)")
         }
     }

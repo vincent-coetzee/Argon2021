@@ -172,7 +172,7 @@ internal class Parser:CompilerPhase
             {
             try self.parseModuleElements()
             }
-        Module.innerScope.addSymbol(module!)
+        module!.accessLevel = self.effectiveAccessModifier
         return(module!)
         }
         
@@ -372,6 +372,7 @@ internal class Parser:CompilerPhase
             constant.initialValue = expression
             }
         constant.addDeclaration(location: location)
+        constant.accessLevel = self.effectiveAccessModifier
         return(constant)
         }
         
@@ -380,7 +381,7 @@ internal class Parser:CompilerPhase
         self.advance()
         let location = self.token.location
         let name = try self.parseIdentifier()
-        var path = "\\"
+        var path = ""
         var isPathBased = false
         if self.token.isLeftPar
             {
@@ -458,6 +459,7 @@ internal class Parser:CompilerPhase
             }
         Module.innerScope.addSymbol(function)
         function.addDeclaration(location: location)
+        function.accessLevel = self.effectiveAccessModifier
         }
     
     private func parseMethodDeclaration() throws
@@ -489,6 +491,7 @@ internal class Parser:CompilerPhase
         instance.parameters = parameters
         instance.addDeclaration(location: location)
         theMethod.addInstance(instance)
+        theMethod.accessLevel = self.effectiveAccessModifier
         }
         
     private func parseEnumerationDeclaration() throws
@@ -513,6 +516,7 @@ internal class Parser:CompilerPhase
             }
         enumeration.addDeclaration(location: location)
         Module.innerScope.addSymbol(enumeration)
+        enumeration.accessLevel = self.effectiveAccessModifier
         }
         
     private func parseEnumerationCase() throws -> EnumerationCase
@@ -556,7 +560,9 @@ internal class Parser:CompilerPhase
         let location = self.token.location
         let name = try self.parseIdentifier()
         print("CLASS NAME IS \(name)")
-        let aClass = Class(shortName:name)
+        let aClass = ValueClass(shortName:name)
+        aClass.addDeclaration(location: location)
+        Module.innerScope.addSymbol(aClass)
         if self.token.isLeftBrocket
             {
             var generics = GenericClasses()
@@ -582,7 +588,7 @@ internal class Parser:CompilerPhase
                     let slot = try self.parseSlotDeclaration(slotAttributes: [.value])
                     if slot.isRegularSlot
                         {
-                        aClass.addClassSlot(slot)
+                        aClass.addRegularSlot(slot)
                         }
                     else
                         {
@@ -604,8 +610,7 @@ internal class Parser:CompilerPhase
                 }
             while !self.token.isRightBrace
             }
-        aClass.addDeclaration(location: location)
-        Module.innerScope.addSymbol(aClass)
+        aClass.accessLevel = self.effectiveAccessModifier
         }
         
     private func parseClassDeclaration() throws
@@ -692,6 +697,7 @@ internal class Parser:CompilerPhase
             while !self.token.isRightBrace
             }
         aClass.addDeclaration(location: location)
+        aClass.accessLevel = self.effectiveAccessModifier
         }
         
     private func parseAliasSlotDeclaration() throws -> Slot
@@ -779,6 +785,7 @@ internal class Parser:CompilerPhase
             slot.initialValue = initialValue
             }
         slot.addDeclaration(location: location)
+        slot.accessLevel = self.effectiveAccessModifier
         return(slot)
         }
         
@@ -950,6 +957,7 @@ internal class Parser:CompilerPhase
         let alias = TypeSymbol(shortName: name, class: baseType)
         alias.addDeclaration(location: location)
         Module.innerScope.addSymbol(alias)
+        alias.accessLevel = self.effectiveAccessModifier
         }
         
     private func parseBitSetDeclaration() throws
@@ -1033,6 +1041,7 @@ internal class Parser:CompilerPhase
             while self.token.isBitField
             }
         Module.innerScope.addSymbol(bitSet)
+        bitSet.accessLevel = self.effectiveAccessModifier
         }
         
     private func parseFormalParameters() throws -> Parameters
@@ -1318,7 +1327,9 @@ internal class Parser:CompilerPhase
                 throw(CompilerError(.rightBracketExpected,self.token.location))
                 }
             self.advance()
+            let module = Module.rootModule.lookupModule("Argon/Collections")
             let generator = SequenceGeneratorClass(baseClass: aClass, start: LiteralIntegerExpression(integer: startInteger), step: Expression(), end: LiteralIntegerExpression(integer: endInteger))
+            generator.parent = module
             return(generator)
             }
         else
@@ -1398,7 +1409,10 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
         self.advance()
-        return(ArrayClass(shortName:Argon.nextName("ARRAY"),indexType: indexType,elementTypeClass: elementTypeClass))
+        let arrayClass = ArrayClass(shortName:Argon.nextName("ARRAY"),indexType: indexType,elementTypeClass: elementTypeClass)
+        let module = Module.rootModule.lookupModule("Argon/Collections")
+        arrayClass.parent = module
+        return(arrayClass)
         }
         
     @discardableResult

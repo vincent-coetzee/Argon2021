@@ -16,6 +16,11 @@ public class EnumerationClass:Class
         self.baseClass = baseClass
         super.init(shortName:shortName)
         }
+        
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
     }
     
 public class EnumerationCaseClass:Class
@@ -31,4 +36,9 @@ public class EnumerationCaseClass:Class
     internal required init() {
         fatalError("init() has not been implemented")
     }
+    
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
 }

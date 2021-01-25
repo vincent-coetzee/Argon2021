@@ -13,4 +13,10 @@ extension String:ThreeAddress
         {
         return(#""\#(self)""#)
         }
+    
+    public func write(file: ObjectFile) throws
+        {
+        try file.write(character:"S")
+        try file.write(self)
+        }
     }

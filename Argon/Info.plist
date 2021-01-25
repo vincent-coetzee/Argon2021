@@ -18,21 +18,21 @@
 		</dict>
 		<dict>
 			<key>CFBundleTypeIconFile</key>
-			<string>ArgonProjectIcon</string>
+			<string>ArgonModuleFileIcon</string>
 			<key>CFBundleTypeIconSystemGenerated</key>
 			<integer>0</integer>
 			<key>CFBundleTypeName</key>
-			<string>Argon Project</string>
+			<string>Argon Module</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
 			<string>Owner</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>com.macsemantics.argon.project</string>
+				<string>com.macsemantics.argon.module</string>
 			</array>
 			<key>NSDocumentClass</key>
-			<string>$(PRODUCT_MODULE_NAME).ArgonProject</string>
+			<string>$(PRODUCT_MODULE_NAME).ArgonModule</string>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
@@ -59,7 +59,27 @@
 	<string>NSApplication</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
-		<dict/>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Argon Module File</string>
+			<key>UTTypeIconFile</key>
+			<string>ArgonModuleFileIcon</string>
+			<key>UTTypeIcons</key>
+			<dict/>
+			<key>UTTypeIdentifier</key>
+			<string>com.macsemantics.argon.module</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>argonm</string>
+				</array>
+			</dict>
+		</dict>
 	</array>
 	<key>UTImportedTypeDeclarations</key>
 	<array>

@@ -10,6 +10,11 @@ import Foundation
 
 internal class TypeSymbol:Symbol
     {
+    public override var recordKind:RecordKind
+        {
+        return(.type)
+        }
+        
     override internal var typeClass:Class
         {
         return(self.baseType)
@@ -33,6 +38,11 @@ internal class TypeSymbol:Symbol
         {
         self.baseType = Class.voidClass
         super.init(shortName:"")
+        }
+        
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
         }
         
     internal override func pushScope()

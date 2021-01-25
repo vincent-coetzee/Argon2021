@@ -10,4 +10,5 @@ import Foundation
 public protocol ThreeAddress
     {
     var displayString:String { get }
+    func write(file:ObjectFile) throws
     }

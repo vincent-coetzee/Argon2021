@@ -23,6 +23,11 @@ public class DictionaryClass:CollectionClass
         fatalError("init() has not been implemented")
     }
     
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
+        
     internal  func typeWithIndex(_ type:Type.ArrayIndexType) -> Class
         {
         return(DictionaryClass(shortName:Argon.nextName("DICTIONARY"),keyTypeClass:self.keyTypeClass,valueTypeClass:self.valueTypeClass))

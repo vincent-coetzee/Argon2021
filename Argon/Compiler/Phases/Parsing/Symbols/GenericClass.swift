@@ -44,6 +44,11 @@ public class GenericClass:Symbol
         self.constraints = []
         super.init(shortName: "")
     }
+    
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
 }
 
 typealias GenericClasses = Array<GenericClass>

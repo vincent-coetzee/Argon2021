@@ -9,6 +9,11 @@ import Foundation
 
 public class Constant:Variable
     {
+    public override var recordKind:RecordKind
+        {
+        return(.constant)
+        }
+        
     internal override var typeClass:Class
         {
         get
@@ -33,4 +38,9 @@ public class Constant:Variable
     internal required init() {
         fatalError("init() has not been implemented")
     }
+    
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
 }

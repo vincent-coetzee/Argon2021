@@ -21,4 +21,9 @@ public class AliasSlot:Slot
         {
         fatalError("init() has not been implemented")
         }
+        
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
     }

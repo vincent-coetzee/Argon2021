@@ -19,7 +19,6 @@ public class SymbolContainer:Symbol
         
     internal override func addSymbol(_ symbol:Symbol)
         {
-        symbol.definingScope = self
         if symbol.isModuleLevelSymbol && !(self is Module)
             {
             self.parentScope?.addSymbol(symbol)

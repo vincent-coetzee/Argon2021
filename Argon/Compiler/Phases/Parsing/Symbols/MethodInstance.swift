@@ -35,6 +35,25 @@ public class MethodInstance:Symbol
     internal var localVariables:[LocalVariable] = []
     internal var stackLocalStorageSizeInBytes = 0
     
+    public override var recordKind:RecordKind
+        {
+        return(.methodInstance)
+        }
+        
+    public override func write(file: ObjectFile) throws
+        {
+        try super.write(file:file)
+        for parameter in self.parameters
+            {
+            try parameter.write(file:file)
+            }
+        try file.write(self.functionName)
+        try file.write(self.returnTypeClass)
+        try file.write(self.parameters)
+        try file.write(self.localVariables)
+        try ir3ABuffer.write(file:file)
+        }
+        
     internal override var typeClass:Class
         {
         return(MethodInstanceClass(shortName:self.shortName,argumentClasses:self._parameters.map{$0.typeClass},returnTypeClass: self.returnTypeClass))
@@ -79,6 +98,12 @@ public class MethodInstance:Symbol
         super.init()
         }
         
+    internal required init(file:ObjectFile) throws
+        {
+        self.returnTypeClass = try file.readObject() as! Class
+        try super.init(file:file)
+        }
+        
     internal override func lookup(shortName:String) -> SymbolSet?
         {
         return(self.block.lookup(shortName:shortName))
@@ -106,7 +131,6 @@ public class MethodInstance:Symbol
             parameter.stackOffsetFromBasePointer = parameterOffset
             parameterOffset += Argon.kWordSizeInBytes
             }
-        
         self.ir3ABuffer.emitInstruction(opcode:.enter,right:self.stackLocalStorageSizeInBytes,comment:"ENTER METHOD, SET UP FRAME")
         for statement in self.block.statements
             {
@@ -134,4 +158,9 @@ public class HollowMethod:MethodInstance
     internal required init() {
         fatalError("init() has not been implemented")
     }
+    
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
 }

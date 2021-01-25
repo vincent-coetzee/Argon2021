@@ -18,7 +18,7 @@ class AppDelegate: NSObject, NSApplicationDelegate
         let source = item.source
 //        self.tokenStream.reset(source:source)
         let compiler = Compiler()
-        let module = compiler.compile(source: source)
+        compiler.compile(source: source)
 //        if let controller = NSStoryboard.main?.instantiateController(withIdentifier:"ArgonClassBrowserControllerID") as? NSWindowController
 //            {
 //            controller.showWindow(self)

@@ -8,8 +8,27 @@
 
 import Foundation
 
-public class Expression:Equatable
-    {
+public class Expression:Equatable,Record
+{
+    public var recordKind: RecordKind
+        {
+        return(.expression)
+        }
+    
+    public var id:UUID
+    
+    public func write(file: ObjectFile) throws
+        {
+        try file.write(self.id)
+        try file.write(self.location)
+        }
+    
+    public required init(file: ObjectFile) throws
+        {
+        self.id = UUID(uuidString: try file.readString())!
+        self.location = try SourceLocation(file:file)
+        }
+    
     private let location:SourceLocation
     
     public var isHollowVariableExpression:Bool
@@ -35,6 +54,7 @@ public class Expression:Equatable
     init(location:SourceLocation = .zero)
         {
         self.location = location
+        self.id = UUID()
         }
         
     internal func generateIntermediatePushCode(into buffer:ThreeAddressInstructionBuffer)
@@ -67,7 +87,8 @@ public class BinaryExpression:Expression
         
     public override var typeClass:Class
         {
-        return(CrossProduct(shortName:"\(self.operation)",operation:operation,operands:[lhs.typeClass,rhs.typeClass]))
+//        return(CrossProduct(shortName:"\(self.operation)",operation:operation,operands:[lhs.typeClass,rhs.typeClass]))
+        fatalError()
         }
         
     let lhs:Expression
@@ -275,6 +296,11 @@ public class PsuedoVariableValuexpression:ScalarExpression
     
 public class ThisExpression:PsuedoVariableValuexpression,ThreeAddress
     {
+    public func write(file: ObjectFile) throws
+        {
+        try file.write(character:"t")
+        }
+        
     public override var displayString:String
         {
         return("this")
@@ -283,6 +309,11 @@ public class ThisExpression:PsuedoVariableValuexpression,ThreeAddress
     
 public class THISExpression:PsuedoVariableValuexpression,ThreeAddress
     {
+    public func write(file: ObjectFile) throws
+        {
+        try file.write(character:"T")
+        }
+        
     public override var displayString:String
         {
         return("This")
@@ -291,6 +322,11 @@ public class THISExpression:PsuedoVariableValuexpression,ThreeAddress
     
 public class SuperExpression:PsuedoVariableValuexpression,ThreeAddress
     {
+    public func write(file: ObjectFile) throws
+        {
+        try file.write(character:"S")
+        }
+        
     public override var displayString:String
         {
         return("super")
@@ -866,5 +902,10 @@ public class FullyQualifiedName:Class
         {
         self._name = name
         super.init(shortName:name.stringName)
+        }
+        
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
         }
     }

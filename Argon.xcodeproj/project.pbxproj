@@ -104,6 +104,7 @@
 		BF08FC3725803AB100C4AC6F /* ArgonBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FC3325803AB100C4AC6F /* ArgonBrowserViewController.swift */; };
 		BF08FC3825803AB100C4AC6F /* SourceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FC3425803AB100C4AC6F /* SourceProvider.swift */; };
 		BF08FC3925803AB100C4AC6F /* DisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FC3525803AB100C4AC6F /* DisplayView.swift */; };
+		BF14FB5925BDBE4A002B9F0C /* ClassReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF14FB5825BDBE4A002B9F0C /* ClassReference.swift */; };
 		BF3B7FD02589356500582C17 /* CCreole.argon in Resources */ = {isa = PBXBuildFile; fileRef = BF3B7FCF2589356500582C17 /* CCreole.argon */; };
 		BF3B7FDC25893CA900582C17 /* ArgonNumbers.argon in Resources */ = {isa = PBXBuildFile; fileRef = BF3B7FD725893CA900582C17 /* ArgonNumbers.argon */; };
 		BF3B7FDD25893CA900582C17 /* ArgonIntegers.argon in Resources */ = {isa = PBXBuildFile; fileRef = BF3B7FD825893CA900582C17 /* ArgonIntegers.argon */; };
@@ -167,15 +168,14 @@
 		BFD04BE92590C6E0003FDD90 /* RegisterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BE82590C6E0003FDD90 /* RegisterSet.swift */; };
 		BFD04BEC2590C730003FDD90 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BEB2590C730003FDD90 /* Address.swift */; };
 		BFD04BF625915714003FDD90 /* ThreeAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BF525915714003FDD90 /* ThreeAddress.swift */; };
-		BFD04BFB25915775003FDD90 /* ThreeAddressName.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BFA25915775003FDD90 /* ThreeAddressName.swift */; };
 		BFD04BFE259157A6003FDD90 /* ThreeAddressConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BFD259157A6003FDD90 /* ThreeAddressConstant.swift */; };
 		BFD04C01259157CB003FDD90 /* ThreeAddressTemporary.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04C00259157CB003FDD90 /* ThreeAddressTemporary.swift */; };
 		BFD04C0425915810003FDD90 /* ThreeAddressInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04C0325915810003FDD90 /* ThreeAddressInstruction.swift */; };
-		BFD04C07259159D7003FDD90 /* ThreeAddressOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04C06259159D7003FDD90 /* ThreeAddressOperation.swift */; };
 		BFD58CE1258E3B2000B2ADDD /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD58CE0258E3B2000B2ADDD /* Constant.swift */; };
 		BFD58CE8258F07DF00B2ADDD /* Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD58CE7258F07DF00B2ADDD /* Identifier.swift */; };
 		BFD58CEC258F355800B2ADDD /* Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD58CEB258F355800B2ADDD /* Method.swift */; };
 		BFD58CF1258F98E000B2ADDD /* Pointer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD58CF0258F98E000B2ADDD /* Pointer.swift */; };
+		BFDE98AF25BEF9C300A4844E /* BinaryFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDE98AE25BEF9C300A4844E /* BinaryFile.swift */; };
 		BFE0A0902593AC5E00B85ADF /* MethodClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0A08F2593AC5E00B85ADF /* MethodClass.swift */; };
 		BFE0A0932593B2C700B85ADF /* LHSValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0A0922593B2C700B85ADF /* LHSValue.swift */; };
 		BFE0A0962593CBD100B85ADF /* EnumerationClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0A0952593CBD100B85ADF /* EnumerationClass.swift */; };
@@ -183,6 +183,8 @@
 		BFE0A09C2593DAE200B85ADF /* InstructionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0A09B2593DAE200B85ADF /* InstructionLabel.swift */; };
 		BFE0A09F2593DAF800B85ADF /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0A09E2593DAF800B85ADF /* Instruction.swift */; };
 		BFEE2F67258B7820006C47F6 /* Import.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEE2F66258B7820006C47F6 /* Import.swift */; };
+		BFF12C6825B96F36001417FB /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF12C6725B96F36001417FB /* Record.swift */; };
+		BFF12C6C25B97667001417FB /* ObjectFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF12C6B25B97667001417FB /* ObjectFile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -288,6 +290,7 @@
 		BF08FC3325803AB100C4AC6F /* ArgonBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArgonBrowserViewController.swift; sourceTree = "<group>"; };
 		BF08FC3425803AB100C4AC6F /* SourceProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceProvider.swift; sourceTree = "<group>"; };
 		BF08FC3525803AB100C4AC6F /* DisplayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayView.swift; sourceTree = "<group>"; };
+		BF14FB5825BDBE4A002B9F0C /* ClassReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassReference.swift; sourceTree = "<group>"; };
 		BF3B7FCF2589356500582C17 /* CCreole.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CCreole.argon; sourceTree = "<group>"; };
 		BF3B7FD725893CA900582C17 /* ArgonNumbers.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ArgonNumbers.argon; sourceTree = "<group>"; };
 		BF3B7FD825893CA900582C17 /* ArgonIntegers.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ArgonIntegers.argon; sourceTree = "<group>"; };
@@ -351,15 +354,14 @@
 		BFD04BE82590C6E0003FDD90 /* RegisterSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSet.swift; sourceTree = "<group>"; };
 		BFD04BEB2590C730003FDD90 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
 		BFD04BF525915714003FDD90 /* ThreeAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAddress.swift; sourceTree = "<group>"; };
-		BFD04BFA25915775003FDD90 /* ThreeAddressName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAddressName.swift; sourceTree = "<group>"; };
 		BFD04BFD259157A6003FDD90 /* ThreeAddressConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAddressConstant.swift; sourceTree = "<group>"; };
 		BFD04C00259157CB003FDD90 /* ThreeAddressTemporary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAddressTemporary.swift; sourceTree = "<group>"; };
 		BFD04C0325915810003FDD90 /* ThreeAddressInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAddressInstruction.swift; sourceTree = "<group>"; };
-		BFD04C06259159D7003FDD90 /* ThreeAddressOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAddressOperation.swift; sourceTree = "<group>"; };
 		BFD58CE0258E3B2000B2ADDD /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		BFD58CE7258F07DF00B2ADDD /* Identifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifier.swift; sourceTree = "<group>"; };
 		BFD58CEB258F355800B2ADDD /* Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Method.swift; sourceTree = "<group>"; };
 		BFD58CF0258F98E000B2ADDD /* Pointer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pointer.swift; sourceTree = "<group>"; };
+		BFDE98AE25BEF9C300A4844E /* BinaryFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryFile.swift; sourceTree = "<group>"; };
 		BFE0A08F2593AC5E00B85ADF /* MethodClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodClass.swift; sourceTree = "<group>"; };
 		BFE0A0922593B2C700B85ADF /* LHSValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LHSValue.swift; sourceTree = "<group>"; };
 		BFE0A0952593CBD100B85ADF /* EnumerationClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumerationClass.swift; sourceTree = "<group>"; };
@@ -367,6 +369,8 @@
 		BFE0A09B2593DAE200B85ADF /* InstructionLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionLabel.swift; sourceTree = "<group>"; };
 		BFE0A09E2593DAF800B85ADF /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
 		BFEE2F66258B7820006C47F6 /* Import.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Import.swift; sourceTree = "<group>"; };
+		BFF12C6725B96F36001417FB /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
+		BFF12C6B25B97667001417FB /* ObjectFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectFile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -445,6 +449,9 @@
 				BF08FB5E25803A6A00C4AC6F /* Type.swift */,
 				BF85B1C325B1208C00C40C03 /* SemanticVersionNumber.swift */,
 				BF85B1C625B126CA00C40C03 /* RelocatableReference.swift */,
+				BFF12C6725B96F36001417FB /* Record.swift */,
+				BFF12C6B25B97667001417FB /* ObjectFile.swift */,
+				BFDE98AE25BEF9C300A4844E /* BinaryFile.swift */,
 			);
 			path = "Support Classes";
 			sourceTree = "<group>";
@@ -635,6 +642,7 @@
 				BFEE2F66258B7820006C47F6 /* Import.swift */,
 				BF08FBB325803A6A00C4AC6F /* InductionVariable.swift */,
 				BF08FB6825803A6A00C4AC6F /* Instance.swift */,
+				BF57C36825B6FE760024F95F /* LayoutSlot.swift */,
 				BF08FBB725803A6A00C4AC6F /* LocalVariable.swift */,
 				BF45F1E52596629100376006 /* Metaclass.swift */,
 				BFD58CEB258F355800B2ADDD /* Method.swift */,
@@ -660,7 +668,7 @@
 				BF08FBAA25803A6A00C4AC6F /* UndefinedSymbol.swift */,
 				BF08FBBD25803A6A00C4AC6F /* Variable.swift */,
 				BF08FBB925803A6A00C4AC6F /* VirtualSlot.swift */,
-				BF57C36825B6FE760024F95F /* LayoutSlot.swift */,
+				BF14FB5825BDBE4A002B9F0C /* ClassReference.swift */,
 			);
 			path = Symbols;
 			sourceTree = "<group>";
@@ -759,11 +767,9 @@
 			isa = PBXGroup;
 			children = (
 				BFD04BF525915714003FDD90 /* ThreeAddress.swift */,
-				BFD04BFA25915775003FDD90 /* ThreeAddressName.swift */,
 				BFD04BFD259157A6003FDD90 /* ThreeAddressConstant.swift */,
 				BFD04C00259157CB003FDD90 /* ThreeAddressTemporary.swift */,
 				BFD04C0325915810003FDD90 /* ThreeAddressInstruction.swift */,
-				BFD04C06259159D7003FDD90 /* ThreeAddressOperation.swift */,
 				BFE0A0982593DA7600B85ADF /* ThreeAddressInstructionBuffer.swift */,
 			);
 			path = "Three Address Code";
@@ -897,7 +903,6 @@
 				BFD58CE8258F07DF00B2ADDD /* Identifier.swift in Sources */,
 				BF08FC1E25803A6A00C4AC6F /* Module.swift in Sources */,
 				BF08FB4725803A2900C4AC6F /* AppDelegate.swift in Sources */,
-				BFD04BFB25915775003FDD90 /* ThreeAddressName.swift in Sources */,
 				BF08FBCE25803A6A00C4AC6F /* SourceReference.swift in Sources */,
 				BF5AFF4E25A2EBAB00CED0AC /* ArgonClassBrowser.swift in Sources */,
 				BF08FBD025803A6A00C4AC6F /* CompilerError.swift in Sources */,
@@ -930,6 +935,7 @@
 				BFE0A0992593DA7600B85ADF /* ThreeAddressInstructionBuffer.swift in Sources */,
 				BF64816C25B45DE100D75675 /* SystemPlaceholderModule.swift in Sources */,
 				BF7952BA2592A54D00B90AE3 /* AliasSlot.swift in Sources */,
+				BF14FB5925BDBE4A002B9F0C /* ClassReference.swift in Sources */,
 				BF08FBE525803A6A00C4AC6F /* VirtualSlotWriteSlotBlock.swift in Sources */,
 				BF64816625B45CFC00D75675 /* SystemPlaceholderMethodInstance.swift in Sources */,
 				BF5AFF8725A57C2E00CED0AC /* DisclosureArrowLayer.swift in Sources */,
@@ -941,6 +947,8 @@
 				BF08FC2B25803A6A00C4AC6F /* Argon.swift in Sources */,
 				BF08FC2A25803A6A00C4AC6F /* CodeOptimiser.swift in Sources */,
 				BF08FC1025803A6A00C4AC6F /* Slot.swift in Sources */,
+				BFDE98AF25BEF9C300A4844E /* BinaryFile.swift in Sources */,
+				BFF12C6C25B97667001417FB /* ObjectFile.swift in Sources */,
 				BF5AFF5525A2F15C00CED0AC /* BrowserClassItem.swift in Sources */,
 				BF08FBF625803A6A00C4AC6F /* SignalStatement.swift in Sources */,
 				BF08FBFF25803A6A00C4AC6F /* IfStatement.swift in Sources */,
@@ -1001,7 +1009,7 @@
 				BF5AFF5B25A2F1C100CED0AC /* BrowserSystemClassItem.swift in Sources */,
 				BF08FC0D25803A6A00C4AC6F /* Parameter.swift in Sources */,
 				BF08FC1825803A6A00C4AC6F /* MethodInstance.swift in Sources */,
-				BFD04C07259159D7003FDD90 /* ThreeAddressOperation.swift in Sources */,
+				BFF12C6825B96F36001417FB /* Record.swift in Sources */,
 				BF5AFF6D25A4E28500CED0AC /* ArgonModuleView.swift in Sources */,
 				BF08FC1725803A6A00C4AC6F /* Nil.swift in Sources */,
 				BF08FC0625803A6A00C4AC6F /* WhileStatement.swift in Sources */,

@@ -31,6 +31,12 @@ internal class LocalVariable:Variable
         fatalError("init() has not been implemented")
     }
     
+    
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
+        
     override func generateIntermediateCodeLoad(target:ThreeAddress,into buffer:ThreeAddressInstructionBuffer)
         {
         buffer.emitInstruction(result:target,left:self,opcode:.assign)

@@ -34,6 +34,11 @@ public class Closure:Symbol,ThreeAddress
         super.init(name:name,parent:parent)
         }
         
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
+        
     internal override func lookup(shortName:String) -> SymbolSet?
         {
         return(self.block.lookup(shortName:shortName))

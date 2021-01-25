@@ -11,6 +11,12 @@ public class ThreeAddressTemporary:ThreeAddress
     {
     private let name:String
     
+    public func write(file: ObjectFile) throws
+        {
+        try file.write(character:"M")
+        try file.write(self.name)
+        }
+        
     public var displayString:String
         {
         return(self.name)

@@ -19,4 +19,9 @@ internal class ForInductionVariable:InductionVariable
         {
         super.init()
         }
+        
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
 }

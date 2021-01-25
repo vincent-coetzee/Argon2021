@@ -23,4 +23,9 @@ public class Pointer:Class
     required init() {
         fatalError("init() has not been implemented")
     }
+    
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
 }

@@ -21,6 +21,11 @@ public class ClassMaker:MethodInstance
         {
         fatalError("init() has not been implemented")
         }
+        
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
     }
 
 typealias ClassMakers = Array<ClassMaker>

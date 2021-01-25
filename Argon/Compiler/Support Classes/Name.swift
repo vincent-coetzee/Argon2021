@@ -8,8 +8,46 @@
 
 import Foundation
     
-public struct Name:Hashable,ExpressibleByArrayLiteral,ThreeAddress
+public struct Name:Hashable,ExpressibleByArrayLiteral,ThreeAddress,Record
     {
+    public enum NameComponent:Hashable
+        {
+        var string:String
+            {
+            switch(self)
+                {
+                case .anchor:
+                    return("/")
+                case .element(let string):
+                    return(string)
+                }
+            }
+            
+        case anchor
+        case element(String)
+        
+        var isAnchor:Bool
+            {
+            switch(self)
+                {
+                case .anchor:
+                    return(true)
+                default:
+                    return(false)
+                }
+            }
+        }
+        
+    public var recordKind: RecordKind
+        {
+        return(.name)
+        }
+        
+    public func write(file: ObjectFile) throws
+        {
+        try file.write(self.stringName)
+        }
+    
     public var displayString:String
         {
         return(self.stringName)
@@ -17,7 +55,7 @@ public struct Name:Hashable,ExpressibleByArrayLiteral,ThreeAddress
         
     public static func +(lhs:Name,rhs:String) -> Name
         {
-        return(Name(lhs.components + [rhs]))
+        return(Name(lhs.components.map{$0.string} + [rhs]))
         }
         
     public static func +(lhs:Name,rhs:Name) -> Name
@@ -29,18 +67,20 @@ public struct Name:Hashable,ExpressibleByArrayLiteral,ThreeAddress
     public static func +=(lhs:inout Name,rhs:String) -> Name
         {
         var total = lhs.components
-        total.append(rhs)
+        total.append(.element(rhs))
         lhs = Name(total)
         return(lhs)
         }
         
+    public let id = UUID()
+    
     public typealias ArrayLiteralElement = String
     
     public init(arrayLiteral arrayLiteralElement:String...)
         {
         for element in arrayLiteralElement
             {
-            self.components.append(element)
+            self.components.append(.element(element))
             }
         }
         
@@ -64,7 +104,7 @@ public struct Name:Hashable,ExpressibleByArrayLiteral,ThreeAddress
             {
             return("/\(self.components.first!)")
             }
-        return("//"+self.components.joined(separator: "/"))
+        return("//"+self.components.map{$0.string}.joined(separator: "/"))
         }
         
     public var first:String
@@ -73,7 +113,7 @@ public struct Name:Hashable,ExpressibleByArrayLiteral,ThreeAddress
             {
             fatalError("Attempt to access first element of name when name has 0 length.")
             }
-        return(self.components[0])
+        return(self.components[0].string)
         }
         
     public var last:String
@@ -82,15 +122,15 @@ public struct Name:Hashable,ExpressibleByArrayLiteral,ThreeAddress
             {
             fatalError("Attempt to access last element of name when name has 0 length.")
             }
-        return(self.components.last!)
+        return(self.components.last!.string)
         }
         
     public var names:[String]
         {
-        return(self.components)
+        return(self.components.map{$0.isAnchor ? "/" : $0.string})
         }
         
-    private var components:[String] = []
+    private var components:[NameComponent] = []
     
     public func withoutFirst() -> Name
         {
@@ -110,22 +150,32 @@ public struct Name:Hashable,ExpressibleByArrayLiteral,ThreeAddress
         return(Name(Array(self.components.dropLast())))
         }
         
-    public init(_ components:[String])
+    public init(_ components:[NameComponent])
         {
         self.components = components
         }
         
+    public init(_ components:[String])
+        {
+        self.components = components.map{.element($0)}
+        }
+        
     public init(_ piece:String)
         {
-        self.components = piece.components(separatedBy: "/")
-        if self.components.count > 0 && self.components.first!.isEmpty
+        let pieces = piece.components(separatedBy: "/")
+        if pieces.count > 0 && pieces.first!.isEmpty
             {
-            self.components = Array(self.components.dropFirst())
+            self.components = Array(pieces.dropFirst()).map{.element($0)}
             }
         }
         
     public init()
         {
         self.components = []
+        }
+        
+    public init(file:ObjectFile) throws
+        {
+        self.init(try file.readString())
         }
     }

@@ -35,6 +35,12 @@ public struct InstructionLabel:ThreeAddress
         self.instruction = nil
         }
         
+    public func write(file: ObjectFile) throws
+        {
+        try file.write(character:"L")
+        try file.write(self.index)
+        }
+        
     mutating func setInstruction(_ instruction:Instruction)
         {
         self.instruction = instruction

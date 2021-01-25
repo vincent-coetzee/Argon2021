@@ -40,6 +40,11 @@ public class Argument:Symbol,ThreeAddress
         super.init()
         }
         
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
+        
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
         {
         try value.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)

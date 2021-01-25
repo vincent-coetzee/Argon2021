@@ -52,6 +52,11 @@ public class Slot:Variable
         return(self.container!.shortName + "\\" + self.shortName)
         }
         
+    public override var recordKind:RecordKind
+        {
+        return(.slot)
+        }
+        
     public var slotOffset:Int = 0
     public var container:Symbol?
     internal let attributes:SlotAttributes
@@ -82,6 +87,11 @@ public class Slot:Variable
         self._class = Argon.rootModule.nilClass
         }
         
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
+        
     internal func slotType(_ slotNames:[String]) -> Type
         {
         if slotNames.count == 0
@@ -94,6 +104,17 @@ public class Slot:Variable
     internal func fieldHash(n:Int) -> Int
         {
         return(self.shortName.hashValue % n)
+        }
+    
+    public override func write(file: ObjectFile) throws
+        {
+        try super.write(file:file)
+        try file.write(self.slotOffset)
+        try file.write(self.container?.name)
+        try file.write(self.container?.index ?? -1)
+        try file.write(self.attributes.encodedString)
+        //
+        // TODO: write read and write blocks
         }
     }
 

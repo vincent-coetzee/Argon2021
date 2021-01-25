@@ -84,4 +84,13 @@ public class ThreeAddressInstructionBuffer
             print("\(instruction.displayString)")
             }
         }
+        
+    func write(file: ObjectFile) throws
+        {
+        try file.write(self.instructions.count)
+        for instruction in self.instructions
+            {
+            try instruction.write(file:file)
+            }
+        }
     }

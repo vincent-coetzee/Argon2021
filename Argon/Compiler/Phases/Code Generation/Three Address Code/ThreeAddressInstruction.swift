@@ -7,8 +7,13 @@
 
 import Foundation
 
-public class ThreeAddressInstruction:Instruction
+public class ThreeAddressInstruction:Instruction,Record
     {
+    public var recordKind:RecordKind
+        {
+        return(.instruction)
+        }
+        
     internal enum InstructionCode:String
         {
         case add
@@ -68,12 +73,45 @@ public class ThreeAddressInstruction:Instruction
     let left:ThreeAddress?
     let right:ThreeAddress?
     let opcode:InstructionCode
+    public let id:UUID
     public var labels = InstructionLabels()
     public var location:SourceLocation?
     public var comment:String?
     
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
+        
+    public func write(file: ObjectFile) throws
+        {
+        for label in self.labels
+            {
+            try file.write(RecordKind.instructionLabel)
+            try file.write(label.index)
+            }
+        if let result = self.result
+            {
+            try file.write(RecordKind.instructionResult)
+            try result.write(file:file)
+            }
+        if let left = self.left
+            {
+            try file.write(RecordKind.instructionLeftHS)
+            try left.write(file:file)
+            }
+            try file.write(RecordKind.instructionOpcode)
+        try file.write(self.opcode)
+        if let right = self.right
+            {
+            try file.write(RecordKind.instructionRightHS)
+            try right.write(file:file)
+            }
+        }
+        
     init(label:InstructionLabel? = nil,result:ThreeAddress? = nil,left:ThreeAddress? = nil,opcode:InstructionCode,right:ThreeAddress? = nil,comment:String? = nil)
         {
+        self.id = UUID()
         self.result = result
         self.left = left
         self.opcode = opcode
@@ -87,6 +125,7 @@ public class ThreeAddressInstruction:Instruction
         
     init(opcode:InstructionCode)
         {
+        self.id = UUID()
         self.result = nil
         self.left = nil
         self.opcode = opcode

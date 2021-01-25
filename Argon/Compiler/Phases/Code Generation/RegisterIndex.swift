@@ -11,23 +11,6 @@ public enum RegisterIndex:Int
     {
     case none = 0
     case rr = 1 // return value
-    case p0 // parameter 0
-    case p1
-    case p2
-    case p3
-    case p4
-    case p5
-    case p6
-    case p7
-    case p8
-    case p9
-    case p10
-    case p11
-    case p12
-    case p13
-    case p14
-    case p15 // parameter 15
-    case pr  // pointer to parameter 16 on the stack
     //
     // When a pointer that is tagged as a string is loaded in
     // a character pointer register, the offset of the actual

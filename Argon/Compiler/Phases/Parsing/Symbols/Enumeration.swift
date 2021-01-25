@@ -42,6 +42,11 @@ public class Enumeration:Class
         super.init(shortName:"")
         }
     
+    required public init(file: ObjectFile) throws
+        {
+        fatalError("init(file:) has not been implemented")
+        }
+    
     func addCase(_ enumCase:EnumerationCase)
         {
         self.cases.append(enumCase)
@@ -106,6 +111,12 @@ public class Enumeration:Class
         self.addCase(aCase)
         return(self)
         }
+        
+    public override func write(file:ObjectFile) throws
+        {
+        try file.write(object:self._class)
+        try file.write(self.cases)
+        }
     }
 
 public class EnumerationCase:Symbol
@@ -130,7 +141,19 @@ public class EnumerationCase:Symbol
         super.init(shortName:symbol)
         }
         
+    public override func write(file:ObjectFile) throws
+        {
+        try file.write(self.symbol)
+        try file.write(self.associatedTypes)
+        try file.write(self.value)
+        }
+        
     internal required init() {
         fatalError("init() has not been implemented")
     }
+    
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
 }

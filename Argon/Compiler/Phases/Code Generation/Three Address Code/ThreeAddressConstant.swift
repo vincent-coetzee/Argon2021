@@ -13,4 +13,9 @@ public enum ThreeAddressConstant:ThreeAddress
         {
         return("CONSTANT")
         }
+        
+    public func write(file: ObjectFile) throws
+        {
+        fatalError("This should not have been called")
+        }
     }

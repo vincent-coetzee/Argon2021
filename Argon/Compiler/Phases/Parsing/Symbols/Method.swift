@@ -9,6 +9,11 @@ import Foundation
 
 public class Method:Symbol,ThreeAddress
     {
+    public override var recordKind:RecordKind
+        {
+        return(.method)
+        }
+        
     public var displayString: String
         {
         return(self.shortName)
@@ -41,6 +46,11 @@ public class Method:Symbol,ThreeAddress
         fatalError("init() has not been implemented")
         }
         
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
+        
     public func addInstance(_ instance:MethodInstance)
         {
         self.instances.append(instance)
@@ -61,5 +71,19 @@ public class Method:Symbol,ThreeAddress
             {
             try instance.generateIntermediateCode(in:module,codeHolder:codeHolder,into:buffer,using:compiler)
             }
+        }
+        
+    public override func write(file: ObjectFile) throws
+        {
+        try super.write(file:file)
+        for instance in self.instances
+            {
+            try instance.write(file:file)
+            }
+        }
+        
+    public override func dump()
+        {
+        print("\(Swift.type(of:self)) \(self.shortName)")
         }
 }

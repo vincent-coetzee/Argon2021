@@ -27,6 +27,11 @@ public class ArrayClass:CollectionClass
         fatalError("init() has not been implemented")
     }
     
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
+        
     internal func classWithIndex(_ type:Type.ArrayIndexType) -> Class
         {
         return(ArrayClass(shortName:Argon.nextName("ARRAY"),indexType:type,elementTypeClass:self.elementTypeClass))

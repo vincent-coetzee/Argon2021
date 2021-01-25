@@ -14,6 +14,11 @@ public class Module:SymbolContainer
         
     public static let rootScope = Module.rootModule
     
+    public override var recordKind:RecordKind
+        {
+        return(.module)
+        }
+        
     public var exportedSymbols:[Symbol]
         {
         return(self.symbols.values.flatMap{$0.symbols}.filter{$0.accessLevel == .export})
@@ -32,9 +37,9 @@ public class Module:SymbolContainer
     public private(set) var genericTypes:[GenericClass] = []
     private var exitFunction:ModuleFunction?
     private var entryFunction:ModuleFunction?
-    private var moduleKey = UUID()
+    public var moduleKey = UUID()
     private var versionKey:SemanticVersionNumber = .one
-    private var moduleSlots:[String:Slot] = [:]
+    private var moduleSlots:Dictionary<String,Slot> = [:]
     private var imports = ImportVector()
     
     public override var isModuleLevelSymbol:Bool
@@ -45,21 +50,28 @@ public class Module:SymbolContainer
     internal override func addSymbol(_ symbol:Symbol)
         {
         symbol.definingScope = self
-        super.addSymbol(symbol)
-        symbol.symbolAdded(to: self)
         if symbol is Slot
             {
             self.moduleSlots[symbol.shortName] = (symbol as! Slot)
+            return
             }
         else if symbol is Import
             {
             self.imports += symbol as! Import
+            return
             }
+        super.addSymbol(symbol)
+        symbol.symbolAdded(to: self)
         }
         
     internal func lookupClass(_ name:String) -> Class?
         {
         return(self.lookup(name: Name(name))?.first as? Class)
+        }
+        
+    internal func lookupModule(_ name:String) -> Module?
+        {
+        return(self.lookup(name: Name(name))?.first as? Module)
         }
         
     internal override func lookup(name:Name) -> SymbolSet?
@@ -172,6 +184,42 @@ public class Module:SymbolContainer
         let anEnum = SystemPlaceholderEnumeration(shortName:"ConduitSink",class:.uIntegerClass)
         anEnum.accessLevel = .export
         return(anEnum)
+        }
+        
+    public override func write(file: ObjectFile) throws
+        {
+        try super.write(file:file)
+        try file.write(self.moduleKey.uuidString)
+        try file.write(self.versionKey)
+        try file.write(self.moduleSlots)
+        try file.write(self.imports)
+        try file.write(self.symbols.count)
+        for symbolSet in self.symbols.values
+            {
+            try file.write(symbolSet.symbols)
+            }
+        }
+        
+    public override func dump()
+        {
+        print("Module \(self.shortName)")
+        for symbolSet in self.symbols.values
+            {
+            for symbol in symbolSet.symbols
+                {
+                symbol.dump()
+                }
+            }
+        }
+        
+    public init(shortName:String)
+        {
+        super.init(shortName:shortName)
+        }
+        
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
         }
     }
 

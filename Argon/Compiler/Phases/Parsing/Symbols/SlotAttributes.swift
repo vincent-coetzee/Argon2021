@@ -23,4 +23,46 @@ internal struct SlotAttributes:OptionSet
     static let alias = SlotAttributes(rawValue: 1 << 6)
     static let `class` = SlotAttributes(rawValue: 1 << 7)
     static let value = SlotAttributes(rawValue: 1 << 8)
+    
+    var encodedString:String
+        {
+        var string = ""
+        if self.contains(Self.readonly)
+            {
+            string += "r"
+            }
+        if self.contains(Self.readwrite)
+            {
+            string += "w"
+            }
+        if self.contains(Self.regular)
+            {
+            string += "g"
+            }
+        if self.contains(Self.virtual)
+            {
+            string += "v"
+            }
+        if self.contains(Self.module)
+            {
+            string += "m"
+            }
+        if self.contains(Self.constant)
+            {
+            string += "c"
+            }
+        if self.contains(Self.alias)
+            {
+            string += "a"
+            }
+        if self.contains(Self.class)
+            {
+            string += "l"
+            }
+        if self.contains(Self.value)
+            {
+            string += "u"
+            }
+        return(string)
+        }
     }

@@ -27,6 +27,11 @@ public class CollectionClass:Class
         fatalError("init() has not been implemented")
     }
     
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
+        
     internal override func typeWithIndex(_ type:Type.ArrayIndexType) -> Type
         {
         fatalError("This should have been overridden")

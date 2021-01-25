@@ -138,4 +138,9 @@ public enum SystemError:Equatable,Error
     case invalidArrayIndexType(String)
     case invalidSlotFieldHashIndex
     case selectRequiresAtLeastOneWhenClause
+    case writeFailedWithLessBytesWritten(Int,Int,Int32)
+    case readFailedWithLessBytesWritten(Int,Int,Int32)
+    case fileErrorOnOpenFile(String,Int32)
+    case fileErrorOnCloseFile(String,Int32)
+    case readFailedWithLessBytesRead(Int,Int,Int32)
     }

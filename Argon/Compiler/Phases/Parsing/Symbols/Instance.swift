@@ -27,4 +27,9 @@ public class Instance:Symbol
         {
         fatalError("init() has not been implemented")
         }
+        
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
     }

@@ -69,13 +69,18 @@ public class Class:Symbol,ThreeAddress
     public static let bitSetClass = BitSetClass(shortName:"BitSet",keyType:.void,valueType:.void).superclass(.collectionClass)
     public static let dictionaryClass = DictionaryClass(shortName:"Dictionary",keyTypeClass:.voidClass,valueTypeClass:.voidClass).superclass(.collectionClass)
     
-    public static func invocationClass(_ name:String,_ kind:InvocationClass.InvocationType,_ classes:[Class],_ returnClass:Class) -> InvocationClass { InvocationClass(shortName:name,type:kind,argumentClasses:classes,returnClass:returnClass) }
+//    public static func invocationClass(_ name:String,_ kind:InvocationClass.InvocationType,_ classes:[Class],_ returnClass:Class) -> InvocationClass { InvocationClass(shortName:name,type:kind,argumentClasses:classes,returnClass:returnClass) }
     
     public var displayString:String
         {
         return("$\(self.shortName)")
         }
-
+        
+    public override var recordKind:RecordKind
+        {
+        return(.class)
+        }
+        
     public var superclasses = Classes()
     internal var generics = GenericClasses()
     internal var regularSlots:[String:Slot] = [:]
@@ -86,6 +91,16 @@ public class Class:Symbol,ThreeAddress
     internal var symbols:[String:Symbol] = [:]
     internal var layoutSlots:[LayoutSlot] = []
     
+    public override func write(file: ObjectFile) throws
+        {
+        try super.write(file:file)
+        try file.write(self.superclasses)
+        try file.write(self.generics)
+        try file.write(self.regularSlots.values)
+        try file.write(self.classSlots.values)
+        try file.write(self.symbols)
+        }
+        
     internal var lastRegularSlot:Slot?
         {
         return(self.regularSlotList.last)
@@ -181,15 +196,38 @@ public class Class:Symbol,ThreeAddress
         super.init(shortName:shortName)
         }
         
+    required public init(file:ObjectFile) throws
+        {
+        try super.init(file:file)
+        self.superclasses = try file.readArray(of:Class.self)
+        self.generics = try file.readArray(of:GenericClass.self)
+        var newSlots = try file.readArray(of:Slot.self)
+        for slot in newSlots
+            {
+            self.regularSlots[slot.shortName] = slot
+            }
+        newSlots = try file.readArray(of:Slot.self)
+        for slot in newSlots
+            {
+            self.classSlots[slot.shortName] = slot
+            }
+        for aSymbol in try file.readArray(of:Symbol.self)
+            {
+            self.symbols[aSymbol.shortName] = aSymbol
+            }
+        }
+        
     func addRegularSlot(_ slot:Slot)
         {
         self.regularSlots[slot.shortName] = slot
+        slot.container = self
         slot.symbolAdded(to: self)
         }
         
     func addClassSlot(_ slot:Slot)
         {
         self.classSlots[slot.shortName] = slot
+        slot.container = self
         slot.symbolAdded(to: self)
         }
     
@@ -299,24 +337,6 @@ public class Class:Symbol,ThreeAddress
 
 public typealias Classes = Array<Class>
 
-public class RRRCLASS:Class
-    {
-    let _class:Class
-    let symbol:Token.Symbol
-    let start:Int
-    let end:Int
-        
-    init(class:Class,symbol:Token.Symbol,start:Int,end:Int)
-        {
-        self.symbol = symbol
-        self.start = start
-        self.end = end
-        self._class = `class`
-        super.init(shortName:Argon.nextName("SUBRANGE"))
-        }
-    }
-
-
 public class SetClass:CollectionClass
     {
     internal  func typeWithIndex(_ type:Type.ArrayIndexType) -> Class
@@ -349,44 +369,14 @@ public class BitSetClass:CollectionClass
         fatalError("init() has not been implemented")
     }
     
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
+        }
+        
     internal override func typeWithIndex(_ type:Type.ArrayIndexType) -> Type
         {
         return(Type.bitset(keyType:self.keyType,valueType:self.valueType))
-        }
-    }
-
-
-public class InvocationClass:Class
-    {
-    public enum InvocationType
-        {
-        case operation(Token.Symbol)
-        case object(String)
-        }
-        
-    let invocationType:InvocationType
-    let argumentClasses:[Class]
-    let returnClass:Class
-    
-    init(shortName:String,type:InvocationType,argumentClasses:[Class],returnClass:Class)
-        {
-        self.invocationType = type
-        self.argumentClasses = argumentClasses
-        self.returnClass = returnClass
-        super.init(shortName:shortName)
-        }
-    }
-    
-public class CrossProduct:Class
-    {
-    private var operands:[Class]
-    private var operation:Token.Symbol
-    
-    init(shortName:String,operation:Token.Symbol,operands:[Class])
-        {
-        self.operands = operands
-        self.operation = operation
-        super.init(shortName:shortName)
         }
     }
 
@@ -399,10 +389,20 @@ public class TupleClass:Class
         self.elements = elements
         super.init(shortName:"TUPLE_\(Argon.nextIndex())")
         }
+    
+    required public init(file:ObjectFile) throws
+        {
+        self.elements = try file.readArray(of:Class.self)
+        try super.init(file:file)
+        }
     }
 
 public class ValueClass:Class
     {
+    public override var recordKind:RecordKind
+        {
+        return(.valueClass)
+        }
     }
     
 public class AddressClass:ValueClass
@@ -424,6 +424,12 @@ public class ConstantClass:ValueClass
         self._class = `class`
         super.init(shortName:shortName)
         }
+        
+    required init(file:ObjectFile) throws
+        {
+        self._class = try file.readObject() as! Class
+        try super.init(file:file)
+        }
     }
 
 public class SequenceGeneratorClass:Class
@@ -440,5 +446,10 @@ public class SequenceGeneratorClass:Class
         self.step = step
         self.end = end
         super.init(shortName:Argon.nextName("SEQUENCE"))
+        }
+        
+    public required init(file:ObjectFile) throws
+        {
+        fatalError()
         }
     }
