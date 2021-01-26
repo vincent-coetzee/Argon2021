@@ -28,21 +28,5 @@ internal class ObjectFileGenerator:CompilerPhase
         
     internal func postProcess(modules:Array<Module>,using compiler:Compiler) throws
         {
-        for module in modules
-            {
-            try self.writeObjectFile(for:module,using:compiler)
-            }
-        }
-        
-    private func writeObjectFile(for module:Module,using:Compiler) throws
-        {
-        
-        let path = self.objectFileDirectoryPath + "/" + module.shortName + ".argonm"
-        module.dump()
-        let file = try ObjectFile(path: path, mode: "wt")
-        try file.open()
-        try file.initializeForWriting()
-        try file.write(module)
-        try file.close()
         }
     }

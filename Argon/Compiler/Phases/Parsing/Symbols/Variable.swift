@@ -8,14 +8,9 @@
 
 import Foundation
 
-public class Variable:Symbol,ThreeAddress
+public class Variable:Symbol
     {
     public static let none = Variable(shortName:"NONE",class:.voidClass)
-    
-    public override var recordKind:RecordKind
-        {
-        return(.variable)
-        }
         
     public var displayString:String
         {
@@ -60,26 +55,19 @@ public class Variable:Symbol,ThreeAddress
         
     internal required init()
         {
-        self._class = RootModule.rootModule.nilInstance.typeClass
+        self._class = Class.voidClass
         super.init()
         }
     
-    required public init(file: ObjectFile) throws
+    public required init(from decoder:Decoder) throws
         {
-        fatalError("init(file:) has not been implemented")
-        }
-    
-    func generateIntermediateCodeLoad(target:ThreeAddress,into buffer:ThreeAddressInstructionBuffer)
-        {
-        buffer.emitInstruction(result:target,left:self,opcode:.assign)
+        self._class = .voidClass
+        try super.init(from:decoder)
         }
         
-    public override  func write(file: ObjectFile) throws
+    func generateIntermediateCodeLoad(target:A3Address,into buffer:A3CodeBuffer)
         {
-        try super.write(file:file)
-        try file.write(self._class)
-        //
-        // TODO: write read and write blocks
+        buffer.emitInstruction(result:target,left:.variable(self),opcode:.assign)
         }
     }
 

@@ -10,15 +10,30 @@ import Foundation
 
 internal class VirtualSlotWriteBlock:VirtualSlotBlock
     {
-    internal init(location:SourceLocation = .zero,block:Block)
+    public required init(from decoder:Decoder) throws
         {
-        super.init(location:location)
-        self.statements = block.statements
-        self.symbols = block.symbols
+        try super.init(from:decoder)
         }
         
-    override init(location:SourceLocation = .zero)
+    override init(block:Block)
         {
-        super.init(location:location)
+        super.init(block:block)
         }
+        
+    override init()
+        {
+        super.init()
+        }
+        
+//    internal init(location:SourceLocation = .zero,block:Block)
+//        {
+//        super.init(location:location)
+//        self.statements = block.statements
+//        self.symbols = block.symbols
+//        }
+//        
+//    override init(location:SourceLocation = .zero)
+//        {
+//        super.init(location:location)
+//        }
     }

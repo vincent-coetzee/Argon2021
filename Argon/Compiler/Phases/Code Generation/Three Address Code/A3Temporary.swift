@@ -7,25 +7,19 @@
 
 import Foundation
 
-public class ThreeAddressTemporary:ThreeAddress
+public class A3Temporary:Codable
     {
     private let name:String
-    
-    public func write(file: ObjectFile) throws
-        {
-        try file.write(character:"M")
-        try file.write(self.name)
-        }
         
     public var displayString:String
         {
         return(self.name)
         }
     
-    class func newTemporary() -> ThreeAddressTemporary
+    class func newTemporary() -> A3Temporary
         {
         let index = Argon.nextIndex()
-        return(ThreeAddressTemporary(name:"t_\(index)"))
+        return(A3Temporary(name:"t_\(index)"))
         }
         
     init(name:String)

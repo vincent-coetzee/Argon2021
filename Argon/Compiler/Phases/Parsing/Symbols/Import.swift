@@ -18,6 +18,13 @@ public class Import:Symbol
         return([:])
         }
         
+    enum CodingKeys:String,CodingKey
+        {
+        case path
+        case isPathBased
+        case wasResolved
+        }
+        
     let path:String?
     var isPathBased = true
     var importedModule:Module?
@@ -52,27 +59,19 @@ public class Import:Symbol
         {
         fatalError("init() has not been implemented")
         }
-        
-    public required init(file:ObjectFile) throws
+    
+    required public init(from decoder: Decoder) throws
         {
-        fatalError()
-        }
-        
-    public override func write(file: ObjectFile) throws
-        {
-        try super.write(file:file)
-        try file.write(self.path)
-        try file.write(isPathBased)
-        try file.write(wasResolved)
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.path = try values.decode(String.self,forKey: .path)
+        self.isPathBased = try values.decode(Bool.self,forKey: .isPathBased)
+        self.wasResolved = try values.decode(Bool.self,forKey:.wasResolved)
+        try super.init(from:decoder)
         }
     }
 
-public struct ImportVector:Record
+public struct ImportVector:Codable
     {
-    public let recordKind:RecordKind = .importVector
-        
-    public let id:UUID
-    
     public static func +(lhs:ImportVector,rhs:Import) -> ImportVector
         {
         var newVector = lhs
@@ -92,17 +91,13 @@ public struct ImportVector:Record
         return("ImportVector")
         }
         
+    public let id:UUID
     private var imports:[Import] = []
     private var cachedSymbolsByImport:[Import:[String:Symbol]] = [:]
 
     init()
         {
         self.id = UUID()
-        }
-        
-    public init(file:ObjectFile) throws
-        {
-        fatalError()
         }
         
     func lookup(shortName:String) -> SymbolSet?
@@ -123,11 +118,11 @@ public struct ImportVector:Record
             }
         return(SymbolSet())
         }
-        
-    public func write(file: ObjectFile) throws
-        {
-        try file.write(self.id)
-        try file.write(self.imports.count)
-        try file.write(self.imports)
-        }
+//
+//    public func write(file: ObjectFile) throws
+//        {
+//        try file.write(self.id)
+//        try file.write(self.imports.count)
+//        try file.write(self.imports)
+//        }
     }

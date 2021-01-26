@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum RegisterIndex:Int
+public enum RegisterIndex:Int,Codable
     {
     case none = 0
     case rr = 1 // return value

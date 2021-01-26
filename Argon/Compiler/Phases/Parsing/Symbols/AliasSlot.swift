@@ -21,9 +21,8 @@ public class AliasSlot:Slot
         {
         fatalError("init() has not been implemented")
         }
-        
-    public required init(file:ObjectFile) throws
-        {
-        fatalError()
-        }
+    
+    required public init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
     }
+}

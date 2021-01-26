@@ -44,10 +44,11 @@ public class GenericClass:Symbol
         self.constraints = []
         super.init(shortName: "")
     }
-    
-    public required init(file:ObjectFile) throws
+        
+    public required init(from decoder:Decoder) throws
         {
-        fatalError()
+        self.constraints = []
+        try super.init(from:decoder)
         }
 }
 

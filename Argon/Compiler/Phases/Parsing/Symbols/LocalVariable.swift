@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal class LocalVariable:Variable
+public class LocalVariable:Variable
     {
     public override var displayString:String
         {
@@ -31,14 +31,12 @@ internal class LocalVariable:Variable
         fatalError("init() has not been implemented")
     }
     
+    public required init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
     
-    public required init(file:ObjectFile) throws
+    override func generateIntermediateCodeLoad(target:A3Address,into buffer:A3CodeBuffer)
         {
-        fatalError()
-        }
-        
-    override func generateIntermediateCodeLoad(target:ThreeAddress,into buffer:ThreeAddressInstructionBuffer)
-        {
-        buffer.emitInstruction(result:target,left:self,opcode:.assign)
+        buffer.emitInstruction(result:target,left:.localVariable(self),opcode:.assign)
         }
 }

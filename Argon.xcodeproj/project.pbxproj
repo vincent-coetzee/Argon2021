@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -148,6 +148,65 @@
 		BF64816C25B45DE100D75675 /* SystemPlaceholderModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF64816B25B45DE100D75675 /* SystemPlaceholderModule.swift */; };
 		BF64816F25B4660900D75675 /* SystemPlaceholderEnumeration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF64816E25B4660900D75675 /* SystemPlaceholderEnumeration.swift */; };
 		BF7952BA2592A54D00B90AE3 /* AliasSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7952B92592A54D00B90AE3 /* AliasSlot.swift */; };
+		BF7B46CA25C006D300FB22DC /* VoidExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46C925C006D300FB22DC /* VoidExpression.swift */; };
+		BF7B46CD25C006E800FB22DC /* EmptyExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46CC25C006E800FB22DC /* EmptyExpression.swift */; };
+		BF7B46D025C006FC00FB22DC /* NullExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46CF25C006FC00FB22DC /* NullExpression.swift */; };
+		BF7B46D325C0071900FB22DC /* BinaryExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46D225C0071900FB22DC /* BinaryExpression.swift */; };
+		BF7B46D625C0073400FB22DC /* UnaryExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46D525C0073400FB22DC /* UnaryExpression.swift */; };
+		BF7B46D925C0074500FB22DC /* CastExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46D825C0074500FB22DC /* CastExpression.swift */; };
+		BF7B46DC25C0075E00FB22DC /* AdditionExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46DB25C0075E00FB22DC /* AdditionExpression.swift */; };
+		BF7B46DF25C0078E00FB22DC /* PowerExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46DE25C0078E00FB22DC /* PowerExpression.swift */; };
+		BF7B46E225C007A500FB22DC /* MultiplicationExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46E125C007A500FB22DC /* MultiplicationExpression.swift */; };
+		BF7B46E525C007AF00FB22DC /* BooleanExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46E425C007AF00FB22DC /* BooleanExpression.swift */; };
+		BF7B46E825C007B900FB22DC /* LogicalExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46E725C007B900FB22DC /* LogicalExpression.swift */; };
+		BF7B46EB25C007E100FB22DC /* RelationalExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46EA25C007E100FB22DC /* RelationalExpression.swift */; };
+		BF7B46EE25C007F500FB22DC /* ShiftExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46ED25C007F500FB22DC /* ShiftExpression.swift */; };
+		BF7B46F125C0080000FB22DC /* BitExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46F025C0080000FB22DC /* BitExpression.swift */; };
+		BF7B46F425C0080E00FB22DC /* ScalarExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46F325C0080E00FB22DC /* ScalarExpression.swift */; };
+		BF7B46F725C0085000FB22DC /* LiteralExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46F625C0085000FB22DC /* LiteralExpression.swift */; };
+		BF7B46FA25C0085C00FB22DC /* UndefinedExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46F925C0085C00FB22DC /* UndefinedExpression.swift */; };
+		BF7B46FD25C0088400FB22DC /* LiteralEnumerationExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46FC25C0088400FB22DC /* LiteralEnumerationExpression.swift */; };
+		BF7B470025C0089C00FB22DC /* EnumerationCaseValueExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46FF25C0089C00FB22DC /* EnumerationCaseValueExpression.swift */; };
+		BF7B470325C008BD00FB22DC /* PseudoVariableValueExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B470225C008BD00FB22DC /* PseudoVariableValueExpression.swift */; };
+		BF7B470625C008C800FB22DC /* ThisExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B470525C008C800FB22DC /* ThisExpression.swift */; };
+		BF7B470925C008E500FB22DC /* SuperExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B470825C008E500FB22DC /* SuperExpression.swift */; };
+		BF7B470C25C0091700FB22DC /* LiteralClassExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B470B25C0091700FB22DC /* LiteralClassExpression.swift */; };
+		BF7B470F25C0092500FB22DC /* LiteralByteExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B470E25C0092500FB22DC /* LiteralByteExpression.swift */; };
+		BF7B471225C0093400FB22DC /* LiteralBooleanExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B471125C0093400FB22DC /* LiteralBooleanExpression.swift */; };
+		BF7B471525C0094500FB22DC /* LiteralStringExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B471425C0094500FB22DC /* LiteralStringExpression.swift */; };
+		BF7B471825C0095800FB22DC /* LiteralSymbolExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B471725C0095800FB22DC /* LiteralSymbolExpression.swift */; };
+		BF7B471B25C0096600FB22DC /* LiteralIntegerExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B471A25C0096600FB22DC /* LiteralIntegerExpression.swift */; };
+		BF7B471E25C0097300FB22DC /* LiteralFloatExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B471D25C0097300FB22DC /* LiteralFloatExpression.swift */; };
+		BF7B472125C009C100FB22DC /* LiteralCharacterExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B472025C009C100FB22DC /* LiteralCharacterExpression.swift */; };
+		BF7B472425C009CF00FB22DC /* LiteralArrayExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B472325C009CF00FB22DC /* LiteralArrayExpression.swift */; };
+		BF7B472725C009DA00FB22DC /* FunctionExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B472625C009DA00FB22DC /* FunctionExpression.swift */; };
+		BF7B472A25C00A0500FB22DC /* AccessExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B472925C00A0500FB22DC /* AccessExpression.swift */; };
+		BF7B472D25C00A1100FB22DC /* IdentifierExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B472C25C00A1100FB22DC /* IdentifierExpression.swift */; };
+		BF7B473025C00A3300FB22DC /* InvocationExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B472F25C00A3300FB22DC /* InvocationExpression.swift */; };
+		BF7B473325C00A4300FB22DC /* MethodInvocationExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B473225C00A4300FB22DC /* MethodInvocationExpression.swift */; };
+		BF7B473625C00A5400FB22DC /* FunctionInvocationExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B473525C00A5400FB22DC /* FunctionInvocationExpression.swift */; };
+		BF7B473925C00A6600FB22DC /* ClosureInvocationExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B473825C00A6600FB22DC /* ClosureInvocationExpression.swift */; };
+		BF7B473C25C00B7700FB22DC /* ClassMakerInvocationExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B473B25C00B7700FB22DC /* ClassMakerInvocationExpression.swift */; };
+		BF7B473F25C00B9500FB22DC /* TypeMakerInvocationExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B473E25C00B9500FB22DC /* TypeMakerInvocationExpression.swift */; };
+		BF7B474225C00BAB00FB22DC /* MakerInvocationExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B474125C00BAB00FB22DC /* MakerInvocationExpression.swift */; };
+		BF7B474525C00BCB00FB22DC /* VectorExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B474425C00BCB00FB22DC /* VectorExpression.swift */; };
+		BF7B474825C00BE300FB22DC /* ExecutableExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B474725C00BE300FB22DC /* ExecutableExpression.swift */; };
+		BF7B474B25C00BF800FB22DC /* MethodExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B474A25C00BF800FB22DC /* MethodExpression.swift */; };
+		BF7B474E25C00C0700FB22DC /* ModuleExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B474D25C00C0700FB22DC /* ModuleExpression.swift */; };
+		BF7B475125C00C1300FB22DC /* ClassExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B475025C00C1300FB22DC /* ClassExpression.swift */; };
+		BF7B475425C00C2400FB22DC /* ClosureExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B475325C00C2400FB22DC /* ClosureExpression.swift */; };
+		BF7B475725C00C4800FB22DC /* VariableExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B475625C00C4800FB22DC /* VariableExpression.swift */; };
+		BF7B475A25C00C8900FB22DC /* ForwardVariableExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B475925C00C8900FB22DC /* ForwardVariableExpression.swift */; };
+		BF7B475D25C00C9400FB22DC /* SlotExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B475C25C00C9400FB22DC /* SlotExpression.swift */; };
+		BF7B476025C00CA000FB22DC /* InferredSlotExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B475F25C00CA000FB22DC /* InferredSlotExpression.swift */; };
+		BF7B476325C00CB800FB22DC /* SubscriptExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B476225C00CB800FB22DC /* SubscriptExpression.swift */; };
+		BF7B476625C00CCB00FB22DC /* BooleanValueExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B476525C00CCB00FB22DC /* BooleanValueExpression.swift */; };
+		BF7B476925C00CDA00FB22DC /* TupleExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B476825C00CDA00FB22DC /* TupleExpression.swift */; };
+		BF7B476C25C00CF900FB22DC /* DateValueExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B476B25C00CF900FB22DC /* DateValueExpression.swift */; };
+		BF7B476F25C00D0500FB22DC /* TimeValueExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B476E25C00D0500FB22DC /* TimeValueExpression.swift */; };
+		BF7B477225C00D1A00FB22DC /* DateTimeValueExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B477125C00D1A00FB22DC /* DateTimeValueExpression.swift */; };
+		BF7B477525C00D3000FB22DC /* FullyQualifiedName.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B477425C00D3000FB22DC /* FullyQualifiedName.swift */; };
+		BF7B477B25C0294A00FB22DC /* BinaryCoding in Frameworks */ = {isa = PBXBuildFile; productRef = BF7B477A25C0294A00FB22DC /* BinaryCoding */; };
 		BF85B1C425B1208C00C40C03 /* SemanticVersionNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF85B1C325B1208C00C40C03 /* SemanticVersionNumber.swift */; };
 		BF85B1C725B126CA00C40C03 /* RelocatableReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF85B1C625B126CA00C40C03 /* RelocatableReference.swift */; };
 		BF979DB52580F8ED002AFB7F /* TokenStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF979DB42580F8ED002AFB7F /* TokenStyle.swift */; };
@@ -167,24 +226,21 @@
 		BFD04BE62590C3C8003FDD90 /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BE52590C3C8003FDD90 /* Register.swift */; };
 		BFD04BE92590C6E0003FDD90 /* RegisterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BE82590C6E0003FDD90 /* RegisterSet.swift */; };
 		BFD04BEC2590C730003FDD90 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BEB2590C730003FDD90 /* Address.swift */; };
-		BFD04BF625915714003FDD90 /* ThreeAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BF525915714003FDD90 /* ThreeAddress.swift */; };
-		BFD04BFE259157A6003FDD90 /* ThreeAddressConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BFD259157A6003FDD90 /* ThreeAddressConstant.swift */; };
-		BFD04C01259157CB003FDD90 /* ThreeAddressTemporary.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04C00259157CB003FDD90 /* ThreeAddressTemporary.swift */; };
-		BFD04C0425915810003FDD90 /* ThreeAddressInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04C0325915810003FDD90 /* ThreeAddressInstruction.swift */; };
+		BFD04BF625915714003FDD90 /* A3Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BF525915714003FDD90 /* A3Address.swift */; };
+		BFD04BFE259157A6003FDD90 /* A3Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BFD259157A6003FDD90 /* A3Constant.swift */; };
+		BFD04C01259157CB003FDD90 /* A3Temporary.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04C00259157CB003FDD90 /* A3Temporary.swift */; };
+		BFD04C0425915810003FDD90 /* A3Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04C0325915810003FDD90 /* A3Instruction.swift */; };
 		BFD58CE1258E3B2000B2ADDD /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD58CE0258E3B2000B2ADDD /* Constant.swift */; };
 		BFD58CE8258F07DF00B2ADDD /* Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD58CE7258F07DF00B2ADDD /* Identifier.swift */; };
 		BFD58CEC258F355800B2ADDD /* Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD58CEB258F355800B2ADDD /* Method.swift */; };
 		BFD58CF1258F98E000B2ADDD /* Pointer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD58CF0258F98E000B2ADDD /* Pointer.swift */; };
-		BFDE98AF25BEF9C300A4844E /* BinaryFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDE98AE25BEF9C300A4844E /* BinaryFile.swift */; };
 		BFE0A0902593AC5E00B85ADF /* MethodClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0A08F2593AC5E00B85ADF /* MethodClass.swift */; };
 		BFE0A0932593B2C700B85ADF /* LHSValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0A0922593B2C700B85ADF /* LHSValue.swift */; };
 		BFE0A0962593CBD100B85ADF /* EnumerationClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0A0952593CBD100B85ADF /* EnumerationClass.swift */; };
-		BFE0A0992593DA7600B85ADF /* ThreeAddressInstructionBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0A0982593DA7600B85ADF /* ThreeAddressInstructionBuffer.swift */; };
-		BFE0A09C2593DAE200B85ADF /* InstructionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0A09B2593DAE200B85ADF /* InstructionLabel.swift */; };
+		BFE0A0992593DA7600B85ADF /* A3CodeBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0A0982593DA7600B85ADF /* A3CodeBuffer.swift */; };
+		BFE0A09C2593DAE200B85ADF /* A3Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0A09B2593DAE200B85ADF /* A3Label.swift */; };
 		BFE0A09F2593DAF800B85ADF /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0A09E2593DAF800B85ADF /* Instruction.swift */; };
 		BFEE2F67258B7820006C47F6 /* Import.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEE2F66258B7820006C47F6 /* Import.swift */; };
-		BFF12C6825B96F36001417FB /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF12C6725B96F36001417FB /* Record.swift */; };
-		BFF12C6C25B97667001417FB /* ObjectFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF12C6B25B97667001417FB /* ObjectFile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -334,6 +390,64 @@
 		BF64816B25B45DE100D75675 /* SystemPlaceholderModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPlaceholderModule.swift; sourceTree = "<group>"; };
 		BF64816E25B4660900D75675 /* SystemPlaceholderEnumeration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPlaceholderEnumeration.swift; sourceTree = "<group>"; };
 		BF7952B92592A54D00B90AE3 /* AliasSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasSlot.swift; sourceTree = "<group>"; };
+		BF7B46C925C006D300FB22DC /* VoidExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoidExpression.swift; sourceTree = "<group>"; };
+		BF7B46CC25C006E800FB22DC /* EmptyExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyExpression.swift; sourceTree = "<group>"; };
+		BF7B46CF25C006FC00FB22DC /* NullExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullExpression.swift; sourceTree = "<group>"; };
+		BF7B46D225C0071900FB22DC /* BinaryExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryExpression.swift; sourceTree = "<group>"; };
+		BF7B46D525C0073400FB22DC /* UnaryExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnaryExpression.swift; sourceTree = "<group>"; };
+		BF7B46D825C0074500FB22DC /* CastExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastExpression.swift; sourceTree = "<group>"; };
+		BF7B46DB25C0075E00FB22DC /* AdditionExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdditionExpression.swift; sourceTree = "<group>"; };
+		BF7B46DE25C0078E00FB22DC /* PowerExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerExpression.swift; sourceTree = "<group>"; };
+		BF7B46E125C007A500FB22DC /* MultiplicationExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplicationExpression.swift; sourceTree = "<group>"; };
+		BF7B46E425C007AF00FB22DC /* BooleanExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanExpression.swift; sourceTree = "<group>"; };
+		BF7B46E725C007B900FB22DC /* LogicalExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogicalExpression.swift; sourceTree = "<group>"; };
+		BF7B46EA25C007E100FB22DC /* RelationalExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelationalExpression.swift; sourceTree = "<group>"; };
+		BF7B46ED25C007F500FB22DC /* ShiftExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftExpression.swift; sourceTree = "<group>"; };
+		BF7B46F025C0080000FB22DC /* BitExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitExpression.swift; sourceTree = "<group>"; };
+		BF7B46F325C0080E00FB22DC /* ScalarExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScalarExpression.swift; sourceTree = "<group>"; };
+		BF7B46F625C0085000FB22DC /* LiteralExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiteralExpression.swift; sourceTree = "<group>"; };
+		BF7B46F925C0085C00FB22DC /* UndefinedExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndefinedExpression.swift; sourceTree = "<group>"; };
+		BF7B46FC25C0088400FB22DC /* LiteralEnumerationExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiteralEnumerationExpression.swift; sourceTree = "<group>"; };
+		BF7B46FF25C0089C00FB22DC /* EnumerationCaseValueExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumerationCaseValueExpression.swift; sourceTree = "<group>"; };
+		BF7B470225C008BD00FB22DC /* PseudoVariableValueExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PseudoVariableValueExpression.swift; sourceTree = "<group>"; };
+		BF7B470525C008C800FB22DC /* ThisExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThisExpression.swift; sourceTree = "<group>"; };
+		BF7B470825C008E500FB22DC /* SuperExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperExpression.swift; sourceTree = "<group>"; };
+		BF7B470B25C0091700FB22DC /* LiteralClassExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiteralClassExpression.swift; sourceTree = "<group>"; };
+		BF7B470E25C0092500FB22DC /* LiteralByteExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiteralByteExpression.swift; sourceTree = "<group>"; };
+		BF7B471125C0093400FB22DC /* LiteralBooleanExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiteralBooleanExpression.swift; sourceTree = "<group>"; };
+		BF7B471425C0094500FB22DC /* LiteralStringExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiteralStringExpression.swift; sourceTree = "<group>"; };
+		BF7B471725C0095800FB22DC /* LiteralSymbolExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiteralSymbolExpression.swift; sourceTree = "<group>"; };
+		BF7B471A25C0096600FB22DC /* LiteralIntegerExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiteralIntegerExpression.swift; sourceTree = "<group>"; };
+		BF7B471D25C0097300FB22DC /* LiteralFloatExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiteralFloatExpression.swift; sourceTree = "<group>"; };
+		BF7B472025C009C100FB22DC /* LiteralCharacterExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiteralCharacterExpression.swift; sourceTree = "<group>"; };
+		BF7B472325C009CF00FB22DC /* LiteralArrayExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiteralArrayExpression.swift; sourceTree = "<group>"; };
+		BF7B472625C009DA00FB22DC /* FunctionExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionExpression.swift; sourceTree = "<group>"; };
+		BF7B472925C00A0500FB22DC /* AccessExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessExpression.swift; sourceTree = "<group>"; };
+		BF7B472C25C00A1100FB22DC /* IdentifierExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifierExpression.swift; sourceTree = "<group>"; };
+		BF7B472F25C00A3300FB22DC /* InvocationExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvocationExpression.swift; sourceTree = "<group>"; };
+		BF7B473225C00A4300FB22DC /* MethodInvocationExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodInvocationExpression.swift; sourceTree = "<group>"; };
+		BF7B473525C00A5400FB22DC /* FunctionInvocationExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionInvocationExpression.swift; sourceTree = "<group>"; };
+		BF7B473825C00A6600FB22DC /* ClosureInvocationExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureInvocationExpression.swift; sourceTree = "<group>"; };
+		BF7B473B25C00B7700FB22DC /* ClassMakerInvocationExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassMakerInvocationExpression.swift; sourceTree = "<group>"; };
+		BF7B473E25C00B9500FB22DC /* TypeMakerInvocationExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeMakerInvocationExpression.swift; sourceTree = "<group>"; };
+		BF7B474125C00BAB00FB22DC /* MakerInvocationExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakerInvocationExpression.swift; sourceTree = "<group>"; };
+		BF7B474425C00BCB00FB22DC /* VectorExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorExpression.swift; sourceTree = "<group>"; };
+		BF7B474725C00BE300FB22DC /* ExecutableExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExecutableExpression.swift; sourceTree = "<group>"; };
+		BF7B474A25C00BF800FB22DC /* MethodExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodExpression.swift; sourceTree = "<group>"; };
+		BF7B474D25C00C0700FB22DC /* ModuleExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleExpression.swift; sourceTree = "<group>"; };
+		BF7B475025C00C1300FB22DC /* ClassExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassExpression.swift; sourceTree = "<group>"; };
+		BF7B475325C00C2400FB22DC /* ClosureExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosureExpression.swift; sourceTree = "<group>"; };
+		BF7B475625C00C4800FB22DC /* VariableExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VariableExpression.swift; sourceTree = "<group>"; };
+		BF7B475925C00C8900FB22DC /* ForwardVariableExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardVariableExpression.swift; sourceTree = "<group>"; };
+		BF7B475C25C00C9400FB22DC /* SlotExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlotExpression.swift; sourceTree = "<group>"; };
+		BF7B475F25C00CA000FB22DC /* InferredSlotExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InferredSlotExpression.swift; sourceTree = "<group>"; };
+		BF7B476225C00CB800FB22DC /* SubscriptExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptExpression.swift; sourceTree = "<group>"; };
+		BF7B476525C00CCB00FB22DC /* BooleanValueExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanValueExpression.swift; sourceTree = "<group>"; };
+		BF7B476825C00CDA00FB22DC /* TupleExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TupleExpression.swift; sourceTree = "<group>"; };
+		BF7B476B25C00CF900FB22DC /* DateValueExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateValueExpression.swift; sourceTree = "<group>"; };
+		BF7B476E25C00D0500FB22DC /* TimeValueExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeValueExpression.swift; sourceTree = "<group>"; };
+		BF7B477125C00D1A00FB22DC /* DateTimeValueExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimeValueExpression.swift; sourceTree = "<group>"; };
+		BF7B477425C00D3000FB22DC /* FullyQualifiedName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullyQualifiedName.swift; sourceTree = "<group>"; };
 		BF85B1C325B1208C00C40C03 /* SemanticVersionNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticVersionNumber.swift; sourceTree = "<group>"; };
 		BF85B1C625B126CA00C40C03 /* RelocatableReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelocatableReference.swift; sourceTree = "<group>"; };
 		BF979DB42580F8ED002AFB7F /* TokenStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStyle.swift; sourceTree = "<group>"; };
@@ -353,24 +467,21 @@
 		BFD04BE52590C3C8003FDD90 /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
 		BFD04BE82590C6E0003FDD90 /* RegisterSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterSet.swift; sourceTree = "<group>"; };
 		BFD04BEB2590C730003FDD90 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
-		BFD04BF525915714003FDD90 /* ThreeAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAddress.swift; sourceTree = "<group>"; };
-		BFD04BFD259157A6003FDD90 /* ThreeAddressConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAddressConstant.swift; sourceTree = "<group>"; };
-		BFD04C00259157CB003FDD90 /* ThreeAddressTemporary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAddressTemporary.swift; sourceTree = "<group>"; };
-		BFD04C0325915810003FDD90 /* ThreeAddressInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAddressInstruction.swift; sourceTree = "<group>"; };
+		BFD04BF525915714003FDD90 /* A3Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A3Address.swift; sourceTree = "<group>"; };
+		BFD04BFD259157A6003FDD90 /* A3Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A3Constant.swift; sourceTree = "<group>"; };
+		BFD04C00259157CB003FDD90 /* A3Temporary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A3Temporary.swift; sourceTree = "<group>"; };
+		BFD04C0325915810003FDD90 /* A3Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A3Instruction.swift; sourceTree = "<group>"; };
 		BFD58CE0258E3B2000B2ADDD /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		BFD58CE7258F07DF00B2ADDD /* Identifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifier.swift; sourceTree = "<group>"; };
 		BFD58CEB258F355800B2ADDD /* Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Method.swift; sourceTree = "<group>"; };
 		BFD58CF0258F98E000B2ADDD /* Pointer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pointer.swift; sourceTree = "<group>"; };
-		BFDE98AE25BEF9C300A4844E /* BinaryFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryFile.swift; sourceTree = "<group>"; };
 		BFE0A08F2593AC5E00B85ADF /* MethodClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodClass.swift; sourceTree = "<group>"; };
 		BFE0A0922593B2C700B85ADF /* LHSValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LHSValue.swift; sourceTree = "<group>"; };
 		BFE0A0952593CBD100B85ADF /* EnumerationClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumerationClass.swift; sourceTree = "<group>"; };
-		BFE0A0982593DA7600B85ADF /* ThreeAddressInstructionBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAddressInstructionBuffer.swift; sourceTree = "<group>"; };
-		BFE0A09B2593DAE200B85ADF /* InstructionLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionLabel.swift; sourceTree = "<group>"; };
+		BFE0A0982593DA7600B85ADF /* A3CodeBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A3CodeBuffer.swift; sourceTree = "<group>"; };
+		BFE0A09B2593DAE200B85ADF /* A3Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A3Label.swift; sourceTree = "<group>"; };
 		BFE0A09E2593DAF800B85ADF /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
 		BFEE2F66258B7820006C47F6 /* Import.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Import.swift; sourceTree = "<group>"; };
-		BFF12C6725B96F36001417FB /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
-		BFF12C6B25B97667001417FB /* ObjectFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectFile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -378,6 +489,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF7B477B25C0294A00FB22DC /* BinaryCoding in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -449,9 +561,7 @@
 				BF08FB5E25803A6A00C4AC6F /* Type.swift */,
 				BF85B1C325B1208C00C40C03 /* SemanticVersionNumber.swift */,
 				BF85B1C625B126CA00C40C03 /* RelocatableReference.swift */,
-				BFF12C6725B96F36001417FB /* Record.swift */,
-				BFF12C6B25B97667001417FB /* ObjectFile.swift */,
-				BFDE98AE25BEF9C300A4844E /* BinaryFile.swift */,
+				BF7B477425C00D3000FB22DC /* FullyQualifiedName.swift */,
 			);
 			path = "Support Classes";
 			sourceTree = "<group>";
@@ -518,7 +628,7 @@
 				BFD04BE22590C378003FDD90 /* ValueLocation.swift */,
 				BFD04BE52590C3C8003FDD90 /* Register.swift */,
 				BFD04BE82590C6E0003FDD90 /* RegisterSet.swift */,
-				BFE0A09B2593DAE200B85ADF /* InstructionLabel.swift */,
+				BFE0A09B2593DAE200B85ADF /* A3Label.swift */,
 				BFE0A09E2593DAF800B85ADF /* Instruction.swift */,
 				BFBB0F3C25B3A41F008F8E3E /* IndirectMemoryRegisterOffsetAddress.swift */,
 			);
@@ -612,9 +722,66 @@
 		BF08FBA425803A6A00C4AC6F /* Expressions */ = {
 			isa = PBXGroup;
 			children = (
+				BF7B472925C00A0500FB22DC /* AccessExpression.swift */,
+				BF7B46DB25C0075E00FB22DC /* AdditionExpression.swift */,
+				BF7B46D225C0071900FB22DC /* BinaryExpression.swift */,
+				BF7B46F025C0080000FB22DC /* BitExpression.swift */,
+				BF7B46E425C007AF00FB22DC /* BooleanExpression.swift */,
+				BF7B476525C00CCB00FB22DC /* BooleanValueExpression.swift */,
+				BF7B46D825C0074500FB22DC /* CastExpression.swift */,
+				BF7B475025C00C1300FB22DC /* ClassExpression.swift */,
+				BF7B473B25C00B7700FB22DC /* ClassMakerInvocationExpression.swift */,
+				BF7B475325C00C2400FB22DC /* ClosureExpression.swift */,
+				BF7B473825C00A6600FB22DC /* ClosureInvocationExpression.swift */,
+				BF7B477125C00D1A00FB22DC /* DateTimeValueExpression.swift */,
+				BF7B476B25C00CF900FB22DC /* DateValueExpression.swift */,
+				BF7B46CC25C006E800FB22DC /* EmptyExpression.swift */,
+				BF7B46FF25C0089C00FB22DC /* EnumerationCaseValueExpression.swift */,
+				BF7B474725C00BE300FB22DC /* ExecutableExpression.swift */,
 				BF08FBA525803A6A00C4AC6F /* Expression.swift */,
-				BF08FBA625803A6A00C4AC6F /* LValue.swift */,
+				BF7B475925C00C8900FB22DC /* ForwardVariableExpression.swift */,
+				BF7B472625C009DA00FB22DC /* FunctionExpression.swift */,
+				BF7B473525C00A5400FB22DC /* FunctionInvocationExpression.swift */,
+				BF7B472C25C00A1100FB22DC /* IdentifierExpression.swift */,
+				BF7B475F25C00CA000FB22DC /* InferredSlotExpression.swift */,
+				BF7B472F25C00A3300FB22DC /* InvocationExpression.swift */,
 				BFE0A0922593B2C700B85ADF /* LHSValue.swift */,
+				BF7B472325C009CF00FB22DC /* LiteralArrayExpression.swift */,
+				BF7B471125C0093400FB22DC /* LiteralBooleanExpression.swift */,
+				BF7B470E25C0092500FB22DC /* LiteralByteExpression.swift */,
+				BF7B472025C009C100FB22DC /* LiteralCharacterExpression.swift */,
+				BF7B470B25C0091700FB22DC /* LiteralClassExpression.swift */,
+				BF7B46FC25C0088400FB22DC /* LiteralEnumerationExpression.swift */,
+				BF7B46F625C0085000FB22DC /* LiteralExpression.swift */,
+				BF7B471D25C0097300FB22DC /* LiteralFloatExpression.swift */,
+				BF7B471A25C0096600FB22DC /* LiteralIntegerExpression.swift */,
+				BF7B471425C0094500FB22DC /* LiteralStringExpression.swift */,
+				BF7B471725C0095800FB22DC /* LiteralSymbolExpression.swift */,
+				BF7B46E725C007B900FB22DC /* LogicalExpression.swift */,
+				BF08FBA625803A6A00C4AC6F /* LValue.swift */,
+				BF7B474125C00BAB00FB22DC /* MakerInvocationExpression.swift */,
+				BF7B474A25C00BF800FB22DC /* MethodExpression.swift */,
+				BF7B473225C00A4300FB22DC /* MethodInvocationExpression.swift */,
+				BF7B474D25C00C0700FB22DC /* ModuleExpression.swift */,
+				BF7B46E125C007A500FB22DC /* MultiplicationExpression.swift */,
+				BF7B46CF25C006FC00FB22DC /* NullExpression.swift */,
+				BF7B46DE25C0078E00FB22DC /* PowerExpression.swift */,
+				BF7B470225C008BD00FB22DC /* PseudoVariableValueExpression.swift */,
+				BF7B46EA25C007E100FB22DC /* RelationalExpression.swift */,
+				BF7B46F325C0080E00FB22DC /* ScalarExpression.swift */,
+				BF7B46ED25C007F500FB22DC /* ShiftExpression.swift */,
+				BF7B475C25C00C9400FB22DC /* SlotExpression.swift */,
+				BF7B476225C00CB800FB22DC /* SubscriptExpression.swift */,
+				BF7B470825C008E500FB22DC /* SuperExpression.swift */,
+				BF7B470525C008C800FB22DC /* ThisExpression.swift */,
+				BF7B476E25C00D0500FB22DC /* TimeValueExpression.swift */,
+				BF7B476825C00CDA00FB22DC /* TupleExpression.swift */,
+				BF7B473E25C00B9500FB22DC /* TypeMakerInvocationExpression.swift */,
+				BF7B46D525C0073400FB22DC /* UnaryExpression.swift */,
+				BF7B46F925C0085C00FB22DC /* UndefinedExpression.swift */,
+				BF7B475625C00C4800FB22DC /* VariableExpression.swift */,
+				BF7B474425C00BCB00FB22DC /* VectorExpression.swift */,
+				BF7B46C925C006D300FB22DC /* VoidExpression.swift */,
 			);
 			path = Expressions;
 			sourceTree = "<group>";
@@ -766,11 +933,11 @@
 		BFD04BF925915732003FDD90 /* Three Address Code */ = {
 			isa = PBXGroup;
 			children = (
-				BFD04BF525915714003FDD90 /* ThreeAddress.swift */,
-				BFD04BFD259157A6003FDD90 /* ThreeAddressConstant.swift */,
-				BFD04C00259157CB003FDD90 /* ThreeAddressTemporary.swift */,
-				BFD04C0325915810003FDD90 /* ThreeAddressInstruction.swift */,
-				BFE0A0982593DA7600B85ADF /* ThreeAddressInstructionBuffer.swift */,
+				BFD04BF525915714003FDD90 /* A3Address.swift */,
+				BFD04BFD259157A6003FDD90 /* A3Constant.swift */,
+				BFD04C00259157CB003FDD90 /* A3Temporary.swift */,
+				BFD04C0325915810003FDD90 /* A3Instruction.swift */,
+				BFE0A0982593DA7600B85ADF /* A3CodeBuffer.swift */,
 			);
 			path = "Three Address Code";
 			sourceTree = "<group>";
@@ -791,6 +958,9 @@
 			dependencies = (
 			);
 			name = Argon;
+			packageProductDependencies = (
+				BF7B477A25C0294A00FB22DC /* BinaryCoding */,
+			);
 			productName = Argon;
 			productReference = BF08FB4325803A2900C4AC6F /* Argon.app */;
 			productType = "com.apple.product-type.application";
@@ -819,6 +989,9 @@
 				Base,
 			);
 			mainGroup = BF08FB3A25803A2900C4AC6F;
+			packageReferences = (
+				BF7B477925C0294A00FB22DC /* XCRemoteSwiftPackageReference "BinaryCoding" */,
+			);
 			productRefGroup = BF08FB4425803A2900C4AC6F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -858,29 +1031,47 @@
 			files = (
 				BF08FC0C25803A6A00C4AC6F /* UndefinedSymbol.swift in Sources */,
 				BF45F1E92596783800376006 /* HandlerSymbol.swift in Sources */,
+				BF7B472725C009DA00FB22DC /* FunctionExpression.swift in Sources */,
+				BF7B475725C00C4800FB22DC /* VariableExpression.swift in Sources */,
+				BF7B46D325C0071900FB22DC /* BinaryExpression.swift in Sources */,
+				BF7B476325C00CB800FB22DC /* SubscriptExpression.swift in Sources */,
+				BF7B473325C00A4300FB22DC /* MethodInvocationExpression.swift in Sources */,
 				BF979DD32583B28E002AFB7F /* TokenLocation.swift in Sources */,
 				BF08FC2625803A6A00C4AC6F /* ClassMaker.swift in Sources */,
+				BF7B46F725C0085000FB22DC /* LiteralExpression.swift in Sources */,
 				BF08FC0E25803A6A00C4AC6F /* SymbolContainer.swift in Sources */,
+				BF7B476F25C00D0500FB22DC /* TimeValueExpression.swift in Sources */,
 				BF08FBD125803A6A00C4AC6F /* CompilerPhase.swift in Sources */,
 				BF08FBFA25803A6A00C4AC6F /* AliasStatement.swift in Sources */,
 				BF08FC1325803A6A00C4AC6F /* AccessModifier.swift in Sources */,
 				BFD04BE02590BED5003FDD90 /* RegisterIndex.swift in Sources */,
+				BF7B474E25C00C0700FB22DC /* ModuleExpression.swift in Sources */,
 				BF08FC2025803A6A00C4AC6F /* ForInductionVariable.swift in Sources */,
+				BF7B46DF25C0078E00FB22DC /* PowerExpression.swift in Sources */,
+				BF7B473C25C00B7700FB22DC /* ClassMakerInvocationExpression.swift in Sources */,
 				BF600B4625A7595300930318 /* ColumnMorph.swift in Sources */,
 				BF08FC3025803A7D00C4AC6F /* Break.m in Sources */,
-				BFE0A09C2593DAE200B85ADF /* InstructionLabel.swift in Sources */,
+				BFE0A09C2593DAE200B85ADF /* A3Label.swift in Sources */,
 				BF08FBEC25803A6A00C4AC6F /* SymbolTable.swift in Sources */,
-				BFD04BF625915714003FDD90 /* ThreeAddress.swift in Sources */,
+				BFD04BF625915714003FDD90 /* A3Address.swift in Sources */,
+				BF7B472125C009C100FB22DC /* LiteralCharacterExpression.swift in Sources */,
 				BF08FBCB25803A6A00C4AC6F /* Stack.swift in Sources */,
 				BF08FC2125803A6A00C4AC6F /* Function.swift in Sources */,
+				BF7B473625C00A5400FB22DC /* FunctionInvocationExpression.swift in Sources */,
 				BF08FBDD25803A6A00C4AC6F /* MachineCodeGenerator.swift in Sources */,
 				BF64816025B45CBC00D75675 /* SystemPlaceholderSlot.swift in Sources */,
+				BF7B46CA25C006D300FB22DC /* VoidExpression.swift in Sources */,
+				BF7B476925C00CDA00FB22DC /* TupleExpression.swift in Sources */,
 				BF08FBF125803A6A00C4AC6F /* TimesStatement.swift in Sources */,
 				BF45F1E62596629100376006 /* Metaclass.swift in Sources */,
 				BF4458D225A264A200CB52BE /* SharedObject.swift in Sources */,
+				BF7B471225C0093400FB22DC /* LiteralBooleanExpression.swift in Sources */,
 				BF08FC1C25803A6A00C4AC6F /* GenericClass.swift in Sources */,
 				BF08FC0025803A6A00C4AC6F /* LetStatement.swift in Sources */,
 				BF08FBD925803A6A00C4AC6F /* SourceFolder.swift in Sources */,
+				BF7B476C25C00CF900FB22DC /* DateValueExpression.swift in Sources */,
+				BF7B475A25C00C8900FB22DC /* ForwardVariableExpression.swift in Sources */,
+				BF7B46DC25C0075E00FB22DC /* AdditionExpression.swift in Sources */,
 				BFE0A0932593B2C700B85ADF /* LHSValue.swift in Sources */,
 				BF85B1C425B1208C00C40C03 /* SemanticVersionNumber.swift in Sources */,
 				BF979DB925832410002AFB7F /* NSFont+Extension.swift in Sources */,
@@ -889,6 +1080,7 @@
 				BF08FC3625803AB100C4AC6F /* NSTextView+Extensions.swift in Sources */,
 				BFEE2F67258B7820006C47F6 /* Import.swift in Sources */,
 				BF08FC1F25803A6A00C4AC6F /* Variable.swift in Sources */,
+				BF7B470F25C0092500FB22DC /* LiteralByteExpression.swift in Sources */,
 				BF08FBD525803A6A00C4AC6F /* Compiler.swift in Sources */,
 				BF4458CE25A2189000CB52BE /* SourceFileElement.swift in Sources */,
 				BF08FC2725803A6A00C4AC6F /* Parser.swift in Sources */,
@@ -898,42 +1090,55 @@
 				BFE0A0902593AC5E00B85ADF /* MethodClass.swift in Sources */,
 				BF08FBF525803A6A00C4AC6F /* ControlFlowStatement.swift in Sources */,
 				BF08FC3725803AB100C4AC6F /* ArgonBrowserViewController.swift in Sources */,
+				BF7B470325C008BD00FB22DC /* PseudoVariableValueExpression.swift in Sources */,
 				BF08FBDC25803A6A00C4AC6F /* TypeChecker.swift in Sources */,
 				BF08FBD325803A6A00C4AC6F /* Token.swift in Sources */,
 				BFD58CE8258F07DF00B2ADDD /* Identifier.swift in Sources */,
+				BF7B473F25C00B9500FB22DC /* TypeMakerInvocationExpression.swift in Sources */,
 				BF08FC1E25803A6A00C4AC6F /* Module.swift in Sources */,
+				BF7B472425C009CF00FB22DC /* LiteralArrayExpression.swift in Sources */,
 				BF08FB4725803A2900C4AC6F /* AppDelegate.swift in Sources */,
 				BF08FBCE25803A6A00C4AC6F /* SourceReference.swift in Sources */,
 				BF5AFF4E25A2EBAB00CED0AC /* ArgonClassBrowser.swift in Sources */,
 				BF08FBD025803A6A00C4AC6F /* CompilerError.swift in Sources */,
 				BFD58CE1258E3B2000B2ADDD /* Constant.swift in Sources */,
 				BF08FC0F25803A6A00C4AC6F /* RootModule.swift in Sources */,
-				BFD04C01259157CB003FDD90 /* ThreeAddressTemporary.swift in Sources */,
+				BFD04C01259157CB003FDD90 /* A3Temporary.swift in Sources */,
 				BF08FBE825803A6A00C4AC6F /* StatementBlock.swift in Sources */,
 				BF08FC2425803A6A00C4AC6F /* Symbol.swift in Sources */,
-				BFD04C0425915810003FDD90 /* ThreeAddressInstruction.swift in Sources */,
+				BFD04C0425915810003FDD90 /* A3Instruction.swift in Sources */,
+				BF7B46EE25C007F500FB22DC /* ShiftExpression.swift in Sources */,
 				BFD04BEC2590C730003FDD90 /* Address.swift in Sources */,
+				BF7B46D025C006FC00FB22DC /* NullExpression.swift in Sources */,
 				BF08FBEE25803A6A00C4AC6F /* RootScope.swift in Sources */,
+				BF7B473025C00A3300FB22DC /* InvocationExpression.swift in Sources */,
 				BF5AFF7325A4EA9300CED0AC /* LayoutFrame.swift in Sources */,
 				BF5AFF7625A4EE4100CED0AC /* ArgonCompositeView.swift in Sources */,
 				BF08FBF425803A6A00C4AC6F /* ReturnStatement.swift in Sources */,
+				BF7B46FA25C0085C00FB22DC /* UndefinedExpression.swift in Sources */,
 				BF08FBD225803A6A00C4AC6F /* TokenStream.swift in Sources */,
 				BF08FBF825803A6A00C4AC6F /* MethodInvocationStatement.swift in Sources */,
 				BF08FC1625803A6A00C4AC6F /* Enumeration.swift in Sources */,
 				BF08FBCC25803A6A00C4AC6F /* Argument.swift in Sources */,
+				BF7B46F425C0080E00FB22DC /* ScalarExpression.swift in Sources */,
 				BFD04BE92590C6E0003FDD90 /* RegisterSet.swift in Sources */,
 				BF4458C725A1F2CF00CB52BE /* SegmentView.swift in Sources */,
 				BF600B4C25A7ABF000930318 /* CodeHolder.swift in Sources */,
+				BF7B470C25C0091700FB22DC /* LiteralClassExpression.swift in Sources */,
 				BF08FBE925803A6A00C4AC6F /* Scope.swift in Sources */,
 				BF64816F25B4660900D75675 /* SystemPlaceholderEnumeration.swift in Sources */,
+				BF7B470025C0089C00FB22DC /* EnumerationCaseValueExpression.swift in Sources */,
+				BF7B46E225C007A500FB22DC /* MultiplicationExpression.swift in Sources */,
 				BF08FC1925803A6A00C4AC6F /* LocalVariable.swift in Sources */,
+				BF7B46E825C007B900FB22DC /* LogicalExpression.swift in Sources */,
 				BF08FBE625803A6A00C4AC6F /* SlotContainer.swift in Sources */,
 				BF979DBC25832488002AFB7F /* NSColor.swift in Sources */,
 				BFD04BE62590C3C8003FDD90 /* Register.swift in Sources */,
 				BF08FBFC25803A6A00C4AC6F /* RepeatStatement.swift in Sources */,
 				BF08FBD625803A6A00C4AC6F /* Instance.swift in Sources */,
-				BFE0A0992593DA7600B85ADF /* ThreeAddressInstructionBuffer.swift in Sources */,
+				BFE0A0992593DA7600B85ADF /* A3CodeBuffer.swift in Sources */,
 				BF64816C25B45DE100D75675 /* SystemPlaceholderModule.swift in Sources */,
+				BF7B46FD25C0088400FB22DC /* LiteralEnumerationExpression.swift in Sources */,
 				BF7952BA2592A54D00B90AE3 /* AliasSlot.swift in Sources */,
 				BF14FB5925BDBE4A002B9F0C /* ClassReference.swift in Sources */,
 				BF08FBE525803A6A00C4AC6F /* VirtualSlotWriteSlotBlock.swift in Sources */,
@@ -941,28 +1146,40 @@
 				BF5AFF8725A57C2E00CED0AC /* DisclosureArrowLayer.swift in Sources */,
 				BF979DC9258347D8002AFB7F /* ParameterName.swift in Sources */,
 				BFD58CEC258F355800B2ADDD /* Method.swift in Sources */,
+				BF7B474225C00BAB00FB22DC /* MakerInvocationExpression.swift in Sources */,
 				BF08FBDF25803A6A00C4AC6F /* IntermediateCodeGenerator.swift in Sources */,
+				BF7B472D25C00A1100FB22DC /* IdentifierExpression.swift in Sources */,
 				BF57C36925B6FE760024F95F /* LayoutSlot.swift in Sources */,
 				BF08FBF325803A6A00C4AC6F /* SelectStatement.swift in Sources */,
 				BF08FC2B25803A6A00C4AC6F /* Argon.swift in Sources */,
 				BF08FC2A25803A6A00C4AC6F /* CodeOptimiser.swift in Sources */,
+				BF7B471825C0095800FB22DC /* LiteralSymbolExpression.swift in Sources */,
+				BF7B470925C008E500FB22DC /* SuperExpression.swift in Sources */,
+				BF7B474825C00BE300FB22DC /* ExecutableExpression.swift in Sources */,
+				BF7B46D925C0074500FB22DC /* CastExpression.swift in Sources */,
 				BF08FC1025803A6A00C4AC6F /* Slot.swift in Sources */,
-				BFDE98AF25BEF9C300A4844E /* BinaryFile.swift in Sources */,
-				BFF12C6C25B97667001417FB /* ObjectFile.swift in Sources */,
+				BF7B476625C00CCB00FB22DC /* BooleanValueExpression.swift in Sources */,
 				BF5AFF5525A2F15C00CED0AC /* BrowserClassItem.swift in Sources */,
+				BF7B46F125C0080000FB22DC /* BitExpression.swift in Sources */,
 				BF08FBF625803A6A00C4AC6F /* SignalStatement.swift in Sources */,
+				BF7B474525C00BCB00FB22DC /* VectorExpression.swift in Sources */,
+				BF7B475125C00C1300FB22DC /* ClassExpression.swift in Sources */,
 				BF08FBFF25803A6A00C4AC6F /* IfStatement.swift in Sources */,
 				BF08FBD425803A6A00C4AC6F /* SourceLocation.swift in Sources */,
 				BF08FBE125803A6A00C4AC6F /* VirtualSlotReadSlotBlock.swift in Sources */,
 				BF08FBE025803A6A00C4AC6F /* Closure.swift in Sources */,
+				BF7B474B25C00BF800FB22DC /* MethodExpression.swift in Sources */,
 				BF979DB52580F8ED002AFB7F /* TokenStyle.swift in Sources */,
 				BF08FBEF25803A6A00C4AC6F /* WhenClause.swift in Sources */,
+				BF7B470625C008C800FB22DC /* ThisExpression.swift in Sources */,
 				BF08FBDE25803A6A00C4AC6F /* ObjectFileGenerator.swift in Sources */,
 				BF08FC1525803A6A00C4AC6F /* InductionVariable.swift in Sources */,
 				BFBB0F3A25B39293008F8E3E /* Int+Extensions.swift in Sources */,
 				BF45F1DD2593E3F500376006 /* DictionaryClass.swift in Sources */,
+				BF7B46E525C007AF00FB22DC /* BooleanExpression.swift in Sources */,
 				BF08FC0825803A6A00C4AC6F /* Expression.swift in Sources */,
 				BF5AFF8025A53C6F00CED0AC /* LayoutDimension.swift in Sources */,
+				BF7B471B25C0096600FB22DC /* LiteralIntegerExpression.swift in Sources */,
 				BF08FC0325803A6A00C4AC6F /* Statement.swift in Sources */,
 				BF08FC0425803A6A00C4AC6F /* ResumeStatement.swift in Sources */,
 				BF45F1E02593EF6000376006 /* ClassLayout.swift in Sources */,
@@ -972,10 +1189,14 @@
 				BFBB0F3D25B3A41F008F8E3E /* IndirectMemoryRegisterOffsetAddress.swift in Sources */,
 				BF08FBFB25803A6A00C4AC6F /* HandlerStatement.swift in Sources */,
 				BF5AFF8A25A5DD2B00CED0AC /* RowMorph.swift in Sources */,
-				BFD04BFE259157A6003FDD90 /* ThreeAddressConstant.swift in Sources */,
+				BFD04BFE259157A6003FDD90 /* A3Constant.swift in Sources */,
 				BF08FC0725803A6A00C4AC6F /* ParseNode.swift in Sources */,
 				BF08FC0125803A6A00C4AC6F /* ForkStatement.swift in Sources */,
+				BF7B46EB25C007E100FB22DC /* RelationalExpression.swift in Sources */,
+				BF7B46CD25C006E800FB22DC /* EmptyExpression.swift in Sources */,
+				BF7B475D25C00C9400FB22DC /* SlotExpression.swift in Sources */,
 				BF08FBFE25803A6A00C4AC6F /* ElseIfClause.swift in Sources */,
+				BF7B471E25C0097300FB22DC /* LiteralFloatExpression.swift in Sources */,
 				BF08FC0525803A6A00C4AC6F /* LocalStatement.swift in Sources */,
 				BF5AFF7D25A53C3C00CED0AC /* LayoutModifier.swift in Sources */,
 				BF64816925B45D6B00D75675 /* SystemPlaceholderClass.swift in Sources */,
@@ -987,6 +1208,8 @@
 				BF08FC0925803A6A00C4AC6F /* LValue.swift in Sources */,
 				BF08FC3925803AB100C4AC6F /* DisplayView.swift in Sources */,
 				BFD04BE32590C378003FDD90 /* ValueLocation.swift in Sources */,
+				BF7B476025C00CA000FB22DC /* InferredSlotExpression.swift in Sources */,
+				BF7B472A25C00A0500FB22DC /* AccessExpression.swift in Sources */,
 				BF08FC1D25803A6A00C4AC6F /* BitSet.swift in Sources */,
 				BF08FB4B25803A2900C4AC6F /* Document.swift in Sources */,
 				BFE0A0962593CBD100B85ADF /* EnumerationClass.swift in Sources */,
@@ -997,23 +1220,28 @@
 				BF08FBED25803A6A00C4AC6F /* SymbolScope.swift in Sources */,
 				BF5AFF7025A4E7BA00CED0AC /* ArgonMorph.swift in Sources */,
 				BF08FBCF25803A6A00C4AC6F /* Name.swift in Sources */,
+				BF7B46D625C0073400FB22DC /* UnaryExpression.swift in Sources */,
 				BF5AFF5825A2F16D00CED0AC /* BrowserMethodItem.swift in Sources */,
 				BF5AFF5E25A2F1FA00CED0AC /* BrowserSystemMethodItem.swift in Sources */,
 				BFE0A09F2593DAF800B85ADF /* Instruction.swift in Sources */,
 				BF08FBE225803A6A00C4AC6F /* Block.swift in Sources */,
+				BF7B477225C00D1A00FB22DC /* DateTimeValueExpression.swift in Sources */,
 				BF5AFF6A25A4D3C000CED0AC /* ArgonProject.swift in Sources */,
 				BF08FC2525803A6A00C4AC6F /* SlotAttributes.swift in Sources */,
 				BF08FC1225803A6A00C4AC6F /* TypeSymbol.swift in Sources */,
 				BF08FC1A25803A6A00C4AC6F /* Class.swift in Sources */,
 				BF08FBEA25803A6A00C4AC6F /* LocalScope.swift in Sources */,
 				BF5AFF5B25A2F1C100CED0AC /* BrowserSystemClassItem.swift in Sources */,
+				BF7B475425C00C2400FB22DC /* ClosureExpression.swift in Sources */,
 				BF08FC0D25803A6A00C4AC6F /* Parameter.swift in Sources */,
 				BF08FC1825803A6A00C4AC6F /* MethodInstance.swift in Sources */,
-				BFF12C6825B96F36001417FB /* Record.swift in Sources */,
+				BF7B471525C0094500FB22DC /* LiteralStringExpression.swift in Sources */,
 				BF5AFF6D25A4E28500CED0AC /* ArgonModuleView.swift in Sources */,
 				BF08FC1725803A6A00C4AC6F /* Nil.swift in Sources */,
 				BF08FC0625803A6A00C4AC6F /* WhileStatement.swift in Sources */,
 				BF08FBF925803A6A00C4AC6F /* OtherwiseClause.swift in Sources */,
+				BF7B477525C00D3000FB22DC /* FullyQualifiedName.swift in Sources */,
+				BF7B473925C00A6600FB22DC /* ClosureInvocationExpression.swift in Sources */,
 				BF64816325B45CD900D75675 /* SystemPlaceholderMethod.swift in Sources */,
 				BF08FC0225803A6A00C4AC6F /* Clause.swift in Sources */,
 				BF08FBE325803A6A00C4AC6F /* VirtualSlotWriteBlock.swift in Sources */,
@@ -1224,6 +1452,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BF7B477925C0294A00FB22DC /* XCRemoteSwiftPackageReference "BinaryCoding" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vincent-coetzee/BinaryCoding";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BF7B477A25C0294A00FB22DC /* BinaryCoding */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BF7B477925C0294A00FB22DC /* XCRemoteSwiftPackageReference "BinaryCoding" */;
+			productName = BinaryCoding;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BF08FB3B25803A2900C4AC6F /* Project object */;
 }

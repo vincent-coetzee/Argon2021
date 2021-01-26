@@ -8,6 +8,6 @@
 
 import Foundation
 
-internal class Nil:Instance
-    {
-    }
+//internal class Nil:Instance
+//    {
+//    }

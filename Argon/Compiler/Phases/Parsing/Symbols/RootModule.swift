@@ -45,29 +45,29 @@ public class RootModule:Module
     public let enumerationClass = Class.enumerationClass
     public let addressClass = Class.addressClass
     
-    public var nilInstance:Symbol
-        {
-        if let instance = self.lookup(shortName:"nil")?.first as? Instance
-            {
-            return(instance)
-            }
-        fatalError("This should not happen")
-        }
+//    public var nilInstance:Symbol
+//        {
+//        if let instance = self.lookup(shortName:"nil")?.first as? Instance
+//            {
+//            return(instance)
+//            }
+//        fatalError("This should not happen")
+//        }
         
-    public var trueValue:Instance
-        {
-        return(self.lookup(shortName:"#true")!.first as! Instance)
-        }
-        
-    public var falseValue:Instance
-        {
-        return(self.lookup(shortName:"#false")!.first as! Instance)
-        }
-        
-    public var voidValue:Instance
-        {
-        return(self.lookup(shortName:"Void")!.first as! Instance)
-        }
+//    public var trueValue:Instance
+//        {
+//        return(self.lookup(shortName:"#true")!.first as! Instance)
+//        }
+//        
+//    public var falseValue:Instance
+//        {
+//        return(self.lookup(shortName:"#false")!.first as! Instance)
+//        }
+//        
+//    public var voidValue:Instance
+//        {
+//        return(self.lookup(shortName:"Void")!.first as! Instance)
+//        }
         
     private func initBaseClasses()
         {
@@ -122,24 +122,21 @@ public class RootModule:Module
     @discardableResult
     public func initInstances() -> Self
         {
-        self.makeInstance(of:self.voidClass,named:"Void")
-        self.makeInstance(of:self.booleanClass,named:"#true")
-        self.makeInstance(of:self.booleanClass,named:"#false")
-        self.makeInstance(of:self.addressClass,named:"__handlerBaseAddress")
-        let nilInstance = self.nilClass.instanciate()
-        nilInstance.shortName = "nil"
-        self.addSymbol(nilInstance)
+//        self.makeInstance(of:self.voidClass,named:"Void")
+//        self.makeInstance(of:self.booleanClass,named:"#true")
+//        self.makeInstance(of:self.booleanClass,named:"#false")
+//        self.makeInstance(of:self.addressClass,named:"__handlerBaseAddress")
+//        let nilInstance = self.nilClass.instanciate()
+//        nilInstance.shortName = "nil"
+//        self.addSymbol(nilInstance)
         return(self)
         }
         
-    @discardableResult
-    private func makeInstance(of ofClass:Class,named:String,metaClass:Instance.Type = Instance.self) -> Instance
-        {
-        let instance = metaClass.init(class: ofClass)
-        instance.shortName = named
-        self.addSymbol(instance)
-        return(instance)
-        }
+//    @discardableResult
+//    private func makeInstance(of ofClass:Class,named:String,metaClass:Instance.Type = Instance.self) -> Instance
+//        {
+//        fatalErr
+//        }
         
     private func initSystemModules()
         {

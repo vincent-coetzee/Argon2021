@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "BinaryCoding",
+        "repositoryURL": "https://github.com/vincent-coetzee/BinaryCoding",
+        "state": {
+          "branch": null,
+          "revision": "cd63b10de6e309ec09d5e09ea2ce27f25e3150a1",
+          "version": "1.0.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

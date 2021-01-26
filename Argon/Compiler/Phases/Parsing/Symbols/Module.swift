@@ -13,11 +13,6 @@ public class Module:SymbolContainer
     public static let rootModule = RootModule(shortName: "Argon")
         
     public static let rootScope = Module.rootModule
-    
-    public override var recordKind:RecordKind
-        {
-        return(.module)
-        }
         
     public var exportedSymbols:[Symbol]
         {
@@ -41,7 +36,44 @@ public class Module:SymbolContainer
     private var versionKey:SemanticVersionNumber = .one
     private var moduleSlots:Dictionary<String,Slot> = [:]
     private var imports = ImportVector()
-    
+        
+    enum CodingKeys:String,CodingKey
+        {
+        case genericTypes
+        case exitFunction
+        case entryFunction
+        case moduleKey
+        case versionKey
+        case moduleSlots
+        case imports
+        }
+        
+    required public init(from decoder:Decoder) throws
+        {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.genericTypes = try values.decode(Array<GenericClass>.self,forKey: .genericTypes)
+        self.exitFunction = try values.decode(ModuleFunction.self,forKey: .exitFunction)
+        self.entryFunction = try values.decode(ModuleFunction.self,forKey:.entryFunction)
+        self.moduleKey = try values.decode(UUID.self,forKey:.moduleKey)
+        self.versionKey = try values.decode(SemanticVersionNumber.self,forKey:.versionKey)
+        self.moduleSlots = try values.decode(Dictionary<String,Slot>.self,forKey:.moduleSlots)
+        self.imports = try values.decode(ImportVector.self,forKey:.imports)
+        try super.init(from:decoder)
+        }
+        
+    public override func encode(to encoder: Encoder) throws
+        {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.genericTypes,forKey:.genericTypes)
+        try container.encode(self.exitFunction,forKey:.exitFunction)
+        try container.encode(self.entryFunction,forKey:.entryFunction)
+        try container.encode(self.moduleKey,forKey:.moduleKey)
+        try container.encode(versionKey,forKey:.versionKey)
+        try container.encode(self.moduleSlots,forKey:.moduleSlots)
+        try container.encode(imports,forKey:.imports)
+        try super.encode(to:encoder)
+        }
+        
     public override var isModuleLevelSymbol:Bool
         {
         return(true)
@@ -186,18 +218,22 @@ public class Module:SymbolContainer
         return(anEnum)
         }
         
-    public override func write(file: ObjectFile) throws
+//    public override func write(file: ObjectFile) throws
+//        {
+//        try super.write(file:file)
+//        try file.write(self.moduleKey.uuidString)
+//        try file.write(self.versionKey)
+//        try file.write(self.moduleSlots)
+//        try file.write(self.imports)
+//        try file.write(self.symbols.count)
+//        for symbolSet in self.symbols.values
+//            {
+//            try file.write(symbolSet.symbols)
+//            }
+//        }
+        
+    internal override func generateIntermediateCode(in:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
-        try super.write(file:file)
-        try file.write(self.moduleKey.uuidString)
-        try file.write(self.versionKey)
-        try file.write(self.moduleSlots)
-        try file.write(self.imports)
-        try file.write(self.symbols.count)
-        for symbolSet in self.symbols.values
-            {
-            try file.write(symbolSet.symbols)
-            }
         }
         
     public override func dump()
@@ -216,13 +252,7 @@ public class Module:SymbolContainer
         {
         super.init(shortName:shortName)
         }
-        
-    public required init(file:ObjectFile) throws
-        {
-        fatalError()
-        }
     }
-
 
 public class ModuleClass:Class
     {

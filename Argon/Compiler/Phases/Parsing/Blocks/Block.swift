@@ -34,6 +34,13 @@ public class Block:Statement,SlotContainer
     internal var symbols:[String:SymbolSet] = [:]
     internal var marker:Int?
 
+    init(block:Block)
+        {
+        self.statements = block.statements
+        self.symbols = block.symbols
+        self.marker = block.marker
+        }
+        
     init(parentScope:Scope)
         {
         self.marker = Argon.nextIndex()
@@ -51,6 +58,11 @@ public class Block:Statement,SlotContainer
     override init(location:SourceLocation = .zero)
         {
         super.init(location:location)
+        }
+        
+    init()
+        {
+        super.init(location:.zero)
         }
         
     internal var lastStatement:Statement
@@ -106,7 +118,7 @@ public class Block:Statement,SlotContainer
             }
         }
         
-    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         // TODO: Add check for reachability of artifical return I add at end here
         for statement in self.statements

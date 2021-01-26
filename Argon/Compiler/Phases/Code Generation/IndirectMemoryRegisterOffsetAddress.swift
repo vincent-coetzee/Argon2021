@@ -7,16 +7,8 @@
 
 import Foundation
 
-public class IndirectMemoryRegisterOffsetAddress:ThreeAddress
+public class IndirectMemoryRegisterOffsetAddress
     {
-    public func write(file: ObjectFile) throws
-        {
-        try file.write(character:"O")
-        try self.baseRegister.write(file:file)
-        try self.offsetRegister.write(file:file)
-        try self.offset.write(file:file)
-        }
-        
     public var displayString:String
         {
         let sign = self.offset < 0 ? " - " : " + "

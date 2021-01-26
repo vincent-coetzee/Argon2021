@@ -20,17 +20,17 @@ internal class WhileStatement:ControlFlowStatement
         super.init(location:location)
         }
         
-    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         buffer.emitPendingLocation(self.location)
-        let entryLabel = InstructionLabel()
+        let entryLabel = A3Label()
         buffer.emitPendingLabel(label: entryLabel)
         try self.condition.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
         let result = buffer.lastResult
-        let label = InstructionLabel()
-        buffer.emitInstruction(left:result,opcode:.branchIfFalse,right:label)
+        let label = A3Label()
+        buffer.emitInstruction(left:result,opcode:.branchIfFalse,right:.label(label))
         try self.block.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
-        buffer.emitInstruction(opcode:.branch,right:entryLabel)
+        buffer.emitInstruction(opcode:.branch,right:.label(entryLabel))
         buffer.emitPendingLabel(label:label)
         }
     }

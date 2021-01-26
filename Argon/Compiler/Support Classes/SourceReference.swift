@@ -8,11 +8,48 @@
 
 import Foundation
 
-public enum SourceReference:Record
+public enum SourceReference:Codable
     {
-    public var recordKind:RecordKind
+    enum CodingKeys:String,CodingKey
         {
-        return(.sourceReference)
+        case kind
+        case location
+        }
+        
+    public init(from decoder: Decoder) throws
+        {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        let kind = try values.decode(Int.self,forKey:.kind)
+        let location = try values.decode(SourceLocation.self,forKey:.location)
+        if kind == 1
+            {
+            self = .declaration(location)
+            }
+        else if kind == 2
+            {
+            self = .read(location)
+            }
+        else
+            {
+            self = .write(location)
+            }
+        }
+    
+    public func encode(to encoder: Encoder) throws
+        {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        switch(self)
+            {
+            case .declaration(let location):
+                try container.encode(1, forKey: .kind)
+                try container.encode(location,forKey:.location)
+            case .read(let location):
+                try container.encode(2, forKey: .kind)
+                try container.encode(location,forKey:.location)
+            case .write(let location):
+                try container.encode(3, forKey: .kind)
+                try container.encode(location,forKey:.location)
+            }
         }
     
     public var id:UUID
@@ -50,31 +87,8 @@ public enum SourceReference:Record
                 return(location)
             }
         }
-        
-    public func write(file: ObjectFile) throws
-        {
-        try file.write(self.rawValue)
-        try self.location.write(file:file)
-        }
     
     case declaration(SourceLocation)
     case read(SourceLocation)
     case write(SourceLocation)
-    
-    public init(file:ObjectFile) throws
-        {
-        let index = try file.readInt()
-        let location = try SourceLocation(file:file)
-        switch(index)
-            {
-            case 1:
-                self = .declaration(location)
-            case 2:
-                self = .read(location)
-            case 3:
-                self = .write(location)
-            default:
-                fatalError("This should not happen")
-            }
-        }
     }

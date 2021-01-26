@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Argument:Symbol,ThreeAddress
+public class Argument:Symbol
     {
     public var displayString:String
         {
@@ -39,18 +39,17 @@ public class Argument:Symbol,ThreeAddress
         self.argumentIndex = 0
         super.init()
         }
-        
-    public required init(file:ObjectFile) throws
-        {
-        fatalError()
-        }
-        
-    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+    
+    required public init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
+    
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         try value.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
         }
         
-    internal func generateIntermediatePushCode(into buffer:ThreeAddressInstructionBuffer)
+    internal func generateIntermediatePushCode(into buffer:A3CodeBuffer)
         {
         self.value.generateIntermediatePushCode(into:buffer)
         }

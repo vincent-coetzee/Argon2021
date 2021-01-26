@@ -25,7 +25,7 @@ internal class HandlerStatement:Statement
         return(HandlerSymbol(shortName:"_HANDLER_\(Argon.nextIndex())",inductionVariable: self.inductionVariable,block:self.block))
         }
         
-    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         }
     }

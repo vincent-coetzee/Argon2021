@@ -25,14 +25,14 @@ internal class SelectStatement:Statement
         return(self.parentScope?.lookup(shortName:shortName))
         }
         
-    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         if self.whenClauses.isEmpty
             {
             throw(CompilerError(error: .selectRequiresAtLeastOneWhenClause, location: self.location, hint: "select.whenClauses is empty"))
             }
-        let exitLabel = InstructionLabel.newLabel()
-        let successLabel = InstructionLabel.newLabel()
+        let exitLabel = A3Label.newLabel()
+        let successLabel = A3Label.newLabel()
         var lastClause:SelectElementClause? = nil
         for clause in self.whenClauses
             {

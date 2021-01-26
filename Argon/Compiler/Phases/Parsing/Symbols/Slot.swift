@@ -52,11 +52,6 @@ public class Slot:Variable
         return(self.container!.shortName + "\\" + self.shortName)
         }
         
-    public override var recordKind:RecordKind
-        {
-        return(.slot)
-        }
-        
     public var slotOffset:Int = 0
     public var container:Symbol?
     internal let attributes:SlotAttributes
@@ -87,9 +82,35 @@ public class Slot:Variable
         self._class = Argon.rootModule.nilClass
         }
         
-    public required init(file:ObjectFile) throws
+    enum CodingKeys:String,CodingKey
         {
-        fatalError()
+        case slotOffset
+        case container
+        case attributes
+        case readBlock
+        case writeBlock
+        }
+        
+    required public init(from decoder:Decoder) throws
+        {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.slotOffset = try values.decode(Int.self,forKey:.slotOffset)
+        self.container = try values.decode(Symbol?.self,forKey:.container)
+        self.attributes = try values.decode(SlotAttributes.self,forKey:.attributes)
+        self.virtualReadBlock = try values.decode(VirtualSlotBlock?.self,forKey:.readBlock)
+        self.virtualWriteBlock = try values.decode(VirtualSlotBlock?.self,forKey:.writeBlock)
+        try super.init(from:decoder)
+        }
+        
+    public override func encode(to encoder: Encoder) throws
+        {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.slotOffset,forKey:.slotOffset)
+        try container.encode(self.container,forKey:.container)
+        try container.encode(self.attributes,forKey:.attributes)
+        try container.encode(self.virtualReadBlock,forKey:.readBlock)
+        try container.encode(self.virtualWriteBlock,forKey:.writeBlock)
+        try super.encode(to:encoder)
         }
         
     internal func slotType(_ slotNames:[String]) -> Type
@@ -104,17 +125,6 @@ public class Slot:Variable
     internal func fieldHash(n:Int) -> Int
         {
         return(self.shortName.hashValue % n)
-        }
-    
-    public override func write(file: ObjectFile) throws
-        {
-        try super.write(file:file)
-        try file.write(self.slotOffset)
-        try file.write(self.container?.name)
-        try file.write(self.container?.index ?? -1)
-        try file.write(self.attributes.encodedString)
-        //
-        // TODO: write read and write blocks
         }
     }
 

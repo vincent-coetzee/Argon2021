@@ -19,7 +19,7 @@ internal class SignalStatement:ControlFlowStatement
         self.location = location
         }
         
-    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         buffer.emitPendingLocation(self.location)
         }

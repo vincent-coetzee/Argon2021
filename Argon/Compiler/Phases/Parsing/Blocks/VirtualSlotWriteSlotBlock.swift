@@ -18,4 +18,10 @@ internal class VirtualSlotWriteSlotBlock:VirtualSlotWriteBlock
         self.slotOffset = slotOffset
         super.init()
         }
+        
+
+    
+    public required init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
     }
+}

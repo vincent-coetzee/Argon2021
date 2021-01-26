@@ -22,9 +22,9 @@ public class ClassMaker:MethodInstance
         fatalError("init() has not been implemented")
         }
         
-    public required init(file:ObjectFile) throws
+    public required init(from decoder:Decoder) throws
         {
-        fatalError()
+        try super.init(from:decoder)
         }
     }
 

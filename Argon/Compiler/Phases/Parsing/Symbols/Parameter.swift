@@ -67,24 +67,14 @@ public class Parameter:Variable
         self.hasTag = false
         super.init(shortName: "",class: .voidClass)
         }
-        
-    public required init(file:ObjectFile) throws
+    
+    public required init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
+    
+    override func generateIntermediateCodeLoad(target:A3Address,into buffer:A3CodeBuffer)
         {
-        fatalError()
-        }
-        
-    override func generateIntermediateCodeLoad(target:ThreeAddress,into buffer:ThreeAddressInstructionBuffer)
-        {
-        buffer.emitInstruction(result:target,left:self,opcode:.assign)
-        }
-        
-    public override func write(file: ObjectFile) throws
-        {
-        try super.write(file:file)
-        try file.write(self.showTag)
-        try file.write(self.hasTag)
-        try file.write(self.tag)
-        try file.write(self.stackOffsetFromBasePointer)
+        buffer.emitInstruction(result:target,left:.parameter(self),opcode:.assign)
         }
     }
 

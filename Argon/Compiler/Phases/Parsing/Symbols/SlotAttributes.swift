@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal struct SlotAttributes:OptionSet
+internal struct SlotAttributes:OptionSet,Codable
     {
     let rawValue:Int
 

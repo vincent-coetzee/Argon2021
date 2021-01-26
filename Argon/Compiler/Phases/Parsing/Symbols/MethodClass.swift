@@ -23,18 +23,14 @@ public class ExecutableClass:Class
         fatalError("init() has not been implemented")
     }
     
-    public required init(file:ObjectFile) throws
-        {
-        fatalError()
-        }
+    required public init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
+    
     }
 
 public class MethodClass:Class
     {
-    public override var recordKind:RecordKind
-        {
-        return(.method)
-        }
     }
 
 public class MethodInstanceClass:ExecutableClass

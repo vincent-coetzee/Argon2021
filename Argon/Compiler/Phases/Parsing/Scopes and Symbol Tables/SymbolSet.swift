@@ -48,7 +48,7 @@ internal class SymbolSet:Equatable
             }
         }
         
-    internal func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using compiler:Compiler) throws
+    internal func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using compiler:Compiler) throws
         {
         for symbol in self.symbols
             {

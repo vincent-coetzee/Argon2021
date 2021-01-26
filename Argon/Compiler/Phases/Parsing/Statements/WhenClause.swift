@@ -19,19 +19,19 @@ internal class WhenClause:SelectElementClause
         self.block = block
         }
         
-    override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler,subject:ThreeAddress,exitLabel:InstructionLabel,successLabel:InstructionLabel) throws
+    override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler,subject:A3Address,exitLabel:A3Label,successLabel:A3Label) throws
         {
-        let testResult = ThreeAddressTemporary.newTemporary()
-        let expressionResult = ThreeAddressTemporary.newTemporary()
-        let entryPoint = InstructionLabel.newLabel()
+        let testResult = A3Temporary.newTemporary()
+        let expressionResult = A3Temporary.newTemporary()
+        let entryPoint = A3Label.newLabel()
         try self.expression.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
-        buffer.emitInstruction(result:testResult,left:subject,opcode:.equals,right:expressionResult,comment:"CHECK IF SUBJECT MATCHES THE CONDiTION")
-        buffer.emitInstruction(left:testResult,opcode:.branchIfTrue,right:entryPoint,comment:"JUMP TO THIS CLAUSE'S CODE TO EXECUTE IT")
+        buffer.emitInstruction(result:.temporary(testResult),left:subject,opcode:.equals,right:.temporary(expressionResult),comment:"CHECK IF SUBJECT MATCHES THE CONDiTION")
+        buffer.emitInstruction(left:.temporary(testResult),opcode:.branchIfTrue,right:.label(entryPoint),comment:"JUMP TO THIS CLAUSE'S CODE TO EXECUTE IT")
         let target = self.nextClause == nil ? exitLabel : self.nextClause!.testClauseLabel
-        buffer.emitInstruction(opcode:.branch,right:target,comment:"EXIT THE CLAUSE BECAUSE CONDITION WAS NOT SATISFIED OR NO OTHERWISE CLAUSE")
+        buffer.emitInstruction(opcode:.branch,right:.label(target),comment:"EXIT THE CLAUSE BECAUSE CONDITION WAS NOT SATISFIED OR NO OTHERWISE CLAUSE")
         buffer.emitPendingLabel(label: entryPoint)
         try self.block.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
-        buffer.emitInstruction(opcode:.branch,right:successLabel,comment:"EXIT BECAUSE REACHED END OF WHEN BLOCK")
+        buffer.emitInstruction(opcode:.branch,right:.label(successLabel),comment:"EXIT BECAUSE REACHED END OF WHEN BLOCK")
         try self.nextClause?.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using, subject: subject, exitLabel: exitLabel, successLabel: successLabel)
         }
     }

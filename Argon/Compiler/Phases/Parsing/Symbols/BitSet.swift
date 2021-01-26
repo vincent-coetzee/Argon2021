@@ -45,11 +45,10 @@ public class BitSet:Symbol
         fatalError("init() has not been implemented")
     }
     
-    required public init(file:ObjectFile) throws
-        {
-        fatalError("Should have been overriden")
-        }
-        
+    required public init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
+    
     func addField(_ field:BitSetField)
         {
         self.fields[field.name] = field

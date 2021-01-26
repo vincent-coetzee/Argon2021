@@ -8,6 +8,20 @@
 
 import Foundation
 
-internal class VirtualSlotBlock:Block
+internal class VirtualSlotBlock:Block,Codable
     {
+    public required init(from decoder:Decoder) throws
+        {
+        super.init()
+        }
+        
+    override init(block:Block)
+        {
+        super.init(block:block)
+        }
+        
+    override init()
+        {
+        super.init()
+        }
     }

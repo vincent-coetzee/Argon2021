@@ -8,16 +8,42 @@
 
 import Foundation
 
-public class Symbol:ParseNode,Equatable,Hashable,Record
+public class Symbol:ParseNode,Equatable,Hashable,Codable
     {
+    enum CodingKeys:String,CodingKey
+        {
+        case shortName
+        case id
+        case references
+        case accessLevel
+        case parent
+        case definingScope
+        }
+        
+    required public init(from decoder:Decoder) throws
+        {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.shortName = try values.decode(String.self,forKey: .shortName)
+        self.id = try values.decode(UUID.self,forKey: .id)
+        self.references = try values.decode(Array<SourceReference>.self,forKey:.references)
+        self.accessLevel = try values.decode(AccessModifier.self,forKey:.accessLevel)
+        self.parent = try values.decode(Symbol?.self,forKey:.parent)
+//        self.definingScope = try values.decode(Scope?.self,forKey:.definingScope)
+        }
+        
+    public func encode(to encoder: Encoder) throws
+        {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.shortName,forKey:.shortName)
+        try container.encode(self.id,forKey:.id)
+        try container.encode(self.references,forKey:.references)
+        try container.encode(self.accessLevel,forKey:.accessLevel)
+        try container.encode(parent,forKey:.parent)
+        }
+        
     public var className:String
         {
         return("\(Swift.type(of:self))")
-        }
-        
-    public var recordKind:RecordKind
-        {
-        fatalError("This should heva been overridden")
         }
         
     public let id:UUID
@@ -114,22 +140,6 @@ public class Symbol:ParseNode,Equatable,Hashable,Record
         super.init()
         }
         
-    required public init(file:ObjectFile) throws
-        {
-        fatalError("Should have been overriden")
-        }
-    
-    public func write(file: ObjectFile) throws
-        {
-        try file.write(self.id)
-        try file.write(self.accessLevel)
-        try file.write(self.className)
-        try file.write(self.shortName)
-        try file.write(self.index)
-        try file.write(self.parent?.index ?? 0)
-        try file.write(self.references)
-        }
-        
     internal func addRead(location:SourceLocation)
         {
         self.references.append(.read(location))
@@ -165,10 +175,10 @@ public class Symbol:ParseNode,Equatable,Hashable,Record
         {
         }
         
-    internal func generateIntermediateCode(in:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+    internal func generateIntermediateCode(in:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
-        
         }
+        
     internal func  sourceFileElements() -> [SourceFileElement]
         {
         fatalError("This should be overridden")

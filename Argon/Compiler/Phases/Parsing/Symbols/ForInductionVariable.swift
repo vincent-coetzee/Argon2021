@@ -20,8 +20,8 @@ internal class ForInductionVariable:InductionVariable
         super.init()
         }
         
-    public required init(file:ObjectFile) throws
+    public required init(from decoder:Decoder) throws
         {
-        fatalError()
+        try super.init(from:decoder)
         }
 }

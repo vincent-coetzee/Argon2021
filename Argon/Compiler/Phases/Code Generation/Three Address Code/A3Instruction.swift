@@ -7,14 +7,9 @@
 
 import Foundation
 
-public class ThreeAddressInstruction:Instruction,Record
+public class A3Instruction:Instruction,Codable
     {
-    public var recordKind:RecordKind
-        {
-        return(.instruction)
-        }
-        
-    internal enum InstructionCode:String
+    internal enum InstructionCode:String,Codable
         {
         case add
         case sub
@@ -69,49 +64,53 @@ public class ThreeAddressInstruction:Instruction,Record
         case parameter
         }
         
-    let result:ThreeAddress?
-    let left:ThreeAddress?
-    let right:ThreeAddress?
+    let result:A3Address?
+    let left:A3Address?
+    let right:A3Address?
     let opcode:InstructionCode
-    public let id:UUID
     public var labels = InstructionLabels()
     public var location:SourceLocation?
     public var comment:String?
     
-    public required init(file:ObjectFile) throws
+    enum CodingKeys:String,CodingKey
         {
-        fatalError()
+        case result
+        case left
+        case right
+        case opcode
+        case id
+        case labels
+        case location
+        case comment
         }
         
-    public func write(file: ObjectFile) throws
+    required public init(from decoder:Decoder) throws
         {
-        for label in self.labels
-            {
-            try file.write(RecordKind.instructionLabel)
-            try file.write(label.index)
-            }
-        if let result = self.result
-            {
-            try file.write(RecordKind.instructionResult)
-            try result.write(file:file)
-            }
-        if let left = self.left
-            {
-            try file.write(RecordKind.instructionLeftHS)
-            try left.write(file:file)
-            }
-            try file.write(RecordKind.instructionOpcode)
-        try file.write(self.opcode)
-        if let right = self.right
-            {
-            try file.write(RecordKind.instructionRightHS)
-            try right.write(file:file)
-            }
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.labels = try values.decode(Array<A3Label>.self,forKey:.labels)
+        self.result = try values.decode(A3Address?.self,forKey:.result)
+        self.location = try values.decode(SourceLocation?.self,forKey:.location)
+        self.left = try values.decode(A3Address?.self,forKey:.left)
+        self.right = try values.decode(A3Address?.self,forKey:.right)
+        self.comment = try values.decode(String?.self,forKey:.comment)
+        self.opcode = try values.decode(InstructionCode.self,forKey:.opcode)
         }
         
-    init(label:InstructionLabel? = nil,result:ThreeAddress? = nil,left:ThreeAddress? = nil,opcode:InstructionCode,right:ThreeAddress? = nil,comment:String? = nil)
+    public func encode(to encoder: Encoder) throws
         {
-        self.id = UUID()
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.labels,forKey:.labels)
+        try container.encode(self.result,forKey:.result)
+        try container.encode(self.location,forKey:.location)
+        try container.encode(self.left,forKey:.left)
+        try container.encode(self.right,forKey:.right)
+        try container.encode(self.comment,forKey:.comment)
+        try container.encode(self.opcode,forKey:.opcode)
+        }
+        
+        
+    init(label:A3Label? = nil,result:A3Address? = nil,left:A3Address? = nil,opcode:InstructionCode,right:A3Address? = nil,comment:String? = nil)
+        {
         self.result = result
         self.left = left
         self.opcode = opcode
@@ -125,14 +124,13 @@ public class ThreeAddressInstruction:Instruction,Record
         
     init(opcode:InstructionCode)
         {
-        self.id = UUID()
         self.result = nil
         self.left = nil
         self.opcode = opcode
         self.right = nil
         }
 
-    public func addLabel(_ label:InstructionLabel)
+    public func addLabel(_ label:A3Label)
         {
         self.labels.append(label)
         }
@@ -172,7 +170,7 @@ public class ThreeAddressInstruction:Instruction,Record
         if self.opcode == .comment
             {
             string += "            ##\n"
-            string += "                   ## \(self.right ?? "")\n"
+            string += "                   ## \(self.right!.displayString)\n"
             string += "                   ##"
             return(self.stringAdjustedForComment(string))
             }

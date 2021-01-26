@@ -30,7 +30,7 @@ internal class AssignmentStatement:Statement
 //            }
         }
         
-    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         buffer.emitPendingLocation(self.location)
         try self.rvalue.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)

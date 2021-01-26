@@ -17,10 +17,10 @@ internal class OtherwiseClause:SelectElementClause
         }
         
         
-    override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler,subject:ThreeAddress,exitLabel:InstructionLabel,successLabel:InstructionLabel) throws
+    override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler,subject:A3Address,exitLabel:A3Label,successLabel:A3Label) throws
         {
         try self.block.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
-        buffer.emitInstruction(opcode:.branch,right:successLabel,comment:"JUMP TO END OF SELECT STATEMENT")
+        buffer.emitInstruction(opcode:.branch,right:.label(successLabel),comment:"JUMP TO END OF SELECT STATEMENT")
         
         }
     }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Class:Symbol,ThreeAddress
+public class Class:Symbol
     {
     public static func ==(lhs:Class,rhs:Class) -> Bool
         {
@@ -76,11 +76,6 @@ public class Class:Symbol,ThreeAddress
         return("$\(self.shortName)")
         }
         
-    public override var recordKind:RecordKind
-        {
-        return(.class)
-        }
-        
     public var superclasses = Classes()
     internal var generics = GenericClasses()
     internal var regularSlots:[String:Slot] = [:]
@@ -90,15 +85,39 @@ public class Class:Symbol,ThreeAddress
     internal var makers = ClassMakers()
     internal var symbols:[String:Symbol] = [:]
     internal var layoutSlots:[LayoutSlot] = []
-    
-    public override func write(file: ObjectFile) throws
+        
+    enum CodingKeys:String,CodingKey
         {
-        try super.write(file:file)
-        try file.write(self.superclasses)
-        try file.write(self.generics)
-        try file.write(self.regularSlots.values)
-        try file.write(self.classSlots.values)
-        try file.write(self.symbols)
+        case superclasses
+        case generics
+        case regularSlots
+        case classSlots
+        case symbols
+        case layoutSlots
+        }
+        
+    required public init(from decoder:Decoder) throws
+        {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.superclasses = try values.decode(Array<Class>.self,forKey:.superclasses)
+        self.generics = try values.decode(GenericClasses.self,forKey:.generics)
+        self.regularSlots = try values.decode(Dictionary<String,Slot>.self,forKey:.regularSlots)
+        self.classSlots = try values.decode(Dictionary<String,Slot>.self,forKey:.classSlots)
+        self.symbols = try values.decode(Dictionary<String,Symbol>.self,forKey:.symbols)
+        self.layoutSlots = try values.decode(Array<LayoutSlot>.self,forKey:.layoutSlots)
+        try super.init(from:decoder)
+        }
+        
+    public override func encode(to encoder: Encoder) throws
+        {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.superclasses,forKey:.superclasses)
+        try container.encode(self.generics,forKey:.generics)
+        try container.encode(self.regularSlots,forKey:.regularSlots)
+        try container.encode(self.classSlots,forKey:.classSlots)
+        try container.encode(self.symbols,forKey:.symbols)
+        try container.encode(self.layoutSlots,forKey:.layoutSlots)
+        try super.encode(to:encoder)
         }
         
     internal var lastRegularSlot:Slot?
@@ -157,10 +176,10 @@ public class Class:Symbol,ThreeAddress
         return(self)
         }
         
-    internal func instanciate() -> Instance
-        {
-        return(Instance(class:self))
-        }
+//    internal func instanciate() -> Instance
+//        {
+//        return(Instance(class:self))
+//        }
         
     init(shortName:String,generics:GenericClasses)
         {
@@ -195,28 +214,7 @@ public class Class:Symbol,ThreeAddress
         self.generics = GenericClasses()
         super.init(shortName:shortName)
         }
-        
-    required public init(file:ObjectFile) throws
-        {
-        try super.init(file:file)
-        self.superclasses = try file.readArray(of:Class.self)
-        self.generics = try file.readArray(of:GenericClass.self)
-        var newSlots = try file.readArray(of:Slot.self)
-        for slot in newSlots
-            {
-            self.regularSlots[slot.shortName] = slot
-            }
-        newSlots = try file.readArray(of:Slot.self)
-        for slot in newSlots
-            {
-            self.classSlots[slot.shortName] = slot
-            }
-        for aSymbol in try file.readArray(of:Symbol.self)
-            {
-            self.symbols[aSymbol.shortName] = aSymbol
-            }
-        }
-        
+
     func addRegularSlot(_ slot:Slot)
         {
         self.regularSlots[slot.shortName] = slot
@@ -369,11 +367,10 @@ public class BitSetClass:CollectionClass
         fatalError("init() has not been implemented")
     }
     
-    public required init(file:ObjectFile) throws
-        {
-        fatalError()
-        }
-        
+    required public init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
+    
     internal override func typeWithIndex(_ type:Type.ArrayIndexType) -> Type
         {
         return(Type.bitset(keyType:self.keyType,valueType:self.valueType))
@@ -390,19 +387,13 @@ public class TupleClass:Class
         super.init(shortName:"TUPLE_\(Argon.nextIndex())")
         }
     
-    required public init(file:ObjectFile) throws
-        {
-        self.elements = try file.readArray(of:Class.self)
-        try super.init(file:file)
-        }
+    required public init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
     }
+}
 
 public class ValueClass:Class
     {
-    public override var recordKind:RecordKind
-        {
-        return(.valueClass)
-        }
     }
     
 public class AddressClass:ValueClass
@@ -424,13 +415,11 @@ public class ConstantClass:ValueClass
         self._class = `class`
         super.init(shortName:shortName)
         }
-        
-    required init(file:ObjectFile) throws
-        {
-        self._class = try file.readObject() as! Class
-        try super.init(file:file)
-        }
+    
+    required init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
     }
+}
 
 public class SequenceGeneratorClass:Class
     {
@@ -447,9 +436,9 @@ public class SequenceGeneratorClass:Class
         self.end = end
         super.init(shortName:Argon.nextName("SEQUENCE"))
         }
-        
-    public required init(file:ObjectFile) throws
-        {
-        fatalError()
-        }
+    
+    required public init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
+    
     }

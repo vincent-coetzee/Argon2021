@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum AccessModifier:String
+public enum AccessModifier:String,Codable
     {
     case none = "none"
     case `public` = "public"

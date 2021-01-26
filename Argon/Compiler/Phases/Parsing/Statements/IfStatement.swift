@@ -37,13 +37,13 @@ internal class IfStatement:ControlFlowStatement
         return(self.block.lookup(shortName:shortName))
         }
         
-    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         buffer.emitPendingLocation(self.location)
-        let label = InstructionLabel.newLabel()
+        let label = A3Label.newLabel()
         try self.condition.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
         let value = buffer.lastResult
-        buffer.emitInstruction(left:value,opcode:.branchIfFalse,right:label)
+        buffer.emitInstruction(left:value,opcode:.branchIfFalse,right:.label(label))
         try self.block.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
         buffer.emitPendingLabel(label: label)
         }

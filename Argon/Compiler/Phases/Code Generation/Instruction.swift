@@ -10,5 +10,5 @@ import Foundation
 public protocol Instruction
     {
     var labels:InstructionLabels { get }
-    func addLabel(_ label:InstructionLabel)
+    func addLabel(_ label:A3Label)
     }

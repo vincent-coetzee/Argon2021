@@ -8,18 +8,42 @@
 
 import Foundation
     
-public struct Name:Hashable,ExpressibleByArrayLiteral,ThreeAddress,Record
+public struct Name:Hashable,ExpressibleByArrayLiteral,Codable
     {
-    public enum NameComponent:Hashable
+    public enum NameComponent:Hashable,Codable
         {
-        var string:String
+        enum CodingKeys:String,CodingKey
             {
+            case kind
+            case string
+            }
+            
+        public init(from decoder:Decoder) throws
+            {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            let kind = try values.decode(Int.self,forKey:.kind)
+            if kind == 1
+                {
+                self = .anchor
+                }
+            else
+                {
+                self = .element(try values.decode(String.self,forKey:.string))
+                }
+            try self.init(from:decoder)
+            }
+            
+        public func encode(to encoder: Encoder) throws
+            {
+            var container = encoder.container(keyedBy: CodingKeys.self)
             switch(self)
                 {
                 case .anchor:
-                    return("/")
+                    try container.encode(1,forKey:.kind)
                 case .element(let string):
-                    return(string)
+                    try container.encode(2,forKey:.kind)
+                    try container.encode(string,forKey:.string)
+
                 }
             }
             
@@ -36,16 +60,17 @@ public struct Name:Hashable,ExpressibleByArrayLiteral,ThreeAddress,Record
                     return(false)
                 }
             }
-        }
-        
-    public var recordKind: RecordKind
-        {
-        return(.name)
-        }
-        
-    public func write(file: ObjectFile) throws
-        {
-        try file.write(self.stringName)
+            
+        var string:String
+            {
+            switch(self)
+                {
+                case .anchor:
+                    return("/")
+                case .element(let string):
+                    return(string)
+                }
+            }
         }
     
     public var displayString:String
@@ -71,9 +96,7 @@ public struct Name:Hashable,ExpressibleByArrayLiteral,ThreeAddress,Record
         lhs = Name(total)
         return(lhs)
         }
-        
-    public let id = UUID()
-    
+
     public typealias ArrayLiteralElement = String
     
     public init(arrayLiteral arrayLiteralElement:String...)
@@ -172,10 +195,5 @@ public struct Name:Hashable,ExpressibleByArrayLiteral,ThreeAddress,Record
     public init()
         {
         self.components = []
-        }
-        
-    public init(file:ObjectFile) throws
-        {
-        self.init(try file.readString())
         }
     }

@@ -7,20 +7,24 @@
 
 import Foundation
     
-public enum RegisterLocation
+public enum RegisterLocation:Codable
     {
+    public init(from decoder: Decoder) throws
+        {
+        try self.init(from: decoder)
+        }
+    
+    public func encode(to encoder: Encoder) throws
+        {
+        
+        }
+    
     case absoluteAddress(Address)
     case relativeAddress(RelativeAddress)
     }
     
-public class Register:ThreeAddress
+public class Register:Codable
     {
-    public func write(file:ObjectFile) throws
-        {
-        try file.write(character:"R")
-        try file.write(self.index)
-        }
-        
     public var displayString: String
         {
         return("\(self.index)")

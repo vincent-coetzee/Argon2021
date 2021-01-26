@@ -23,9 +23,8 @@ public class Pointer:Class
     required init() {
         fatalError("init() has not been implemented")
     }
-    
-    public required init(file:ObjectFile) throws
-        {
-        fatalError()
-        }
+
+required public init(from decoder: Decoder) throws {
+    fatalError("init(from:) has not been implemented")
+}
 }

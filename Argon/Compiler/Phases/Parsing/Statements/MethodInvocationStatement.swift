@@ -24,15 +24,15 @@ internal class InvocationStatement:MethodInvocationStatement
         super.init(location:location)
         }
         
-    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         buffer.emitPendingLocation(self.location)
-        let temp = ThreeAddressTemporary.newTemporary()
-        buffer.emitInstruction(result:temp,opcode:.addressOf,right:name)
+        let temp = A3Temporary.newTemporary()
+        buffer.emitInstruction(result:.temporary(temp),opcode:.addressOf,right:.name(name))
         for argument in self.arguments
             {
-            buffer.emitInstruction(opcode:.parameter,right:argument)
+            buffer.emitInstruction(opcode:.parameter,right:.argument(argument))
             }
-        buffer.emitInstruction(opcode:.invokeAddress,right:temp)
+        buffer.emitInstruction(opcode:.invokeAddress,right:.temporary(temp))
         }
     }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol ThreeAddress
+public protocol A3Address
     {
     var displayString:String { get }
     func write(file:ObjectFile) throws

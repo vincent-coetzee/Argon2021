@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct SemanticVersionNumber:Equatable,Comparable,Hashable
+public struct SemanticVersionNumber:Equatable,Comparable,Hashable,Codable
     {
     public static func < (lhs: SemanticVersionNumber, rhs: SemanticVersionNumber) -> Bool
         {

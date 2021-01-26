@@ -23,7 +23,7 @@ internal class ReturnStatement:ControlFlowStatement
         super.init(location:location)
         }
         
-    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using:Compiler) throws
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         buffer.emitPendingLocation(self.location)
         try value?.generateIntermediateCode(in:module,codeHolder:codeHolder,into:buffer,using:using)

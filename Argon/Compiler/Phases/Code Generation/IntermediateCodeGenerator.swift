@@ -21,7 +21,7 @@ internal class IntermediateCodeGenerator:CompilerPhase
         {
         for module in compiler.modules
             {
-            try self.intermediateCodeGenerate(in:module,codeHolder:.none,into: ThreeAddressInstructionBuffer(),using:compiler)
+            try self.intermediateCodeGenerate(in:module,codeHolder:.none,into: A3CodeBuffer(),using:compiler)
             }
         }
         
@@ -33,7 +33,7 @@ internal class IntermediateCodeGenerator:CompilerPhase
         {
         }
         
-    private func intermediateCodeGenerate(in module:Module,codeHolder:CodeHolder,into buffer:ThreeAddressInstructionBuffer,using compiler:Compiler) throws
+    private func intermediateCodeGenerate(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using compiler:Compiler) throws
         {
         for symbol in module.symbols.values
             {

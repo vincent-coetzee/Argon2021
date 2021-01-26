@@ -7,15 +7,10 @@
 
 import Foundation
 
-public enum ThreeAddressConstant:ThreeAddress
+public enum A3Constant
     {
     public var displayString:String
         {
         return("CONSTANT")
-        }
-        
-    public func write(file: ObjectFile) throws
-        {
-        fatalError("This should not have been called")
         }
     }

@@ -148,27 +148,16 @@ public struct Argon
 
     }
 
-extension Argon.Integer:ThreeAddress
+extension Argon.Integer
     {
-    public func write(file: ObjectFile) throws
-        {
-        try file.write(character:"I")
-        try file.write(Int(self))
-        }
-        
     public var displayString:String
         {
         return("\(self)")
         }
     }
 
-extension Argon.Float:ThreeAddress
+extension Argon.Float
     {
-    public func write(file: ObjectFile) throws
-        {
-        try file.write(character:"F")
-        try file.write(self)
-        }
         
     public var displayString:String
         {

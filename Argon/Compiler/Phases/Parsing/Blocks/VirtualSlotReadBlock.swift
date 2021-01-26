@@ -16,15 +16,18 @@ internal class VirtualSlotReadBlock:VirtualSlotBlock
         self.setStatements(statements)
         }
     
-    internal init(location:SourceLocation = .zero,block:Block)
+    public required init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
+    }
+    
+    override init(block:Block)
         {
-        super.init(location:location)
-        self.statements = block.statements
-        self.symbols = block.symbols
+        super.init(block:block)
         }
         
-    override init(location:SourceLocation = .zero)
+    override init()
         {
-        super.init(location:location)
+        super.init()
         }
+        
     }

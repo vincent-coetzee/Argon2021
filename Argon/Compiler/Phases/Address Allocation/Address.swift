@@ -11,7 +11,7 @@ public typealias Address = UInt64
 
 public typealias Word = UInt64
 
-public struct RelativeAddress
+public struct RelativeAddress:Codable
     {
     var base:Address.Base = .zero
     var offset:Address.Offset = 0
@@ -19,7 +19,7 @@ public struct RelativeAddress
     
 extension Address
     {
-    public enum Base
+    public enum Base:Int,Codable
         {
         case zero
         case stack

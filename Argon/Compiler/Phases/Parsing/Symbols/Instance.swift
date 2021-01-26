@@ -8,28 +8,23 @@
 
 import Foundation
 
-public class Instance:Symbol
-    {
-    internal let theClass:Class
-    
-    internal override var type:Type
-        {
-        return(self.theClass.type)
-        }
-        
-    internal required init(class:Class)
-        {
-        self.theClass = `class`
-        super.init(shortName:"Instance of '\(`class`.shortName)'")
-        }
-    
-    internal required init()
-        {
-        fatalError("init() has not been implemented")
-        }
-        
-    public required init(file:ObjectFile) throws
-        {
-        fatalError()
-        }
-    }
+//public class Instance:Symbol
+//    {
+//    internal let theClass:Class
+//    
+//    internal override var type:Type
+//        {
+//        return(self.theClass.type)
+//        }
+//        
+//    internal required init(class:Class)
+//        {
+//        self.theClass = `class`
+//        super.init(shortName:"Instance of '\(`class`.shortName)'")
+//        }
+//    
+//    internal required init()
+//        {
+//        fatalError("init() has not been implemented")
+//        }
+//    }

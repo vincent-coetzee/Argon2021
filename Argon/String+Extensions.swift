@@ -7,16 +7,22 @@
 
 import Foundation
 
-extension String:ThreeAddress
+extension String
     {
+    public var stringValue:String
+        {
+        return(self)
+        }
+        
     public var displayString:String
         {
         return(#""\#(self)""#)
         }
     
-    public func write(file: ObjectFile) throws
+
+    public init(stringValue:String)
         {
-        try file.write(character:"S")
-        try file.write(self)
+        self.init()
+        self = stringValue
         }
     }
