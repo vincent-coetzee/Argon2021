@@ -24,6 +24,14 @@ internal class InvocationStatement:MethodInvocationStatement
         super.init(location:location)
         }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        for argument in self.arguments
+            {
+            try argument.allocateAddresses(using:compiler)
+            }
+        }
+        
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         buffer.emitPendingLocation(self.location)

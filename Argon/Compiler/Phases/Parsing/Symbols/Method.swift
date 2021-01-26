@@ -60,6 +60,14 @@ public class Method:Symbol
         fatalError("init() has not been implemented")
         }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        for instance in self.instances
+            {
+            try instance.allocateAddresses(using:compiler)
+            }
+        }
+        
     public func addInstance(_ instance:MethodInstance)
         {
         self.instances.append(instance)

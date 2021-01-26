@@ -71,7 +71,6 @@
 		BF08FC0625803A6A00C4AC6F /* WhileStatement.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FBA125803A6A00C4AC6F /* WhileStatement.swift */; };
 		BF08FC0725803A6A00C4AC6F /* ParseNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FBA325803A6A00C4AC6F /* ParseNode.swift */; };
 		BF08FC0825803A6A00C4AC6F /* Expression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FBA525803A6A00C4AC6F /* Expression.swift */; };
-		BF08FC0925803A6A00C4AC6F /* LValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FBA625803A6A00C4AC6F /* LValue.swift */; };
 		BF08FC0C25803A6A00C4AC6F /* UndefinedSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FBAA25803A6A00C4AC6F /* UndefinedSymbol.swift */; };
 		BF08FC0D25803A6A00C4AC6F /* Parameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FBAB25803A6A00C4AC6F /* Parameter.swift */; };
 		BF08FC0E25803A6A00C4AC6F /* SymbolContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FBAC25803A6A00C4AC6F /* SymbolContainer.swift */; };
@@ -209,6 +208,9 @@
 		BF7B477B25C0294A00FB22DC /* BinaryCoding in Frameworks */ = {isa = PBXBuildFile; productRef = BF7B477A25C0294A00FB22DC /* BinaryCoding */; };
 		BF85B1C425B1208C00C40C03 /* SemanticVersionNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF85B1C325B1208C00C40C03 /* SemanticVersionNumber.swift */; };
 		BF85B1C725B126CA00C40C03 /* RelocatableReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF85B1C625B126CA00C40C03 /* RelocatableReference.swift */; };
+		BF8CF0A625C0A02E00A8FE30 /* MemoryImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8CF0A525C0A02E00A8FE30 /* MemoryImage.swift */; };
+		BF8CF0A925C0A06900A8FE30 /* MemorySegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8CF0A825C0A06900A8FE30 /* MemorySegment.swift */; };
+		BF8CF0AD25C0A12400A8FE30 /* StaticSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8CF0AC25C0A12400A8FE30 /* StaticSegment.swift */; };
 		BF979DB52580F8ED002AFB7F /* TokenStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF979DB42580F8ED002AFB7F /* TokenStyle.swift */; };
 		BF979DB925832410002AFB7F /* NSFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF979DB825832410002AFB7F /* NSFont+Extension.swift */; };
 		BF979DBC25832488002AFB7F /* NSColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF979DBB25832488002AFB7F /* NSColor.swift */; };
@@ -311,7 +313,6 @@
 		BF08FBA125803A6A00C4AC6F /* WhileStatement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhileStatement.swift; sourceTree = "<group>"; };
 		BF08FBA325803A6A00C4AC6F /* ParseNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseNode.swift; sourceTree = "<group>"; };
 		BF08FBA525803A6A00C4AC6F /* Expression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expression.swift; sourceTree = "<group>"; };
-		BF08FBA625803A6A00C4AC6F /* LValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LValue.swift; sourceTree = "<group>"; };
 		BF08FBAA25803A6A00C4AC6F /* UndefinedSymbol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UndefinedSymbol.swift; sourceTree = "<group>"; };
 		BF08FBAB25803A6A00C4AC6F /* Parameter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parameter.swift; sourceTree = "<group>"; };
 		BF08FBAC25803A6A00C4AC6F /* SymbolContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SymbolContainer.swift; sourceTree = "<group>"; };
@@ -450,6 +451,9 @@
 		BF7B477425C00D3000FB22DC /* FullyQualifiedName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullyQualifiedName.swift; sourceTree = "<group>"; };
 		BF85B1C325B1208C00C40C03 /* SemanticVersionNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticVersionNumber.swift; sourceTree = "<group>"; };
 		BF85B1C625B126CA00C40C03 /* RelocatableReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelocatableReference.swift; sourceTree = "<group>"; };
+		BF8CF0A525C0A02E00A8FE30 /* MemoryImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryImage.swift; sourceTree = "<group>"; };
+		BF8CF0A825C0A06900A8FE30 /* MemorySegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySegment.swift; sourceTree = "<group>"; };
+		BF8CF0AC25C0A12400A8FE30 /* StaticSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticSegment.swift; sourceTree = "<group>"; };
 		BF979DB42580F8ED002AFB7F /* TokenStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStyle.swift; sourceTree = "<group>"; };
 		BF979DB825832410002AFB7F /* NSFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSFont+Extension.swift"; sourceTree = "<group>"; };
 		BF979DBB25832488002AFB7F /* NSColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSColor.swift; sourceTree = "<group>"; };
@@ -538,6 +542,7 @@
 		BF08FB5A25803A6A00C4AC6F /* Compiler */ = {
 			isa = PBXGroup;
 			children = (
+				BF8CF0A425C0A01100A8FE30 /* Executable Image */,
 				BF08FB5B25803A6A00C4AC6F /* Stack.swift */,
 				BF08FB5C25803A6A00C4AC6F /* Support Classes */,
 				BF08FB6225803A6A00C4AC6F /* CompilerPhase.swift */,
@@ -758,7 +763,6 @@
 				BF7B471425C0094500FB22DC /* LiteralStringExpression.swift */,
 				BF7B471725C0095800FB22DC /* LiteralSymbolExpression.swift */,
 				BF7B46E725C007B900FB22DC /* LogicalExpression.swift */,
-				BF08FBA625803A6A00C4AC6F /* LValue.swift */,
 				BF7B474125C00BAB00FB22DC /* MakerInvocationExpression.swift */,
 				BF7B474A25C00BF800FB22DC /* MethodExpression.swift */,
 				BF7B473225C00A4300FB22DC /* MethodInvocationExpression.swift */,
@@ -905,6 +909,16 @@
 				BF5AFF8325A53CDE00CED0AC /* TextDisplayLayer.swift */,
 			);
 			path = "Argon Class Browser";
+			sourceTree = "<group>";
+		};
+		BF8CF0A425C0A01100A8FE30 /* Executable Image */ = {
+			isa = PBXGroup;
+			children = (
+				BF8CF0A525C0A02E00A8FE30 /* MemoryImage.swift */,
+				BF8CF0A825C0A06900A8FE30 /* MemorySegment.swift */,
+				BF8CF0AC25C0A12400A8FE30 /* StaticSegment.swift */,
+			);
+			path = "Executable Image";
 			sourceTree = "<group>";
 		};
 		BF979DB7258323F4002AFB7F /* AppKit + Swift + Extensions */ = {
@@ -1095,6 +1109,7 @@
 				BF08FBD325803A6A00C4AC6F /* Token.swift in Sources */,
 				BFD58CE8258F07DF00B2ADDD /* Identifier.swift in Sources */,
 				BF7B473F25C00B9500FB22DC /* TypeMakerInvocationExpression.swift in Sources */,
+				BF8CF0A925C0A06900A8FE30 /* MemorySegment.swift in Sources */,
 				BF08FC1E25803A6A00C4AC6F /* Module.swift in Sources */,
 				BF7B472425C009CF00FB22DC /* LiteralArrayExpression.swift in Sources */,
 				BF08FB4725803A2900C4AC6F /* AppDelegate.swift in Sources */,
@@ -1113,6 +1128,7 @@
 				BF08FBEE25803A6A00C4AC6F /* RootScope.swift in Sources */,
 				BF7B473025C00A3300FB22DC /* InvocationExpression.swift in Sources */,
 				BF5AFF7325A4EA9300CED0AC /* LayoutFrame.swift in Sources */,
+				BF8CF0AD25C0A12400A8FE30 /* StaticSegment.swift in Sources */,
 				BF5AFF7625A4EE4100CED0AC /* ArgonCompositeView.swift in Sources */,
 				BF08FBF425803A6A00C4AC6F /* ReturnStatement.swift in Sources */,
 				BF7B46FA25C0085C00FB22DC /* UndefinedExpression.swift in Sources */,
@@ -1125,6 +1141,7 @@
 				BF4458C725A1F2CF00CB52BE /* SegmentView.swift in Sources */,
 				BF600B4C25A7ABF000930318 /* CodeHolder.swift in Sources */,
 				BF7B470C25C0091700FB22DC /* LiteralClassExpression.swift in Sources */,
+				BF8CF0A625C0A02E00A8FE30 /* MemoryImage.swift in Sources */,
 				BF08FBE925803A6A00C4AC6F /* Scope.swift in Sources */,
 				BF64816F25B4660900D75675 /* SystemPlaceholderEnumeration.swift in Sources */,
 				BF7B470025C0089C00FB22DC /* EnumerationCaseValueExpression.swift in Sources */,
@@ -1205,7 +1222,6 @@
 				BF08FBF725803A6A00C4AC6F /* ForInStatement.swift in Sources */,
 				BF5AFF6725A3651200CED0AC /* String+Extensions.swift in Sources */,
 				BF08FBD725803A6A00C4AC6F /* SourceFile.swift in Sources */,
-				BF08FC0925803A6A00C4AC6F /* LValue.swift in Sources */,
 				BF08FC3925803AB100C4AC6F /* DisplayView.swift in Sources */,
 				BFD04BE32590C378003FDD90 /* ValueLocation.swift in Sources */,
 				BF7B476025C00CA000FB22DC /* InferredSlotExpression.swift in Sources */,

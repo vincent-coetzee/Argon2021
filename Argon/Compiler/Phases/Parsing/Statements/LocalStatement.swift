@@ -18,6 +18,11 @@ internal class LocalStatement:LetStatement
         super.init(variable:localVariable)
         }
     
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try self.localVariable.allocateAddresses(using:compiler)
+        }
+        
     required init()
         {
         fatalError("init() has not been implemented")

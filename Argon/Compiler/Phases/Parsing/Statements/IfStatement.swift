@@ -21,6 +21,16 @@ internal class IfStatement:ControlFlowStatement
         super.init(location:location)
         }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try self.block.allocateAddresses(using:compiler)
+        try self.condition.allocateAddresses(using: compiler)
+        for clause in self.elseClauses
+            {
+            try clause.allocateAddresses(using: compiler)
+            }
+        }
+        
     internal override func addSymbol(_ symbol: Symbol)
         {
         symbol.definingScope = self

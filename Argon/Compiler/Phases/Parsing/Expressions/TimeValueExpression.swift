@@ -22,5 +22,10 @@ public class TimeValueExpression:ScalarExpression
         self.millisecond = millisecond
         super.init(location:location)
         }
+        
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        fatalError("Logic should have been added here")
+        }
     }
 

@@ -16,4 +16,9 @@ public class MethodExpression:ExecutableExpression
         self.method = method
         super.init()
         }
+        
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try method.allocateAddresses(using:compiler)
+        }
     }

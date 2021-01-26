@@ -19,6 +19,12 @@ internal class WhenClause:SelectElementClause
         self.block = block
         }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try self.expression.allocateAddresses(using:compiler)
+        try self.block.allocateAddresses(using:compiler)
+        }
+        
     override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler,subject:A3Address,exitLabel:A3Label,successLabel:A3Label) throws
         {
         let testResult = A3Temporary.newTemporary()

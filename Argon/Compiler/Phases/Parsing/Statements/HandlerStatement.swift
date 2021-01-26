@@ -20,6 +20,11 @@ internal class HandlerStatement:Statement
         super.init(location:location)
         }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try self.block.allocateAddresses(using:compiler)
+        }
+        
     func asHandlerSymbol() -> HandlerSymbol
         {
         return(HandlerSymbol(shortName:"_HANDLER_\(Argon.nextIndex())",inductionVariable: self.inductionVariable,block:self.block))

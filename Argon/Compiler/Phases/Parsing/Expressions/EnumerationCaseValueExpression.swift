@@ -25,4 +25,9 @@ public class EnumerationCaseValueExpression:ScalarExpression
         self.enumeration = enumeration
         super.init()
         }
+        
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try self.enumeration.allocateAddresses(using:compiler)
+        }
     }

@@ -17,5 +17,14 @@ public class TupleExpression:VectorExpression
         self.elements = elements
         super.init()
         }
+        
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        for element in self.elements
+            {
+            try element.allocateAddresses(using:compiler)
+            }
+        fatalError("Logic should have been added here")
+        }
     }
     

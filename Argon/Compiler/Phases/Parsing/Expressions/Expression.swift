@@ -10,7 +10,6 @@ import Foundation
 
 public class Expression:Equatable
     {
-    public var id: UUID    
     private let location:SourceLocation
     internal let intermediateCodeBuffer = A3CodeBuffer()
     
@@ -37,7 +36,10 @@ public class Expression:Equatable
     init(location:SourceLocation = .zero)
         {
         self.location = location
-        self.id = UUID()
+        }
+        
+    internal func allocateAddresses(using compiler:Compiler) throws
+        {
         }
         
     internal func generateIntermediatePushCode(into buffer:A3CodeBuffer)

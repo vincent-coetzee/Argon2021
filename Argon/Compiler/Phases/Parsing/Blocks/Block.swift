@@ -65,6 +65,18 @@ public class Block:Statement,SlotContainer
         super.init(location:.zero)
         }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        for statement in self.statements
+            {
+            try statement.allocateAddresses(using:compiler)
+            }
+        for set in self.symbols.values
+            {
+            try set.allocateAddresses(using:compiler)
+            }
+        }
+        
     internal var lastStatement:Statement
         {
         return(self.statements.last!)

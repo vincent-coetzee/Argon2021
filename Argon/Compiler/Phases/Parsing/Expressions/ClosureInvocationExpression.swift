@@ -19,6 +19,12 @@ public class ClosureInvocationExpression:InvocationExpression
         super.init()
         }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try self.arguments.allocateAddresses(using:compiler)
+        try self.closure.allocateAddresses(using:compiler)
+        }
+        
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         for argument in self.arguments

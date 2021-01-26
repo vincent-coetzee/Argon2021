@@ -23,4 +23,9 @@ public class FunctionExpression:ExecutableExpression
         self.function = function
         super.init()
         }
+        
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try self.function?.allocateAddresses(using:compiler)
+        }
     }

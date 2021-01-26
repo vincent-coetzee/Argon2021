@@ -17,6 +17,11 @@ internal class ResumeStatement:ControlFlowStatement
         self.signal = signal
         super.init(location:location)
         }
+        
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try self.signal.allocateAddresses(using:compiler)
+        }
 //    
 //    required init()
 //        {

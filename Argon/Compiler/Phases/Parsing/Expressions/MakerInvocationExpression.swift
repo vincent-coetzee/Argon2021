@@ -18,4 +18,9 @@ public class MakerInvocationExpression:InvocationExpression
         self.arguments = arguments
         super.init()
         }
+        
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try arguments.allocateAddresses(using:compiler)
+        }
     }

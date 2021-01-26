@@ -62,6 +62,7 @@ public class A3Instruction:Instruction,Codable
         case comment
         case mov
         case parameter
+        case syscall
         }
         
     let result:A3Address?

@@ -19,4 +19,10 @@ internal class RepeatStatement:ControlFlowStatement
         self.block = block
         super.init(location:location)
         }
+        
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try self.condition.allocateAddresses(using:compiler)
+        try self.block.allocateAddresses(using:compiler)
+        }
     }

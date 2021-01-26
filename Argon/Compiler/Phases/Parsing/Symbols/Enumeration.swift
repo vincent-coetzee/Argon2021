@@ -63,6 +63,14 @@ public class Enumeration:Class
         return(false)
         }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        for aCase in self.cases
+            {
+            try aCase.allocateAddresses(using:compiler)
+            }
+        }
+        
     func enumerationCase(named:String) -> EnumerationCase?
         {
         for aCase in self.cases
@@ -141,5 +149,10 @@ public class EnumerationCase:Symbol
     required public init(from decoder: Decoder) throws {
         fatalError("init(from:) has not been implemented")
     }
+    
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try value?.allocateAddresses(using:compiler)
+        }
     
 }

@@ -22,6 +22,12 @@ public class VariableExpression:AccessExpression
         super.init()
         }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try variable.allocateAddresses(using:compiler)
+        fatalError("Logic should have been added here")
+        }
+        
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         let temp = A3Temporary.newTemporary()

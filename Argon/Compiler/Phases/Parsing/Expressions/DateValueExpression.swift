@@ -20,5 +20,9 @@ public class DateValueExpression:ScalarExpression
         self.year = year
         super.init()
         }
+        
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        }
     }
 

@@ -18,4 +18,10 @@ public class FunctionInvocationExpression:InvocationExpression
         self.arguments = arguments
         super.init()
         }
+        
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try self.arguments.allocateAddresses(using:compiler)
+        try self.function.allocateAddresses(using:compiler)
+        }
     }

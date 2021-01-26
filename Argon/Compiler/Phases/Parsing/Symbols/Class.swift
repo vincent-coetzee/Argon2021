@@ -293,6 +293,18 @@ public class Class:Symbol
     internal override func allocateAddresses(using compiler:Compiler) throws
         {
         self.layout()
+        for slot in self.regularSlots.values
+            {
+            try slot.allocateAddresses(using:compiler)
+            }
+        for slot in self.classSlots.values
+            {
+            try slot.allocateAddresses(using:compiler)
+            }
+        for set in self.symbols.values
+            {
+            try set.allocateAddresses(using:compiler)
+            }
         }
         
     func layout()

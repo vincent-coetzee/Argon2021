@@ -31,6 +31,10 @@ public class Statement:ParseNode,Equatable
         self.location = location
         }
         
+    internal func allocateAddresses(using compiler:Compiler) throws
+        {
+        }
+        
     internal func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         fatalError("Not implemented")

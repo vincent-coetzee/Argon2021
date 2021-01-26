@@ -20,4 +20,10 @@ internal class TimesStatement:ControlFlowStatement
         super.init(location:location)
         self.location = location
         }
+        
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try self.expression.allocateAddresses(using:compiler)
+        try self.block.allocateAddresses(using:compiler)
+        }
     }

@@ -14,6 +14,23 @@ public indirect enum LHSValue
     case arrayAccess(LHSValue,Expression)
     case slotAccess(LHSValue,Expression)
         
+    internal func allocateAddresses(using compiler:Compiler) throws
+        {
+        switch(self)
+            {
+            case .variable(let variable):
+                try variable.allocateAddresses(using:compiler)
+            case .arrayAccess(let left,let expression):
+                try left.allocateAddresses(using:compiler)
+                try expression.allocateAddresses(using:compiler)
+            case .slotAccess(let left,let expression):
+                try left.allocateAddresses(using:compiler)
+                try expression.allocateAddresses(using:compiler)
+            default:
+                break
+            }
+        }
+        
     internal func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         switch(self)

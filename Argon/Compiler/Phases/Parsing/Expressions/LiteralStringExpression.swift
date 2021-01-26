@@ -22,6 +22,11 @@ public class LiteralStringExpression:LiteralExpression
         super.init()
         }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        fatalError("Logic should have been added here")
+        }
+        
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         buffer.emitInstruction(result:.temporary(A3Temporary.newTemporary()),left:.string(self.string),opcode:.assign)

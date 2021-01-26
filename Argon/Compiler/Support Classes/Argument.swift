@@ -44,6 +44,10 @@ public class Argument:Symbol
         fatalError("init(from:) has not been implemented")
     }
     
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        }
+        
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         try value.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)
@@ -69,5 +73,13 @@ extension Arguments
         var types = self.map{$0.type}
         types.append(by)
         return(types)
+        }
+        
+    internal func allocateAddresses(using compiler:Compiler) throws
+        {
+        for argument in self
+            {
+            try argument.allocateAddresses(using:compiler)
+            }
         }
     }

@@ -22,5 +22,10 @@ public class ForwardVariableExpression:AccessExpression
         let temp = A3Temporary.newTemporary()
         buffer.emitInstruction(result:.temporary(temp),left:.variable(variable),opcode:.assign)
         }
+        
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try self.variable.allocateAddresses(using:compiler)
+        }
     }
     

@@ -21,4 +21,17 @@ public class LiteralArrayExpression:LiteralExpression
         self.array = array
         super.init()
         }
+        
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        for element in self.array
+            {
+            try element.allocateAddresses(using:compiler)
+            }
+        }
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
+        {
+
+        }
     }

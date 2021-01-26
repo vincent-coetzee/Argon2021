@@ -17,6 +17,11 @@ public class ClosureExpression:Expression
         super.init()
         }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try self.closure.allocateAddresses(using:compiler)
+        }
+        
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         buffer.emitInstruction(result:.temporary(A3Temporary.newTemporary()),opcode:.addressOf,right:.closure(closure))

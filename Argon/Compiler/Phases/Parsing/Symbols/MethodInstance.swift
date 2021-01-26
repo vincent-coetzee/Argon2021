@@ -77,6 +77,11 @@ public class MethodInstance:Symbol
         return(MethodInstanceClass(shortName:self.shortName,argumentClasses:self._parameters.map{$0.typeClass},returnTypeClass: self.returnTypeClass))
         }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try block.allocateAddresses(using:compiler)
+        }
+        
     internal override func pushScope()
         {
         self.push()

@@ -20,6 +20,16 @@ internal class SelectStatement:Statement
         super.init(location:location)
         }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try self.expression.allocateAddresses(using:compiler)
+        try self.otherwiseClause?.allocateAddresses(using:compiler)
+        for clause in self.whenClauses
+            {
+            try clause.allocateAddresses(using:compiler)
+            }
+        }
+        
     override func lookup(shortName: String) -> SymbolSet?
         {
         return(self.parentScope?.lookup(shortName:shortName))

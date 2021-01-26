@@ -21,6 +21,12 @@ public class MethodInvocationExpression:InvocationExpression
         super.init()
         }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try arguments.allocateAddresses(using:compiler)
+        try method?.allocateAddresses(using:compiler)
+        }
+        
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
 

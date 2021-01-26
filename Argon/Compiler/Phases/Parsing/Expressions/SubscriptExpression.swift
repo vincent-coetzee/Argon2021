@@ -19,6 +19,12 @@ public class SubscriptExpression:AccessExpression
         super.init()
         }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try target.allocateAddresses(using:compiler)
+        try `subscript`.allocateAddresses(using:compiler)
+        }
+        
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         buffer.emitComment("Need to generate code for subscript access")

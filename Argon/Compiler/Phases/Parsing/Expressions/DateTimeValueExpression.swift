@@ -18,5 +18,9 @@ public class DateTimeValueExpression:ScalarExpression
         self.time = time
         super.init()
         }
+        
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        }
     }
 

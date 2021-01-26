@@ -21,4 +21,9 @@ public class LiteralSymbolExpression:LiteralExpression
         self.symbol = symbol
         super.init()
         }
+        
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        fatalError("Logic should have been added here")
+        }
     }

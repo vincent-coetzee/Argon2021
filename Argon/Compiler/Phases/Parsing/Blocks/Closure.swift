@@ -38,6 +38,16 @@ public class Closure:Symbol
         fatalError("init(from:) has not been implemented")
     }
     
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try self.parameters.allocateAddresses(using:compiler)
+        try self.block.allocateAddresses(using:compiler)
+        for set in self.symbols.values
+            {
+            try set.allocateAddresses(using:compiler)
+            }
+        }
+        
     internal override func lookup(shortName:String) -> SymbolSet?
         {
         return(self.block.lookup(shortName:shortName))

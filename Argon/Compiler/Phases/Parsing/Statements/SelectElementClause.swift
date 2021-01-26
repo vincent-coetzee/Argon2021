@@ -13,6 +13,12 @@ public class SelectElementClause:Clause
     public var nextClause:SelectElementClause?
     internal var block = Block()
     
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try self.nextClause?.allocateAddresses(using:compiler)
+        try self.block.allocateAddresses(using:compiler)
+        }
+        
     func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler,subject:A3Address,exitLabel:A3Label,successLabel:A3Label) throws
         {
         }

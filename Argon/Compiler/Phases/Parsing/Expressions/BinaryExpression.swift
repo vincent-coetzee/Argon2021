@@ -31,6 +31,12 @@ public class BinaryExpression:Expression
         super.init()
         }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        try self.lhs.allocateAddresses(using:compiler)
+        try self.rhs.allocateAddresses(using:compiler)
+        }
+        
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         try self.lhs.generateIntermediateCode(in: module, codeHolder: codeHolder, into: buffer, using: using)

@@ -87,3 +87,14 @@ internal class VariadicParameter:Parameter
     }
     
 public typealias Parameters = Array<Parameter>
+
+extension Parameters
+    {
+    internal func allocateAddresses(using compiler:Compiler) throws
+        {
+        for parameter in self
+            {
+            try parameter.allocateAddresses(using:compiler)
+            }
+        }
+    }
