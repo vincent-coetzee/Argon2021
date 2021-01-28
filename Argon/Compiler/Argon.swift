@@ -116,7 +116,7 @@ public struct Argon
             }
         }
     
-    public enum Boolean:Argon.Integer8
+    public enum Boolean:Argon.Integer8,Codable
         {
         case trueValue = 1
         case falseValue = 0

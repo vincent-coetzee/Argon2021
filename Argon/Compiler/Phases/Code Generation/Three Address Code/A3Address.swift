@@ -43,6 +43,8 @@ public enum A3Address:Codable
                 return("\(float)")
             case .closure(let closure):
                 return(closure.displayString)
+            case .address(let address):
+                return(address.displayString)
             }
         }
     
@@ -61,6 +63,7 @@ public enum A3Address:Codable
     case `class`(Class)
     case float(Argon.Float)
     case closure(Closure)
+    case address(MemoryAddress)
     
     enum CodingKeys:String,CodingKey
         {
@@ -80,6 +83,7 @@ public enum A3Address:Codable
         case `class`
         case float
         case closure
+        case address
         }
         
     public init(from decoder:Decoder) throws
@@ -199,6 +203,9 @@ public enum A3Address:Codable
             case .closure(let closure):
                 try container.encode(15,forKey:.kind)
                 try container.encode(closure,forKey:.closure)
+            case .address(let address):
+                try container.encode(16,forKey:.kind)
+                try container.encode(address,forKey:.address)
             }
         }
         

@@ -31,6 +31,7 @@ public class Class:Symbol
     public static let byteClass = Class(shortName:"Byte").superclass(.valueClass)
     public static let characterClass = Class(shortName:"Character").superclass(.valueClass)
     public static let tupleClass = Class(shortName:"Tuple").superclass(.objectClass)
+    public static let bufferClass = Class(shortName:"Buffer").superclass(.objectClass)
     public static let conduitClass = Class(shortName:"Conduit").superclass(.objectClass)
     public static let keyedConduitClass = Class(shortName:"KeyedConduit").superclass(.conduitClass)
     public static let sequentialConduitClass = Class(shortName:"SequentialConduitClass").superclass(.conduitClass)
@@ -85,6 +86,7 @@ public class Class:Symbol
     internal var makers = ClassMakers()
     internal var symbols:[String:Symbol] = [:]
     internal var layoutSlots:[LayoutSlot] = []
+    internal var memoryAddress:MemoryAddress = .zero
         
     enum CodingKeys:String,CodingKey
         {
@@ -305,7 +307,17 @@ public class Class:Symbol
             {
             try set.allocateAddresses(using:compiler)
             }
+        let staticSegment = compiler.staticSegment
+        let nameAddress = staticSegment.append(string:self.shortName)
+        staticSegment.append(word:ObjectHeader(tag:.header,count:0,kind:.kClass).word)
+        staticSegment.append(pointer:Class.classClass.memoryAddress)
+        staticSegment.append(word: Word(self.regularSlots.count))
+        for slot in self.regularSlots.values
+            {
+            slot.append(to:staticSegment)
+            }
         }
+        
         
     func layout()
         {

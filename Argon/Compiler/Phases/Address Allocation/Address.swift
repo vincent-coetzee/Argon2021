@@ -9,7 +9,6 @@ import Foundation
 
 public typealias Address = UInt64
 
-public typealias Word = UInt64
 
 public struct RelativeAddress:Codable
     {

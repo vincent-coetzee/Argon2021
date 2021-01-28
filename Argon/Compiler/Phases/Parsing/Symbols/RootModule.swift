@@ -119,6 +119,11 @@ public class RootModule:Module
         return(self)
         }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        Class.stringClass.layout(in: compiler.memoryImage.staticSegment)
+        }
+        
     @discardableResult
     public func initInstances() -> Self
         {
@@ -137,6 +142,12 @@ public class RootModule:Module
 //        {
 //        fatalErr
 //        }
+        
+    public func initSystemObjects(_ segment:MemorySegment)
+        {
+        // need a good name for method that packs objects intop segments
+        Class.stringClass.layout(in:segment)
+        }
         
     private func initSystemModules()
         {

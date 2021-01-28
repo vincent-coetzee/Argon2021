@@ -8,15 +8,12 @@
 
 import Foundation
 
-internal class Compiler
+public class Compiler
     {
     public var modules:Array<Module> = []
-    
-    internal var nextDataAddres:Address = 0
-    internal var nextStaticAddress:Address = 0
-    internal var nextClassAddress:Address = 0
-    internal var nextManagedAddress:Address = 0
-    
+    public let staticSegment = StaticSegment(sizeInBytes:1024*1024*10)
+    public let dataSegment = DataSegment(sizeInBytes:1024*1024*10)
+    public let codeSegment = CodeSegment(sizeInBytes:1024*1024*10)
     
 //    private var path = ""
 //    private var phase:CompilerPhase = Parser()

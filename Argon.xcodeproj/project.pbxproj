@@ -104,6 +104,8 @@
 		BF08FC3825803AB100C4AC6F /* SourceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FC3425803AB100C4AC6F /* SourceProvider.swift */; };
 		BF08FC3925803AB100C4AC6F /* DisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FC3525803AB100C4AC6F /* DisplayView.swift */; };
 		BF14FB5925BDBE4A002B9F0C /* ClassReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF14FB5825BDBE4A002B9F0C /* ClassReference.swift */; };
+		BF24C86D25C2B6B800104E2E /* ObjectHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF24C86C25C2B6B800104E2E /* ObjectHeader.swift */; };
+		BF24C87025C2CD4F00104E2E /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF24C86F25C2CD4F00104E2E /* Word.swift */; };
 		BF3B7FD02589356500582C17 /* CCreole.argon in Resources */ = {isa = PBXBuildFile; fileRef = BF3B7FCF2589356500582C17 /* CCreole.argon */; };
 		BF3B7FDC25893CA900582C17 /* ArgonNumbers.argon in Resources */ = {isa = PBXBuildFile; fileRef = BF3B7FD725893CA900582C17 /* ArgonNumbers.argon */; };
 		BF3B7FDD25893CA900582C17 /* ArgonIntegers.argon in Resources */ = {isa = PBXBuildFile; fileRef = BF3B7FD825893CA900582C17 /* ArgonIntegers.argon */; };
@@ -120,6 +122,10 @@
 		BF45F1E62596629100376006 /* Metaclass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF45F1E52596629100376006 /* Metaclass.swift */; };
 		BF45F1E92596783800376006 /* HandlerSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF45F1E82596783800376006 /* HandlerSymbol.swift */; };
 		BF57C36925B6FE760024F95F /* LayoutSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF57C36825B6FE760024F95F /* LayoutSlot.swift */; };
+		BF5A547025C1A2F200C8D55F /* CodeSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5A546F25C1A2F200C8D55F /* CodeSegment.swift */; };
+		BF5A547325C1A30C00C8D55F /* DataSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5A547225C1A30C00C8D55F /* DataSegment.swift */; };
+		BF5A547625C1A32C00C8D55F /* StackSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5A547525C1A32C00C8D55F /* StackSegment.swift */; };
+		BF5A547925C1A6D100C8D55F /* ManagedSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5A547825C1A6D100C8D55F /* ManagedSegment.swift */; };
 		BF5AFF4E25A2EBAB00CED0AC /* ArgonClassBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5AFF4D25A2EBAB00CED0AC /* ArgonClassBrowser.swift */; };
 		BF5AFF5225A2F13F00CED0AC /* BrowserItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5AFF5125A2F13F00CED0AC /* BrowserItem.swift */; };
 		BF5AFF5525A2F15C00CED0AC /* BrowserClassItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5AFF5425A2F15C00CED0AC /* BrowserClassItem.swift */; };
@@ -242,6 +248,9 @@
 		BFE0A0992593DA7600B85ADF /* A3CodeBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0A0982593DA7600B85ADF /* A3CodeBuffer.swift */; };
 		BFE0A09C2593DAE200B85ADF /* A3Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0A09B2593DAE200B85ADF /* A3Label.swift */; };
 		BFE0A09F2593DAF800B85ADF /* Instruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE0A09E2593DAF800B85ADF /* Instruction.swift */; };
+		BFE7B9F825C20F8F00A3A692 /* MemoryAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE7B9F725C20F8F00A3A692 /* MemoryAddress.swift */; };
+		BFE7B9FB25C20FA800A3A692 /* SegmentIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE7B9FA25C20FA800A3A692 /* SegmentIdentifier.swift */; };
+		BFE7B9FE25C20FC100A3A692 /* MemoryWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE7B9FD25C20FC100A3A692 /* MemoryWord.swift */; };
 		BFEE2F67258B7820006C47F6 /* Import.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEE2F66258B7820006C47F6 /* Import.swift */; };
 /* End PBXBuildFile section */
 
@@ -348,6 +357,8 @@
 		BF08FC3425803AB100C4AC6F /* SourceProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceProvider.swift; sourceTree = "<group>"; };
 		BF08FC3525803AB100C4AC6F /* DisplayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayView.swift; sourceTree = "<group>"; };
 		BF14FB5825BDBE4A002B9F0C /* ClassReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassReference.swift; sourceTree = "<group>"; };
+		BF24C86C25C2B6B800104E2E /* ObjectHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectHeader.swift; sourceTree = "<group>"; };
+		BF24C86F25C2CD4F00104E2E /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
 		BF3B7FCF2589356500582C17 /* CCreole.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CCreole.argon; sourceTree = "<group>"; };
 		BF3B7FD725893CA900582C17 /* ArgonNumbers.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ArgonNumbers.argon; sourceTree = "<group>"; };
 		BF3B7FD825893CA900582C17 /* ArgonIntegers.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ArgonIntegers.argon; sourceTree = "<group>"; };
@@ -364,6 +375,10 @@
 		BF45F1E52596629100376006 /* Metaclass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metaclass.swift; sourceTree = "<group>"; };
 		BF45F1E82596783800376006 /* HandlerSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandlerSymbol.swift; sourceTree = "<group>"; };
 		BF57C36825B6FE760024F95F /* LayoutSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutSlot.swift; sourceTree = "<group>"; };
+		BF5A546F25C1A2F200C8D55F /* CodeSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeSegment.swift; sourceTree = "<group>"; };
+		BF5A547225C1A30C00C8D55F /* DataSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSegment.swift; sourceTree = "<group>"; };
+		BF5A547525C1A32C00C8D55F /* StackSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackSegment.swift; sourceTree = "<group>"; };
+		BF5A547825C1A6D100C8D55F /* ManagedSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedSegment.swift; sourceTree = "<group>"; };
 		BF5AFF4D25A2EBAB00CED0AC /* ArgonClassBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgonClassBrowser.swift; sourceTree = "<group>"; };
 		BF5AFF5125A2F13F00CED0AC /* BrowserItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserItem.swift; sourceTree = "<group>"; };
 		BF5AFF5425A2F15C00CED0AC /* BrowserClassItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserClassItem.swift; sourceTree = "<group>"; };
@@ -485,6 +500,9 @@
 		BFE0A0982593DA7600B85ADF /* A3CodeBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A3CodeBuffer.swift; sourceTree = "<group>"; };
 		BFE0A09B2593DAE200B85ADF /* A3Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A3Label.swift; sourceTree = "<group>"; };
 		BFE0A09E2593DAF800B85ADF /* Instruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Instruction.swift; sourceTree = "<group>"; };
+		BFE7B9F725C20F8F00A3A692 /* MemoryAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryAddress.swift; sourceTree = "<group>"; };
+		BFE7B9FA25C20FA800A3A692 /* SegmentIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentIdentifier.swift; sourceTree = "<group>"; };
+		BFE7B9FD25C20FC100A3A692 /* MemoryWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryWord.swift; sourceTree = "<group>"; };
 		BFEE2F66258B7820006C47F6 /* Import.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Import.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -526,7 +544,6 @@
 			isa = PBXGroup;
 			children = (
 				BF08FC2E25803A7D00C4AC6F /* Break.h */,
-				BF08FC2F25803A7D00C4AC6F /* Break.m */,
 				BF08FB5A25803A6A00C4AC6F /* Compiler */,
 				BF08FB4625803A2900C4AC6F /* AppDelegate.swift */,
 				BF08FB4A25803A2900C4AC6F /* Document.swift */,
@@ -914,9 +931,19 @@
 		BF8CF0A425C0A01100A8FE30 /* Executable Image */ = {
 			isa = PBXGroup;
 			children = (
+				BF5A546F25C1A2F200C8D55F /* CodeSegment.swift */,
+				BF5A547225C1A30C00C8D55F /* DataSegment.swift */,
+				BF5A547825C1A6D100C8D55F /* ManagedSegment.swift */,
+				BFE7B9F725C20F8F00A3A692 /* MemoryAddress.swift */,
 				BF8CF0A525C0A02E00A8FE30 /* MemoryImage.swift */,
 				BF8CF0A825C0A06900A8FE30 /* MemorySegment.swift */,
+				BFE7B9FD25C20FC100A3A692 /* MemoryWord.swift */,
+				BFE7B9FA25C20FA800A3A692 /* SegmentIdentifier.swift */,
+				BF5A547525C1A32C00C8D55F /* StackSegment.swift */,
 				BF8CF0AC25C0A12400A8FE30 /* StaticSegment.swift */,
+				BF08FC2F25803A7D00C4AC6F /* Break.m */,
+				BF24C86C25C2B6B800104E2E /* ObjectHeader.swift */,
+				BF24C86F25C2CD4F00104E2E /* Word.swift */,
 			);
 			path = "Executable Image";
 			sourceTree = "<group>";
@@ -1093,11 +1120,13 @@
 				BF08FBF225803A6A00C4AC6F /* AssignmentStatement.swift in Sources */,
 				BF08FC3625803AB100C4AC6F /* NSTextView+Extensions.swift in Sources */,
 				BFEE2F67258B7820006C47F6 /* Import.swift in Sources */,
+				BF24C87025C2CD4F00104E2E /* Word.swift in Sources */,
 				BF08FC1F25803A6A00C4AC6F /* Variable.swift in Sources */,
 				BF7B470F25C0092500FB22DC /* LiteralByteExpression.swift in Sources */,
 				BF08FBD525803A6A00C4AC6F /* Compiler.swift in Sources */,
 				BF4458CE25A2189000CB52BE /* SourceFileElement.swift in Sources */,
 				BF08FC2725803A6A00C4AC6F /* Parser.swift in Sources */,
+				BF5A547925C1A6D100C8D55F /* ManagedSegment.swift in Sources */,
 				BF08FBE725803A6A00C4AC6F /* VirtualSlotBlock.swift in Sources */,
 				BFD58CF1258F98E000B2ADDD /* Pointer.swift in Sources */,
 				BF08FC1B25803A6A00C4AC6F /* VirtualSlot.swift in Sources */,
@@ -1132,6 +1161,7 @@
 				BF5AFF7625A4EE4100CED0AC /* ArgonCompositeView.swift in Sources */,
 				BF08FBF425803A6A00C4AC6F /* ReturnStatement.swift in Sources */,
 				BF7B46FA25C0085C00FB22DC /* UndefinedExpression.swift in Sources */,
+				BF5A547325C1A30C00C8D55F /* DataSegment.swift in Sources */,
 				BF08FBD225803A6A00C4AC6F /* TokenStream.swift in Sources */,
 				BF08FBF825803A6A00C4AC6F /* MethodInvocationStatement.swift in Sources */,
 				BF08FC1625803A6A00C4AC6F /* Enumeration.swift in Sources */,
@@ -1140,6 +1170,7 @@
 				BFD04BE92590C6E0003FDD90 /* RegisterSet.swift in Sources */,
 				BF4458C725A1F2CF00CB52BE /* SegmentView.swift in Sources */,
 				BF600B4C25A7ABF000930318 /* CodeHolder.swift in Sources */,
+				BF5A547625C1A32C00C8D55F /* StackSegment.swift in Sources */,
 				BF7B470C25C0091700FB22DC /* LiteralClassExpression.swift in Sources */,
 				BF8CF0A625C0A02E00A8FE30 /* MemoryImage.swift in Sources */,
 				BF08FBE925803A6A00C4AC6F /* Scope.swift in Sources */,
@@ -1151,7 +1182,9 @@
 				BF08FBE625803A6A00C4AC6F /* SlotContainer.swift in Sources */,
 				BF979DBC25832488002AFB7F /* NSColor.swift in Sources */,
 				BFD04BE62590C3C8003FDD90 /* Register.swift in Sources */,
+				BF24C86D25C2B6B800104E2E /* ObjectHeader.swift in Sources */,
 				BF08FBFC25803A6A00C4AC6F /* RepeatStatement.swift in Sources */,
+				BF5A547025C1A2F200C8D55F /* CodeSegment.swift in Sources */,
 				BF08FBD625803A6A00C4AC6F /* Instance.swift in Sources */,
 				BFE0A0992593DA7600B85ADF /* A3CodeBuffer.swift in Sources */,
 				BF64816C25B45DE100D75675 /* SystemPlaceholderModule.swift in Sources */,
@@ -1231,6 +1264,7 @@
 				BFE0A0962593CBD100B85ADF /* EnumerationClass.swift in Sources */,
 				BF08FBDB25803A6A00C4AC6F /* AddressAllocator.swift in Sources */,
 				BF08FBF025803A6A00C4AC6F /* NextStatement.swift in Sources */,
+				BFE7B9FB25C20FA800A3A692 /* SegmentIdentifier.swift in Sources */,
 				BF5AFF8425A53CDE00CED0AC /* TextDisplayLayer.swift in Sources */,
 				BF08FBEB25803A6A00C4AC6F /* SymbolSet.swift in Sources */,
 				BF08FBED25803A6A00C4AC6F /* SymbolScope.swift in Sources */,
@@ -1238,6 +1272,7 @@
 				BF08FBCF25803A6A00C4AC6F /* Name.swift in Sources */,
 				BF7B46D625C0073400FB22DC /* UnaryExpression.swift in Sources */,
 				BF5AFF5825A2F16D00CED0AC /* BrowserMethodItem.swift in Sources */,
+				BFE7B9F825C20F8F00A3A692 /* MemoryAddress.swift in Sources */,
 				BF5AFF5E25A2F1FA00CED0AC /* BrowserSystemMethodItem.swift in Sources */,
 				BFE0A09F2593DAF800B85ADF /* Instruction.swift in Sources */,
 				BF08FBE225803A6A00C4AC6F /* Block.swift in Sources */,
@@ -1256,6 +1291,7 @@
 				BF08FC1725803A6A00C4AC6F /* Nil.swift in Sources */,
 				BF08FC0625803A6A00C4AC6F /* WhileStatement.swift in Sources */,
 				BF08FBF925803A6A00C4AC6F /* OtherwiseClause.swift in Sources */,
+				BFE7B9FE25C20FC100A3A692 /* MemoryWord.swift in Sources */,
 				BF7B477525C00D3000FB22DC /* FullyQualifiedName.swift in Sources */,
 				BF7B473925C00A6600FB22DC /* ClosureInvocationExpression.swift in Sources */,
 				BF64816325B45CD900D75675 /* SystemPlaceholderMethod.swift in Sources */,
