@@ -25,7 +25,7 @@ public class HandlerSymbol:Symbol
         self.inductionVariable = try values.decode(InductionVariable.self,forKey:.inductionVariable)
         self.codeBuffer = try values.decode(A3CodeBuffer.self,forKey:.codeBuffer)
         self.block = Block()
-        try super.init(from:decoder)
+        try super.init(from: values.superDecoder())
         }
         
     public override func encode(to encoder: Encoder) throws
@@ -33,7 +33,7 @@ public class HandlerSymbol:Symbol
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.inductionVariable,forKey:.inductionVariable)
         try container.encode(self.codeBuffer,forKey:.codeBuffer)
-        try super.encode(to:encoder)
+        try super.encode(to: container.superEncoder())
         }
         
     init(shortName:String,inductionVariable:InductionVariable,block:Block)

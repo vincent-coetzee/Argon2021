@@ -86,10 +86,11 @@ public class Class:Symbol
     internal var makers = ClassMakers()
     internal var symbols:[String:Symbol] = [:]
     internal var layoutSlots:[LayoutSlot] = []
-        
+    internal var superclassIds:[UUID] = []
+    
     enum CodingKeys:String,CodingKey
         {
-        case superclasses
+        case superclassIds
         case generics
         case regularSlots
         case classSlots
@@ -114,25 +115,46 @@ public class Class:Symbol
     required public init(from decoder:Decoder) throws
         {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.superclasses = try values.decode(Array<Class>.self,forKey:.superclasses)
+        self.superclassIds = try values.decode(Array<UUID>.self,forKey:.superclassIds)
         self.generics = try values.decode(GenericClasses.self,forKey:.generics)
         self.regularSlots = try values.decode(Dictionary<String,Slot>.self,forKey:.regularSlots)
         self.classSlots = try values.decode(Dictionary<String,Slot>.self,forKey:.classSlots)
         self.symbols = try values.decode(Dictionary<String,Symbol>.self,forKey:.symbols)
         self.layoutSlots = try values.decode(Array<LayoutSlot>.self,forKey:.layoutSlots)
-        try super.init(from:decoder)
+        try super.init(from: values.superDecoder())
         }
         
     public override func encode(to encoder: Encoder) throws
         {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.superclasses,forKey:.superclasses)
+        try container.encode(self.superclasses.map{$0.id},forKey:.superclassIds)
         try container.encode(self.generics,forKey:.generics)
         try container.encode(self.regularSlots,forKey:.regularSlots)
         try container.encode(self.classSlots,forKey:.classSlots)
         try container.encode(self.symbols,forKey:.symbols)
         try container.encode(self.layoutSlots,forKey:.layoutSlots)
-        try super.encode(to:encoder)
+        try super.encode(to: container.superEncoder())
+        }
+        
+    internal override func relinkSymbolsUsingIds(symbols:Dictionary<UUID,Symbol>)
+        {
+        super.relinkSymbolsUsingIds(symbols:symbols)
+        self.superclasses = []
+        for anId in self.superclassIds
+            {
+            if let symbol = symbols[anId]
+                {
+                self.superclasses.append(symbol as! Class)
+                }
+            }
+        for slot in self.regularSlots.values
+            {
+            slot.containingSymbol = self
+            }
+        for slot in self.classSlots.values
+            {
+            slot.containingSymbol = self
+            }
         }
         
     internal var lastRegularSlot:Slot?
@@ -191,21 +213,6 @@ public class Class:Symbol
         return(self)
         }
         
-//    internal func instanciate() -> Instance
-//        {
-//        return(Instance(class:self))
-//        }
-        
-//    init(shortName:String,generics:GenericClasses)
-//        {
-//        self.generics = generics
-//        super.init(shortName:shortName)
-//        var slot = Slot(name:Name("class"),class:Class.classClass,container:self,attributes: .readonly)
-//        self.classSlots[slot.shortName] = slot
-//        slot = Slot(name:Name("superclasses"),class: (Class.arrayClass as! ArrayClass).classWithIndex(Type.ArrayIndexType.unbounded),container:self,attributes:.readonly)
-//        self.classSlots[slot.shortName] = slot
-//        }
-        
     init(shortName:String)
         {
         self.generics = GenericClasses()
@@ -216,14 +223,14 @@ public class Class:Symbol
     func addRegularSlot(_ slot:Slot)
         {
         self.regularSlots[slot.shortName] = slot
-        slot.container = self
+        slot.containingSymbol = self
         slot.symbolAdded(to: self)
         }
         
     func addClassSlot(_ slot:Slot)
         {
         self.classSlots[slot.shortName] = slot
-        slot.container = self
+        slot.containingSymbol = self
         slot.symbolAdded(to: self)
         }
     
@@ -310,11 +317,11 @@ public class Class:Symbol
         {
         for slot in self.regularSlots.values
             {
-            slot.container = self
+            slot.containingSymbol = self
             }
         for slot in self.classSlots.values
             {
-            slot.container = self
+            slot.containingSymbol = self
             }
         for parent in self.superclasses
             {

@@ -10,16 +10,6 @@ import Foundation
 
 public class Symbol:ParseNode,Equatable,Hashable,Codable
     {
-    enum CodingKeys:String,CodingKey
-        {
-        case shortName
-        case id
-        case references
-        case accessLevel
-        case parent
-        case definingScope
-        }
-        
     public var sizeInBytes:Int
         {
         return(Word.kSizeInBytes)
@@ -38,6 +28,7 @@ public class Symbol:ParseNode,Equatable,Hashable,Codable
     internal var parent:Symbol?
     internal var definingScope:Scope?
     internal var memoryAddress:MemoryAddress = .zero
+    internal var parentId:UUID?
     
     public var module:Module
         {
@@ -113,6 +104,7 @@ public class Symbol:ParseNode,Equatable,Hashable,Codable
         {
         self.shortName = shortName
         self.parent = parent
+        self.parentId = self.parent?.id
         self.id = UUID()
         super.init()
         }
@@ -121,8 +113,18 @@ public class Symbol:ParseNode,Equatable,Hashable,Codable
         {
         self.shortName = name.first
         self.parent = parent
+        self.parentId = self.parent?.id
         self.id = UUID()
         super.init()
+        }
+        
+    enum CodingKeys:String,CodingKey
+        {
+        case shortName
+        case id
+        case references
+        case accessLevel
+        case parentId
         }
         
     required public init(from decoder:Decoder) throws
@@ -132,7 +134,7 @@ public class Symbol:ParseNode,Equatable,Hashable,Codable
         self.id = try values.decode(UUID.self,forKey: .id)
         self.references = try values.decode(Array<SourceReference>.self,forKey:.references)
         self.accessLevel = try values.decode(AccessModifier.self,forKey:.accessLevel)
-        self.parent = try values.decode(Symbol?.self,forKey:.parent)
+        self.parentId = try values.decode(UUID?.self,forKey:.parentId)
 //        self.definingScope = try values.decode(Scope?.self,forKey:.definingScope)
         }
         
@@ -143,7 +145,20 @@ public class Symbol:ParseNode,Equatable,Hashable,Codable
         try container.encode(self.id,forKey:.id)
         try container.encode(self.references,forKey:.references)
         try container.encode(self.accessLevel,forKey:.accessLevel)
-        try container.encode(parent,forKey:.parent)
+        try container.encode(self.parentId,forKey:.parentId)
+        }
+        
+    internal func relinkSymbolsUsingIds(symbols:Dictionary<UUID,Symbol>)
+        {
+        if let anId = self.parentId,let symbol = symbols[anId]
+            {
+            self.parent = symbol
+            }
+        }
+        
+    internal func symbolsKeyedById() -> Dictionary<UUID,Symbol>
+        {
+        return(Dictionary<UUID,Symbol>())
         }
         
     internal func addRead(location:SourceLocation)
@@ -175,6 +190,7 @@ public class Symbol:ParseNode,Equatable,Hashable,Codable
     internal func symbolAdded(to node:ParseNode)
         {
         self.parent = node as? Symbol
+        self.parentId = self.parent?.id
         }
         
     internal func typeCheck() throws

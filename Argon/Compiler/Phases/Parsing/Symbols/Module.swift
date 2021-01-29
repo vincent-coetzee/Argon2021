@@ -52,13 +52,13 @@ public class Module:SymbolContainer
         {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.genericTypes = try values.decode(Array<GenericClass>.self,forKey: .genericTypes)
-        self.exitFunction = try values.decode(ModuleFunction.self,forKey: .exitFunction)
-        self.entryFunction = try values.decode(ModuleFunction.self,forKey:.entryFunction)
+//        self.exitFunction = try values.decode(ModuleFunction?.self,forKey: .exitFunction)
+//        self.entryFunction = try values.decode(ModuleFunction?.self,forKey:.entryFunction)
         self.moduleKey = try values.decode(UUID.self,forKey:.moduleKey)
         self.versionKey = try values.decode(SemanticVersionNumber.self,forKey:.versionKey)
         self.moduleSlots = try values.decode(Dictionary<String,Slot>.self,forKey:.moduleSlots)
         self.imports = try values.decode(ImportVector.self,forKey:.imports)
-        try super.init(from:decoder)
+        try super.init(from:values.superDecoder())
         self.memoryAddress = Compiler.shared.staticSegment.zero
         }
         
@@ -66,18 +66,27 @@ public class Module:SymbolContainer
         {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.genericTypes,forKey:.genericTypes)
-        try container.encode(self.exitFunction,forKey:.exitFunction)
-        try container.encode(self.entryFunction,forKey:.entryFunction)
+//        try container.encode(self.exitFunction,forKey:.exitFunction)
+//        try container.encode(self.entryFunction,forKey:.entryFunction)
         try container.encode(self.moduleKey,forKey:.moduleKey)
         try container.encode(versionKey,forKey:.versionKey)
         try container.encode(self.moduleSlots,forKey:.moduleSlots)
         try container.encode(imports,forKey:.imports)
-        try super.encode(to:encoder)
+        try super.encode(to: container.superEncoder())
         }
         
     public override var isModuleLevelSymbol:Bool
         {
         return(true)
+        }
+        
+    internal override func relinkSymbolsUsingIds(symbols:Dictionary<UUID,Symbol>)
+        {
+        super.relinkSymbolsUsingIds(symbols:symbols)
+        for slot in self.moduleSlots.values
+            {
+            slot.containingSymbol = self
+            }
         }
         
     internal override func addSymbol(_ symbol:Symbol)
@@ -219,20 +228,6 @@ public class Module:SymbolContainer
         return(anEnum)
         }
         
-//    public override func write(file: ObjectFile) throws
-//        {
-//        try super.write(file:file)
-//        try file.write(self.moduleKey.uuidString)
-//        try file.write(self.versionKey)
-//        try file.write(self.moduleSlots)
-//        try file.write(self.imports)
-//        try file.write(self.symbols.count)
-//        for symbolSet in self.symbols.values
-//            {
-//            try file.write(symbolSet.symbols)
-//            }
-//        }
-        
     internal override func allocateAddresses(using compiler:Compiler) throws
         {
         compiler.staticSegment.updateAddress(self)
@@ -254,7 +249,7 @@ public class Module:SymbolContainer
             }
         }
         
-    public init(shortName:String)
+    public override init(shortName:String)
         {
         super.init(shortName:shortName)
         self.memoryAddress = Compiler.shared.staticSegment.zero

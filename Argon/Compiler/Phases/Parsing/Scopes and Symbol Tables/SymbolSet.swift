@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal class SymbolSet:Equatable
+internal class SymbolSet:Equatable,Codable
     {
     static func ==(lhs:SymbolSet,rhs:SymbolSet) -> Bool
         {

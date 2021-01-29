@@ -9,7 +9,7 @@
 import Foundation
 
 fileprivate var scopeStack = Stack<Scope>()
-fileprivate var currentScope:Scope = Module.rootModule.initRootModule().initInstances()
+fileprivate var currentScope:Scope = Module.rootModule.initRootModule()
 
 internal protocol Scope:class,SymbolTable,StatementBlock
     {

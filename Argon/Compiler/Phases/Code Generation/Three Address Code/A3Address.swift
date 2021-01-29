@@ -45,9 +45,12 @@ public enum A3Address:Codable
                 return(closure.displayString)
             case .address(let address):
                 return(address.displayString)
+            case .none:
+                return("ERROR")
             }
         }
     
+    case none
     case string(Argon.String)
     case integer(Argon.Integer)
     case variable(Variable)
@@ -150,7 +153,10 @@ public enum A3Address:Codable
             {
             self = .closure(try values.decode(Closure.self,forKey:.closure))
             }
-        try self.init(from:decoder)
+        else
+            {
+            self = .none
+            }
         }
         
     public func encode(to encoder: Encoder) throws
@@ -206,6 +212,8 @@ public enum A3Address:Codable
             case .address(let address):
                 try container.encode(16,forKey:.kind)
                 try container.encode(address,forKey:.address)
+            case .none:
+                break
             }
         }
         

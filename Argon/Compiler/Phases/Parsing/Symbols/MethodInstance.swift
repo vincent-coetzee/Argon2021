@@ -32,6 +32,7 @@ public class MethodInstance:Symbol
         }
         
     internal var owner:Symbol?
+    internal var ownerId:UUID?
     internal var functionName:String?
     internal var returnTypeClass:Class
     internal var _parameters = Parameters()
@@ -42,7 +43,7 @@ public class MethodInstance:Symbol
     
     enum CodingKeys:String,CodingKey
         {
-        case owner
+        case ownerId
         case functionName
         case returnClass
         case parameters
@@ -54,28 +55,37 @@ public class MethodInstance:Symbol
     required public init(from decoder:Decoder) throws
         {
         let values = try decoder.container(keyedBy: CodingKeys.self)
-        owner = try values.decode(Symbol?.self,forKey:.owner)
-        functionName = try values.decode(String?.self,forKey:.functionName)
-        returnTypeClass = try values.decode(Class.self,forKey:.returnClass)
-        _parameters = try values.decode(Array<Parameter>.self,forKey:.parameters)
-        codeBuffer = try values.decode(A3CodeBuffer.self,forKey:.codeBuffer)
-        localVariables = try values.decode(Array<LocalVariable>.self,forKey:.localVariables)
-        stackLocalStorageSizeInBytes = try values.decode(Int.self,forKey:.stackLocalStorageSizeInBytes)
-        try super.init(from:decoder)
+        self.ownerId = try values.decode(UUID?.self,forKey:.ownerId)
+        self.functionName = try values.decode(String?.self,forKey:.functionName)
+        self.returnTypeClass = try values.decode(Class.self,forKey:.returnClass)
+        self._parameters = try values.decode(Array<Parameter>.self,forKey:.parameters)
+        self.codeBuffer = try values.decode(A3CodeBuffer.self,forKey:.codeBuffer)
+        self.localVariables = try values.decode(Array<LocalVariable>.self,forKey:.localVariables)
+        self.stackLocalStorageSizeInBytes = try values.decode(Int.self,forKey:.stackLocalStorageSizeInBytes)
+        try super.init(from: values.superDecoder())
         self.memoryAddress = Compiler.shared.codeSegment.zero
         }
         
     public override func encode(to encoder: Encoder) throws
         {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.owner,forKey:.owner)
+        try container.encode(self.ownerId,forKey:.ownerId)
         try container.encode(self.functionName,forKey:.functionName)
         try container.encode(self.returnTypeClass,forKey:.returnClass)
-        try container.encode(self.parameters,forKey:.parameters)
+        try container.encode(self._parameters,forKey:.parameters)
         try container.encode(self.codeBuffer,forKey:.codeBuffer)
         try container.encode(self.localVariables,forKey:.localVariables)
         try container.encode(self.stackLocalStorageSizeInBytes,forKey:.stackLocalStorageSizeInBytes)
-        try super.encode(to:encoder)
+        try super.encode(to: container.superEncoder())
+        }
+        
+    internal override func relinkSymbolsUsingIds(symbols:Dictionary<UUID,Symbol>)
+        {
+        super.relinkSymbolsUsingIds(symbols:symbols)
+        if let anId = self.ownerId, let symbol = symbols[anId]
+            {
+            self.owner = symbol
+            }
         }
         
     internal override var typeClass:Class
@@ -112,6 +122,7 @@ public class MethodInstance:Symbol
         {
         self.owner = owner
         self.returnTypeClass = .voidClass
+        self.ownerId = owner?.id
         super.init(shortName: shortName)
         self.memoryAddress = Compiler.shared.codeSegment.zero
         }
@@ -119,6 +130,7 @@ public class MethodInstance:Symbol
     internal required init()
         {
         self.owner = nil
+        self.ownerId = nil
         self.returnTypeClass = .voidClass
         super.init()
         self.memoryAddress = Compiler.shared.codeSegment.zero
@@ -169,18 +181,3 @@ public class MethodInstance:Symbol
         self.codeBuffer.dump()
         }
     }
-
-//public class HollowMethod:MethodInstance
-//    {
-//    var parms:[ParameterName]
-//    
-//    init(_ name:String,_ parameters:[ParameterName])
-//        {
-//        self.parms = parameters
-//        super.init(shortName:name)
-//        }
-//    
-//    internal required init() {
-//        fatalError("init() has not been implemented")
-//    }
-//}

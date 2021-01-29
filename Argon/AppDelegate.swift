@@ -26,6 +26,14 @@ class AppDelegate: NSObject, NSApplicationDelegate
             let fileURL = URL(fileURLWithPath: "/Users/vincent/Desktop/\(module.shortName).argonm")
             try! data.write(to: fileURL)
             }
+        print("SUCCESSFULLY ENCODED AND WROTE OUT MODULE")
+        Compiler.shared.modules = []
+        let input = try! Data(contentsOf: URL(fileURLWithPath: "/Users/vincent/Desktop/Location.argonm"))
+        let decoder = BinaryDecoder()
+        let module = try! decoder.decode(Module.self, from: EncodedData(bytes: Array(input)))
+        let symbols = module.symbolsKeyedById()
+        module.relinkSymbolsUsingIds(symbols: symbols)
+        print(module)
 //        if let controller = NSStoryboard.main?.instantiateController(withIdentifier:"ArgonClassBrowserControllerID") as? NSWindowController
 //            {
 //            controller.showWindow(self)

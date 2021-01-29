@@ -40,7 +40,7 @@ public class Method:Symbol
         {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.instances = try values.decode(Array<MethodInstance>.self,forKey:.instances)
-        try super.init(from:decoder)
+        try super.init(from: values.superDecoder())
         self.memoryAddress = Compiler.shared.codeSegment.zero
         }
         
@@ -48,13 +48,22 @@ public class Method:Symbol
         {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.instances,forKey:.instances)
-        try super.encode(to:encoder)
+        try super.encode(to: container.superEncoder())
         }
         
     public init(shortName:String)
         {
         super.init(shortName:shortName)
         self.memoryAddress = Compiler.shared.codeSegment.zero
+        }
+        
+    internal override func relinkSymbolsUsingIds(symbols:Dictionary<UUID,Symbol>)
+        {
+        super.relinkSymbolsUsingIds(symbols:symbols)
+        for instance in self.instances
+            {
+            instance.relinkSymbolsUsingIds(symbols:symbols)
+            }
         }
         
     internal required init()

@@ -10,16 +10,6 @@ import Foundation
 
 public class Slot:Variable
     {
-
-//long hashVal = 0;
-//	while (*key != ’/0’) {
-//		hashVal = (hashVal << 4) + *(key++);
-//		long g = hashval & 0xF0000000L;
-//		if (g != 0) hashVal ^= g >>> 24;
-//		hashVal &= ~g;
-//	}
-//	return hashVal;
-    
     public var slotNameHornerHashValue:Int
         {
         var hashValue:UInt = 0
@@ -49,18 +39,18 @@ public class Slot:Variable
         
     public var slotName:String
         {
-        return(self.container!.shortName + "\\" + self.shortName)
+        return(self.containingSymbol!.shortName + "\\" + self.shortName)
         }
         
     public var slotOffset:Int = 0
-    public var container:Symbol?
+    public var containingSymbol:Symbol?
     internal let attributes:SlotAttributes
     internal var virtualReadBlock:VirtualSlotBlock?
     internal var virtualWriteBlock:VirtualSlotBlock?
     
     internal init(name:Name,class:Class,container:Symbol? = nil,attributes:SlotAttributes)
         {
-        self.container = container
+        self.containingSymbol = container
         self.attributes = attributes
         super.init(shortName: name.first,class: `class`)
         self._class = `class`
@@ -68,7 +58,7 @@ public class Slot:Variable
         
     internal init(shortName:Identifier,class:Class,container:Symbol? = nil,attributes:SlotAttributes)
         {
-        self.container = container
+        self.containingSymbol = container
         self.attributes = attributes
         super.init(shortName: shortName,class: .voidClass)
         self._class = `class`
@@ -76,16 +66,15 @@ public class Slot:Variable
         
     internal required init()
         {
-        self.container = nil
+        self.containingSymbol = nil
         self.attributes = []
-        super.init(shortName: "Nil",class: Argon.rootModule.nilClass)
-        self._class = Argon.rootModule.nilClass
+        super.init(shortName: "Nil",class: Class.nilClass)
+        self._class = Class.nilClass
         }
         
     enum CodingKeys:String,CodingKey
         {
         case slotOffset
-        case container
         case attributes
         case readBlock
         case writeBlock
@@ -95,22 +84,20 @@ public class Slot:Variable
         {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.slotOffset = try values.decode(Int.self,forKey:.slotOffset)
-        self.container = try values.decode(Symbol?.self,forKey:.container)
         self.attributes = try values.decode(SlotAttributes.self,forKey:.attributes)
         self.virtualReadBlock = try values.decode(VirtualSlotBlock?.self,forKey:.readBlock)
         self.virtualWriteBlock = try values.decode(VirtualSlotBlock?.self,forKey:.writeBlock)
-        try super.init(from:decoder)
+        try super.init(from: values.superDecoder())
         }
         
     public override func encode(to encoder: Encoder) throws
         {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.slotOffset,forKey:.slotOffset)
-        try container.encode(self.container,forKey:.container)
         try container.encode(self.attributes,forKey:.attributes)
         try container.encode(self.virtualReadBlock,forKey:.readBlock)
         try container.encode(self.virtualWriteBlock,forKey:.writeBlock)
-        try super.encode(to:encoder)
+        try super.encode(to: container.superEncoder())
         }
         
     internal func slotType(_ slotNames:[String]) -> Type

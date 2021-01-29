@@ -48,7 +48,6 @@ public class Import:Symbol
         {
         self.path = nil
         super.init(shortName:shortName)
-//        self.importedModule = Module.rootModule.lookup
         }
         
     private func loadModule()
@@ -66,7 +65,7 @@ public class Import:Symbol
         self.path = try values.decode(String.self,forKey: .path)
         self.isPathBased = try values.decode(Bool.self,forKey: .isPathBased)
         self.wasResolved = try values.decode(Bool.self,forKey:.wasResolved)
-        try super.init(from:decoder)
+        try super.init(from: values.superDecoder())
         }
     }
 
@@ -118,11 +117,4 @@ public struct ImportVector:Codable
             }
         return(SymbolSet())
         }
-//
-//    public func write(file: ObjectFile) throws
-//        {
-//        try file.write(self.id)
-//        try file.write(self.imports.count)
-//        try file.write(self.imports)
-//        }
     }

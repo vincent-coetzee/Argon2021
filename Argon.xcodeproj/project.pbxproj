@@ -22,7 +22,6 @@
 		BF08FBD325803A6A00C4AC6F /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FB6525803A6A00C4AC6F /* Token.swift */; };
 		BF08FBD425803A6A00C4AC6F /* SourceLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FB6625803A6A00C4AC6F /* SourceLocation.swift */; };
 		BF08FBD525803A6A00C4AC6F /* Compiler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FB6725803A6A00C4AC6F /* Compiler.swift */; };
-		BF08FBD625803A6A00C4AC6F /* Instance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FB6825803A6A00C4AC6F /* Instance.swift */; };
 		BF08FBD725803A6A00C4AC6F /* SourceFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FB6A25803A6A00C4AC6F /* SourceFile.swift */; };
 		BF08FBD925803A6A00C4AC6F /* SourceFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FB6C25803A6A00C4AC6F /* SourceFolder.swift */; };
 		BF08FBDB25803A6A00C4AC6F /* AddressAllocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FB7025803A6A00C4AC6F /* AddressAllocator.swift */; };
@@ -80,7 +79,6 @@
 		BF08FC1325803A6A00C4AC6F /* AccessModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FBB125803A6A00C4AC6F /* AccessModifier.swift */; };
 		BF08FC1525803A6A00C4AC6F /* InductionVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FBB325803A6A00C4AC6F /* InductionVariable.swift */; };
 		BF08FC1625803A6A00C4AC6F /* Enumeration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FBB425803A6A00C4AC6F /* Enumeration.swift */; };
-		BF08FC1725803A6A00C4AC6F /* Nil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FBB525803A6A00C4AC6F /* Nil.swift */; };
 		BF08FC1825803A6A00C4AC6F /* MethodInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FBB625803A6A00C4AC6F /* MethodInstance.swift */; };
 		BF08FC1925803A6A00C4AC6F /* LocalVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FBB725803A6A00C4AC6F /* LocalVariable.swift */; };
 		BF08FC1A25803A6A00C4AC6F /* Class.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FBB825803A6A00C4AC6F /* Class.swift */; };
@@ -103,7 +101,6 @@
 		BF08FC3725803AB100C4AC6F /* ArgonBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FC3325803AB100C4AC6F /* ArgonBrowserViewController.swift */; };
 		BF08FC3825803AB100C4AC6F /* SourceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FC3425803AB100C4AC6F /* SourceProvider.swift */; };
 		BF08FC3925803AB100C4AC6F /* DisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FC3525803AB100C4AC6F /* DisplayView.swift */; };
-		BF14FB5925BDBE4A002B9F0C /* ClassReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF14FB5825BDBE4A002B9F0C /* ClassReference.swift */; };
 		BF24C86D25C2B6B800104E2E /* ObjectHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF24C86C25C2B6B800104E2E /* ObjectHeader.swift */; };
 		BF24C87025C2CD4F00104E2E /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF24C86F25C2CD4F00104E2E /* Word.swift */; };
 		BF3B7FD02589356500582C17 /* CCreole.argon in Resources */ = {isa = PBXBuildFile; fileRef = BF3B7FCF2589356500582C17 /* CCreole.argon */; };
@@ -273,7 +270,6 @@
 		BF08FB6525803A6A00C4AC6F /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		BF08FB6625803A6A00C4AC6F /* SourceLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceLocation.swift; sourceTree = "<group>"; };
 		BF08FB6725803A6A00C4AC6F /* Compiler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Compiler.swift; sourceTree = "<group>"; };
-		BF08FB6825803A6A00C4AC6F /* Instance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Instance.swift; sourceTree = "<group>"; };
 		BF08FB6A25803A6A00C4AC6F /* SourceFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceFile.swift; sourceTree = "<group>"; };
 		BF08FB6C25803A6A00C4AC6F /* SourceFolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceFolder.swift; sourceTree = "<group>"; };
 		BF08FB7025803A6A00C4AC6F /* AddressAllocator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressAllocator.swift; sourceTree = "<group>"; };
@@ -331,7 +327,6 @@
 		BF08FBB125803A6A00C4AC6F /* AccessModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessModifier.swift; sourceTree = "<group>"; };
 		BF08FBB325803A6A00C4AC6F /* InductionVariable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InductionVariable.swift; sourceTree = "<group>"; };
 		BF08FBB425803A6A00C4AC6F /* Enumeration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enumeration.swift; sourceTree = "<group>"; };
-		BF08FBB525803A6A00C4AC6F /* Nil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nil.swift; sourceTree = "<group>"; };
 		BF08FBB625803A6A00C4AC6F /* MethodInstance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MethodInstance.swift; sourceTree = "<group>"; };
 		BF08FBB725803A6A00C4AC6F /* LocalVariable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalVariable.swift; sourceTree = "<group>"; };
 		BF08FBB825803A6A00C4AC6F /* Class.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Class.swift; sourceTree = "<group>"; };
@@ -356,7 +351,6 @@
 		BF08FC3325803AB100C4AC6F /* ArgonBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArgonBrowserViewController.swift; sourceTree = "<group>"; };
 		BF08FC3425803AB100C4AC6F /* SourceProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceProvider.swift; sourceTree = "<group>"; };
 		BF08FC3525803AB100C4AC6F /* DisplayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayView.swift; sourceTree = "<group>"; };
-		BF14FB5825BDBE4A002B9F0C /* ClassReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassReference.swift; sourceTree = "<group>"; };
 		BF24C86C25C2B6B800104E2E /* ObjectHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectHeader.swift; sourceTree = "<group>"; };
 		BF24C86F25C2CD4F00104E2E /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
 		BF3B7FCF2589356500582C17 /* CCreole.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CCreole.argon; sourceTree = "<group>"; };
@@ -577,13 +571,13 @@
 			children = (
 				BF08FB5D25803A6A00C4AC6F /* Argument.swift */,
 				BF08FB6125803A6A00C4AC6F /* CompilerError.swift */,
+				BF7B477425C00D3000FB22DC /* FullyQualifiedName.swift */,
 				BFD58CE7258F07DF00B2ADDD /* Identifier.swift */,
 				BF08FB6025803A6A00C4AC6F /* Name.swift */,
+				BF85B1C625B126CA00C40C03 /* RelocatableReference.swift */,
+				BF85B1C325B1208C00C40C03 /* SemanticVersionNumber.swift */,
 				BF08FB5F25803A6A00C4AC6F /* SourceReference.swift */,
 				BF08FB5E25803A6A00C4AC6F /* Type.swift */,
-				BF85B1C325B1208C00C40C03 /* SemanticVersionNumber.swift */,
-				BF85B1C625B126CA00C40C03 /* RelocatableReference.swift */,
-				BF7B477425C00D3000FB22DC /* FullyQualifiedName.swift */,
 			);
 			path = "Support Classes";
 			sourceTree = "<group>";
@@ -829,7 +823,6 @@
 				BF45F1E82596783800376006 /* HandlerSymbol.swift */,
 				BFEE2F66258B7820006C47F6 /* Import.swift */,
 				BF08FBB325803A6A00C4AC6F /* InductionVariable.swift */,
-				BF08FB6825803A6A00C4AC6F /* Instance.swift */,
 				BF57C36825B6FE760024F95F /* LayoutSlot.swift */,
 				BF08FBB725803A6A00C4AC6F /* LocalVariable.swift */,
 				BF45F1E52596629100376006 /* Metaclass.swift */,
@@ -837,7 +830,6 @@
 				BFE0A08F2593AC5E00B85ADF /* MethodClass.swift */,
 				BF08FBB625803A6A00C4AC6F /* MethodInstance.swift */,
 				BF08FBBC25803A6A00C4AC6F /* Module.swift */,
-				BF08FBB525803A6A00C4AC6F /* Nil.swift */,
 				BF08FBAB25803A6A00C4AC6F /* Parameter.swift */,
 				BF979DC8258347D8002AFB7F /* ParameterName.swift */,
 				BFD58CF0258F98E000B2ADDD /* Pointer.swift */,
@@ -856,7 +848,6 @@
 				BF08FBAA25803A6A00C4AC6F /* UndefinedSymbol.swift */,
 				BF08FBBD25803A6A00C4AC6F /* Variable.swift */,
 				BF08FBB925803A6A00C4AC6F /* VirtualSlot.swift */,
-				BF14FB5825BDBE4A002B9F0C /* ClassReference.swift */,
 			);
 			path = Symbols;
 			sourceTree = "<group>";
@@ -1185,12 +1176,10 @@
 				BF24C86D25C2B6B800104E2E /* ObjectHeader.swift in Sources */,
 				BF08FBFC25803A6A00C4AC6F /* RepeatStatement.swift in Sources */,
 				BF5A547025C1A2F200C8D55F /* CodeSegment.swift in Sources */,
-				BF08FBD625803A6A00C4AC6F /* Instance.swift in Sources */,
 				BFE0A0992593DA7600B85ADF /* A3CodeBuffer.swift in Sources */,
 				BF64816C25B45DE100D75675 /* SystemPlaceholderModule.swift in Sources */,
 				BF7B46FD25C0088400FB22DC /* LiteralEnumerationExpression.swift in Sources */,
 				BF7952BA2592A54D00B90AE3 /* AliasSlot.swift in Sources */,
-				BF14FB5925BDBE4A002B9F0C /* ClassReference.swift in Sources */,
 				BF08FBE525803A6A00C4AC6F /* VirtualSlotWriteSlotBlock.swift in Sources */,
 				BF64816625B45CFC00D75675 /* SystemPlaceholderMethodInstance.swift in Sources */,
 				BF5AFF8725A57C2E00CED0AC /* DisclosureArrowLayer.swift in Sources */,
@@ -1288,7 +1277,6 @@
 				BF08FC1825803A6A00C4AC6F /* MethodInstance.swift in Sources */,
 				BF7B471525C0094500FB22DC /* LiteralStringExpression.swift in Sources */,
 				BF5AFF6D25A4E28500CED0AC /* ArgonModuleView.swift in Sources */,
-				BF08FC1725803A6A00C4AC6F /* Nil.swift in Sources */,
 				BF08FC0625803A6A00C4AC6F /* WhileStatement.swift in Sources */,
 				BF08FBF925803A6A00C4AC6F /* OtherwiseClause.swift in Sources */,
 				BFE7B9FE25C20FC100A3A692 /* MemoryWord.swift in Sources */,

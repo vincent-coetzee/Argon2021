@@ -446,7 +446,7 @@ internal class Parser:CompilerPhase
             }
         self.advance()
         let name = try self.parseIdentifier()
-        let function = Function(shortName: name, owner: nil)
+        let function = Function(shortName: name)
         function.libraryName = libraryName
         function.cName = cName
         let parameters = try self.parseFormalParameters()
@@ -1533,13 +1533,6 @@ internal class Parser:CompilerPhase
             }
         throw(CompilerError(.tagExpected,self.token.location))
         }
-//
-//    private func parseBlock() throws -> Block
-//        {
-//        let block = Block()
-//        try self.parseBlock(block)
-//        return(block)
-//        }
         
     private func parseBlock(parameters:Parameters) throws -> Block
         {
@@ -1784,66 +1777,7 @@ internal class Parser:CompilerPhase
         Module.innerScope.addSymbol(localVariable)
         return(statement)
         }
-        
-//    private func parseLValue() throws -> LValue
-//        {
-//        var value:[LValue] = []
-//        if self.token.isLeftPar
-//            {
-//            try self.parseParentheses
-//                {
-//                value.append(try self.parseLValue())
-//                while self.token.isComma
-//                    {
-//                    self.advance()
-//                    value.append(try self.parseLValue())
-//                    }
-//                }
-//            if value.count > 1
-//                {
-//                return(.tuple(value))
-//                }
-//            }
-//        if self.token.isIdentifier
-//            {
-//            let name = self.token.identifier
-//            self.advance()
-//            value.append(.variable(name))
-//            }
-//        if self.token.isThis || self.token.isTHIS
-//            {
-//            let target = LValue.keyword( self.token.keyword)
-//            self.advance()
-//            value.append(target)
-//            }
-//        if self.token.isLeftBracket
-//            {
-//            self.advance()
-//            let index = try self.parseExpression()
-//            if !self.token.isRightBracket
-//                {
-//                throw(CompilerError(.rightBracketExpected,self.token.location))
-//                }
-//            self.advance()
-//            value.append(.subscript(index))
-//            }
-//        if self.token.isRightArrow
-//            {
-//            var slots:[String] = []
-//            while self.token.isRightArrow
-//                {
-//                self.advance()
-//                if self.token.isIdentifier
-//                    {
-//                    slots.append(self.token.identifier)
-//                    self.advance()
-//                    }
-//                }
-//            value.append(.slot(slots))
-//            }
-//        return(.compound(value))
-//        }
-        
+
     private func parseAssignmentStatement() throws -> Statement
         {
         let value = try self.parseLHSValue()
@@ -2051,14 +1985,7 @@ internal class Parser:CompilerPhase
             }
         return(SignalStatement(location:location,signal:signal!))
         }
-        
-    //
-    //
-    //for index in (from::Integer(432*19/2.4),to:200,by:3)
-    //  {
-    //
-    //  }
-    //
+
     private func parseForStatement() throws -> Statement
         {
         self.advance()
