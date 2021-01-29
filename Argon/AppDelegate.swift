@@ -6,7 +6,7 @@
 //
 
 import Cocoa
-
+import BinaryCoding
 @main
 class AppDelegate: NSObject, NSApplicationDelegate
     {
@@ -17,8 +17,15 @@ class AppDelegate: NSObject, NSApplicationDelegate
         let item = sourceItem.children[0]
         let source = item.source
 //        self.tokenStream.reset(source:source)
-        let compiler = Compiler()
-        compiler.compile(source: source)
+        Compiler.shared.compile(source: source)
+        for module in Compiler.shared.modules
+            {
+            let encoder = BinaryEncoder()
+            let encodedData = try! encoder.encode(module)
+            let data = Data(encodedData.bytes)
+            let fileURL = URL(fileURLWithPath: "/Users/vincent/Desktop/\(module.shortName).argonm")
+            try! data.write(to: fileURL)
+            }
 //        if let controller = NSStoryboard.main?.instantiateController(withIdentifier:"ArgonClassBrowserControllerID") as? NSWindowController
 //            {
 //            controller.showWindow(self)

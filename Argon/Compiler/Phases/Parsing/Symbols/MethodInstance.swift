@@ -10,6 +10,11 @@ import Foundation
 
 public class MethodInstance:Symbol
     {
+    public override var sizeInBytes:Int
+        {
+        return(self.codeBuffer.sizeInBytes)
+        }
+        
     public var parameters:Parameters
         {
         get
@@ -57,6 +62,7 @@ public class MethodInstance:Symbol
         localVariables = try values.decode(Array<LocalVariable>.self,forKey:.localVariables)
         stackLocalStorageSizeInBytes = try values.decode(Int.self,forKey:.stackLocalStorageSizeInBytes)
         try super.init(from:decoder)
+        self.memoryAddress = Compiler.shared.codeSegment.zero
         }
         
     public override func encode(to encoder: Encoder) throws
@@ -75,11 +81,6 @@ public class MethodInstance:Symbol
     internal override var typeClass:Class
         {
         return(MethodInstanceClass(shortName:self.shortName,argumentClasses:self._parameters.map{$0.typeClass},returnTypeClass: self.returnTypeClass))
-        }
-        
-    internal override func allocateAddresses(using compiler:Compiler) throws
-        {
-        try block.allocateAddresses(using:compiler)
         }
         
     internal override func pushScope()
@@ -112,6 +113,7 @@ public class MethodInstance:Symbol
         self.owner = owner
         self.returnTypeClass = .voidClass
         super.init(shortName: shortName)
+        self.memoryAddress = Compiler.shared.codeSegment.zero
         }
         
     internal required init()
@@ -119,6 +121,7 @@ public class MethodInstance:Symbol
         self.owner = nil
         self.returnTypeClass = .voidClass
         super.init()
+        self.memoryAddress = Compiler.shared.codeSegment.zero
         }
         
     internal override func lookup(shortName:String) -> SymbolSet?
@@ -129,6 +132,11 @@ public class MethodInstance:Symbol
     internal override func typeCheck() throws
         {
         try self.block.typeCheck()
+        }
+        
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        compiler.codeSegment.updateAddress(self)
         }
         
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using compiler:Compiler) throws

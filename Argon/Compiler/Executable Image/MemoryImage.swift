@@ -32,6 +32,10 @@ public class MemoryImage
             {
             return(self.dataSegment)
             }
+        else if identifier == .base
+            {
+            return(self.stackSegment)
+            }
         else if identifier == .static
             {
             return(self.staticSegment)

@@ -71,30 +71,30 @@ public class RootModule:Module
         
     private func initBaseClasses()
         {
-        self.addSymbol(self.rootClass)
-        self.addSymbol(self.addressClass)
-        self.addSymbol(self.valueClass)
-        self.addSymbol(self.metaClass)
-        self.addSymbol(self.classClass)
-        self.addSymbol(self.nilClass)
-        self.addSymbol(self.voidClass)
-        self.addSymbol(self.integerClass)
-        self.addSymbol(self.floatClass)
-        self.addSymbol(self.uintegerClass)
-        self.addSymbol(self.integer64Class)
-        self.addSymbol(self.float64Class)
-        self.addSymbol(self.uinteger64Class)
-        self.addSymbol(self.integer16Class)
-        self.addSymbol(self.float16Class)
-        self.addSymbol(self.uinteger16Class)
-        self.addSymbol(self.integer32Class)
-        self.addSymbol(self.float32Class)
-        self.addSymbol(self.uinteger32Class)
-        self.addSymbol(self.integer8Class)
-        self.addSymbol(self.uinteger8Class)
-        self.addSymbol(self.stringClass)
-        self.addSymbol(self.byteClass)
-        self.addSymbol(self.characterClass)
+        self.addSymbol(Class.rootClass)
+        self.addSymbol(Class.addressClass)
+        self.addSymbol(Class.valueClass)
+        self.addSymbol(Class.metaClass)
+        self.addSymbol(Class.classClass)
+        self.addSymbol(Class.nilClass)
+        self.addSymbol(Class.voidClass)
+        self.addSymbol(Class.integerClass)
+        self.addSymbol(Class.floatClass)
+        self.addSymbol(Class.uIntegerClass)
+        self.addSymbol(Class.integer64Class)
+        self.addSymbol(Class.float64Class)
+        self.addSymbol(Class.uInteger64Class)
+        self.addSymbol(Class.integer16Class)
+        self.addSymbol(Class.float16Class)
+        self.addSymbol(Class.uInteger16Class)
+        self.addSymbol(Class.integer32Class)
+        self.addSymbol(Class.float32Class)
+        self.addSymbol(Class.uInteger32Class)
+        self.addSymbol(Class.integer8Class)
+        self.addSymbol(Class.uInteger8Class)
+        self.addSymbol(Class.stringClass)
+        self.addSymbol(Class.byteClass)
+        self.addSymbol(Class.characterClass)
         self.addSymbol(Class.dateClass)
         self.addSymbol(Class.timeClass)
         self.addSymbol(Class.dateTimeClass)
@@ -106,9 +106,24 @@ public class RootModule:Module
         self.addSymbol(Class.closureClass)
         self.addSymbol(Class.booleanClass)
         self.addSymbol(Class.bitValueClass)
-        self.addSymbol(self.uintegerClass)
         self.addSymbol(Class.tupleClass)
         self.addSymbol(Class.moduleClass)
+        self.addSymbol(Class.collectionClass)
+        self.addSymbol(Class.arrayClass)
+        self.addSymbol(Class.listClass)
+        self.addSymbol(Class.setClass)
+        self.addSymbol(Class.dictionaryClass)
+        self.addSymbol(Class.setClass)
+        self.addSymbol(Class.functionClass)
+        self.addSymbol(Class.conduitClass)
+        self.addSymbol(Class.keyedConduitClass)
+        self.addSymbol(Class.sequentialConduitClass)
+        self.addSymbol(Class.allClass)
+        self.addSymbol(Class.constantClass)
+        self.addSymbol(Class.enumerationClass)
+        self.addSymbol(Class.bitValueClass)
+        self.addSymbol(Class.bufferClass)
+        self.addSymbol(Class.behaviorClass)
         }
         
     internal func initRootModule() -> Self
@@ -121,7 +136,13 @@ public class RootModule:Module
         
     internal override func allocateAddresses(using compiler:Compiler) throws
         {
-        Class.stringClass.layout(in: compiler.memoryImage.staticSegment)
+        for set in self.symbols.values
+            {
+            for symbol in set.symbols
+                {
+                try symbol.allocateAddresses(using: compiler)
+                }
+            }
         }
         
     @discardableResult
@@ -145,8 +166,6 @@ public class RootModule:Module
         
     public func initSystemObjects(_ segment:MemorySegment)
         {
-        // need a good name for method that packs objects intop segments
-        Class.stringClass.layout(in:segment)
         }
         
     private func initSystemModules()

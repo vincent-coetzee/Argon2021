@@ -20,11 +20,13 @@ public class LocalVariable:Variable
     override init(name:Name,class:Class)
         {
         super.init(shortName:name.first,class:`class`)
+        self.memoryAddress = Compiler.shared.stackSegment.zero
         }
     
     override init(shortName:Identifier,class:Class)
         {
         super.init(shortName:shortName,class:`class`)
+        self.memoryAddress = Compiler.shared.stackSegment.zero
         }
         
     internal required init() {
@@ -35,6 +37,10 @@ public class LocalVariable:Variable
         fatalError("init(from:) has not been implemented")
     }
     
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        }
+        
     override func generateIntermediateCodeLoad(target:A3Address,into buffer:A3CodeBuffer)
         {
         buffer.emitInstruction(result:target,left:.localVariable(self),opcode:.assign)

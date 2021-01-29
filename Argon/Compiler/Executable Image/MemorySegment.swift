@@ -9,6 +9,11 @@ import Foundation
 
 public class MemorySegment:Codable
     {
+    public var zero:MemoryAddress
+        {
+        return(MemoryAddress(segment:self,offset:0))
+        }
+        
     public var segment:SegmentIdentifier
         {
         return(.none)
@@ -51,6 +56,12 @@ public class MemorySegment:Codable
         self.currentOffset = try values.decode(Int.self,forKey:.currentOffset)
         self.memory = UnsafeMutableRawBufferPointer.allocate(byteCount: self.sizeInBytes, alignment: MemoryLayout<Word>.alignment)
         self.memory.copyBytes(from:data)
+        }
+        
+    public func updateAddress(_ symbol:Symbol)
+        {
+        symbol.memoryAddress.offset = self.currentOffset
+        self.currentOffset += symbol.sizeInBytes
         }
         
     public func encode(to encoder: Encoder) throws

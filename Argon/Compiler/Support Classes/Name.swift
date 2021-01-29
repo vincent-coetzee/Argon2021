@@ -190,6 +190,10 @@ public struct Name:Hashable,ExpressibleByArrayLiteral,Codable
             {
             self.components = Array(pieces.dropFirst()).map{.element($0)}
             }
+        else
+            {
+            self.components = pieces.map{NameComponent.element($0)}
+            }
         }
         
     public init()

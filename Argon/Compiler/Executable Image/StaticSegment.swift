@@ -8,7 +8,7 @@
 import Foundation
 
 public class StaticSegment:MemorySegment
-    {
+    {        
     public override var segment:SegmentIdentifier
         {
         return(.static)

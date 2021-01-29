@@ -11,6 +11,6 @@ public class StackSegment:MemorySegment
     {
     public override var segment:SegmentIdentifier
         {
-        return(.stack)
+        return(.base)
         }
     }

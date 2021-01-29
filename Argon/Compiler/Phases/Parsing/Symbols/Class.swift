@@ -86,7 +86,6 @@ public class Class:Symbol
     internal var makers = ClassMakers()
     internal var symbols:[String:Symbol] = [:]
     internal var layoutSlots:[LayoutSlot] = []
-    internal var memoryAddress:MemoryAddress = .zero
         
     enum CodingKeys:String,CodingKey
         {
@@ -96,6 +95,20 @@ public class Class:Symbol
         case classSlots
         case symbols
         case layoutSlots
+        }
+        
+    public override var sizeInBytes:Int
+        {
+        var size = 0
+        size += Word.kSizeInBytes // class of the class
+        size += Word.kSizeInBytes // the name
+        size += Word.kSizeInBytes // regular slot count
+        size += self.regularSlots.values.reduce(0) { total,slot in total + slot.sizeInBytes }
+        size += Word.kSizeInBytes // class slot count
+        size += self.classSlots.values.reduce(0) { total,slot in total + slot.sizeInBytes }
+        size += Word.kSizeInBytes // superclasses
+        size += Word.kSizeInBytes // generics
+        return(size)
         }
         
     required public init(from decoder:Decoder) throws
@@ -183,38 +196,21 @@ public class Class:Symbol
 //        return(Instance(class:self))
 //        }
         
-    init(shortName:String,generics:GenericClasses)
-        {
-        self.generics = generics
-        super.init(shortName:shortName)
-        var slot = Slot(name:Name("class"),class:Class.classClass,container:self,attributes: .readonly)
-        self.classSlots[slot.shortName] = slot
-        slot = Slot(name:Name("superclasses"),class: (Class.arrayClass as! ArrayClass).classWithIndex(Type.ArrayIndexType.unbounded),container:self,attributes:.readonly)
-        self.classSlots[slot.shortName] = slot
-        }
+//    init(shortName:String,generics:GenericClasses)
+//        {
+//        self.generics = generics
+//        super.init(shortName:shortName)
+//        var slot = Slot(name:Name("class"),class:Class.classClass,container:self,attributes: .readonly)
+//        self.classSlots[slot.shortName] = slot
+//        slot = Slot(name:Name("superclasses"),class: (Class.arrayClass as! ArrayClass).classWithIndex(Type.ArrayIndexType.unbounded),container:self,attributes:.readonly)
+//        self.classSlots[slot.shortName] = slot
+//        }
         
     init(shortName:String)
         {
         self.generics = GenericClasses()
         super.init(shortName:shortName)
-        }
-        
-    init(shortName:String,indexType:Type.ArrayIndexType,elementType:Type)
-        {
-        self.generics = GenericClasses()
-        super.init(shortName:shortName)
-        }
-        
-    init(shortName:String,keyType:Type,valueType:Type)
-        {
-        self.generics = GenericClasses()
-        super.init(shortName:shortName)
-        }
-        
-    init(shortName:String,elementType:Type)
-        {
-        self.generics = GenericClasses()
-        super.init(shortName:shortName)
+        self.memoryAddress = Compiler.shared.staticSegment.zero
         }
 
     func addRegularSlot(_ slot:Slot)
@@ -295,29 +291,8 @@ public class Class:Symbol
     internal override func allocateAddresses(using compiler:Compiler) throws
         {
         self.layout()
-        for slot in self.regularSlots.values
-            {
-            try slot.allocateAddresses(using:compiler)
-            }
-        for slot in self.classSlots.values
-            {
-            try slot.allocateAddresses(using:compiler)
-            }
-        for set in self.symbols.values
-            {
-            try set.allocateAddresses(using:compiler)
-            }
-        let staticSegment = compiler.staticSegment
-        let nameAddress = staticSegment.append(string:self.shortName)
-        staticSegment.append(word:ObjectHeader(tag:.header,count:0,kind:.kClass).word)
-        staticSegment.append(pointer:Class.classClass.memoryAddress)
-        staticSegment.append(word: Word(self.regularSlots.count))
-        for slot in self.regularSlots.values
-            {
-            slot.append(to:staticSegment)
-            }
+        compiler.staticSegment.updateAddress(self)
         }
-        
         
     func layout()
         {

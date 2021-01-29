@@ -20,25 +20,9 @@ public class Symbol:ParseNode,Equatable,Hashable,Codable
         case definingScope
         }
         
-    required public init(from decoder:Decoder) throws
+    public var sizeInBytes:Int
         {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.shortName = try values.decode(String.self,forKey: .shortName)
-        self.id = try values.decode(UUID.self,forKey: .id)
-        self.references = try values.decode(Array<SourceReference>.self,forKey:.references)
-        self.accessLevel = try values.decode(AccessModifier.self,forKey:.accessLevel)
-        self.parent = try values.decode(Symbol?.self,forKey:.parent)
-//        self.definingScope = try values.decode(Scope?.self,forKey:.definingScope)
-        }
-        
-    public func encode(to encoder: Encoder) throws
-        {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.shortName,forKey:.shortName)
-        try container.encode(self.id,forKey:.id)
-        try container.encode(self.references,forKey:.references)
-        try container.encode(self.accessLevel,forKey:.accessLevel)
-        try container.encode(parent,forKey:.parent)
+        return(Word.kSizeInBytes)
         }
         
     public var className:String
@@ -53,6 +37,7 @@ public class Symbol:ParseNode,Equatable,Hashable,Codable
     internal var accessLevel = AccessModifier.public
     internal var parent:Symbol?
     internal var definingScope:Scope?
+    internal var memoryAddress:MemoryAddress = .zero
     
     public var module:Module
         {
@@ -138,6 +123,27 @@ public class Symbol:ParseNode,Equatable,Hashable,Codable
         self.parent = parent
         self.id = UUID()
         super.init()
+        }
+        
+    required public init(from decoder:Decoder) throws
+        {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.shortName = try values.decode(String.self,forKey: .shortName)
+        self.id = try values.decode(UUID.self,forKey: .id)
+        self.references = try values.decode(Array<SourceReference>.self,forKey:.references)
+        self.accessLevel = try values.decode(AccessModifier.self,forKey:.accessLevel)
+        self.parent = try values.decode(Symbol?.self,forKey:.parent)
+//        self.definingScope = try values.decode(Scope?.self,forKey:.definingScope)
+        }
+        
+    public func encode(to encoder: Encoder) throws
+        {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.shortName,forKey:.shortName)
+        try container.encode(self.id,forKey:.id)
+        try container.encode(self.references,forKey:.references)
+        try container.encode(self.accessLevel,forKey:.accessLevel)
+        try container.encode(parent,forKey:.parent)
         }
         
     internal func addRead(location:SourceLocation)

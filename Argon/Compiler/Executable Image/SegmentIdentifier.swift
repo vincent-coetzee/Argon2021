@@ -15,6 +15,7 @@ public enum SegmentIdentifier:String
     case managed = "MS"
     case code = "CS"
     case stack = "SS"
+    case base = "BP"
     
     var bits:Word
         {
@@ -32,6 +33,8 @@ public enum SegmentIdentifier:String
                 return(4)
             case .stack:
                 return(5)
+            case .base:
+                return(6)
             }
         }
         
@@ -60,6 +63,10 @@ public enum SegmentIdentifier:String
         else if bits == 5
             {
             self = .stack
+            }
+        else if bits == 6
+            {
+            self = .base
             }
         else
             {

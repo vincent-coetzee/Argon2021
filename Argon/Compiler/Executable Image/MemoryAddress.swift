@@ -7,9 +7,9 @@
 
 import Foundation
 
-public struct MemoryAddress:Codable
+public class MemoryAddress:Codable
     {
-    public static let zero = Self(segment: MemorySegment(),offset:0)
+    public static let zero = MemoryAddress(segment: MemorySegment(),offset:0)
     
     public var taggedAddress:Word
         {
@@ -38,7 +38,7 @@ public struct MemoryAddress:Codable
         }
         
     let segment:MemorySegment
-    let offset:Int
+    public var offset:Int
     
     public var displayString:String
         {
@@ -51,11 +51,11 @@ public struct MemoryAddress:Codable
         self.offset = offset
         }
         
-    public init(from decoder:Decoder) throws
+    required public init(from decoder:Decoder) throws
         {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         let identifier = SegmentIdentifier(rawValue: try values.decode(String.self,forKey:.segment))!
-        self.segment = MemoryImage.shared.segmentAtIdentifier(identifier)
+        self.segment = Compiler.shared.segmentAtIdentifier(identifier)
         self.offset =  try values.decode(Int.self,forKey:.offset)
         }
         

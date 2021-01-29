@@ -59,6 +59,7 @@ public class Module:SymbolContainer
         self.moduleSlots = try values.decode(Dictionary<String,Slot>.self,forKey:.moduleSlots)
         self.imports = try values.decode(ImportVector.self,forKey:.imports)
         try super.init(from:decoder)
+        self.memoryAddress = Compiler.shared.staticSegment.zero
         }
         
     public override func encode(to encoder: Encoder) throws
@@ -232,6 +233,11 @@ public class Module:SymbolContainer
 //            }
 //        }
         
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
+        compiler.staticSegment.updateAddress(self)
+        }
+        
     internal override func generateIntermediateCode(in:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         }
@@ -251,6 +257,7 @@ public class Module:SymbolContainer
     public init(shortName:String)
         {
         super.init(shortName:shortName)
+        self.memoryAddress = Compiler.shared.staticSegment.zero
         }
     }
 

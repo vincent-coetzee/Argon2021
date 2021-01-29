@@ -9,6 +9,11 @@ import Foundation
 
 public class A3CodeBuffer:Codable
     {
+    public var sizeInBytes:Int
+        {
+        return(self.instructions.count * Word.kSizeInBytes)
+        }
+        
     private var labels:[Int:A3Label] = [:]
     private var instructions:[A3Instruction] = []
     private var pendingLabel:A3Label?

@@ -45,24 +45,32 @@ public class Variable:Symbol
         {
         self._class = `class`
         super.init(shortName:shortName)
+        self.memoryAddress = Compiler.shared.dataSegment.zero
         }
         
     internal init(name:Name,class:Class)
         {
         self._class = `class`
         super.init(name:name)
+        self.memoryAddress = Compiler.shared.dataSegment.zero
         }
         
     internal required init()
         {
         self._class = Class.voidClass
         super.init()
+        self.memoryAddress = Compiler.shared.dataSegment.zero
         }
     
     public required init(from decoder:Decoder) throws
         {
         self._class = .voidClass
         try super.init(from:decoder)
+        self.memoryAddress = Compiler.shared.dataSegment.zero
+        }
+        
+    internal override func allocateAddresses(using compiler:Compiler) throws
+        {
         }
         
     func generateIntermediateCodeLoad(target:A3Address,into buffer:A3CodeBuffer)

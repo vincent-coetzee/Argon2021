@@ -41,6 +41,7 @@ public class Method:Symbol
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.instances = try values.decode(Array<MethodInstance>.self,forKey:.instances)
         try super.init(from:decoder)
+        self.memoryAddress = Compiler.shared.codeSegment.zero
         }
         
     public override func encode(to encoder: Encoder) throws
@@ -53,6 +54,7 @@ public class Method:Symbol
     public init(shortName:String)
         {
         super.init(shortName:shortName)
+        self.memoryAddress = Compiler.shared.codeSegment.zero
         }
         
     internal required init()
@@ -62,6 +64,7 @@ public class Method:Symbol
         
     internal override func allocateAddresses(using compiler:Compiler) throws
         {
+        compiler.codeSegment.updateAddress(self)
         for instance in self.instances
             {
             try instance.allocateAddresses(using:compiler)

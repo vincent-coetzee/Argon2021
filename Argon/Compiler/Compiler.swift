@@ -10,10 +10,15 @@ import Foundation
 
 public class Compiler
     {
+    public static let shared = Compiler()
+    
     public var modules:Array<Module> = []
+    
     public let staticSegment = StaticSegment(sizeInBytes:1024*1024*10)
     public let dataSegment = DataSegment(sizeInBytes:1024*1024*10)
     public let codeSegment = CodeSegment(sizeInBytes:1024*1024*10)
+    public let stackSegment = StackSegment(sizeInBytes:1024*1024*10)
+    public let managedSegment = ManagedSegment(sizeInBytes:1024*1024*10)
     
 //    private var path = ""
 //    private var phase:CompilerPhase = Parser()
@@ -58,6 +63,35 @@ public class Compiler
 //            thePhase = phase.nextPhase
 //            }
 //        }
+        
+    public func segmentAtIdentifier(_ identifier:SegmentIdentifier) -> MemorySegment
+        {
+        if identifier == .stack
+            {
+            return(self.stackSegment)
+            }
+        else if identifier == .data
+            {
+            return(self.dataSegment)
+            }
+        else if identifier == .base
+            {
+            return(self.stackSegment)
+            }
+        else if identifier == .static
+            {
+            return(self.staticSegment)
+            }
+        else if identifier == .managed
+            {
+            return(self.managedSegment)
+            }
+        else if identifier == .code
+            {
+            return(self.codeSegment)
+            }
+        fatalError("Invalid segment")
+        }
         
     internal func append(module:Module)
         {
