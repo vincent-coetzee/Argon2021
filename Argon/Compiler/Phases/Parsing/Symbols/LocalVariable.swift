@@ -33,9 +33,10 @@ public class LocalVariable:Variable
         fatalError("init() has not been implemented")
     }
     
-    public required init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
-    }
+    public required init?(coder:NSCoder)
+        {
+        fatalError("init(coder:) has not been implemented")
+        }
     
     internal override func allocateAddresses(using compiler:Compiler) throws
         {

@@ -45,10 +45,9 @@ public class GenericClass:Symbol
         super.init(shortName: "")
     }
         
-    public required init(from decoder:Decoder) throws
+    public required init?(coder:NSCoder)
         {
-        self.constraints = []
-        try super.init(from:decoder)
+        fatalError("init(coder:) has not been implemented")
         }
 }
 

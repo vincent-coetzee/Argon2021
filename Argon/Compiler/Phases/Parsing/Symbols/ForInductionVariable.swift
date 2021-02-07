@@ -20,8 +20,8 @@ internal class ForInductionVariable:InductionVariable
         super.init()
         }
         
-    public required init(from decoder:Decoder) throws
+    public required init?(coder:NSCoder)
         {
-        try super.init(from:decoder)
+        fatalError("init(coder:) has not been implemented")
         }
 }

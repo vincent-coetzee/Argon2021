@@ -143,4 +143,7 @@ public enum SystemError:Equatable,Error
     case fileErrorOnOpenFile(String,Int32)
     case fileErrorOnCloseFile(String,Int32)
     case readFailedWithLessBytesRead(Int,Int,Int32)
+    case readIncomingObjectDidNotMatchExpectedObject(String)
+    case objectIdentityErrorObjectWithIdNotFound
+    case objectKindNotKnown
     }

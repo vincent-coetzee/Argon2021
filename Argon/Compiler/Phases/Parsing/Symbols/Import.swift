@@ -18,13 +18,6 @@ public class Import:Symbol
         return([:])
         }
         
-    enum CodingKeys:String,CodingKey
-        {
-        case path
-        case isPathBased
-        case wasResolved
-        }
-        
     let path:String?
     var isPathBased = true
     var importedModule:Module?
@@ -59,17 +52,13 @@ public class Import:Symbol
         fatalError("init() has not been implemented")
         }
     
-    required public init(from decoder: Decoder) throws
+    public required init?(coder:NSCoder)
         {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.path = try values.decode(String.self,forKey: .path)
-        self.isPathBased = try values.decode(Bool.self,forKey: .isPathBased)
-        self.wasResolved = try values.decode(Bool.self,forKey:.wasResolved)
-        try super.init(from: values.superDecoder())
+        fatalError("init(coder:) has not been implemented")
         }
     }
 
-public struct ImportVector:Codable
+public struct ImportVector
     {
     public static func +(lhs:ImportVector,rhs:Import) -> ImportVector
         {

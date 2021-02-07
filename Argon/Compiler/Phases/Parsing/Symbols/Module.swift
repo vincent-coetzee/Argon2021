@@ -8,8 +8,8 @@
 
 import Foundation
 
-public class Module:SymbolContainer
-    {
+public class Module:SymbolContainer,NSCoding
+    {    
     public static let rootModule = RootModule(shortName: "Argon")
         
     public static let rootScope = Module.rootModule
@@ -28,7 +28,7 @@ public class Module:SymbolContainer
         {
         self.pop()
         }
-    
+        
     public private(set) var genericTypes:[GenericClass] = []
     private var exitFunction:ModuleFunction?
     private var entryFunction:ModuleFunction?
@@ -36,44 +36,6 @@ public class Module:SymbolContainer
     private var versionKey:SemanticVersionNumber = .one
     private var moduleSlots:Dictionary<String,Slot> = [:]
     private var imports = ImportVector()
-        
-    enum CodingKeys:String,CodingKey
-        {
-        case genericTypes
-        case exitFunction
-        case entryFunction
-        case moduleKey
-        case versionKey
-        case moduleSlots
-        case imports
-        }
-        
-    required public init(from decoder:Decoder) throws
-        {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.genericTypes = try values.decode(Array<GenericClass>.self,forKey: .genericTypes)
-//        self.exitFunction = try values.decode(ModuleFunction?.self,forKey: .exitFunction)
-//        self.entryFunction = try values.decode(ModuleFunction?.self,forKey:.entryFunction)
-        self.moduleKey = try values.decode(UUID.self,forKey:.moduleKey)
-        self.versionKey = try values.decode(SemanticVersionNumber.self,forKey:.versionKey)
-        self.moduleSlots = try values.decode(Dictionary<String,Slot>.self,forKey:.moduleSlots)
-        self.imports = try values.decode(ImportVector.self,forKey:.imports)
-        try super.init(from:values.superDecoder())
-        self.memoryAddress = Compiler.shared.staticSegment.zero
-        }
-        
-    public override func encode(to encoder: Encoder) throws
-        {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.genericTypes,forKey:.genericTypes)
-//        try container.encode(self.exitFunction,forKey:.exitFunction)
-//        try container.encode(self.entryFunction,forKey:.entryFunction)
-        try container.encode(self.moduleKey,forKey:.moduleKey)
-        try container.encode(versionKey,forKey:.versionKey)
-        try container.encode(self.moduleSlots,forKey:.moduleSlots)
-        try container.encode(imports,forKey:.imports)
-        try super.encode(to: container.superEncoder())
-        }
         
     public override var isModuleLevelSymbol:Bool
         {
@@ -253,6 +215,24 @@ public class Module:SymbolContainer
         {
         super.init(shortName:shortName)
         self.memoryAddress = Compiler.shared.staticSegment.zero
+        }
+        
+    public override func encode(with coder: NSCoder)
+        {
+        coder.encode(self.moduleKey,forKey:"moduleKey")
+        let allSymbols = self.symbols.values.flatMap{$0.symbols}
+        coder.encode(allSymbols,forKey:"allSymbols")
+        }
+    
+    public required init?(coder: NSCoder)
+        {
+        self.moduleKey = coder.decodeObject(forKey: "moduleKey") as! UUID
+        let allSymbols = coder.decodeObject(forKey: "allSymbols") as! Array<Symbol>
+        super.init(coder:coder)
+        for symbol in allSymbols
+            {
+            self.addSymbol(symbol)
+            }
         }
     }
 

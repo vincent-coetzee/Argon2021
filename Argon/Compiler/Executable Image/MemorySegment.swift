@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class MemorySegment:Codable
+public class MemorySegment
     {
     public var zero:MemoryAddress
         {
@@ -27,14 +27,6 @@ public class MemorySegment:Codable
     public var memory:UnsafeMutableRawBufferPointer
     private var sizeInBytes:Int
     private var currentOffset = 0
-    
-    enum CodingKeys:String,CodingKey
-        {
-        case currentOffset
-        case sizeInBytes
-        case bytes
-        case kind
-        }
         
     init()
         {
@@ -47,30 +39,11 @@ public class MemorySegment:Codable
         self.sizeInBytes = sizeInBytes
         self.memory = UnsafeMutableRawBufferPointer.allocate(byteCount: sizeInBytes, alignment: MemoryLayout<Word>.alignment)
         }
-        
-    required public init(from decoder:Decoder) throws
-        {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        let data = try values.decode(Data.self,forKey:.bytes)
-        self.sizeInBytes = try values.decode(Int.self,forKey:.sizeInBytes)
-        self.currentOffset = try values.decode(Int.self,forKey:.currentOffset)
-        self.memory = UnsafeMutableRawBufferPointer.allocate(byteCount: self.sizeInBytes, alignment: MemoryLayout<Word>.alignment)
-        self.memory.copyBytes(from:data)
-        }
-        
+
     public func updateAddress(_ symbol:Symbol)
         {
         symbol.memoryAddress.offset = self.currentOffset
         self.currentOffset += symbol.sizeInBytes
-        }
-        
-    public func encode(to encoder: Encoder) throws
-        {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        let data = Data(bytesNoCopy: self.memory.baseAddress!, count: self.currentOffset, deallocator: .free)
-        try container.encode(self.sizeInBytes,forKey:.sizeInBytes)
-        try container.encode(self.currentOffset,forKey:.currentOffset)
-        try container.encode(data,forKey:.bytes)
         }
         
     @inlinable

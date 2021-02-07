@@ -7,8 +7,9 @@
 
 import Foundation
 
-public class Method:Symbol
-    { 
+public class Method:Symbol,NSCoding
+    {
+        
     public var displayString: String
         {
         return(self.shortName)
@@ -30,27 +31,7 @@ public class Method:Symbol
         {
         fatalError("This should have been defined in the method instance")
         }
-        
-    enum CodingKeys:String,CodingKey
-        {
-        case instances
-        }
-        
-    required public init(from decoder:Decoder) throws
-        {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.instances = try values.decode(Array<MethodInstance>.self,forKey:.instances)
-        try super.init(from: values.superDecoder())
-        self.memoryAddress = Compiler.shared.codeSegment.zero
-        }
-        
-    public override func encode(to encoder: Encoder) throws
-        {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.instances,forKey:.instances)
-        try super.encode(to: container.superEncoder())
-        }
-        
+
     public init(shortName:String)
         {
         super.init(shortName:shortName)
@@ -66,9 +47,21 @@ public class Method:Symbol
             }
         }
         
+    public override func encode(with coder:NSCoder)
+        {
+        super.encode(with:coder)
+        coder.encode(self.instances,forKey:"instances")
+        }
+        
     internal required init()
         {
         fatalError("init() has not been implemented")
+        }
+        
+    public required init?(coder:NSCoder)
+        {
+        self.instances = coder.decodeObject(forKey:"instances") as! Array<MethodInstance>
+        super.init(coder:coder)
         }
         
     internal override func allocateAddresses(using compiler:Compiler) throws

@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal struct SlotAttributes:OptionSet,Codable
+internal struct SlotAttributes:OptionSet
     {
     let rawValue:Int
 
@@ -24,6 +24,43 @@ internal struct SlotAttributes:OptionSet,Codable
     static let `class` = SlotAttributes(rawValue: 1 << 7)
     static let value = SlotAttributes(rawValue: 1 << 8)
     
+    public init(storageKind:StorageKind)
+        {
+        self.rawValue = storageKind.integerKind
+        }
+        
+        
+    public init(rawValue:Int)
+        {
+        self.rawValue = rawValue
+        }
+        
+//    public init(file:BinaryFile) throws
+//        {
+//        let kind = try file.readString()
+//        switch(kind)
+//            {
+//            case "r":
+//                self = .readonly
+//            case "w":
+//                self = .readwrite
+//            case "g":
+//                self = .regular
+//            case "v":
+//                self = .virtual
+//            case "m":
+//                self = .module
+//            case "c":
+//                self = .constant
+//            case "a":
+//                self = .alias
+//            case "l":
+//                self = .class
+//            default:
+//                fatalError("Error encoding")
+//            }
+//        }
+        
     var encodedString:String
         {
         var string = ""

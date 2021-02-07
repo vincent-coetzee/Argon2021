@@ -7,9 +7,9 @@
 
 import Foundation
 
-public class A3Instruction:Instruction,Codable
+public class A3Instruction:Instruction
     {
-    internal enum InstructionCode:String,Codable
+    internal enum InstructionCode:String
         {
         case add
         case sub
@@ -72,41 +72,10 @@ public class A3Instruction:Instruction,Codable
     public var labels = InstructionLabels()
     public var location:SourceLocation?
     public var comment:String?
-    
-    enum CodingKeys:String,CodingKey
-        {
-        case result
-        case left
-        case right
-        case opcode
-        case id
-        case labels
-        case location
-        case comment
-        }
         
-    required public init(from decoder:Decoder) throws
+    public required init?(coder:NSCoder)
         {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.labels = try values.decode(Array<A3Label>.self,forKey:.labels)
-        self.result = try values.decode(A3Address?.self,forKey:.result)
-        self.location = try values.decode(SourceLocation?.self,forKey:.location)
-        self.left = try values.decode(A3Address?.self,forKey:.left)
-        self.right = try values.decode(A3Address?.self,forKey:.right)
-        self.comment = try values.decode(String?.self,forKey:.comment)
-        self.opcode = try values.decode(InstructionCode.self,forKey:.opcode)
-        }
-        
-    public func encode(to encoder: Encoder) throws
-        {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.labels,forKey:.labels)
-        try container.encode(self.result,forKey:.result)
-        try container.encode(self.location,forKey:.location)
-        try container.encode(self.left,forKey:.left)
-        try container.encode(self.right,forKey:.right)
-        try container.encode(self.comment,forKey:.comment)
-        try container.encode(self.opcode,forKey:.opcode)
+        fatalError("init(coder:) has not been implemented")
         }
         
         

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class MemoryAddress:Codable
+public class MemoryAddress:NSObject,NSCoding
     {
     public static let zero = MemoryAddress(segment: MemorySegment(),offset:0)
     
@@ -31,13 +31,9 @@ public class MemoryAddress:Codable
             }
         }
         
-    enum CodingKeys:String,CodingKey
-        {
-        case segment
-        case offset
-        }
-        
+
     let segment:MemorySegment
+    
     public var offset:Int
     
     public var displayString:String
@@ -51,18 +47,15 @@ public class MemoryAddress:Codable
         self.offset = offset
         }
         
-    required public init(from decoder:Decoder) throws
+    public func encode(with coder: NSCoder)
         {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        let identifier = SegmentIdentifier(rawValue: try values.decode(String.self,forKey:.segment))!
-        self.segment = Compiler.shared.segmentAtIdentifier(identifier)
-        self.offset =  try values.decode(Int.self,forKey:.offset)
+        coder.encode(self.segment.segment.rawValue,forKey:"segment")
+        coder.encode(self.offset,forKey:"offset")
         }
-        
-    public func encode(to encoder: Encoder) throws
+    
+    public required init?(coder: NSCoder)
         {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(segment.segment.rawValue,forKey:.segment)
-        try container.encode(offset,forKey:.offset)
+        self.segment = MemoryImage.shared.segmentAtIdentifier(SegmentIdentifier(rawValue: coder.decodeObject(forKey:"segment") as! String)!)
+        self.offset = Int(coder.decodeInt64(forKey:"offset"))
         }
     }

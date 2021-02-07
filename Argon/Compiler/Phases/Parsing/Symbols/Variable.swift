@@ -62,13 +62,11 @@ public class Variable:Symbol
         self.memoryAddress = Compiler.shared.dataSegment.zero
         }
     
-    public required init(from decoder:Decoder) throws
+    public required init?(coder:NSCoder)
         {
-        self._class = .voidClass
-        try super.init(from:decoder)
-        self.memoryAddress = Compiler.shared.dataSegment.zero
+        fatalError("init(coder:) has not been implemented")
         }
-        
+    
     internal override func allocateAddresses(using compiler:Compiler) throws
         {
         }

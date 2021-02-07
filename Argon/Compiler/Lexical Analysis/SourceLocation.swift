@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct SourceLocation:Equatable,Hashable,Codable
+public struct SourceLocation:Equatable,Hashable
     {
     public static let zero = SourceLocation(line: 0, lineStart: 0, lineStop: 0, tokenStart: 0, tokenStop: 0)
     
@@ -17,12 +17,13 @@ public struct SourceLocation:Equatable,Hashable,Codable
         return(lhs.line == rhs.line && lhs.lineStart == rhs.lineStart && lhs.lineStop == rhs.lineStop && lhs.tokenStart == rhs.tokenStart && lhs.tokenStop == rhs.tokenStop)
         }
         
+    public let id = UUID()
     public let line:Int
     public let lineStart:Int
     public let lineStop:Int
     public let tokenStart:Int
     public let tokenStop:Int
-    
+        
     public init(line:Int,lineStart:Int,lineStop:Int,tokenStart:Int,tokenStop:Int)
         {
         self.line = line
@@ -30,6 +31,11 @@ public struct SourceLocation:Equatable,Hashable,Codable
         self.lineStop = lineStop
         self.tokenStart = tokenStart
         self.tokenStop = tokenStop
+        }
+        
+    public init(storageKind:StorageKind)
+        {
+        fatalError()
         }
         
     public func hashable(into hasher:inout Hasher)

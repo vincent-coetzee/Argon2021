@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Slot:Variable
+public class Slot:Variable,NSCoding
     {
     public var slotNameHornerHashValue:Int
         {
@@ -72,33 +72,20 @@ public class Slot:Variable
         self._class = Class.nilClass
         }
         
-    enum CodingKeys:String,CodingKey
+    public override func encode(with coder: NSCoder)
         {
-        case slotOffset
-        case attributes
-        case readBlock
-        case writeBlock
+        super.encode(with:coder)
+        coder.encode(self.slotOffset,forKey:"slotOffset")
+        coder.encode(self.attributes.rawValue,forKey:"attributes")
         }
-        
-    required public init(from decoder:Decoder) throws
+    
+    public required init?(coder: NSCoder)
         {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.slotOffset = try values.decode(Int.self,forKey:.slotOffset)
-        self.attributes = try values.decode(SlotAttributes.self,forKey:.attributes)
-        self.virtualReadBlock = try values.decode(VirtualSlotBlock?.self,forKey:.readBlock)
-        self.virtualWriteBlock = try values.decode(VirtualSlotBlock?.self,forKey:.writeBlock)
-        try super.init(from: values.superDecoder())
+        self.attributes = SlotAttributes(rawValue:Int(coder.decodeInt64(forKey:"slotAttributes")))
+        super.init(coder:coder)
+        self.slotOffset = Int(coder.decodeInt64(forKey:"slotOffset"))
         }
-        
-    public override func encode(to encoder: Encoder) throws
-        {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.slotOffset,forKey:.slotOffset)
-        try container.encode(self.attributes,forKey:.attributes)
-        try container.encode(self.virtualReadBlock,forKey:.readBlock)
-        try container.encode(self.virtualWriteBlock,forKey:.writeBlock)
-        try super.encode(to: container.superEncoder())
-        }
+
         
     internal func slotType(_ slotNames:[String]) -> Type
         {

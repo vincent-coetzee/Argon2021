@@ -8,50 +8,47 @@
 
 import Foundation
 
-public enum SourceReference:Codable
+public enum SourceReference
     {
-    enum CodingKeys:String,CodingKey
+    public func encode(with coder: NSCoder)
         {
-        case kind
-        case location
-        }
-        
-    public init(from decoder: Decoder) throws
-        {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        let kind = try values.decode(Int.self,forKey:.kind)
-        let location = try values.decode(SourceLocation.self,forKey:.location)
-        if kind == 1
-            {
-            self = .declaration(location)
-            }
-        else if kind == 2
-            {
-            self = .read(location)
-            }
-        else
-            {
-            self = .write(location)
-            }
-        }
-    
-    public func encode(to encoder: Encoder) throws
-        {
-        var container = encoder.container(keyedBy: CodingKeys.self)
         switch(self)
             {
-            case .declaration(let location):
-                try container.encode(1, forKey: .kind)
-                try container.encode(location,forKey:.location)
-            case .read(let location):
-                try container.encode(2, forKey: .kind)
-                try container.encode(location,forKey:.location)
-            case .write(let location):
-                try container.encode(3, forKey: .kind)
-                try container.encode(location,forKey:.location)
+            case .declaration:
+                coder.encode(1,forKey:"kind")
+            case .read:
+                coder.encode(2,forKey:"kind")
+            case .write:
+                coder.encode(3,forKey:"kind")
             }
+        coder.encode(self.location.line,forKey:"line")
+        coder.encode(self.location.lineStart,forKey:"lineStart")
+        coder.encode(self.location.lineStop,forKey:"lineStop")
+        coder.encode(self.location.tokenStart,forKey:"tokenStart")
+        coder.encode(self.location.tokenStop,forKey:"tokenStop")
         }
     
+    public init?(coder: NSCoder)
+        {
+        let aLine =  Int(coder.decodeInt64(forKey:"line"))
+        let aLineStart = Int(coder.decodeInt64(forKey:"lineStart"))
+        let aLineStop = Int(coder.decodeInt64(forKey:"lineStop"))
+        let aTokenStart = Int(coder.decodeInt64(forKey:"tokenStart"))
+        let aTokenStop = Int(coder.decodeInt64(forKey:"tokenStop"))
+        let aLocation = SourceLocation(line: aLine, lineStart: aLineStart, lineStop: aLineStop, tokenStart: aTokenStart, tokenStop: aTokenStop)
+        switch(coder.decodeInt64(forKey:"kind"))
+            {
+            case 1:
+                self = .declaration(aLocation)
+            case 2:
+                self = .read(aLocation)
+            case 3:
+                self = .write(aLocation)
+            default:
+                fatalError("This can not happen")
+            }
+        }
+        
     public var id:UUID
         {
         return(UUID())
@@ -88,6 +85,11 @@ public enum SourceReference:Codable
             }
         }
     
+    public init(storageKind:StorageKind)
+        {
+        fatalError()
+        }
+        
     case declaration(SourceLocation)
     case read(SourceLocation)
     case write(SourceLocation)

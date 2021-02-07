@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Class:Symbol
+public class Class:Symbol,NSCoding
     {
     public static func ==(lhs:Class,rhs:Class) -> Bool
         {
@@ -87,17 +87,7 @@ public class Class:Symbol
     internal var symbols:[String:Symbol] = [:]
     internal var layoutSlots:[LayoutSlot] = []
     internal var superclassIds:[UUID] = []
-    
-    enum CodingKeys:String,CodingKey
-        {
-        case superclassIds
-        case generics
-        case regularSlots
-        case classSlots
-        case symbols
-        case layoutSlots
-        }
-        
+
     public override var sizeInBytes:Int
         {
         var size = 0
@@ -112,28 +102,24 @@ public class Class:Symbol
         return(size)
         }
         
-    required public init(from decoder:Decoder) throws
+    public override func encode(with coder: NSCoder)
         {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.superclassIds = try values.decode(Array<UUID>.self,forKey:.superclassIds)
-        self.generics = try values.decode(GenericClasses.self,forKey:.generics)
-        self.regularSlots = try values.decode(Dictionary<String,Slot>.self,forKey:.regularSlots)
-        self.classSlots = try values.decode(Dictionary<String,Slot>.self,forKey:.classSlots)
-        self.symbols = try values.decode(Dictionary<String,Symbol>.self,forKey:.symbols)
-        self.layoutSlots = try values.decode(Array<LayoutSlot>.self,forKey:.layoutSlots)
-        try super.init(from: values.superDecoder())
+        super.encode(with:coder)
+        coder.encode(self.superclasses,forKey:"superclasses")
+        coder.encode(self.regularSlots,forKey:"regularSlots")
+        coder.encode(self.classSlots,forKey:"classSlots")
+        coder.encode(self.symbols.values,forKey:"symbols")
         }
-        
-    public override func encode(to encoder: Encoder) throws
+    
+    public required init?(coder: NSCoder)
         {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.superclasses.map{$0.id},forKey:.superclassIds)
-        try container.encode(self.generics,forKey:.generics)
-        try container.encode(self.regularSlots,forKey:.regularSlots)
-        try container.encode(self.classSlots,forKey:.classSlots)
-        try container.encode(self.symbols,forKey:.symbols)
-        try container.encode(self.layoutSlots,forKey:.layoutSlots)
-        try super.encode(to: container.superEncoder())
+        self.superclasses = coder.decodeObject(forKey:"superclasses") as! Array<Class>
+        self.regularSlotList = coder.decodeObject(forKey:"regularSlots") as! Array<Slot>
+        for symbol in coder.decodeObject(forKey:"symbols") as! Array<Symbol>
+            {
+            self.symbols[symbol.shortName] = symbol
+            }
+        super.init(coder:coder)
         }
         
     internal override func relinkSymbolsUsingIds(symbols:Dictionary<UUID,Symbol>)
@@ -219,7 +205,7 @@ public class Class:Symbol
         super.init(shortName:shortName)
         self.memoryAddress = Compiler.shared.staticSegment.zero
         }
-
+        
     func addRegularSlot(_ slot:Slot)
         {
         self.regularSlots[slot.shortName] = slot
@@ -373,9 +359,10 @@ public class BitSetClass:CollectionClass
         fatalError("init() has not been implemented")
     }
     
-    required public init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
-    }
+    public required init?(coder:NSCoder)
+        {
+        fatalError("init(coder:) has not been implemented")
+        }
     
     internal override func typeWithIndex(_ type:Type.ArrayIndexType) -> Type
         {
@@ -393,13 +380,18 @@ public class TupleClass:Class
         super.init(shortName:"TUPLE_\(Argon.nextIndex())")
         }
     
-    required public init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
-    }
+    public required init?(coder:NSCoder)
+        {
+        fatalError("init(coder:) has not been implemented")
+        }
 }
 
 public class ValueClass:Class
     {
+    public override func encode(with coder:NSCoder)
+        {
+        super.encode(with:coder)
+        }
     }
     
 public class AddressClass:ValueClass
@@ -422,9 +414,10 @@ public class ConstantClass:ValueClass
         super.init(shortName:shortName)
         }
     
-    required init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
-    }
+    public required init?(coder:NSCoder)
+        {
+        fatalError("init(coder:) has not been implemented")
+        }
 }
 
 public class SequenceGeneratorClass:Class
@@ -443,8 +436,9 @@ public class SequenceGeneratorClass:Class
         super.init(shortName:Argon.nextName("SEQUENCE"))
         }
     
-    required public init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
-    }
+    public required init?(coder:NSCoder)
+        {
+        fatalError("init(coder:) has not been implemented")
+        }
     
     }

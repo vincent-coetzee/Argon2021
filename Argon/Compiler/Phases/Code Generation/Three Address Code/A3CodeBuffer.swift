@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class A3CodeBuffer:Codable
+public class A3CodeBuffer
     {
     public var sizeInBytes:Int
         {
@@ -37,20 +37,6 @@ public class A3CodeBuffer:Codable
         {
         case labels
         case instructions
-        }
-        
-    required public init(from decoder:Decoder) throws
-        {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.labels = try values.decode(Dictionary<Int,A3Label>.self,forKey:.labels)
-        self.instructions = try values.decode(Array<A3Instruction>.self,forKey:.instructions)
-        }
-        
-    public func encode(to encoder: Encoder) throws
-        {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.labels,forKey:.labels)
-        try container.encode(self.instructions,forKey:.instructions)
         }
         
     @discardableResult

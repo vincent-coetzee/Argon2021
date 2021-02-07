@@ -22,9 +22,9 @@ public class ClassMaker:MethodInstance
         fatalError("init() has not been implemented")
         }
         
-    public required init(from decoder:Decoder) throws
+    public required init?(coder:NSCoder)
         {
-        try super.init(from:decoder)
+        fatalError("init(coder:) has not been implemented")
         }
     }
 

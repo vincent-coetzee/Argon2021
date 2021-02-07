@@ -41,7 +41,7 @@ public class TokenStyle
             if let style = self.styles[type]
                 {
                 let attributes = style.attributes
-                var theRange = NSRange(location: token.location.tokenStart,length: token.location.tokenStop - token.location.tokenStart)
+                let theRange = NSRange(location: token.location.tokenStart,length: token.location.tokenStop - token.location.tokenStart)
                 if token.location.tokenStop <= count
                     {
                     attributedString?.setAttributes(attributes, range: theRange)

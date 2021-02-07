@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Statement:ParseNode,Equatable
+public class Statement:ParseNode
     {
     public static func ==(lhs:Statement,rhs:Statement) -> Bool
         {

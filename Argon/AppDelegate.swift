@@ -16,28 +16,21 @@ class AppDelegate: NSObject, NSApplicationDelegate
         let sourceItem = SourceFolder(path:"/Users/vincent/Development/Development2021/Argon Projects/Medicine/")
         let item = sourceItem.children[0]
         let source = item.source
-//        self.tokenStream.reset(source:source)
-        Compiler.shared.compile(source: source)
-        for module in Compiler.shared.modules
+//        self.tokenStream.reset(source:source)xxw
+        do
             {
-            let encoder = BinaryEncoder()
-            let encodedData = try! encoder.encode(module)
-            let data = Data(encodedData.bytes)
-            let fileURL = URL(fileURLWithPath: "/Users/vincent/Desktop/\(module.shortName).argonm")
-            try! data.write(to: fileURL)
+            Compiler.shared.compile(source: source)
+            let modules = Compiler.shared.modules
+            for module in modules
+                {
+                let moduleName = module.shortName
+                NSKeyedArchiver.archiveRootObject(module,toFile: "/Users/vincent/Desktop/\(moduleName).module.ar")
+                }
             }
-        print("SUCCESSFULLY ENCODED AND WROTE OUT MODULE")
-        Compiler.shared.modules = []
-        let input = try! Data(contentsOf: URL(fileURLWithPath: "/Users/vincent/Desktop/Location.argonm"))
-        let decoder = BinaryDecoder()
-        let module = try! decoder.decode(Module.self, from: EncodedData(bytes: Array(input)))
-        let symbols = module.symbolsKeyedById()
-        module.relinkSymbolsUsingIds(symbols: symbols)
-        print(module)
-//        if let controller = NSStoryboard.main?.instantiateController(withIdentifier:"ArgonClassBrowserControllerID") as? NSWindowController
-//            {
-//            controller.showWindow(self)
-//            }
+        catch let error
+            {
+            print(error)
+            }
         }
 
     func applicationWillTerminate(_ aNotification: Notification) {

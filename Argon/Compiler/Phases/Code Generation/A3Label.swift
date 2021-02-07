@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct A3Label:Codable
+public struct A3Label
     {
     static func newLabel() -> A3Label
         {
@@ -33,27 +33,6 @@ public struct A3Label:Codable
         {
         self.index = Argon.nextIndex()
         self.instruction = nil
-        }
-        
-    enum CodingKeys:String,CodingKey
-        {
-        case index
-        case instruction
-        }
-        
-    public init(from decoder:Decoder) throws
-        {
-        self.init()
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        self.index = try values.decode(Int.self,forKey:.index)
-        self.instruction = try values.decode(A3Instruction.self,forKey:.instruction)
-        }
-        
-    public func encode(to encoder: Encoder) throws
-        {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.index,forKey:.index)
-        try container.encode(self.instruction,forKey:.instruction)
         }
         
     mutating func setInstruction(_ instruction:A3Instruction)

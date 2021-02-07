@@ -42,9 +42,10 @@ public class Enumeration:Class
         super.init(shortName:"")
         }
     
-    required public init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
-    }
+    public required init?(coder:NSCoder)
+        {
+        fatalError("init(coder:) has not been implemented")
+        }
     
     func addCase(_ enumCase:EnumerationCase)
         {
@@ -146,9 +147,10 @@ public class EnumerationCase:Symbol
         fatalError("init() has not been implemented")
     }
     
-    required public init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
-    }
+    public required init?(coder:NSCoder)
+        {
+        fatalError("init(coder:) has not been implemented")
+        }
     
     internal override func allocateAddresses(using compiler:Compiler) throws
         {
