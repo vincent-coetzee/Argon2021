@@ -84,11 +84,6 @@ public enum SourceReference
                 return(location)
             }
         }
-    
-    public init(storageKind:StorageKind)
-        {
-        fatalError()
-        }
         
     case declaration(SourceLocation)
     case read(SourceLocation)

@@ -6,7 +6,7 @@
 //
 
 import Cocoa
-import BinaryCoding
+
 @main
 class AppDelegate: NSObject, NSApplicationDelegate
     {

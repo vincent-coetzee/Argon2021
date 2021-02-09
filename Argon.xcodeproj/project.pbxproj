@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -101,6 +101,10 @@
 		BF08FC3725803AB100C4AC6F /* ArgonBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FC3325803AB100C4AC6F /* ArgonBrowserViewController.swift */; };
 		BF08FC3825803AB100C4AC6F /* SourceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FC3425803AB100C4AC6F /* SourceProvider.swift */; };
 		BF08FC3925803AB100C4AC6F /* DisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FC3525803AB100C4AC6F /* DisplayView.swift */; };
+		BF1F082425D28B8D001A8DC5 /* RawMemory.c in Sources */ = {isa = PBXBuildFile; fileRef = BF1F082325D28B8D001A8DC5 /* RawMemory.c */; };
+		BF1F082725D2B4E6001A8DC5 /* RawSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F082625D2B4E6001A8DC5 /* RawSlot.swift */; };
+		BF1F082B25D2CB17001A8DC5 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F082A25D2CB17001A8DC5 /* OrderedSet.swift */; };
+		BF1F082E25D2F676001A8DC5 /* Max+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F082D25D2F676001A8DC5 /* Max+Extensions.swift */; };
 		BF24C86D25C2B6B800104E2E /* ObjectHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF24C86C25C2B6B800104E2E /* ObjectHeader.swift */; };
 		BF24C87025C2CD4F00104E2E /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF24C86F25C2CD4F00104E2E /* Word.swift */; };
 		BF3B7FD02589356500582C17 /* CCreole.argon in Resources */ = {isa = PBXBuildFile; fileRef = BF3B7FCF2589356500582C17 /* CCreole.argon */; };
@@ -208,7 +212,6 @@
 		BF7B476F25C00D0500FB22DC /* TimeValueExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B476E25C00D0500FB22DC /* TimeValueExpression.swift */; };
 		BF7B477225C00D1A00FB22DC /* DateTimeValueExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B477125C00D1A00FB22DC /* DateTimeValueExpression.swift */; };
 		BF7B477525C00D3000FB22DC /* FullyQualifiedName.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B477425C00D3000FB22DC /* FullyQualifiedName.swift */; };
-		BF7B477B25C0294A00FB22DC /* BinaryCoding in Frameworks */ = {isa = PBXBuildFile; productRef = BF7B477A25C0294A00FB22DC /* BinaryCoding */; };
 		BF85B1C425B1208C00C40C03 /* SemanticVersionNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF85B1C325B1208C00C40C03 /* SemanticVersionNumber.swift */; };
 		BF85B1C725B126CA00C40C03 /* RelocatableReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF85B1C625B126CA00C40C03 /* RelocatableReference.swift */; };
 		BF8CF0A625C0A02E00A8FE30 /* MemoryImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8CF0A525C0A02E00A8FE30 /* MemoryImage.swift */; };
@@ -351,6 +354,12 @@
 		BF08FC3325803AB100C4AC6F /* ArgonBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArgonBrowserViewController.swift; sourceTree = "<group>"; };
 		BF08FC3425803AB100C4AC6F /* SourceProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceProvider.swift; sourceTree = "<group>"; };
 		BF08FC3525803AB100C4AC6F /* DisplayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayView.swift; sourceTree = "<group>"; };
+		BF1F082125D28B8D001A8DC5 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		BF1F082225D28B8D001A8DC5 /* RawMemory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RawMemory.h; sourceTree = "<group>"; };
+		BF1F082325D28B8D001A8DC5 /* RawMemory.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RawMemory.c; sourceTree = "<group>"; };
+		BF1F082625D2B4E6001A8DC5 /* RawSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawSlot.swift; sourceTree = "<group>"; };
+		BF1F082A25D2CB17001A8DC5 /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
+		BF1F082D25D2F676001A8DC5 /* Max+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Max+Extensions.swift"; sourceTree = "<group>"; };
 		BF24C86C25C2B6B800104E2E /* ObjectHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectHeader.swift; sourceTree = "<group>"; };
 		BF24C86F25C2CD4F00104E2E /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
 		BF3B7FCF2589356500582C17 /* CCreole.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CCreole.argon; sourceTree = "<group>"; };
@@ -505,7 +514,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF7B477B25C0294A00FB22DC /* BinaryCoding in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -515,6 +523,7 @@
 		BF08FB3A25803A2900C4AC6F = {
 			isa = PBXGroup;
 			children = (
+				BF1F082025D28A89001A8DC5 /* RawMemory */,
 				BF5AFF4C25A2EB8700CED0AC /* Argon Class Browser */,
 				BFA4BFDB258BF5AD0040DE86 /* Medicine */,
 				BF3B7FD625893CA900582C17 /* Argon */,
@@ -570,6 +579,7 @@
 			isa = PBXGroup;
 			children = (
 				BF08FB5D25803A6A00C4AC6F /* Argument.swift */,
+				BF1F082A25D2CB17001A8DC5 /* OrderedSet.swift */,
 				BF08FB6125803A6A00C4AC6F /* CompilerError.swift */,
 				BF7B477425C00D3000FB22DC /* FullyQualifiedName.swift */,
 				BFD58CE7258F07DF00B2ADDD /* Identifier.swift */,
@@ -833,6 +843,7 @@
 				BF08FBAB25803A6A00C4AC6F /* Parameter.swift */,
 				BF979DC8258347D8002AFB7F /* ParameterName.swift */,
 				BFD58CF0258F98E000B2ADDD /* Pointer.swift */,
+				BF1F082625D2B4E6001A8DC5 /* RawSlot.swift */,
 				BF08FBAD25803A6A00C4AC6F /* RootModule.swift */,
 				BF08FBAE25803A6A00C4AC6F /* Slot.swift */,
 				BF08FBC325803A6A00C4AC6F /* SlotAttributes.swift */,
@@ -873,6 +884,16 @@
 				BF08FB4C25803A2900C4AC6F /* Assets.xcassets */,
 			);
 			path = "Argon Browser";
+			sourceTree = "<group>";
+		};
+		BF1F082025D28A89001A8DC5 /* RawMemory */ = {
+			isa = PBXGroup;
+			children = (
+				BF1F082125D28B8D001A8DC5 /* module.modulemap */,
+				BF1F082325D28B8D001A8DC5 /* RawMemory.c */,
+				BF1F082225D28B8D001A8DC5 /* RawMemory.h */,
+			);
+			path = RawMemory;
 			sourceTree = "<group>";
 		};
 		BF3B7FCE2589356500582C17 /* Creole */ = {
@@ -945,6 +966,7 @@
 				BF979DB825832410002AFB7F /* NSFont+Extension.swift */,
 				BF979DBB25832488002AFB7F /* NSColor.swift */,
 				BFBB0F3925B39293008F8E3E /* Int+Extensions.swift */,
+				BF1F082D25D2F676001A8DC5 /* Max+Extensions.swift */,
 			);
 			path = "AppKit + Swift + Extensions";
 			sourceTree = "<group>";
@@ -991,7 +1013,6 @@
 			);
 			name = Argon;
 			packageProductDependencies = (
-				BF7B477A25C0294A00FB22DC /* BinaryCoding */,
 			);
 			productName = Argon;
 			productReference = BF08FB4325803A2900C4AC6F /* Argon.app */;
@@ -1022,7 +1043,6 @@
 			);
 			mainGroup = BF08FB3A25803A2900C4AC6F;
 			packageReferences = (
-				BF7B477925C0294A00FB22DC /* XCRemoteSwiftPackageReference "BinaryCoding" */,
 			);
 			productRefGroup = BF08FB4425803A2900C4AC6F /* Products */;
 			projectDirPath = "";
@@ -1135,6 +1155,7 @@
 				BF08FB4725803A2900C4AC6F /* AppDelegate.swift in Sources */,
 				BF08FBCE25803A6A00C4AC6F /* SourceReference.swift in Sources */,
 				BF5AFF4E25A2EBAB00CED0AC /* ArgonClassBrowser.swift in Sources */,
+				BF1F082425D28B8D001A8DC5 /* RawMemory.c in Sources */,
 				BF08FBD025803A6A00C4AC6F /* CompilerError.swift in Sources */,
 				BFD58CE1258E3B2000B2ADDD /* Constant.swift in Sources */,
 				BF08FC0F25803A6A00C4AC6F /* RootModule.swift in Sources */,
@@ -1180,6 +1201,7 @@
 				BF64816C25B45DE100D75675 /* SystemPlaceholderModule.swift in Sources */,
 				BF7B46FD25C0088400FB22DC /* LiteralEnumerationExpression.swift in Sources */,
 				BF7952BA2592A54D00B90AE3 /* AliasSlot.swift in Sources */,
+				BF1F082E25D2F676001A8DC5 /* Max+Extensions.swift in Sources */,
 				BF08FBE525803A6A00C4AC6F /* VirtualSlotWriteSlotBlock.swift in Sources */,
 				BF64816625B45CFC00D75675 /* SystemPlaceholderMethodInstance.swift in Sources */,
 				BF5AFF8725A57C2E00CED0AC /* DisclosureArrowLayer.swift in Sources */,
@@ -1266,6 +1288,7 @@
 				BFE0A09F2593DAF800B85ADF /* Instruction.swift in Sources */,
 				BF08FBE225803A6A00C4AC6F /* Block.swift in Sources */,
 				BF7B477225C00D1A00FB22DC /* DateTimeValueExpression.swift in Sources */,
+				BF1F082725D2B4E6001A8DC5 /* RawSlot.swift in Sources */,
 				BF5AFF6A25A4D3C000CED0AC /* ArgonProject.swift in Sources */,
 				BF08FC2525803A6A00C4AC6F /* SlotAttributes.swift in Sources */,
 				BF08FC1225803A6A00C4AC6F /* TypeSymbol.swift in Sources */,
@@ -1284,6 +1307,7 @@
 				BF7B473925C00A6600FB22DC /* ClosureInvocationExpression.swift in Sources */,
 				BF64816325B45CD900D75675 /* SystemPlaceholderMethod.swift in Sources */,
 				BF08FC0225803A6A00C4AC6F /* Clause.swift in Sources */,
+				BF1F082B25D2CB17001A8DC5 /* OrderedSet.swift in Sources */,
 				BF08FBE325803A6A00C4AC6F /* VirtualSlotWriteBlock.swift in Sources */,
 				BF08FBE425803A6A00C4AC6F /* VirtualSlotReadBlock.swift in Sources */,
 				BF85B1C725B126CA00C40C03 /* RelocatableReference.swift in Sources */,
@@ -1492,25 +1516,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		BF7B477925C0294A00FB22DC /* XCRemoteSwiftPackageReference "BinaryCoding" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/vincent-coetzee/BinaryCoding";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.1;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		BF7B477A25C0294A00FB22DC /* BinaryCoding */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BF7B477925C0294A00FB22DC /* XCRemoteSwiftPackageReference "BinaryCoding" */;
-			productName = BinaryCoding;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BF08FB3B25803A2900C4AC6F /* Project object */;
 }

@@ -27,6 +27,16 @@ public class Slot:Variable,NSCoding
         return(Int(hashValue))
         }
         
+    public var cloned:Slot
+        {
+        return(Slot(shortName:self.shortName,class:self._class,container:self.containingSymbol,attributes:self.attributes))
+        }
+        
+    public var isRawSlot:Bool
+        {
+        return(false)
+        }
+        
     public var isRegularSlot:Bool
         {
         return(self.attributes.contains(.regular))

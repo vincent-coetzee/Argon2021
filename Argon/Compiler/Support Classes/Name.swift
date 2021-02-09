@@ -8,45 +8,10 @@
 
 import Foundation
     
-public struct Name:Hashable,ExpressibleByArrayLiteral,Codable
+public struct Name:Hashable,ExpressibleByArrayLiteral
     {
-    public enum NameComponent:Hashable,Codable
+    public enum NameComponent:Hashable
         {
-        enum CodingKeys:String,CodingKey
-            {
-            case kind
-            case string
-            }
-            
-        public init(from decoder:Decoder) throws
-            {
-            let values = try decoder.container(keyedBy: CodingKeys.self)
-            let kind = try values.decode(Int.self,forKey:.kind)
-            if kind == 1
-                {
-                self = .anchor
-                }
-            else
-                {
-                self = .element(try values.decode(String.self,forKey:.string))
-                }
-            try self.init(from:decoder)
-            }
-            
-        public func encode(to encoder: Encoder) throws
-            {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-            switch(self)
-                {
-                case .anchor:
-                    try container.encode(1,forKey:.kind)
-                case .element(let string):
-                    try container.encode(2,forKey:.kind)
-                    try container.encode(string,forKey:.string)
-
-                }
-            }
-            
         case anchor
         case element(String)
         
@@ -80,7 +45,7 @@ public struct Name:Hashable,ExpressibleByArrayLiteral,Codable
         
     public static func +(lhs:Name,rhs:String) -> Name
         {
-        return(Name(lhs.components.map{$0.string} + [rhs]))
+        return(Name(lhs.components + [NameComponent.element(rhs)]))
         }
         
     public static func +(lhs:Name,rhs:Name) -> Name

@@ -33,11 +33,6 @@ public struct SourceLocation:Equatable,Hashable
         self.tokenStop = tokenStop
         }
         
-    public init(storageKind:StorageKind)
-        {
-        fatalError()
-        }
-        
     public func hashable(into hasher:inout Hasher)
         {
         hasher.combine(self.tokenStart)

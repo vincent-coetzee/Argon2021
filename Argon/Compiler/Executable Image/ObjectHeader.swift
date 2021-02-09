@@ -60,11 +60,11 @@ public class ObjectHeader
     static let kForwardedWidth:Word = 1
     static let kFlipCountWidth:Word = 8
     
-    static let kTagShift:Word = ObjectHeader.kForwardedShift - ObjectHeader.kSignWidth
+    static let kTagShift:Word = ObjectHeader.kSignShift - ObjectHeader.kTagWidth
     static let kSignShift:Word = 63
     static let kWordCountShift:Word = ObjectHeader.kTagShift - ObjectHeader.kWordCountWidth
     static let kKindShift:Word = 0
-    static let kForwardedShift:Word = ObjectHeader.kSignShift - ObjectHeader.kForwardedWidth
+    static let kForwardedShift:Word = ObjectHeader.kTagShift - ObjectHeader.kForwardedWidth
     static let kFlipCountShift:Word = ObjectHeader.kWordCountShift - ObjectHeader.kFlipCountWidth
     
     static let kSignMask:Word = ObjectHeader.kSignWidth.twoRaisedTo()

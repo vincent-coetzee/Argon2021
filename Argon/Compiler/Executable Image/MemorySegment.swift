@@ -58,6 +58,30 @@ public class MemorySegment
         return(self.memory.load(fromByteOffset: at, as: Word.self))
         }
         
+    public subscript(_ index:Int) -> Word
+        {
+        get
+            {
+            return(self.memory.load(fromByteOffset: index, as: Word.self))
+            }
+        set
+            {
+            self.memory.storeBytes(of: newValue, as: Word.self)
+            }
+        }
+        
+    public subscript(_ index:Int) -> Argon.Float
+        {
+        get
+            {
+            return(self.memory.load(fromByteOffset: index, as: Argon.Float.self))
+            }
+        set
+            {
+            self.memory.storeBytes(of: newValue, as: Argon.Float.self)
+            }
+        }
+        
     public func append(string:Argon.String) -> MemoryAddress
         {
         let startAddress = self.currentOffset

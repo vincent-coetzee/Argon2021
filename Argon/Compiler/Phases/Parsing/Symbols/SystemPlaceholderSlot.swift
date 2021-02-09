@@ -14,3 +14,11 @@ public class SystemPlaceholderSlot:Slot
         return(true)
         }
     }
+
+public class SystemPlaceholderRawSlot:SystemPlaceholderSlot
+    {
+    public override var isRawSlot:Bool
+        {
+        return(true)
+        }
+    }

@@ -91,11 +91,18 @@ public class RootModule:Module
         
     private func initSystemModules()
         {
+        self.initBaseObjects()
         self.initCollectionsModule()
         self.initSocketsModule()
         self.initConduitsModule()
         self.initIOModule()
        }
+        
+    private func initBaseObjects()
+        {
+        Class.objectClass.placeholderRawSlot("header", class: Class.wordClass,offset:0).placeholderRawSlot("class", class: Class.classClass,offset:Argon.kWordSizeInBytes)
+        Class.classClass.placeholderRawSlot("regularSlotCount", class: Class.integerClass,offset:Argon.kWordSizeInBytes * 2).placeholderRawSlot("classSlotCount", class: Class.integerClass,offset:Argon.kWordSizeInBytes * 3)
+        }
         
     private func initCollectionsModule()
         {

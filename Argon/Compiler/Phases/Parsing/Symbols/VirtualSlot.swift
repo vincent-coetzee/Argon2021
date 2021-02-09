@@ -10,14 +10,18 @@ import Foundation
 
 internal class VirtualSlot:Slot
     {
+    public override var cloned:Slot
+        {
+        return(VirtualSlot(shortName:self.shortName,class:self._class,container:self.containingSymbol,attributes:self.attributes))
+        }
     }
 
-internal class ModuleSlot:Slot
-    {
-    }
-    
-internal class MetaSlot:Slot
-    {
-    }
-
-
+//internal class ModuleSlot:Slot
+//    {
+//    }
+//    
+//internal class MetaSlot:Slot
+//    {
+//    }
+//
+//
