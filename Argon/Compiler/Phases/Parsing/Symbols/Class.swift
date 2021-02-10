@@ -120,7 +120,7 @@ public class Class:Symbol,NSCoding
         coder.encode(self.superclasses,forKey:"superclasses")
         coder.encode(self.localSlots,forKey:"localSlots")
         coder.encode(self.localClassSlots,forKey:"classSlots")
-        coder.encode(self.symbols.values,forKey:"symbols")
+//        coder.encode(self.symbols.values,forKey:"symbols")
         }
     
     public required init?(coder: NSCoder)

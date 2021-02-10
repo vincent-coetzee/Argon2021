@@ -10,7 +10,7 @@ import Foundation
 
 internal typealias ParameterTuple = (String?,Class)
 
-public class Parameter:Variable
+public class Parameter:Variable,NSCoding
     {
     public override var displayString:String
         {
@@ -66,6 +66,13 @@ public class Parameter:Variable
         self.showTag = true
         self.hasTag = false
         super.init(shortName: "",class: .voidClass)
+        }
+        
+    public override func encode(with coder:NSCoder)
+        {
+        coder.encode(self.hasTag, forKey:"hasTag")
+        coder.encode(self.showTag, forKey:"showTag")
+        super.encode(with:coder)
         }
         
     public required init?(coder:NSCoder)

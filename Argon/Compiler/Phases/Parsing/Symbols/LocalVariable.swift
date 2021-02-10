@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class LocalVariable:Variable
+public class LocalVariable:Variable,NSCoding
     {
     public override var displayString:String
         {
@@ -33,6 +33,12 @@ public class LocalVariable:Variable
         fatalError("init() has not been implemented")
     }
     
+    public override func encode(with coder:NSCoder)
+        {
+        coder.encode(self.stackOffsetFromBasePointer, forKey:"stackOffsetFromBasePointer")
+        super.encode(with:coder)
+        }
+        
     public required init?(coder:NSCoder)
         {
         fatalError("init(coder:) has not been implemented")

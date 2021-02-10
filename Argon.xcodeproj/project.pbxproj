@@ -222,6 +222,8 @@
 		BF979DBC25832488002AFB7F /* NSColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF979DBB25832488002AFB7F /* NSColor.swift */; };
 		BF979DC9258347D8002AFB7F /* ParameterName.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF979DC8258347D8002AFB7F /* ParameterName.swift */; };
 		BF979DD32583B28E002AFB7F /* TokenLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF979DD22583B28E002AFB7F /* TokenLocation.swift */; };
+		BFA2064725D3E87C00376EB8 /* ArgonSourceFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA2064625D3E87C00376EB8 /* ArgonSourceFile.swift */; };
+		BFA2064A25D3E9F900376EB8 /* ArgonModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA2064925D3E9F900376EB8 /* ArgonModule.swift */; };
 		BFA4BFE1258BF5AD0040DE86 /* Location.argon in Resources */ = {isa = PBXBuildFile; fileRef = BFA4BFDC258BF5AD0040DE86 /* Location.argon */; };
 		BFA4BFE2258BF5AD0040DE86 /* MedicineModule.argon in Resources */ = {isa = PBXBuildFile; fileRef = BFA4BFDD258BF5AD0040DE86 /* MedicineModule.argon */; };
 		BFA4BFE3258BF5AD0040DE86 /* People(Professions).argon in Resources */ = {isa = PBXBuildFile; fileRef = BFA4BFDE258BF5AD0040DE86 /* People(Professions).argon */; };
@@ -477,6 +479,8 @@
 		BF979DBB25832488002AFB7F /* NSColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSColor.swift; sourceTree = "<group>"; };
 		BF979DC8258347D8002AFB7F /* ParameterName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterName.swift; sourceTree = "<group>"; };
 		BF979DD22583B28E002AFB7F /* TokenLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenLocation.swift; sourceTree = "<group>"; };
+		BFA2064625D3E87C00376EB8 /* ArgonSourceFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgonSourceFile.swift; sourceTree = "<group>"; };
+		BFA2064925D3E9F900376EB8 /* ArgonModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgonModule.swift; sourceTree = "<group>"; };
 		BFA4BFDC258BF5AD0040DE86 /* Location.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Location.argon; sourceTree = "<group>"; };
 		BFA4BFDD258BF5AD0040DE86 /* MedicineModule.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MedicineModule.argon; sourceTree = "<group>"; };
 		BFA4BFDE258BF5AD0040DE86 /* People(Professions).argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "People(Professions).argon"; sourceTree = "<group>"; };
@@ -882,6 +886,8 @@
 				BF08FB4E25803A2900C4AC6F /* Main.storyboard */,
 				BF4458C625A1F2CF00CB52BE /* SegmentView.swift */,
 				BF08FB4C25803A2900C4AC6F /* Assets.xcassets */,
+				BFA2064625D3E87C00376EB8 /* ArgonSourceFile.swift */,
+				BFA2064925D3E9F900376EB8 /* ArgonModule.swift */,
 			);
 			path = "Argon Browser";
 			sourceTree = "<group>";
@@ -1212,6 +1218,7 @@
 				BF7B472D25C00A1100FB22DC /* IdentifierExpression.swift in Sources */,
 				BF57C36925B6FE760024F95F /* LayoutSlot.swift in Sources */,
 				BF08FBF325803A6A00C4AC6F /* SelectStatement.swift in Sources */,
+				BFA2064725D3E87C00376EB8 /* ArgonSourceFile.swift in Sources */,
 				BF08FC2B25803A6A00C4AC6F /* Argon.swift in Sources */,
 				BF08FC2A25803A6A00C4AC6F /* CodeOptimiser.swift in Sources */,
 				BF7B471825C0095800FB22DC /* LiteralSymbolExpression.swift in Sources */,
@@ -1265,6 +1272,7 @@
 				BF45F1DA2593E3D300376006 /* ArrayClass.swift in Sources */,
 				BF08FBF725803A6A00C4AC6F /* ForInStatement.swift in Sources */,
 				BF5AFF6725A3651200CED0AC /* String+Extensions.swift in Sources */,
+				BFA2064A25D3E9F900376EB8 /* ArgonModule.swift in Sources */,
 				BF08FBD725803A6A00C4AC6F /* SourceFile.swift in Sources */,
 				BF08FC3925803AB100C4AC6F /* DisplayView.swift in Sources */,
 				BFD04BE32590C378003FDD90 /* ValueLocation.swift in Sources */,

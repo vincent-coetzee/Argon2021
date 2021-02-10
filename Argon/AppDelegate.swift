@@ -16,7 +16,6 @@ class AppDelegate: NSObject, NSApplicationDelegate
         let sourceItem = SourceFolder(path:"/Users/vincent/Development/Development2021/Argon Projects/Medicine/")
         let item = sourceItem.children[0]
         let source = item.source
-//        self.tokenStream.reset(source:source)xxw
         do
             {
             Compiler.shared.compile(source: source)
@@ -24,7 +23,9 @@ class AppDelegate: NSObject, NSApplicationDelegate
             for module in modules
                 {
                 let moduleName = module.shortName
-                NSKeyedArchiver.archiveRootObject(module,toFile: "/Users/vincent/Desktop/\(moduleName).module.ar")
+                let output = try NSKeyedArchiver.archivedData(withRootObject: module,requiringSecureCoding: false)
+                let fileURL = URL(fileURLWithPath: "/Users/vincent/Desktop/\(moduleName).arm")
+                try output.write(to: fileURL)
                 }
             }
         catch let error

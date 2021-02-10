@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal class TypeSymbol:Symbol
+internal class TypeSymbol:Symbol,NSCoding
     {
     override internal var typeClass:Class
         {
@@ -40,6 +40,11 @@ internal class TypeSymbol:Symbol
         fatalError("init(coder:) has not been implemented")
         }
         
+    public override func encode(with coder:NSCoder)
+        {
+        coder.encode(self.baseType,forKey: "baseType")
+        super.encode(with:coder)
+        }
         
     internal override func pushScope()
         {
