@@ -1,0 +1,4 @@
+module ArgonFFI [system] [extern_c] {
+    header "ArgonFFI.h"
+    export *
+}

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+//import ArgonFFI
 
 public struct Argon
     {
@@ -146,6 +147,33 @@ public struct Argon
             }
         }
 
+//    static func address(of:inout Any) -> Word
+//        {
+//        return(unsafeBitCast(of,to:Word.self))
+//        }
+//        
+//    static func push(word:Word)
+//        {
+//        PushWord(CWord(word))
+//        }
+//        
+//    static func call(address:Word)
+//        {
+//        CallAddress(address)
+//        }
+//        
+//    static func junk(word:Word)
+//        {
+//        print(word)
+//        }
+//        
+//    static func explode()
+//        {
+//        let value:CWord = 2001
+//        self.push(word:value)
+//        let function = VoidFunctionAddress()
+//        self.call(address:function)
+//        }
     }
 
 extension Argon.Integer

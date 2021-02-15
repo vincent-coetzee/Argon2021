@@ -10,6 +10,11 @@ import Foundation
 
 public class Symbol:ParseNode
     {
+    public override var debugDescription: String
+        {
+        return("\(Swift.type(of:self))(\(self.shortName))")
+        }
+        
     public var fullHash:Int
         {
         return(self.fullName.hashValue)

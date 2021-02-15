@@ -9,5 +9,6 @@
 #ifndef RawMemory_h
 #define RawMemory_h
 
+int sharedMemoryOpen(const char* name);
 
 #endif /* RawMemory_h */

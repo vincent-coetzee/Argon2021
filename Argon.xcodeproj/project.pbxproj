@@ -134,7 +134,6 @@
 		BF5AFF5B25A2F1C100CED0AC /* BrowserSystemClassItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5AFF5A25A2F1C100CED0AC /* BrowserSystemClassItem.swift */; };
 		BF5AFF5E25A2F1FA00CED0AC /* BrowserSystemMethodItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5AFF5D25A2F1FA00CED0AC /* BrowserSystemMethodItem.swift */; };
 		BF5AFF6725A3651200CED0AC /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5AFF6625A3651200CED0AC /* String+Extensions.swift */; };
-		BF5AFF6A25A4D3C000CED0AC /* ArgonProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5AFF6925A4D3C000CED0AC /* ArgonProject.swift */; };
 		BF5AFF6D25A4E28500CED0AC /* ArgonModuleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5AFF6C25A4E28500CED0AC /* ArgonModuleView.swift */; };
 		BF5AFF7025A4E7BA00CED0AC /* ArgonMorph.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5AFF6F25A4E7BA00CED0AC /* ArgonMorph.swift */; };
 		BF5AFF7325A4EA9300CED0AC /* LayoutFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5AFF7225A4EA9300CED0AC /* LayoutFrame.swift */; };
@@ -231,6 +230,7 @@
 		BFA4BFE5258BF5AD0040DE86 /* People.argon in Resources */ = {isa = PBXBuildFile; fileRef = BFA4BFE0258BF5AD0040DE86 /* People.argon */; };
 		BFBB0F3A25B39293008F8E3E /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBB0F3925B39293008F8E3E /* Int+Extensions.swift */; };
 		BFBB0F3D25B3A41F008F8E3E /* IndirectMemoryRegisterOffsetAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBB0F3C25B3A41F008F8E3E /* IndirectMemoryRegisterOffsetAddress.swift */; };
+		BFCE00CA25DAA796001479FA /* ArgonProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCE00C925DAA796001479FA /* ArgonProject.swift */; };
 		BFD04BE02590BED5003FDD90 /* RegisterIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BDF2590BED5003FDD90 /* RegisterIndex.swift */; };
 		BFD04BE32590C378003FDD90 /* ValueLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BE22590C378003FDD90 /* ValueLocation.swift */; };
 		BFD04BE62590C3C8003FDD90 /* Register.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD04BE52590C3C8003FDD90 /* Register.swift */; };
@@ -349,7 +349,6 @@
 		BF08FBC825803A6A00C4AC6F /* PeepholeCodeOptimiser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeepholeCodeOptimiser.swift; sourceTree = "<group>"; };
 		BF08FBC925803A6A00C4AC6F /* CodeOptimiser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeOptimiser.swift; sourceTree = "<group>"; };
 		BF08FBCA25803A6A00C4AC6F /* Argon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Argon.swift; sourceTree = "<group>"; };
-		BF08FC2D25803A7C00C4AC6F /* Argon-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Argon-Bridging-Header.h"; sourceTree = "<group>"; };
 		BF08FC2E25803A7D00C4AC6F /* Break.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Break.h; sourceTree = "<group>"; };
 		BF08FC2F25803A7D00C4AC6F /* Break.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Break.m; sourceTree = "<group>"; };
 		BF08FC3225803AB100C4AC6F /* NSTextView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSTextView+Extensions.swift"; sourceTree = "<group>"; };
@@ -391,7 +390,6 @@
 		BF5AFF5A25A2F1C100CED0AC /* BrowserSystemClassItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserSystemClassItem.swift; sourceTree = "<group>"; };
 		BF5AFF5D25A2F1FA00CED0AC /* BrowserSystemMethodItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserSystemMethodItem.swift; sourceTree = "<group>"; };
 		BF5AFF6625A3651200CED0AC /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
-		BF5AFF6925A4D3C000CED0AC /* ArgonProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgonProject.swift; sourceTree = "<group>"; };
 		BF5AFF6C25A4E28500CED0AC /* ArgonModuleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgonModuleView.swift; sourceTree = "<group>"; };
 		BF5AFF6F25A4E7BA00CED0AC /* ArgonMorph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgonMorph.swift; sourceTree = "<group>"; };
 		BF5AFF7225A4EA9300CED0AC /* LayoutFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutFrame.swift; sourceTree = "<group>"; };
@@ -486,8 +484,13 @@
 		BFA4BFDE258BF5AD0040DE86 /* People(Professions).argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "People(Professions).argon"; sourceTree = "<group>"; };
 		BFA4BFDF258BF5AD0040DE86 /* Location(Location).argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Location(Location).argon"; sourceTree = "<group>"; };
 		BFA4BFE0258BF5AD0040DE86 /* People.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = People.argon; sourceTree = "<group>"; };
+		BFA4F6A125DAD8C20057C375 /* ArgonFFI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ArgonFFI.h; sourceTree = "<group>"; };
+		BFA4F6A225DAD8C20057C375 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		BFA4F6A325DAD8C20057C375 /* ArgonFFI.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ArgonFFI.c; sourceTree = "<group>"; };
 		BFBB0F3925B39293008F8E3E /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		BFBB0F3C25B3A41F008F8E3E /* IndirectMemoryRegisterOffsetAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndirectMemoryRegisterOffsetAddress.swift; sourceTree = "<group>"; };
+		BFCE00C925DAA796001479FA /* ArgonProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgonProject.swift; sourceTree = "<group>"; };
+		BFCE00D525DAACDA001479FA /* Argon-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Argon-Bridging-Header.h"; sourceTree = "<group>"; };
 		BFD04BDF2590BED5003FDD90 /* RegisterIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterIndex.swift; sourceTree = "<group>"; };
 		BFD04BE22590C378003FDD90 /* ValueLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueLocation.swift; sourceTree = "<group>"; };
 		BFD04BE52590C3C8003FDD90 /* Register.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Register.swift; sourceTree = "<group>"; };
@@ -527,13 +530,14 @@
 		BF08FB3A25803A2900C4AC6F = {
 			isa = PBXGroup;
 			children = (
-				BF1F082025D28A89001A8DC5 /* RawMemory */,
-				BF5AFF4C25A2EB8700CED0AC /* Argon Class Browser */,
+				BFA4F6A025DAD8C20057C375 /* ArgonFFI */,
 				BFA4BFDB258BF5AD0040DE86 /* Medicine */,
 				BF3B7FD625893CA900582C17 /* Argon */,
+				BF5AFF4C25A2EB8700CED0AC /* Argon Class Browser */,
+				BF1F082025D28A89001A8DC5 /* RawMemory */,
+				BF08FC3C25803BDA00C4AC6F /* Argon Browser */,
 				BF3B7FCE2589356500582C17 /* Creole */,
 				BF979DB7258323F4002AFB7F /* AppKit + Swift + Extensions */,
-				BF08FC3C25803BDA00C4AC6F /* Argon Browser */,
 				BF08FB4525803A2900C4AC6F /* Argon */,
 				BF08FB4425803A2900C4AC6F /* Products */,
 			);
@@ -554,11 +558,10 @@
 				BF08FB5A25803A6A00C4AC6F /* Compiler */,
 				BF08FB4625803A2900C4AC6F /* AppDelegate.swift */,
 				BF08FB4A25803A2900C4AC6F /* Document.swift */,
-				BF5AFF6925A4D3C000CED0AC /* ArgonProject.swift */,
 				BF08FB5125803A2900C4AC6F /* Info.plist */,
 				BF08FB5225803A2900C4AC6F /* Argon.entitlements */,
-				BF08FC2D25803A7C00C4AC6F /* Argon-Bridging-Header.h */,
 				BF5AFF6625A3651200CED0AC /* String+Extensions.swift */,
+				BFCE00D525DAACDA001479FA /* Argon-Bridging-Header.h */,
 			);
 			path = Argon;
 			sourceTree = "<group>";
@@ -888,6 +891,7 @@
 				BF08FB4C25803A2900C4AC6F /* Assets.xcassets */,
 				BFA2064625D3E87C00376EB8 /* ArgonSourceFile.swift */,
 				BFA2064925D3E9F900376EB8 /* ArgonModule.swift */,
+				BFCE00C925DAA796001479FA /* ArgonProject.swift */,
 			);
 			path = "Argon Browser";
 			sourceTree = "<group>";
@@ -988,6 +992,16 @@
 			);
 			name = Medicine;
 			path = "../Argon Projects/Medicine";
+			sourceTree = "<group>";
+		};
+		BFA4F6A025DAD8C20057C375 /* ArgonFFI */ = {
+			isa = PBXGroup;
+			children = (
+				BFA4F6A225DAD8C20057C375 /* module.modulemap */,
+				BFA4F6A325DAD8C20057C375 /* ArgonFFI.c */,
+				BFA4F6A125DAD8C20057C375 /* ArgonFFI.h */,
+			);
+			path = ArgonFFI;
 			sourceTree = "<group>";
 		};
 		BFD04BF925915732003FDD90 /* Three Address Code */ = {
@@ -1240,6 +1254,7 @@
 				BF979DB52580F8ED002AFB7F /* TokenStyle.swift in Sources */,
 				BF08FBEF25803A6A00C4AC6F /* WhenClause.swift in Sources */,
 				BF7B470625C008C800FB22DC /* ThisExpression.swift in Sources */,
+				BFCE00CA25DAA796001479FA /* ArgonProject.swift in Sources */,
 				BF08FBDE25803A6A00C4AC6F /* ObjectFileGenerator.swift in Sources */,
 				BF08FC1525803A6A00C4AC6F /* InductionVariable.swift in Sources */,
 				BFBB0F3A25B39293008F8E3E /* Int+Extensions.swift in Sources */,
@@ -1297,7 +1312,6 @@
 				BF08FBE225803A6A00C4AC6F /* Block.swift in Sources */,
 				BF7B477225C00D1A00FB22DC /* DateTimeValueExpression.swift in Sources */,
 				BF1F082725D2B4E6001A8DC5 /* RawSlot.swift in Sources */,
-				BF5AFF6A25A4D3C000CED0AC /* ArgonProject.swift in Sources */,
 				BF08FC2525803A6A00C4AC6F /* SlotAttributes.swift in Sources */,
 				BF08FC1225803A6A00C4AC6F /* TypeSymbol.swift in Sources */,
 				BF08FC1A25803A6A00C4AC6F /* Class.swift in Sources */,
@@ -1463,6 +1477,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = DLH9UBQV34;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Argon/Info.plist;
@@ -1470,8 +1485,10 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MODULEMAP_FILE = "${SRCROOT}/ArgonFFI/module.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.macsemantics.Argon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INCLUDE_PATHS = "${SRCROOT}/**";
 				SWIFT_OBJC_BRIDGING_HEADER = "Argon/Argon-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1488,6 +1505,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = DLH9UBQV34;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Argon/Info.plist;
@@ -1495,8 +1513,10 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MODULEMAP_FILE = "${SRCROOT}/ArgonFFI/module.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.macsemantics.Argon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INCLUDE_PATHS = "${SRCROOT}/**";
 				SWIFT_OBJC_BRIDGING_HEADER = "Argon/Argon-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};

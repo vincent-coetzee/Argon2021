@@ -58,7 +58,7 @@ class ArgonBrowserViewController: NSViewController
     private func initOutliner()
         {
         let panel = NSOpenPanel()
-        panel.allowedFileTypes = ["argon","arproj"]
+        panel.allowedFileTypes = ["argon","arm","arp"]
         panel.canChooseDirectories = true
         panel.canChooseFiles = true
         panel.allowsMultipleSelection = true

@@ -7,8 +7,12 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeIconSystemGenerated</key>
+			<integer>0</integer>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.example.plain-text</string>
@@ -76,7 +80,7 @@
 				<string>com.macsemantics.argon.project</string>
 			</array>
 			<key>LSTypeIsPackage</key>
-			<integer>0</integer>
+			<integer>1</integer>
 			<key>NSDocumentClass</key>
 			<string>$(PRODUCT_MODULE_NAME).ArgonProject</string>
 		</dict>
@@ -162,15 +166,13 @@
 					<string>arm</string>
 				</array>
 				<key>public.mime-type</key>
-				<array>
-					<string>com.macsemantics.argon.module</string>
-				</array>
+				<array/>
 			</dict>
 		</dict>
 		<dict>
 			<key>UTTypeConformsTo</key>
 			<array>
-				<string>public.data</string>
+				<string>com.apple.package</string>
 			</array>
 			<key>UTTypeDescription</key>
 			<string>Argon Project File</string>
@@ -192,9 +194,7 @@
 					<string>arp</string>
 				</array>
 				<key>public.mime-type</key>
-				<array>
-					<string>com.macsemantics.argon.project</string>
-				</array>
+				<array/>
 			</dict>
 		</dict>
 		<dict>
@@ -228,17 +228,28 @@
 		<dict>
 			<key>UTTypeConformsTo</key>
 			<array>
-				<string>public.plain-text</string>
+				<string>com.apple.package</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>Example Text</string>
+			<string>Argon Project File</string>
+			<key>UTTypeIconFile</key>
+			<string>ArgonProjectIcon</string>
+			<key>UTTypeIcons</key>
+			<dict>
+				<key>UTTypeIconBadgeName</key>
+				<string></string>
+			</dict>
 			<key>UTTypeIdentifier</key>
-			<string>com.example.plain-text</string>
+			<string>com.macsemantics.argon.project</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
 				<array>
-					<string>exampletext</string>
+					<string>arp</string>
+				</array>
+				<key>public.mime-type</key>
+				<array>
+					<string>com.macsemantics.argon.project</string>
 				</array>
 			</dict>
 		</dict>
