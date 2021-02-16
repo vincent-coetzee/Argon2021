@@ -94,8 +94,8 @@
             filePath = "Argon/Compiler/Phases/Parsing/Parser.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2748"
-            endingLineNumber = "2748"
+            startingLineNumber = "2750"
+            endingLineNumber = "2750"
             landmarkName = "parseObjectTerm(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -193,22 +193,6 @@
             startingLineNumber = "30"
             endingLineNumber = "30"
             landmarkName = "generateIntermediateCode(in:codeHolder:into:using:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "7B974094-C668-459D-A6D7-E5A8C47E58FF"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Argon/Compiler/Phases/Parsing/Parser.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2583"
-            endingLineNumber = "2583"
-            landmarkName = "parseSlotTerm(expression:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -350,8 +334,8 @@
             filePath = "Argon/Compiler/Phases/Parsing/Parser.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2400"
-            endingLineNumber = "2400"
+            startingLineNumber = "2402"
+            endingLineNumber = "2402"
             landmarkName = "parsePrimaryTerm()"
             landmarkType = "7">
          </BreakpointContent>
@@ -423,54 +407,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C4FB26CA-CEBC-4462-908F-3B292CC7DCBF"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Argon/Compiler/Phases/Parsing/Parser.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2393"
-            endingLineNumber = "2393"
-            landmarkName = "parsePrimaryTerm()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F42B8D34-166A-4F4E-A27E-5186C31C591E"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Argon/Compiler/Phases/Parsing/Parser.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2724"
-            endingLineNumber = "2724"
-            landmarkName = "parseObjectTerm(_:_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "77192FD4-6576-44F8-A3F2-568597C105B8"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Argon/Compiler/Phases/Parsing/Parser.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2100"
-            endingLineNumber = "2100"
-            landmarkName = "parseArguments()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "EF3E697D-75DE-4DD4-871C-B51E6F7919F2"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -482,6 +418,54 @@
             endingLineNumber = "15"
             landmarkName = "initBaseClasses()"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "52E53408-D8E3-4F09-BCC0-AB30C0ED609B"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Argon/Compiler/Phases/Parsing/Parser.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "2593"
+            endingLineNumber = "2593"
+            landmarkName = "parseSlotTerm(expression:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "52E53408-D8E3-4F09-BCC0-AB30C0ED609B - e2847295204d6d55"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Argon.Parser.(parseSlotTerm in _BB8E8BD4F83BD4D5E5159328F673FEAA)(expression: Argon.Expression) throws -&gt; Argon.Expression"
+                  moduleName = "Argon"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vincent/Development/Development2021/Argon/Argon/Compiler/Phases/Parsing/Parser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "2593"
+                  endingLineNumber = "2593"
+                  offsetFromSymbolStart = "899">
+               </Location>
+               <Location
+                  uuid = "52E53408-D8E3-4F09-BCC0-AB30C0ED609B - e2847295204d6d55"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Argon.Parser.(parseSlotTerm in _BB8E8BD4F83BD4D5E5159328F673FEAA)(expression: Argon.Expression) throws -&gt; Argon.Expression"
+                  moduleName = "Argon"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vincent/Development/Development2021/Argon/Argon/Compiler/Phases/Parsing/Parser.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "2593"
+                  endingLineNumber = "2593"
+                  offsetFromSymbolStart = "1302">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

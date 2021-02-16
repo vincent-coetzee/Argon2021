@@ -1491,6 +1491,12 @@ internal class Parser:CompilerPhase
             self.advance()
             return(identifier)
             }
+        else if self.token.isKeyword
+            {
+            let identifier = self.token.keyword.rawValue
+            self.advance()
+            return(identifier)
+            }
         throw(CompilerError(.identifierExpected,self.token.location))
         }
         
@@ -2388,10 +2394,6 @@ internal class Parser:CompilerPhase
         
     func parsePrimaryTerm() throws -> Expression
         {
-        if self.token.isIdentifier && self.token.identifier == "Pathogen"
-            {
-            print("halt")
-            }
         if self.token.isTypeKeyword
             {
             let type = try self.parseTypeClass()
