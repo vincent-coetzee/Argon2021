@@ -484,7 +484,7 @@ internal class Parser:CompilerPhase
             self.advance()
             returnType = try self.parseTypeClass()
             }
-        let block = try self.parseBlock(parameters:parameters)
+        let block = try self.parseBlock(parameters:parameters,parentScope:Module.innerScope)
         let instance = MethodInstance(shortName:name)
         instance.block = block
         instance.returnTypeClass = returnType
@@ -983,6 +983,8 @@ internal class Parser:CompilerPhase
             {
             let bitSet = BitSet(shortName:setName,keyClass:keyClass!,valueClass:valueKind!)
             Module.innerScope.addSymbol(bitSet)
+            let maker = BitSetMaker(shortName:bitSet.shortName,bitSet:bitSet)
+            Module.innerScope.addSymbol(maker)
             return
             }
         let bitSet = BitSet(shortName:setName,keyClass:nil,valueClass:valueKind!)
@@ -1527,9 +1529,9 @@ internal class Parser:CompilerPhase
         throw(CompilerError(.tagExpected,self.token.location))
         }
         
-    private func parseBlock(parameters:Parameters) throws -> Block
+    private func parseBlock(parameters:Parameters,parentScope:Scope?) throws -> Block
         {
-        let block = Block()
+        let block = Block(parentScope:parentScope)
         for parameter in parameters
             {
             block.addSymbol(parameter)
@@ -2106,9 +2108,16 @@ internal class Parser:CompilerPhase
     private func parseArgument(index:Int) throws -> Argument
         {
         var tag:String?
-        if self.token.isIdentifier && self.tokens[self.tokenIndex].isGluon
+        if (self.token.isIdentifier || self.token.isKeyword) && self.tokens[self.tokenIndex].isGluon
             {
-            tag = self.token.identifier
+            if self.token.isKeyword
+                {
+                tag = self.token.keyword.rawValue
+                }
+            else
+                {
+                tag = self.token.identifier
+                }
             self.advance()
             self.advance()
             }
@@ -2379,6 +2388,10 @@ internal class Parser:CompilerPhase
         
     func parsePrimaryTerm() throws -> Expression
         {
+        if self.token.isIdentifier && self.token.identifier == "Pathogen"
+            {
+            print("halt")
+            }
         if self.token.isTypeKeyword
             {
             let type = try self.parseTypeClass()
@@ -2705,6 +2718,22 @@ internal class Parser:CompilerPhase
                 return(EnumerationCaseValueExpression(name: "\(enumeration.shortName)->\(nextToken.identifier)",enumeration: enumeration,case: enumeration.enumerationCase(named:nextToken.identifier)!))
                 }
             return(LiteralEnumerationExpression(enumeration: enumeration))
+            }
+        else if object is BitSet
+            {
+            let bitSet = object as! BitSet
+            if self.token.isLeftPar
+                {
+                let arguments = try self.parseArguments()
+                if let method = Module.innerScope.lookupMethod(shortName: bitSet.shortName)
+                    {
+                    return(MethodInvocationExpression(methodName: method.shortName, method:method, arguments: arguments))
+                    }
+                else
+                    {
+                    throw(CompilerError(.makerForBitSetShouldHaveBeenAutoDeclared,self.token.location))
+                    }
+                }
             }
         else
             {

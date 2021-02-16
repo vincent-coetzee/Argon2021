@@ -42,6 +42,11 @@ public class ParseNode:NSObject,Scope
         {
         fatalError("This method \(#function) should have been overridden in a subclass")
         }
+        
+    func lookupMethod(shortName: String) -> Method?
+        {
+        fatalError("This method \(#function) should have been overridden in a subclass I am \(Swift.type(of:self))")
+        }
 //        
 //    internal required init()
 //        {

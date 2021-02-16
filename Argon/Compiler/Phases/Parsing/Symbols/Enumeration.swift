@@ -12,7 +12,7 @@ public class Enumeration:Class
     {
     internal static let conduitSinkEnumeration = Enumeration(shortName:"ConduitSink",class:.uIntegerClass).case("#none",value:0).case("#memory",value:1).case("#socket",value:2).case("#file",value:3)
     
-    private var cases:[EnumerationCase] = []
+    internal var cases:[EnumerationCase] = []
     private var _class:Class
     
     internal var baseClass:Class
@@ -47,6 +47,11 @@ public class Enumeration:Class
         fatalError("init(coder:) has not been implemented")
         }
     
+   public override func accept(_ visitor:SymbolVisitor)
+        {
+        visitor.acceptEnumeration(self)
+        }
+        
     func addCase(_ enumCase:EnumerationCase)
         {
         self.cases.append(enumCase)
@@ -143,6 +148,15 @@ public class EnumerationCase:Symbol
         super.init(shortName:symbol)
         }
         
+    internal var displayString:String
+        {
+        var types = self.associatedTypes.map{$0.shortName}.joined(separator: ",")
+        if !types.isEmpty
+            {
+            types = "(" + types + ")"
+            }
+        return("\(self.shortName)\(types)")
+        }
     internal required init() {
         fatalError("init() has not been implemented")
     }

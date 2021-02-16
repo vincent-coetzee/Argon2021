@@ -14,4 +14,5 @@ internal protocol SymbolTable
     func addSymbol(_ symbol:Symbol,atName:Name) throws
     func lookup(name:Name) -> SymbolSet?
     func lookup(shortName:String) -> SymbolSet?
+    func lookupMethod(shortName:String) -> Method?
     }

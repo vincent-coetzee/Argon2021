@@ -13,6 +13,7 @@ public class RootModule:Module
     private func initBaseClasses()
         {
         self.addSymbol(Class.rootClass)
+        self.addSymbol(Class.objectClass)
         self.addSymbol(Class.addressClass)
         self.addSymbol(Class.valueClass)
         self.addSymbol(Class.metaClass)
@@ -67,10 +68,16 @@ public class RootModule:Module
         self.addSymbol(Class.behaviorClass)
         }
         
+    public override var fullName:Name
+        {
+        return(Name("/Argon"))
+        }
+        
     internal func initRootModule() -> Self
         {
         self.initBaseClasses()
         self.initSystemModules()
+        SymbolWalker().walkSymbols(self)
         return(self)
         }
         
@@ -108,7 +115,6 @@ public class RootModule:Module
     private func initCollectionsModule()
         {
         let collectionsModule = self.placeholderModule("Collections",in: self)
-        collectionsModule.addSymbol(Class.arrayClass)
         let indexClass = collectionsModule.placeholderClass("Index",parents:[.valueClass])
         let processionClass = collectionsModule.placeholderClass("Procession",parents:[.valueClass]).placeholderSlot("currentIndex",class:indexClass).placeholderSlot("nextIndex",class:indexClass).placeholderSlot("previousIndex",class:indexClass).placeholderSlot("isLastIndex",class:.booleanClass)
         let collectionClass = collectionsModule.placeholderClass("Collection",parents:[.objectClass]).placeholderSlot("count",class:.integerClass).placeholderSlot("firstIndex",class:indexClass).placeholderSlot("lastIndex",class:indexClass)

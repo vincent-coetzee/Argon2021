@@ -19,4 +19,9 @@ public class Constant:Variable
             {
             }
         }
+        
+   public override func accept(_ visitor:SymbolVisitor)
+        {
+        visitor.acceptConstant(self)
+        }
     }

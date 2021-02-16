@@ -23,6 +23,7 @@ class AppDelegate: NSObject, NSApplicationDelegate
                 var lastModule:Module?
                 var lastData:Data?
                 Compiler.shared.compile(source: source)
+                SymbolWalker().walkSymbols(Module.rootModule)
                 let modules = Compiler.shared.modules
                 for module in modules
                     {

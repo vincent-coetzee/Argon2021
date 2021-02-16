@@ -91,7 +91,13 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor
         
     public var fullName:Name
         {
-        return(self.parent?.fullName ?? Name() + self.shortName)
+        if self.parent == nil
+            {
+            fatalError("parent is nil, my name is \(self.shortName) I am a \(Swift.type(of:self))")
+            }
+        var aName = self.parent?.fullName ?? Name()
+        aName = aName + self.shortName
+        return(aName)
         }
         
     internal var name:Name

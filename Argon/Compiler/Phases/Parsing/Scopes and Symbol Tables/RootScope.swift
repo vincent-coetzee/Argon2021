@@ -33,6 +33,21 @@ internal class RootScope:Scope
         return(nil as SymbolSet?)
         }
         
+    public func lookupMethod(shortName:String) -> Method?
+        {
+        if let set = self.lookup(shortName:shortName)
+            {
+            for symbol in set.symbols
+                {
+                if symbol is Method
+                    {
+                    return(symbol as? Method)
+                    }
+                }
+            }
+        return(nil)
+        }
+        
     internal func addSymbol(_ symbol:Symbol,atName name:Name) throws
         {
         if let entity = Module.rootScope.lookup(name: name.withoutLast())?.first

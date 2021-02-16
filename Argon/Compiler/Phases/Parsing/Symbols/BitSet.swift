@@ -41,6 +41,11 @@ public class BitSet:Symbol
         super.init(shortName:shortName)
         }
     
+   public override func accept(_ visitor:SymbolVisitor)
+        {
+        visitor.acceptBitSet(self)
+        }
+        
     public var inferredBaseTypeClass:Class
         {
         return(.wordClass)

@@ -55,6 +55,21 @@ internal class LocalScope:Scope
             }
         }
         
+    public func lookupMethod(shortName:String) -> Method?
+        {
+        if let set = self.lookup(shortName:shortName)
+            {
+            for symbol in set.symbols
+                {
+                if symbol is Method
+                    {
+                    return(symbol as? Method)
+                    }
+                }
+            }
+        return(nil)
+        }
+        
     internal func lookup(shortName:String) -> SymbolSet?
         {
         if let set = self.symbols[shortName]

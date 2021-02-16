@@ -33,7 +33,13 @@ public class Block:Statement,SlotContainer
     internal var statements:[Statement] = []
     internal var symbols:[String:SymbolSet] = [:]
     internal var marker:Int?
-
+    
+    convenience init(parentScope:Scope?)
+        {        
+        self.init()
+        self.parentScope = parentScope
+        }
+        
     init(block:Block)
         {
         self.statements = block.statements
@@ -120,6 +126,21 @@ public class Block:Statement,SlotContainer
             return(set)
             }
         return(self.parentScope?.lookup(shortName:shortName))
+        }
+        
+    internal override func lookupMethod(shortName:String) -> Method?
+        {
+        if let set = self.symbols[shortName]
+            {
+            for symbol in set.symbols
+                {
+                if let result = symbol as? Method
+                    {
+                    return(result)
+                    }
+                }
+            }
+        return(self.parentScope?.lookupMethod(shortName:shortName))
         }
         
     public override func typeCheck() throws

@@ -147,4 +147,5 @@ public enum SystemError:Equatable,Error
     case objectIdentityErrorObjectWithIdNotFound
     case objectKindNotKnown
     case plusOrIntegerLiteralExpectedInBitSetField
+    case makerForBitSetShouldHaveBeenAutoDeclared
     }

@@ -116,6 +116,21 @@ public class Module:SymbolContainer,NSCoding
         return(self.parentScope?.lookup(shortName: shortName))
         }
         
+    public override func lookupMethod(shortName:String) -> Method?
+        {
+        if let set = self.lookup(shortName:shortName)
+            {
+            for symbol in set.symbols
+                {
+                if let method = symbol as? Method
+                    {
+                    return(method)
+                    }
+                }
+            }
+        return(nil)
+        }
+        
     internal override func addSymbol(_ symbol:Symbol,atName name:Name) throws
         {
         if let entity = Module.rootScope.lookup(name: name.withoutLast())?.first
@@ -239,6 +254,11 @@ public class ModuleClass:Class
 
 public class ImportedModuleReference:Module
     {
+    public override var fullName:Name
+        {
+        return(self.parent?.fullName ?? Name() + self.shortName)
+        }
+        
     internal override func lookupClass(_ name:String) -> Class?
         {
         if let aClass = super.lookupClass(name)

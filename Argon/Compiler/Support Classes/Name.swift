@@ -31,7 +31,7 @@ public struct Name:Hashable,ExpressibleByArrayLiteral
             switch(self)
                 {
                 case .anchor:
-                    return("/")
+                    return("")
                 case .element(let string):
                     return(string)
                 }
@@ -84,15 +84,7 @@ public struct Name:Hashable,ExpressibleByArrayLiteral
         
     public var stringName:String
         {
-        if self.components.isEmpty
-            {
-            return("")
-            }
-        if self.components.count == 1
-            {
-            return("/\(self.components.first!)")
-            }
-        return("//"+self.components.map{$0.string}.joined(separator: "/"))
+        return(self.components.map{$0.string}.joined(separator:"/"))
         }
         
     public var first:String
@@ -153,7 +145,7 @@ public struct Name:Hashable,ExpressibleByArrayLiteral
         let pieces = piece.components(separatedBy: "/")
         if pieces.count > 0 && pieces.first!.isEmpty
             {
-            self.components = Array(pieces.dropFirst()).map{.element($0)}
+            self.components = [NameComponent.anchor] + Array(pieces.dropFirst()).map{.element($0)}
             }
         else
             {

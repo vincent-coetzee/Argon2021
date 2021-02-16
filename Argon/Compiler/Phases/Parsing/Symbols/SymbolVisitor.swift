@@ -13,6 +13,9 @@ public protocol SymbolVisitor
     func acceptModule(_ module:Module)
     func acceptClass(_ aClass:Class)
     func acceptMethod(_ method:Method)
+    func acceptBitSet(_ bitSet:BitSet)
+    func acceptEnumeration(_ enumeration:Enumeration)
+    func acceptConstant(_ constant:Constant)
     }
 
 public protocol SymbolVisitorAcceptor
@@ -46,6 +49,44 @@ public class SymbolWalker:SymbolVisitor
         print("ERROR: \(Swift.type(of:symbol)) \(symbol.shortName) should have been handled directly")
         }
         
+    public func acceptBitSet(_ bitSet:BitSet)
+        {
+        self.indented
+            {
+            print("\(indent)BitSet(\(bitSet.shortName))")
+            self.indented
+                {
+                for field in bitSet.fields.values
+                    {
+                    print("\(indent)\(field.name)(\(field.offset),\(field.width))")
+                    }
+                }
+            }
+        }
+        
+    public func acceptEnumeration(_ enumeration:Enumeration)
+        {
+        self.indented
+            {
+            print("\(indent)Enumeration(\(enumeration.shortName))")
+            self.indented
+                {
+                for aCase in enumeration.cases
+                    {
+                    print("\(indent)\(aCase.displayString)")
+                    }
+                }
+            }
+        }
+        
+    public func acceptConstant(_ constant:Constant)
+        {
+        self.indented
+            {
+            print("\(indent)Constant(\(constant.shortName))")
+            }
+        }
+    
     public func acceptModule(_ module:Module)
         {
         self.indented
@@ -77,18 +118,29 @@ public class SymbolWalker:SymbolVisitor
         
     public func acceptClass(_ aClass:Class)
         {
-        print("\(indent)Class(\(aClass.shortName))")
         self.indented
             {
-            for slot in aClass.localSlots.values
+            var supers = aClass.superclasses.map{$0.fullName.stringName}.joined(separator:",")
+            if !supers.isEmpty
                 {
-                print("\(indent)\(slot.shortName) \(slot._class.shortName)")
+                supers = "::(" + supers + ")"
+                }
+            print("\(indent)Class(\(aClass.shortName))\(supers)")
+            self.indented
+                {
+                for slot in aClass.localSlots.values
+                    {
+                    print("\(indent)\(slot.shortName) \(slot._class.shortName)")
+                    }
                 }
             }
         }
         
     public func acceptMethod(_ method:Method)
         {
-        print("\(indent)Method(\(method.shortName))")
+        self.indented
+            {
+            print("\(indent)Method(\(method.shortName))")
+            }
         }
     }
