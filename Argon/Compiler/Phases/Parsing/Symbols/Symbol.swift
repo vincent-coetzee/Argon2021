@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Symbol:ParseNode
+public class Symbol:ParseNode,SymbolVisitorAcceptor
     {
     public override var debugDescription: String
         {
@@ -121,13 +121,18 @@ public class Symbol:ParseNode
     
     internal init(name:Name,parent:Symbol? = nil)
         {
-        self.shortName = name.first
+        self.shortName = name.last
         self.parent = parent
         self.parentId = self.parent?.id
         self.id = UUID()
         super.init()
         }
 
+    public func accept(_ visitor:SymbolVisitor)
+        {
+        visitor.acceptSymbol(self)
+        }
+        
     internal func relinkSymbolsUsingIds(symbols:Dictionary<UUID,Symbol>)
         {
         if let anId = self.parentId,let symbol = symbols[anId]
@@ -182,11 +187,6 @@ public class Symbol:ParseNode
         
     internal func allocateAddresses(using compiler:Compiler) throws
         {
-        }
-    
-    public func dump()
-        {
-        print("\(Swift.type(of:self)) \(self.shortName)")
         }
         
     public func encode(with coder: NSCoder)

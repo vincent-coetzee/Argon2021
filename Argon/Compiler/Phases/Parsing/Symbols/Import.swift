@@ -45,6 +45,9 @@ public class Import:Symbol
         
     private func loadModule()
         {
+        // try and find the module in the central repository, if not make one up
+        let module = ImportedModuleReference(shortName:self.shortName)
+        Module.rootModule.addSymbol(module)
         }
         
     internal required init()

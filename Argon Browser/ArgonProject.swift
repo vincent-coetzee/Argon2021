@@ -10,6 +10,11 @@ import AppKit
 
 class ArgonProject: NSDocument
     {
+    public static let kProjectIcon = NSImage(named:"ArgonProjectIcon")!
+    public static let kSymbolsIcon = NSImage(named:"ArgonSymbolsIcon")!
+    public static let kModuleIcon = NSImage(named:"ArgonModuleIcon")!
+    public static let kSourceFileIcon = NSImage(named:"ArgonSourceFileIcon")!
+    
     public var childFileKeys:[String]
         {
         guard let wrappers = self.wrapper.fileWrappers?.values else
@@ -42,29 +47,42 @@ class ArgonProject: NSDocument
         self.wasCreated = false
         }
         
+    private func iconImageForExtension(_ theExtension:String) -> NSImage
+        {
+        if theExtension == "arm"
+            {
+            return(Self.kModuleIcon)
+            }
+        else if theExtension == "argon"
+            {
+            return(Self.kSourceFileIcon)
+            }
+        else if theExtension == "arp"
+            {
+            return(Self.kProjectIcon)
+            }
+        else if theExtension == "arb"
+            {
+            return(Self.kSymbolsIcon)
+            }
+        else
+            {
+            fatalError("Invalid extension \(theExtension)")
+            }
+        }
+        
     func addFile(data:Data,at name:String)
         {
         let key = self.wrapper.addRegularFile(withContents:data,preferredFilename:name)
         let file = self.wrapper.fileWrappers![key]
         let theExtension = (name as NSString).pathExtension
-        if theExtension == "arm"
-            {
-            file!.icon = NSImage(named:"ArgonModuleIcon")!
-            }
-        else if theExtension == "argon"
-            {
-             file!.icon = NSImage(named:"ArgonSourceFileIcon")!
-            }
-        else if theExtension == "arp"
-            {
-             file!.icon = NSImage(named:"ArgonProjectIcon")!
-            }
+        file?.icon = self.iconImageForExtension(theExtension)
         }
         
     func write() throws
         {
         let url = URL(fileURLWithPath: self.path)
-        self.wrapper.icon = NSImage(named: "ArgonProjectIcon")!
+        self.wrapper.icon = Self.kProjectIcon
         try self.wrapper.write(to:url,options:[],originalContentsURL:nil)
         }
         

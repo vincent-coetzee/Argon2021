@@ -105,6 +105,7 @@
 		BF1F082725D2B4E6001A8DC5 /* RawSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F082625D2B4E6001A8DC5 /* RawSlot.swift */; };
 		BF1F082B25D2CB17001A8DC5 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F082A25D2CB17001A8DC5 /* OrderedSet.swift */; };
 		BF1F082E25D2F676001A8DC5 /* Max+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F082D25D2F676001A8DC5 /* Max+Extensions.swift */; };
+		BF2357FC25DB56CC0087E27F /* SymbolVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2357FB25DB56CC0087E27F /* SymbolVisitor.swift */; };
 		BF24C86D25C2B6B800104E2E /* ObjectHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF24C86C25C2B6B800104E2E /* ObjectHeader.swift */; };
 		BF24C87025C2CD4F00104E2E /* Word.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF24C86F25C2CD4F00104E2E /* Word.swift */; };
 		BF3B7FD02589356500582C17 /* CCreole.argon in Resources */ = {isa = PBXBuildFile; fileRef = BF3B7FCF2589356500582C17 /* CCreole.argon */; };
@@ -361,6 +362,7 @@
 		BF1F082625D2B4E6001A8DC5 /* RawSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawSlot.swift; sourceTree = "<group>"; };
 		BF1F082A25D2CB17001A8DC5 /* OrderedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
 		BF1F082D25D2F676001A8DC5 /* Max+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Max+Extensions.swift"; sourceTree = "<group>"; };
+		BF2357FB25DB56CC0087E27F /* SymbolVisitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolVisitor.swift; sourceTree = "<group>"; };
 		BF24C86C25C2B6B800104E2E /* ObjectHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectHeader.swift; sourceTree = "<group>"; };
 		BF24C86F25C2CD4F00104E2E /* Word.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Word.swift; sourceTree = "<group>"; };
 		BF3B7FCF2589356500582C17 /* CCreole.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CCreole.argon; sourceTree = "<group>"; };
@@ -866,6 +868,7 @@
 				BF08FBAA25803A6A00C4AC6F /* UndefinedSymbol.swift */,
 				BF08FBBD25803A6A00C4AC6F /* Variable.swift */,
 				BF08FBB925803A6A00C4AC6F /* VirtualSlot.swift */,
+				BF2357FB25DB56CC0087E27F /* SymbolVisitor.swift */,
 			);
 			path = Symbols;
 			sourceTree = "<group>";
@@ -1229,6 +1232,7 @@
 				BFD58CEC258F355800B2ADDD /* Method.swift in Sources */,
 				BF7B474225C00BAB00FB22DC /* MakerInvocationExpression.swift in Sources */,
 				BF08FBDF25803A6A00C4AC6F /* IntermediateCodeGenerator.swift in Sources */,
+				BF2357FC25DB56CC0087E27F /* SymbolVisitor.swift in Sources */,
 				BF7B472D25C00A1100FB22DC /* IdentifierExpression.swift in Sources */,
 				BF57C36925B6FE760024F95F /* LayoutSlot.swift in Sources */,
 				BF08FBF325803A6A00C4AC6F /* SelectStatement.swift in Sources */,

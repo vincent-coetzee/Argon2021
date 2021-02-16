@@ -33,6 +33,19 @@ internal class RootScope:Scope
         return(nil as SymbolSet?)
         }
         
+    internal func addSymbol(_ symbol:Symbol,atName name:Name) throws
+        {
+        if let entity = Module.rootScope.lookup(name: name.withoutLast())?.first
+            {
+            symbol.shortName = name.last
+            entity.addSymbol(symbol)
+            }
+        else
+            {
+            throw(CompilerError(.nameCanNotBeFound(name),SourceLocation.zero))
+            }
+        }
+        
     internal func addSymbol(_ symbol: Symbol)
         {
         self.symbols[symbol.shortName] = symbol

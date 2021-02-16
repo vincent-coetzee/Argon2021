@@ -143,6 +143,11 @@ public class TokenStream:Equatable
         return(tokens)
         }
         
+    public func line(from:Int,to:Int) -> String
+        {
+        return(self.source.substring(with: from..<to))
+        }
+        
     private func initState()
         {
         tokenStart = 0

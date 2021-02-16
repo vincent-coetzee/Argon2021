@@ -11,7 +11,7 @@ public class FullyQualifiedName:Class
     {
     let _name:Name
     
-    init(name:Name)
+    override init(name:Name)
         {
         self._name = name
         super.init(shortName:name.stringName)

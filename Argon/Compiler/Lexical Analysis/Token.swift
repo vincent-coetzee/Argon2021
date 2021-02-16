@@ -1749,6 +1749,12 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             case .nativeType(let value,_):
                 switch(value)
                     {
+                    case .Date:
+                        return(true)
+                    case .Time:
+                        return(true)
+                    case .DateTime:
+                        return(true)
                     case .Tuple:
                         return(true)
                     case .this:

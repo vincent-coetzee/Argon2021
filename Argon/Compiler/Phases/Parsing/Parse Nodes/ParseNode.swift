@@ -28,6 +28,11 @@ public class ParseNode:NSObject,Scope
         fatalError("This method \(#function) should have been overridden in a subclass")
         }
     
+    func addSymbol(_ symbol: Symbol,atName:Name) throws
+        {
+        fatalError("This method \(#function) should have been overridden in a subclass")
+        }
+        
     func addStatement(_ statement: Statement)
         {
         fatalError("This method \(#function) should have been overridden in a subclass")

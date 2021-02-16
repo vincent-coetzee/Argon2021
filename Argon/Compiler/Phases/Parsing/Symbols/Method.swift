@@ -95,8 +95,9 @@ public class Method:Symbol,NSCoding
             }
         }
         
-    public override func dump()
+   public override func accept(_ visitor:SymbolVisitor)
         {
-        print("\(Swift.type(of:self)) \(self.shortName)")
+        visitor.acceptMethod(self)
         }
 }
+

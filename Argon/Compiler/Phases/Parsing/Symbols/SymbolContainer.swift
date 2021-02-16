@@ -16,10 +16,18 @@ public class SymbolContainer:Symbol
         }
         
     internal var symbols:[String:SymbolSet] = [:]
-        
-    enum CodingKeys:String,CodingKey
+    
+    public var allSymbols:[Symbol]
         {
-        case symbols
+        var someSymbols:[Symbol] = []
+        for set in self.symbols.values
+            {
+            for symbol in set.symbols
+                {
+                someSymbols.append(symbol)
+                }
+            }
+        return(someSymbols)
         }
         
     public init(shortName:String)
@@ -64,8 +72,7 @@ public class SymbolContainer:Symbol
         {
         if symbol.isModuleLevelSymbol && !(self is Module)
             {
-            self.parentScope?.addSymbol(symbol)
-            return
+            fatalError("This should not be called")
             }
         if let set = self.symbols[symbol.shortName]
             {

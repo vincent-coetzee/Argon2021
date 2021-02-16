@@ -66,7 +66,7 @@ public class Slot:Variable,NSCoding
         self._class = `class`
         }
         
-    internal init(shortName:Identifier,class:Class,container:Symbol? = nil,attributes:SlotAttributes)
+    internal init(shortName:String,class:Class,container:Symbol? = nil,attributes:SlotAttributes)
         {
         self.containingSymbol = container
         self.attributes = attributes

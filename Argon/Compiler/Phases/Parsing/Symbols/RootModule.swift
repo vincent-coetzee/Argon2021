@@ -102,6 +102,7 @@ public class RootModule:Module
         {
         Class.objectClass.placeholderRawSlot("header", class: Class.wordClass,offset:0).placeholderRawSlot("class", class: Class.classClass,offset:Argon.kWordSizeInBytes)
         Class.classClass.placeholderRawSlot("regularSlotCount", class: Class.integerClass,offset:Argon.kWordSizeInBytes * 2).placeholderRawSlot("classSlotCount", class: Class.integerClass,offset:Argon.kWordSizeInBytes * 3)
+        Class.dateClass.placeholderRawSlot("day", class: Class.integerClass,offset:Argon.kWordSizeInBytes * 2).placeholderRawSlot("month", class: Class.integerClass,offset:Argon.kWordSizeInBytes * 3).placeholderRawSlot("year", class: Class.integerClass,offset:Argon.kWordSizeInBytes * 4).placeholderClassSlot("Today",class:.dateClass)
         }
         
     private func initCollectionsModule()
@@ -158,9 +159,10 @@ public class RootModule:Module
         readConduit.placeholderSlot("isRead",class:.booleanClass)
         let writeConduit = conduitsModule.placeholderClass("WriteConduit",parents:[conduitClass])
         writeConduit.placeholderSlot("isWrite",class:.booleanClass)
-        self.placeholderModule("Memory",in:sinksModule)
-        self.placeholderModule("File",in:sinksModule)
-        self.placeholderModule("Socket",in:sinksModule)
+        let sinkClass = sinksModule.placeholderClass("Sink",parents:[.objectClass]).placeholderSlot("isSink",class:.booleanClass)
+        sinksModule.placeholderClass("Memory",parents:[sinkClass])
+        sinksModule.placeholderClass("File",parents:[sinkClass])
+        sinksModule.placeholderClass("Socket",parents:[sinkClass])
         }
         
     @discardableResult

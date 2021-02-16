@@ -116,6 +116,8 @@ public class Compiler
             print("LINE: \(error.location) CODE: \(error.code)")
             let start = error.location.tokenStart
             let stop = error.location.tokenStop
+            let lineText = source.substring(with:Range(uncheckedBounds: (lower:error.location.lineStart,upper:error.location.lineStop)))
+            print("LINE IS: \(lineText)")
             let text = source.substring(with:Range(uncheckedBounds: (lower:start,upper:stop)))
             print("ERROR IS: \(text)")
             print("HINT: \(error.hint)")

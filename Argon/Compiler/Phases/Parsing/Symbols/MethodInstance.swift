@@ -118,6 +118,11 @@ public class MethodInstance:Symbol,NSCoding
         self.memoryAddress = Compiler.shared.codeSegment.zero
         }
         
+    public func addParameter(_ parameter:Parameter)
+        {
+        self._parameters.append(parameter)
+        }
+        
     internal override func lookup(shortName:String) -> SymbolSet?
         {
         return(self.block.lookup(shortName:shortName))

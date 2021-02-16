@@ -68,6 +68,11 @@ public class Module:SymbolContainer,NSCoding
         symbol.symbolAdded(to: self)
         }
         
+    public override func accept(_ visitor:SymbolVisitor)
+        {
+        visitor.acceptModule(self)
+        }
+        
     internal func lookupClass(_ name:String) -> Class?
         {
         return(self.lookup(name: Name(name))?.first as? Class)
@@ -111,7 +116,7 @@ public class Module:SymbolContainer,NSCoding
         return(self.parentScope?.lookup(shortName: shortName))
         }
         
-    internal func addSymbol(_ symbol:Symbol,atName name:Name) throws
+    internal override func addSymbol(_ symbol:Symbol,atName name:Name) throws
         {
         if let entity = Module.rootScope.lookup(name: name.withoutLast())?.first
             {
@@ -199,18 +204,6 @@ public class Module:SymbolContainer,NSCoding
         {
         }
         
-    public override func dump()
-        {
-        print("Module \(self.shortName)")
-        for symbolSet in self.symbols.values
-            {
-            for symbol in symbolSet.symbols
-                {
-                symbol.dump()
-                }
-            }
-        }
-        
     public override init(shortName:String)
         {
         super.init(shortName:shortName)
@@ -241,5 +234,36 @@ public class ModuleClass:Class
     public static func ==(lhs:ModuleClass,rhs:Class) -> Bool
         {
         return(Swift.type(of:rhs)==Swift.type(of:lhs) && rhs.shortName == lhs.shortName)
+        }
+    }
+
+public class ImportedModuleReference:Module
+    {
+    internal override func lookupClass(_ name:String) -> Class?
+        {
+        if let aClass = super.lookupClass(name)
+            {
+            return(aClass)
+            }
+        let newClass = ImportedClassReference(shortName:name)
+        self.addSymbol(newClass)
+        return(newClass)
+        }
+        
+    internal func lookupClass(_ name:Name) -> Class?
+        {
+        if let set = super.lookup(name:name)
+            {
+            return(set.symbols.first as? Class)
+            }
+        let newClass = ImportedClassReference(shortName:name.last)
+        let newName = name.withoutLast()
+        let thisName = newName.last
+        if thisName != self.shortName
+            {
+            fatalError("lookup of name failed \(name)")
+            }
+        self.addSymbol(newClass)
+        return(newClass)
         }
     }

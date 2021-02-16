@@ -618,7 +618,10 @@ internal class Parser:CompilerPhase
         self.advance()
         let location = self.token.location
         let name = try self.parseIdentifier()
-        print("CLASS NAME IS \(name)")
+        if name == "Doctor"
+            {
+            print("CLASS NAME IS \(name)")
+            }
         let aClass = Class(shortName:name)
         Module.innerScope.addSymbol(aClass)
         if self.token.isLeftBrocket
@@ -648,8 +651,8 @@ internal class Parser:CompilerPhase
             //
             else
                 {
-                let name = try self.parseIdentifier()
-                let superclass = self.lookupClass(shortName: name)
+                let name = try self.parseName()
+                let superclass = self.lookupClass(name: name)
                 aClass.superclasses = [superclass]
                 }
             }
@@ -821,14 +824,14 @@ internal class Parser:CompilerPhase
         
     private func parseSuperclasses() throws -> Classes
         {
-        var superclassNames:[Identifier] = []
+        var superclassNames:[Name] = []
         repeat
             {
             if self.token.isComma
                 {
                 self.advance()
                 }
-            let name = try self.parseIdentifier()
+            let name = try self.parseName()
             superclassNames.append(name)
             }
         while self.token.isComma
@@ -854,13 +857,13 @@ internal class Parser:CompilerPhase
             {
             return(aClass)
             }
-        let newClass = Class(shortName:name.first)
+        let newClass = Class(shortName:name.last)
         newClass.wasDeclaredForward = true
-        Module.innerScope.addSymbol(newClass)
+        try? Module.innerScope.addSymbol(newClass,atName:name)
         return(newClass)
         }
         
-    private func lookupClass(name:Identifier) -> Class
+    private func lookupClass(name:String) -> Class
         {
         if let aClass = Module.innerScope.lookup(shortName:name)?.first as? Class
             {
@@ -963,84 +966,74 @@ internal class Parser:CompilerPhase
     private func parseBitSetDeclaration() throws
         {
         self.advance()
-        var valueName = ""
-        var keyName:String? = nil
+        var valueKind:Class?
+        var keyClass:Class? = nil
         try self.parseBrockets
             {
-            valueName = try self.parseIdentifier()
+            valueKind = try self.parseTypeClass()
             if self.token.isComma
                 {
                 self.advance()
-                keyName = valueName
-                valueName = try self.parseIdentifier()
+                keyClass = valueKind
+                valueKind = try self.parseTypeClass()
                 }
             }
         let setName = try self.parseIdentifier()
-        if keyName != nil
+        if keyClass != nil
             {
-            let bitSet = BitSet(shortName:setName,keyTypeName:keyName,valueTypeName:valueName)
+            let bitSet = BitSet(shortName:setName,keyClass:keyClass!,valueClass:valueKind!)
             Module.innerScope.addSymbol(bitSet)
             return
             }
-        var fieldNames:[String] = []
-        let bitSet = BitSet(shortName:setName,keyTypeName:keyName,valueTypeName:valueName)
+        let bitSet = BitSet(shortName:setName,keyClass:nil,valueClass:valueKind!)
         Module.innerScope.addSymbol(bitSet)
         try self.parseBraces
             {
+            var currentOffset = Argon.Integer(0)
+            var currentWidth = Argon.Integer(0)
             repeat
                 {
-                self.advance()
                 let name = try self.parseIdentifier()
                 try self.parseParentheses
                     {
-                    if self.token.isIdentifier && fieldNames.contains(self.token.identifier)
+                    var offset:Argon.Integer
+                    if self.token.isAdd
                         {
-                        let fieldName = self.token.identifier
-                        fieldNames.append(fieldName)
+                        offset = currentOffset + currentWidth
+                        currentOffset += currentWidth
                         self.advance()
-                        if self.token.isAdd
-                            {
-                            self.advance()
-                            if !self.token.isIntegerNumber
-                                {
-                                throw(CompilerError(.integerNumberExpected,self.token.location))
-                                }
-                            let offset = self.token.integerValue
-                            self.advance()
-                            bitSet.addField(BitSetField(name: name, offset: AdditionExpression(lhs: IdentifierExpression(identifier: fieldName),operation: .add,rhs: LiteralIntegerExpression(integer: offset))))
-                            }
-                        else
-                            {
-                            bitSet.addField(BitSetField(name: name, offset: IdentifierExpression(identifier: fieldName)))
-                            }
-                        }
-                    else if self.token.isAdd
-                        {
                         }
                     else if self.token.isIntegerNumber
                         {
+                        offset = self.token.integerValue
+                        currentOffset = offset
+                        self.advance()
                         }
-                    let offset = try self.parseExpression()
+                    else
+                        {
+                        throw(CompilerError(.plusOrIntegerLiteralExpectedInBitSetField,self.token.location))
+                        }
                     if !self.token.isComma
                         {
                         throw(CompilerError(.commaExpected,self.token.location))
                         }
                     self.advance()
-                    if self.token.isIdentifier
+                    if self.token.isIntegerNumber
                         {
-                        bitSet.addField(BitSetField(name:name,offset:offset))
+                        currentWidth = self.token.integerValue
+                        bitSet.addField(BitSetField(name:name,offset:offset,width:currentWidth))
                         self.advance()
                         }
                     else
                         {
-                        let value = try self.parseExpression()
-                        bitSet.addField(BitSetField(name:name,offset:offset))
+                        throw(CompilerError(.integerNumberExpected,self.token.location))
                         }
                     }
                 }
-            while self.token.isBitField
+            while self.token.isIdentifier
             }
-        Module.innerScope.addSymbol(bitSet)
+        let maker = BitSetMaker(shortName:bitSet.shortName,bitSet:bitSet)
+        Module.innerScope.addSymbol(maker)
         bitSet.accessLevel = self.effectiveAccessModifier
         }
         
@@ -1952,7 +1945,7 @@ internal class Parser:CompilerPhase
                 throw(CompilerError(.usingExpected,self.token.location))
                 }
             self.advance()
-            var inductionVariableName:Identifier = ""
+            var inductionVariableName:String = ""
             try self.parseParentheses
                 {
                 inductionVariableName = try self.parseIdentifier()
@@ -2389,11 +2382,19 @@ internal class Parser:CompilerPhase
         if self.token.isTypeKeyword
             {
             let type = try self.parseTypeClass()
+            if type == Class.dateClass
+                {
+                print("self halt")
+                }
             if self.token.isLeftPar
                 {
                 var arguments = Arguments()
                 arguments = try self.parseArguments()
                 return(TypeMakerInvocationExpression(class: type,arguments: arguments))
+                }
+            else if self.token.isRightArrow
+                {
+                return(SlotExpression(target:ClassExpression(class: type),slot: try self.parseExpression()))
                 }
             return(LiteralClassExpression(class:type))
             }

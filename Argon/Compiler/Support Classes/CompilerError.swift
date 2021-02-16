@@ -146,4 +146,5 @@ public enum SystemError:Equatable,Error
     case readIncomingObjectDidNotMatchExpectedObject(String)
     case objectIdentityErrorObjectWithIdNotFound
     case objectKindNotKnown
+    case plusOrIntegerLiteralExpectedInBitSetField
     }

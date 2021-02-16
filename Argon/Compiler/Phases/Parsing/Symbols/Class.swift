@@ -146,11 +146,16 @@ public class Class:Symbol,NSCoding
         }
         
     @discardableResult
-    internal func slot(_ name:Identifier,_ class:Class) -> Class
+    internal func slot(_ name:String,_ class:Class) -> Class
         {
         let slot = Slot(shortName: name, class: `class`, attributes: .readonly)
         self.localClassSlots[slot.shortName] = slot
         return(self)
+        }
+        
+   public override func accept(_ visitor:SymbolVisitor)
+        {
+        visitor.acceptClass(self)
         }
         
     internal func typeWithIndex(_ type:Type.ArrayIndexType) -> Type
@@ -190,6 +195,13 @@ public class Class:Symbol,NSCoding
         {
         self.generics = GenericClasses()
         super.init(shortName:shortName)
+        self.memoryAddress = Compiler.shared.staticSegment.zero
+        }
+        
+    init(name:Name)
+        {
+        self.generics = GenericClasses()
+        super.init(name:name)
         self.memoryAddress = Compiler.shared.staticSegment.zero
         }
         
@@ -370,6 +382,14 @@ public class Class:Symbol,NSCoding
         }
         
     @discardableResult
+    func placeholderClassSlot(_ name:String,`class`:Class,attributes:SlotAttributes = [.class]) -> Class
+        {
+        let slot = SystemPlaceholderSlot(shortName:name,class: `class`,container:self,attributes: attributes)
+        self.addClassSlot(slot)
+        return(self)
+        }
+        
+    @discardableResult
     func placeholderRawSlot(_ name:String,`class`:Class,attributes:SlotAttributes = [.raw],offset:Int) -> Class
         {
         let slot = SystemPlaceholderSlot(shortName:name,class: `class`,container:self,attributes: attributes)
@@ -495,4 +515,8 @@ public class SequenceGeneratorClass:Class
         fatalError("init(coder:) has not been implemented")
         }
     
+    }
+
+public class ImportedClassReference:Class
+    {
     }
