@@ -134,6 +134,7 @@ public enum SystemError:Equatable,Error
     case properFunctionNameExpected
     case typeMismatch(Type,Type)
     case canNotCastPointerToClass(Class)
+    case invalidExpression
     case invalidTermInExpression
     case invalidArrayIndexType(String)
     case invalidSlotFieldHashIndex
@@ -148,4 +149,5 @@ public enum SystemError:Equatable,Error
     case objectKindNotKnown
     case plusOrIntegerLiteralExpectedInBitSetField
     case makerForBitSetShouldHaveBeenAutoDeclared
+    case typeSpecializationExpected
     }

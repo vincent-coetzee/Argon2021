@@ -100,7 +100,7 @@
 			<key>LSTypeIsPackage</key>
 			<integer>1</integer>
 			<key>NSDocumentClass</key>
-			<string>$(PRODUCT_MODULE_NAME).ArgonProject</string>
+			<string>$(PRODUCT_MODULE_NAME).ArgonProjectDocument</string>
 		</dict>
 		<dict>
 			<key>CFBundleTypeExtensions</key>

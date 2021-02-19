@@ -59,6 +59,11 @@ public class Import:Symbol
         {
         fatalError("init(coder:) has not been implemented")
         }
+        
+    override func lookup(name:Name) -> SymbolSet?
+        {
+        return(self.importedModule?.lookup(name:name))
+        }
     }
 
 public struct ImportVector
@@ -89,6 +94,18 @@ public struct ImportVector
     init()
         {
         self.id = UUID()
+        }
+        
+    func lookup(name:Name) -> SymbolSet?
+        {
+        for anImport in self.imports
+            {
+            if let set = anImport.lookup(name:name)
+                {
+                return(set)
+                }
+            }
+        return(nil)
         }
         
     func lookup(shortName:String) -> SymbolSet?

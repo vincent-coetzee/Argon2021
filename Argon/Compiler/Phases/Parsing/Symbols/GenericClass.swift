@@ -8,40 +8,24 @@
 
 import Foundation
 
-public class GenericClass:Symbol
+public class TemplateClass:Class
     {
-    internal let constraints:[Class]
-    
-    internal class func generic(_ name:String,_ constraints:Class...) -> GenericClass
+    public override var isTemplateClass:Bool
         {
-        return(GenericClass(shortName: name,constraints: constraints))
+        return(true)
         }
         
-    internal class func generic(_ name:Name,_ constraints:Class...) -> GenericClass
+    internal override init(shortName:String)
         {
-        return(GenericClass(shortName: name.first,constraints: constraints))
-        }
-        
-    internal init(_ type:Class)
-        {
-        self.constraints = []
-        super.init(shortName:"_GENERIC_\(Argon.nextIndex())_\(type)")
-        }
-        
-    internal init(shortName:String,constraints:[Class])
-        {
-        self.constraints = constraints
         super.init(shortName: shortName)
         }
         
-    internal init(name:Name,constraints:[Class])
+    internal override init(name:Name)
         {
-        self.constraints = constraints
         super.init(shortName: name.first)
         }
     
     internal required init() {
-        self.constraints = []
         super.init(shortName: "")
     }
         
@@ -49,6 +33,11 @@ public class GenericClass:Symbol
         {
         fatalError("init(coder:) has not been implemented")
         }
+        
+    public func specialize(with:[Class]) -> Class
+        {
+        fatalError()
+        }
 }
 
-typealias GenericClasses = Array<GenericClass>
+typealias TemplateClasses = Array<TemplateClass>

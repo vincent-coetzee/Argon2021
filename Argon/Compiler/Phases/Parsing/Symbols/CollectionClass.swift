@@ -7,19 +7,19 @@
 
 import Foundation
 
-public class CollectionClass:Class
+public class CollectionClass:TemplateClass
     {
-    public let elementTypeClass:Class
+    public var elementType:Class
     
-     init(shortName:String,elementTypeClass:Class)
+     init(shortName:String,elementType:Class)
         {
-        self.elementTypeClass = elementTypeClass
+        self.elementType = elementType
         super.init(shortName:shortName)
         }
     
     override init(shortName:String)
         {
-        self.elementTypeClass = .voidClass
+        self.elementType = .voidClass
         super.init(shortName:shortName)
         }
         

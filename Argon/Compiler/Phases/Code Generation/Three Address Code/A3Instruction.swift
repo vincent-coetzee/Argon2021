@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class A3Instruction:Instruction
+public class A3Instruction:Instruction,CustomDebugStringConvertible
     {
     internal enum InstructionCode:String
         {
@@ -72,6 +72,11 @@ public class A3Instruction:Instruction
     public var labels = InstructionLabels()
     public var location:SourceLocation?
     public var comment:String?
+        
+    public var debugDescription:String
+        {
+        return(self.displayString)
+        }
         
     public required init?(coder:NSCoder)
         {

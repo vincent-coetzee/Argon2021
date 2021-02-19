@@ -78,4 +78,13 @@ internal class LocalScope:Scope
             }
         return(self.parentScope?.lookup(shortName: shortName))
         }
+        
+    internal func lookup(name:Name) -> SymbolSet?
+        {
+        if let item = self.symbols[name.first]?.first
+            {
+            return(item.lookup(name:name.withoutFirst()))
+            }
+        return(self.parentScope?.lookup(name:name))
+        }
     }

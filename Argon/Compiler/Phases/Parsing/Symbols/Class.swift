@@ -64,12 +64,18 @@ public class Class:Symbol,NSCoding
     public static let float32Class = Class(shortName:"Float32").superclass(.bitValueClass)
     public static let float64Class = Class(shortName:"Float64").superclass(.bitValueClass)
     public static let float16Class = Class(shortName:"Float16").superclass(.bitValueClass)
-    public static let collectionClass = CollectionClass(shortName:"Collection").superclass(.objectClass).slot(Identifier("count"),.integerClass).slot(Identifier("elementType"),.classClass)
-    public static let arrayClass = ArrayClass(shortName:"Array",indexType:.unbounded, elementTypeClass: .voidClass).superclass(.collectionClass)
-    public static let setClass = SetClass(shortName:"Set",elementTypeClass:.voidClass).superclass(.collectionClass)
-    public static let listClass = ListClass(shortName:"List",elementTypeClass:.voidClass).superclass(.collectionClass)
+    public static let collectionClass = CollectionClass(shortName:"Collection",elementType: .voidClass).superclass(.objectClass).slot(Identifier("count"),.integerClass).slot(Identifier("elementType"),.classClass)
+    public static let arrayClass = GenericArrayClass(shortName:"Array").superclass(.collectionClass)
+    public static let setClass = GenericSetClass(shortName:"Set").superclass(.collectionClass)
+    public static let listClass = GenericListClass(shortName:"List").superclass(.collectionClass)
     public static let bitSetClass = BitSetClass(shortName:"BitSet",keyType:.void,valueType:.void).superclass(.collectionClass)
-    public static let dictionaryClass = DictionaryClass(shortName:"Dictionary",keyTypeClass:.voidClass,valueTypeClass:.voidClass).superclass(.collectionClass)
+    public static let dictionaryClass = GenericDictionaryClass(shortName:"Array").superclass(.collectionClass)
+    public static let pointerClass = GenericPointerClass(shortName:"Pointer").superclass(.collectionClass)
+    
+    public static var voidTypeVariable:TypeVariable
+        {
+        return(TypeVariable(shortName: "", class: .voidClass))
+        }
     
 //    public static func invocationClass(_ name:String,_ kind:InvocationClass.InvocationType,_ classes:[Class],_ returnClass:Class) -> InvocationClass { InvocationClass(shortName:name,type:kind,argumentClasses:classes,returnClass:returnClass) }
     
@@ -79,7 +85,7 @@ public class Class:Symbol,NSCoding
         }
         
     public var superclasses = Classes()
-    internal var generics = GenericClasses()
+    internal var generics = TemplateClasses()
     internal var localSlots:[String:Slot] = [:]
     private var allSlots:Array<Slot> = []
     internal var localClassSlots:[String:Slot] = [:]
@@ -88,6 +94,11 @@ public class Class:Symbol,NSCoding
     internal var symbols:[String:Symbol] = [:]
     private  var slotBlockOffsets:[Class:Int] = [:]
     private var wasLaidOut:Bool = false
+        
+    public var isTemplateClass:Bool
+        {
+        return(false)
+        }
         
     private var uniqueSuperclasses:OrderedSet<Class>
         {
@@ -193,14 +204,14 @@ public class Class:Symbol,NSCoding
         
     init(shortName:String)
         {
-        self.generics = GenericClasses()
+        self.generics = TemplateClasses()
         super.init(shortName:shortName)
         self.memoryAddress = Compiler.shared.staticSegment.zero
         }
         
     init(name:Name)
         {
-        self.generics = GenericClasses()
+        self.generics = TemplateClasses()
         super.init(name:name)
         self.memoryAddress = Compiler.shared.staticSegment.zero
         }
@@ -401,19 +412,77 @@ public class Class:Symbol,NSCoding
 
 public typealias Classes = Array<Class>
 
+public class GenericSetClass:TemplateClass
+    {
+    private var typeNames:[String] = []
+    
+    init(shortName:String,typeNames:String...)
+        {
+        self.typeNames = typeNames
+        super.init(shortName:shortName)
+        }
+    
+    public required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    internal required init() {
+        fatalError("init() has not been implemented")
+    }
+    
+    public override func specialize(with:[Class]) -> Class
+        {
+        return(SetClass(shortName:self.shortName,elementType:with[0]))
+        }
+        
+    func specialize(elementType:Class) -> SetClass
+        {
+        return(SetClass(shortName:self.shortName,elementType:elementType))
+        }
+    }
+    
 public class SetClass:CollectionClass
     {
     internal  func typeWithIndex(_ type:Type.ArrayIndexType) -> Class
         {
-        return(SetClass(shortName:Argon.nextName("SET"),elementTypeClass:self.elementTypeClass))
+        return(SetClass(shortName:Argon.nextName("SET"),elementType:self.elementType))
         }
     }
 
+public class GenericListClass:TemplateClass
+    {
+    private var typeNames:[String] = []
+    
+    init(shortName:String,typeNames:String...)
+        {
+        self.typeNames = typeNames
+        super.init(shortName:shortName)
+        }
+    
+    public required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    internal required init() {
+        fatalError("init() has not been implemented")
+    }
+    
+    public override func specialize(with:[Class]) -> Class
+        {
+        return(ArrayClass(shortName:self.shortName,indexType: (with[0] as! IndexType).indexType,elementType:with[1]))
+        }
+        
+    func specialize(elementType:Class) -> ListClass
+        {
+        return(ListClass(shortName:self.shortName,elementType:elementType))
+        }
+    }
+    
 public class ListClass:CollectionClass
     {
     internal  func typeWithIndex(_ type:Type.ArrayIndexType) ->Class
         {
-        return(ListClass(shortName:Argon.nextName("LIST"),elementTypeClass:self.elementTypeClass))
+        return(ListClass(shortName:Argon.nextName("LIST"),elementType:self.elementType))
         }
     }
 
@@ -467,7 +536,7 @@ public class ValueClass:Class
         super.encode(with:coder)
         }
     }
-    
+
 public class AddressClass:ValueClass
     {
     }
@@ -520,3 +589,20 @@ public class SequenceGeneratorClass:Class
 public class ImportedClassReference:Class
     {
     }
+
+public class AssociationClass:Class
+    {
+    private let keyClass:Class
+    private let valueClass:Class
+    
+    init(keyClass:Class,valueClass:Class)
+        {
+        self.keyClass = keyClass
+        self.valueClass = valueClass
+        super.init(shortName:"ASSOCIATION")
+        }
+    
+    public required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}

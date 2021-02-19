@@ -10,6 +10,11 @@ import Foundation
     
 public struct Name:Hashable,ExpressibleByArrayLiteral
     {
+    public static func anchoredName() -> Name
+        {
+        return(Name(anchored:true))
+        }
+        
     public enum NameComponent:Hashable
         {
         case anchor
@@ -72,6 +77,11 @@ public struct Name:Hashable,ExpressibleByArrayLiteral
             }
         }
         
+    public var isAnchored:Bool
+        {
+        return(self.components.first?.isAnchor ?? false)
+        }
+        
     public var isEmpty:Bool
         {
         return(self.components.isEmpty)
@@ -121,6 +131,16 @@ public struct Name:Hashable,ExpressibleByArrayLiteral
         return(Name(Array(self.components.dropFirst())))
         }
         
+    public func anchored() -> Name
+        {
+        if self.isAnchored
+            {
+            return(self)
+            }
+        let newComponents = [NameComponent.anchor] + self.components
+        return(Name(newComponents))
+        }
+        
     public func withoutLast() -> Name
         {
         if self.components.count < 1
@@ -133,6 +153,18 @@ public struct Name:Hashable,ExpressibleByArrayLiteral
     public init(_ components:[NameComponent])
         {
         self.components = components
+        }
+        
+    public init(anchored:Bool)
+        {
+        if anchored
+            {
+            self.components = [.anchor]
+            }
+        else
+            {
+            self.components = []
+            }
         }
         
     public init(_ components:[String])

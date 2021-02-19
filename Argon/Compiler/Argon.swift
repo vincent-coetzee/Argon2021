@@ -13,7 +13,7 @@ public struct Argon
     {
     internal static let kWordSizeInBytes:Int = 8
     
-    internal static let rootModule = RootModule.rootModule
+    internal static let rootModule = Module.rootModule
     
     private static var nextIndexNumber = 0
     

@@ -16,5 +16,11 @@ public class InferredSlotExpression:AccessExpression
         self.slot = slot
         super.init()
         }
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
+        {
+        print("THIS NEEDS TO BE IMPLEMENTED PROPER;Y WHEN THE TYPE CHEECKING TAKS PLACES ")
+        buffer.emitInstruction(result:.temporary(A3Temporary.newTemporary()),opcode:.nop)
+        }
     }
     

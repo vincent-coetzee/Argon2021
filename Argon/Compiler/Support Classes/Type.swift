@@ -294,3 +294,18 @@ public indirect enum Type:Equatable
     }
 
 typealias Types = Array<Type>
+
+public class IndexType:Class
+    {
+    let indexType:Type.ArrayIndexType
+    
+    init(_ type:Type.ArrayIndexType)
+        {
+        self.indexType = type
+        super.init(shortName:"")
+        }
+    
+    public required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}

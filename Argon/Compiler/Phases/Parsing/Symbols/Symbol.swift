@@ -167,7 +167,7 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor
         self.references.append(.declaration(location))
         }
         
-    internal func lookup(name:Name) -> SymbolSet?
+    internal override func lookup(name:Name) -> SymbolSet?
         {
         fatalError("\(#function) should have been overridden in a subclass of Symbol")
         }

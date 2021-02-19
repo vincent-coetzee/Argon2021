@@ -43,6 +43,11 @@ public class ParseNode:NSObject,Scope
         fatalError("This method \(#function) should have been overridden in a subclass")
         }
         
+    func lookup(name: Name) -> SymbolSet?
+        {
+        fatalError("This method \(#function) should have been overridden in a subclass - it's not defined for a \(Swift.type(of:self))")
+        }
+        
     func lookupMethod(shortName: String) -> Method?
         {
         fatalError("This method \(#function) should have been overridden in a subclass I am \(Swift.type(of:self))")

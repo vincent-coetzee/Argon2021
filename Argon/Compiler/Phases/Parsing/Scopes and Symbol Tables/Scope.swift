@@ -9,7 +9,7 @@
 import Foundation
 
 fileprivate var scopeStack = Stack<Scope>()
-fileprivate var currentScope:Scope = Module.rootModule.initRootModule()
+fileprivate var currentScope:Scope = Module.argonModule.initArgonModule()
 
 internal protocol Scope:class,SymbolTable,StatementBlock
     {
@@ -25,19 +25,6 @@ extension Scope
     public static func ==(lhs:Scope,rhs:Scope) -> Bool
         {
         return(lhs.index == rhs.index)
-        }
-        
-    internal func lookup(name:Name) -> SymbolSet?
-        {
-        if name.count == 0
-            {
-            return(SymbolSet(self as! Symbol))
-            }
-        if name.count == 1
-            {
-            return(self.lookup(shortName: name.first))
-            }
-        return((self.lookup(shortName: name.first) as? Scope)?.lookup(name: name.withoutFirst()))
         }
         
     internal func push()

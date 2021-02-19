@@ -7,17 +7,39 @@
 
 import Foundation
 
-public class Pointer:Class
+public class GenericPointerClass:Class
     {
-    override internal var isGeneric:Bool
+    private var typeNames:[String] = []
+    
+    init(shortName:String,typeNames:String...)
+        {
+        self.typeNames = typeNames
+        super.init(shortName:shortName)
+        }
+    
+    public required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func specialize(elementType:TypeVariable) -> Pointer
+        {
+        return(Pointer(shortName:self.shortName,elementType:elementType))
+        }
+    }
+    
+public class Pointer:TemplateClass
+    {
+    private var elementType:TypeVariable?
+    
+    public override var isTemplateClass:Bool
         {
         return(true)
         }
         
-    public init(shortName:String,elementType:Class)
+    public init(shortName:String,elementType:TypeVariable)
         {
         super.init(shortName:shortName)
-        self.generics.append(GenericClass(elementType))
+        self.elementType = elementType
         }
     
     required init() {

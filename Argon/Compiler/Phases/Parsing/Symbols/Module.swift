@@ -10,8 +10,8 @@ import Foundation
 
 public class Module:SymbolContainer,NSCoding
     {    
-    public static let rootModule = RootModule(shortName: "Argon")
-        
+    public static let argonModule = ArgonModule(shortName: "Argon")
+    public static let rootModule = RootModule(shortName: "Root")
     public static let rootScope = Module.rootModule
         
     public var exportedSymbols:[Symbol]
@@ -29,7 +29,7 @@ public class Module:SymbolContainer,NSCoding
         self.pop()
         }
         
-    public private(set) var genericTypes:[GenericClass] = []
+    public private(set) var genericTypes:[TemplateClass] = []
     private var exitFunction:ModuleFunction?
     private var entryFunction:ModuleFunction?
     public var moduleKey = UUID()
@@ -40,6 +40,16 @@ public class Module:SymbolContainer,NSCoding
     public override var isModuleLevelSymbol:Bool
         {
         return(true)
+        }
+        
+    public var isRootModule:Bool
+        {
+        return(false)
+        }
+        
+    public var isArgonModule:Bool
+        {
+        return(false)
         }
         
     internal override func relinkSymbolsUsingIds(symbols:Dictionary<UUID,Symbol>)
@@ -83,22 +93,23 @@ public class Module:SymbolContainer,NSCoding
         return(self.lookup(name: Name(name))?.first as? Module)
         }
         
-    internal override func lookup(name:Name) -> SymbolSet?
+    internal override func lookup(name inputName:Name) -> SymbolSet?
         {
-        var theName = name
-        var entity:Symbol? = self
-        while !theName.isEmpty && entity != nil
+        var entity:Symbol? = inputName.isAnchored ? Module.rootModule : self
+        var name = inputName
+        while !name.isEmpty && entity != nil
             {
-            if let object = entity?.lookup(shortName: theName.first)?.first
+            if let object = entity?.lookup(shortName: name.first)?.first
                 {
                 entity = object
-                theName = theName.withoutFirst()
+                name = name.withoutFirst()
                 }
             else
                 {
                 entity = nil
                 }
             }
+        entity = entity == nil ? self.imports.lookup(name:inputName)?.first : entity
         return(entity == nil ? nil : SymbolSet(entity!))
         }
         
@@ -112,6 +123,13 @@ public class Module:SymbolContainer,NSCoding
         if let set = super.lookup(shortName: shortName)
             {
             return(set)
+            }
+        if self.parentScope == nil && !self.isArgonModule
+            {
+            if let set = Module.argonModule.lookup(shortName: shortName)
+                {
+                return(set)
+                }
             }
         return(self.parentScope?.lookup(shortName: shortName))
         }
@@ -287,3 +305,17 @@ public class ImportedModuleReference:Module
         return(newClass)
         }
     }
+
+public class RootModule:Module
+    {
+    public override var isRootModule:Bool
+        {
+        return(true)
+        }
+        
+    public override var fullName:Name
+        {
+        return(Name(anchored:true))
+        }
+    }
+

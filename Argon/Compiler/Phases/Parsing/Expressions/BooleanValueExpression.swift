@@ -17,4 +17,10 @@ public class BooleanValueExpression:ScalarExpression
         self.booleanValue = boolean
         super.init()
         }
+        
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
+        {
+        buffer.emitInstruction(result:.temporary(A3Temporary.newTemporary()),left:.boolean(self.booleanValue ? .trueValue : .falseValue),opcode:.assign)
+        }
+
     }

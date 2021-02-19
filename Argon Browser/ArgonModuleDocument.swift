@@ -8,7 +8,7 @@
 import Foundation
 import AppKit
 
-class ArgonModule: NSDocument
+class ArgonModuleDocument: NSDocument
     {
     override init()
         {

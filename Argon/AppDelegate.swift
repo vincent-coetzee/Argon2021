@@ -35,7 +35,7 @@ class AppDelegate: NSObject, NSApplicationDelegate
                     lastModule = module
                     }
                 let fullPath = "/Users/vincent/Desktop/Test.arp"
-                let project = try ArgonProject(named: "Test.arp", at: fullPath)
+                let project = try ArgonProjectDocument(named: "Test.arp", at: fullPath)
                 try? project.remove(atPath:fullPath)
                 project.addFile(data:lastData!,at: lastModule!.shortName + ".arm")
                 try project.write()
@@ -62,7 +62,7 @@ class AppDelegate: NSObject, NSApplicationDelegate
             {
             for name in filenames
                 {
-                let project = try ArgonProject(atPath: name)
+                let project = try ArgonProjectDocument(atPath: name)
                 let keys = project.childFileKeys
                 print(keys)
                 }

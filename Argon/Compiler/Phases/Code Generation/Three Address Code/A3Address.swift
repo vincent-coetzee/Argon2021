@@ -45,6 +45,8 @@ public enum A3Address
                 return(closure.displayString)
             case .address(let address):
                 return(address.displayString)
+            case .boolean(let boolean):
+                return(boolean == .trueValue ? "#true" : "#false")
             case .none:
                 return("ERROR")
             }
@@ -53,6 +55,7 @@ public enum A3Address
     case none
     case string(Argon.String)
     case integer(Argon.Integer)
+    case boolean(Argon.Boolean)
     case variable(Variable)
     case localVariable(LocalVariable)
     case parameter(Parameter)

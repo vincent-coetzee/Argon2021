@@ -8,7 +8,7 @@
 import Foundation
 import AppKit
 
-class ArgonProject: NSDocument
+class ArgonProjectDocument: NSDocument
     {
     public static let kProjectIcon = NSImage(named:"ArgonProjectIcon")!
     public static let kSymbolsIcon = NSImage(named:"ArgonSymbolsIcon")!

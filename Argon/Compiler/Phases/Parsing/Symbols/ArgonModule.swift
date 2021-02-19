@@ -8,8 +8,13 @@
 
 import Foundation
 
-public class RootModule:Module
+public class ArgonModule:Module
     {
+    public override var isArgonModule:Bool
+        {
+        return(true)
+        }
+        
     private func initBaseClasses()
         {
         self.addSymbol(Class.rootClass)
@@ -56,6 +61,7 @@ public class RootModule:Module
         self.addSymbol(Class.setClass)
         self.addSymbol(Class.dictionaryClass)
         self.addSymbol(Class.setClass)
+        self.addSymbol(Class.pointerClass)
         self.addSymbol(Class.functionClass)
         self.addSymbol(Class.conduitClass)
         self.addSymbol(Class.keyedConduitClass)
@@ -73,8 +79,9 @@ public class RootModule:Module
         return(Name("/Argon"))
         }
         
-    internal func initRootModule() -> Self
+    internal func initArgonModule() -> Self
         {
+        self.initBaseModules()
         self.initBaseClasses()
         self.initSystemModules()
         SymbolWalker().walkSymbols(self)
@@ -94,6 +101,11 @@ public class RootModule:Module
 
     public func initSystemObjects(_ segment:MemorySegment)
         {
+        }
+        
+    private func initBaseModules()
+        {
+        Module.rootModule.addSymbol(self)
         }
         
     private func initSystemModules()

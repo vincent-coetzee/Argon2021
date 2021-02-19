@@ -822,6 +822,50 @@
             </objects>
             <point key="canvasLocation" x="1242" y="-465"/>
         </scene>
+        <!--Window Controller-->
+        <scene sceneID="ak4-cz-Jde">
+            <objects>
+                <windowController id="1IP-T5-fMC" sceneMemberID="viewController">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="cdV-qh-34H">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+                        <rect key="contentRect" x="555" y="611" width="480" height="270"/>
+                        <rect key="screenRect" x="0.0" y="0.0" width="3200" height="1775"/>
+                        <view key="contentView" id="oqt-Ar-Rlb">
+                            <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                        </view>
+                        <connections>
+                            <outlet property="delegate" destination="1IP-T5-fMC" id="xmz-uN-ALw"/>
+                        </connections>
+                    </window>
+                    <connections>
+                        <segue destination="KXk-59-yX8" kind="relationship" relationship="window.shadowedContentViewController" id="x6b-yR-fFt"/>
+                    </connections>
+                </windowController>
+                <customObject id="Ldt-LY-HyS" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2428" y="-637"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Ezc-8n-x1W">
+            <objects>
+                <viewController id="KXk-59-yX8" sceneMemberID="viewController">
+                    <view key="view" id="Ufq-KL-cDX">
+                        <rect key="frame" x="0.0" y="0.0" width="1132" height="681"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <browser verticalHuggingPriority="750" fixedFrame="YES" allowsExpansionToolTips="YES" enabled="YES" hasHorizontalScroller="YES" allowsEmptySelection="YES" defaultColumnWidth="100" minColumnWidth="100" titled="YES" separatesColumns="YES" allowsTypeSelect="YES" columnResizingType="auto" translatesAutoresizingMaskIntoConstraints="NO" id="nCo-yn-icL">
+                                <rect key="frame" x="0.0" y="349" width="1132" height="354"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            </browser>
+                        </subviews>
+                    </view>
+                </viewController>
+                <customObject id="4L5-GW-vfu" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2569" y="371.5"/>
+        </scene>
         <!--Argon Class Browser-->
         <scene sceneID="C9R-cO-kr6">
             <objects>

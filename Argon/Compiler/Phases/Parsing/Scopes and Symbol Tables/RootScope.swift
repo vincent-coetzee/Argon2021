@@ -33,6 +33,15 @@ internal class RootScope:Scope
         return(nil as SymbolSet?)
         }
         
+    internal func lookup(name:Name) -> SymbolSet?
+        {
+        if let item = self.symbols[name.first]
+            {
+            return(item.lookup(name:name.withoutFirst()))
+            }
+        return(self.parentScope?.lookup(name:name))
+        }
+        
     public func lookupMethod(shortName:String) -> Method?
         {
         if let set = self.lookup(shortName:shortName)

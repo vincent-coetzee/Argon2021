@@ -128,6 +128,19 @@ public class Block:Statement,SlotContainer
         return(self.parentScope?.lookup(shortName:shortName))
         }
         
+    internal override func lookup(name:Name) -> SymbolSet?
+        {
+        if name.isAnchored
+            {
+            return(Module.rootModule.lookup(name:name))
+            }
+        if let set = self.symbols[name.first]?.first
+            {
+            return(set.lookup(name:name.withoutFirst()))
+            }
+        return(self.parentScope?.lookup(name:name))
+        }
+        
     internal override func lookupMethod(shortName:String) -> Method?
         {
         if let set = self.symbols[shortName]

@@ -9,6 +9,11 @@ import Foundation
 
 public class EmptyExpression:Expression
     {
+    init()
+        {
+        fatalError("This should not be called")
+        }
+        
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
         {
         }

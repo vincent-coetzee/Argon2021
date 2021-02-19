@@ -8,7 +8,7 @@
 
 import Foundation
     
-public struct BitSetField
+public class BitSetField:NSObject,NSCoding
     {
     let name:String
     let offset:Argon.Integer
@@ -20,9 +20,23 @@ public struct BitSetField
         self.offset = offset
         self.width = width
         }
+        
+    public func encode(with coder: NSCoder)
+        {
+        coder.encode(self.name,forKey:"name")
+        coder.encode(self.offset,forKey:"offset")
+        coder.encode(self.width,forKey:"with")
+        }
+    
+    required public init?(coder: NSCoder)
+        {
+        self.name = coder.decodeObject(forKey:"name") as! String
+        self.offset = coder.decodeInt64(forKey:"offset")
+        self.width = coder.decodeInt64(forKey:"width")
+        }
     }
     
-public class BitSet:Symbol
+public class BitSet:Symbol,NSCoding
     {
     let valueClass:Class
     var keyClass:Class?
@@ -41,6 +55,22 @@ public class BitSet:Symbol
         super.init(shortName:shortName)
         }
     
+    public override func encode(with coder: NSCoder)
+        {
+        super.encode(with:coder)
+        coder.encode(self.valueClass,forKey:"valueClass")
+        coder.encode(self.keyClass,forKey:"keyClass")
+        coder.encode(self.fields,forKey:"fields")
+        }
+    
+    public required init?(coder: NSCoder)
+        {
+        self.valueClass = coder.decodeObject(forKey:"valueClass") as! Class
+        self.keyClass = coder.decodeObject(forKey:"keyClass") as! Class?
+        self.fields = coder.decodeObject(forKey:"fields") as! Dictionary<String,BitSetField>
+        super.init(coder:coder)
+        }
+        
    public override func accept(_ visitor:SymbolVisitor)
         {
         visitor.acceptBitSet(self)
@@ -54,11 +84,7 @@ public class BitSet:Symbol
     internal required init() {
         fatalError("init() has not been implemented")
     }
-    
-    public required init?(coder:NSCoder)
-        {
-        fatalError("init(coder:) has not been implemented")
-        }
+
     
     func addField(_ field:BitSetField)
         {
