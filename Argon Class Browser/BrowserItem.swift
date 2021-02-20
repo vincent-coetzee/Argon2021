@@ -7,17 +7,17 @@
 
 import Foundation
 
-public class BrowserItem
-    {
-    class func systemClass(_ name:String) -> BrowserSystemClassItem
-        {
-        return(BrowserSystemClassItem(shortName:name))
-        }
-        
-    let shortName:String
-    
-    init(shortName:String)
-        {
-        self.shortName = shortName
-        }
-    }
+//public class BrowserItem
+//    {
+//    class func systemClass(_ name:String) -> BrowserSystemClassItem
+//        {
+//        return(BrowserSystemClassItem(shortName:name))
+//        }
+//        
+//    let shortName:String
+//    
+//    init(shortName:String)
+//        {
+//        self.shortName = shortName
+//        }
+//    }

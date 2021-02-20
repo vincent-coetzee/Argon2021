@@ -6,10 +6,17 @@
 //  Copyright © 2020 Vincent Coetzee. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 
 public class Module:SymbolContainer,NSCoding
-    {    
+    {
+    public static func initModules()
+        {
+        let _ = Module.rootModule
+        let _ = Module.argonModule
+        let _ = Module.argonModule.initArgonModule()
+        }
+        
     public static let argonModule = ArgonModule(shortName: "Argon")
     public static let rootModule = RootModule(shortName: "Root")
     public static let rootScope = Module.rootModule
@@ -36,7 +43,8 @@ public class Module:SymbolContainer,NSCoding
     private var versionKey:SemanticVersionNumber = .one
     private var moduleSlots:Dictionary<String,Slot> = [:]
     private var imports = ImportVector()
-        
+    private var symbolList:[Symbol] = []
+    
     public override var isModuleLevelSymbol:Bool
         {
         return(true)
@@ -63,6 +71,7 @@ public class Module:SymbolContainer,NSCoding
         
     internal override func addSymbol(_ symbol:Symbol)
         {
+        self.symbolList.append(symbol)
         symbol.definingScope = self
         if symbol is Slot
             {
@@ -260,6 +269,26 @@ public class Module:SymbolContainer,NSCoding
             self.addSymbol(symbol)
             }
         }
+        
+    public override var isLeaf: Bool
+        {
+        return(false)
+        }
+    
+    public override var image: NSImage
+        {
+        return(NSImage(named:"IconArgonClass")!)
+        }
+    
+    public override var childCount: Int
+        {
+        return(self.symbolList.count)
+        }
+    
+    public override func child(at: Int) -> BrowserItem
+        {
+        return(self.symbolList[at])
+        }
     }
 
 public class ModuleClass:Class
@@ -318,4 +347,3 @@ public class RootModule:Module
         return(Name(anchored:true))
         }
     }
-

@@ -7,6 +7,6 @@
 
 import Foundation
 
-public class BrowserSystemMethodItem:BrowserMethodItem
-    {
-    }
+//public class BrowserSystemMethodItem:BrowserMethodItem
+//    {
+//    }

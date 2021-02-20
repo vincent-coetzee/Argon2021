@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class BrowserClassItem:BrowserItem
-    {
-    var methods:Array<BrowserMethodItem> = []
-    }
+//public class BrowserClassItem:BrowserItem
+//    {
+//    var methods:Array<BrowserMethodItem> = []
+//    }

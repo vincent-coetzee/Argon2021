@@ -9,7 +9,11 @@
 import Foundation
 
 fileprivate var scopeStack = Stack<Scope>()
-fileprivate var currentScope:Scope = Module.argonModule.initArgonModule()
+fileprivate var currentScope:Scope =
+    {
+    Module.argonModule.initArgonModule()
+    return(Module.rootModule)
+    }()
 
 internal protocol Scope:class,SymbolTable,StatementBlock
     {

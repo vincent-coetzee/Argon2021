@@ -13,43 +13,44 @@ class AppDelegate: NSObject, NSApplicationDelegate
 
     func applicationDidFinishLaunching(_ aNotification: Notification)
         {
-        let sourceItem = SourceFolder(path:"/Users/vincent/Development/Development2021/Argon Projects/Medicine/")
-        let items = [sourceItem.children[1],sourceItem.children[0]]
-        for item in items
-            {
-            do
-                {
-                let source = item.source
-                var lastModule:Module?
-                var lastData:Data?
-                Compiler.shared.compile(source: source)
-                SymbolWalker().walkSymbols(Module.rootModule)
-                let modules = Compiler.shared.modules
-                for module in modules
-                    {
-                    let moduleName = module.shortName
-                    let output = try NSKeyedArchiver.archivedData(withRootObject: module,requiringSecureCoding: false)
-                    lastData = output
-                    let fileURL = URL(fileURLWithPath: "/Users/vincent/Desktop/\(moduleName).arb")
-                    try output.write(to: fileURL)
-                    lastModule = module
-                    }
-                let fullPath = "/Users/vincent/Desktop/Test.arp"
-                let project = try ArgonProjectDocument(named: "Test.arp", at: fullPath)
-                try? project.remove(atPath:fullPath)
-                project.addFile(data:lastData!,at: lastModule!.shortName + ".arm")
-                try project.write()
-                }
-            catch let error as CompilerError
-                {
-                let line = error.location.line
-                print(error)
-                }
-            catch let error
-                {
-                print("Unexpected error \(error)")
-                }
-            }
+        Module.initModules()
+//        let sourceItem = SourceFolder(path:"/Users/vincent/Development/Development2021/Argon Projects/Medicine/")
+//        let items = [sourceItem.children[1],sourceItem.children[0]]
+//        for item in items
+//            {
+//            do
+//                {
+//                let source = item.source
+//                var lastModule:Module?
+//                var lastData:Data?
+//                Compiler.shared.compile(source: source)
+//                SymbolWalker().walkSymbols(Module.rootModule)
+//                let modules = Compiler.shared.modules
+//                for module in modules
+//                    {
+//                    let moduleName = module.shortName
+//                    let output = try NSKeyedArchiver.archivedData(withRootObject: module,requiringSecureCoding: false)
+//                    lastData = output
+//                    let fileURL = URL(fileURLWithPath: "/Users/vincent/Desktop/\(moduleName).arb")
+//                    try output.write(to: fileURL)
+//                    lastModule = module
+//                    }
+//                let fullPath = "/Users/vincent/Desktop/Test.arp"
+//                let project = try ArgonProjectDocument(named: "Test.arp", at: fullPath)
+//                try? project.remove(atPath:fullPath)
+//                project.addFile(data:lastData!,at: lastModule!.shortName + ".arm")
+//                try project.write()
+//                }
+//            catch let error as CompilerError
+//                {
+//                let line = error.location.line
+//                print(error)
+//                }
+//            catch let error
+//                {
+//                print("Unexpected error \(error)")
+//                }
+//            }
         }
     
     func application(_ sender: NSApplication, openFiles filenames: [String])

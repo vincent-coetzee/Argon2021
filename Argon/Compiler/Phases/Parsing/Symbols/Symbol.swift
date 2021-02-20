@@ -6,9 +6,9 @@
 //  Copyright © 2020 Vincent Coetzee. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 
-public class Symbol:ParseNode,SymbolVisitorAcceptor
+public class Symbol:ParseNode,SymbolVisitorAcceptor,BrowserItem
     {
     public override var debugDescription: String
         {
@@ -134,6 +134,31 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor
         super.init()
         }
 
+    public var isLeaf: Bool
+        {
+        return(true)
+        }
+    
+    public var title: String
+        {
+        return(self.shortName)
+        }
+    
+    public var image: NSImage
+        {
+        return(NSImage(named:"IconArgonClass")!)
+        }
+    
+    public var childCount: Int
+        {
+        return(0)
+        }
+    
+    public func child(at: Int) -> BrowserItem
+        {
+        fatalError()
+        }
+        
     public func accept(_ visitor:SymbolVisitor)
         {
         visitor.acceptSymbol(self)
