@@ -559,19 +559,24 @@ internal class Parser:CompilerPhase
         self.advance()
         let location = self.token.location
         let name = try self.parseIdentifier()
-        print("CLASS NAME IS \(name)")
-        let aClass = ValueClass(shortName:name)
-        aClass.addDeclaration(location: location)
-        Module.innerScope.addSymbol(aClass)
+        var aClass:Class
         if self.token.isLeftBrocket
             {
-            var generics = TemplateClasses()
+            let theClass = TemplateValueClass(shortName: name)
+            aClass = theClass
+            var types = Array<TypeVariable>()
             try self.parseBrockets
                 {
-                generics = try self.parseGenericTypes()
+                types = try self.parseTypeVariables()
                 }
-            aClass.generics = generics
+            theClass.typeVariables = types
             }
+        else
+            {
+            aClass = ValueClass(shortName:name)
+            }
+        aClass.addDeclaration(location: location)
+        Module.innerScope.addSymbol(aClass)
         if self.token.isGluon
             {
             self.advance()
@@ -618,21 +623,23 @@ internal class Parser:CompilerPhase
         self.advance()
         let location = self.token.location
         let name = try self.parseIdentifier()
-        if name == "Doctor"
-            {
-            print("CLASS NAME IS \(name)")
-            }
-        let aClass = Class(shortName:name)
-        Module.innerScope.addSymbol(aClass)
+        var aClass:Class
         if self.token.isLeftBrocket
             {
-            var generics = TemplateClasses()
+            let theClass = TemplateClass(shortName: name)
+            var types = Array<TypeVariable>()
             try self.parseBrockets
                 {
-                generics = try self.parseGenericTypes()
+                types = try self.parseTypeVariables()
                 }
-            aClass.generics = generics
+            theClass.typeVariables = types
+            aClass = theClass
             }
+        else
+            {
+            aClass = Class(shortName:name)
+            }
+        Module.innerScope.addSymbol(aClass)
         if self.token.isGluon
             {
             self.advance()
@@ -905,10 +912,10 @@ internal class Parser:CompilerPhase
         self.advance()
         }
         
-    private func parseGenericTypes() throws -> TemplateClasses
+    private func parseTypeVariables() throws -> Array<TypeVariable>
         {
         self.advance()
-        var genericTypes = TemplateClasses()
+        var types = Array<TypeVariable>()
         repeat
             {
             if self.token.isComma
@@ -939,11 +946,11 @@ internal class Parser:CompilerPhase
                     while self.token.isComma
                     }
                 }
-            let generic = TemplateClass(shortName: name)
-            genericTypes.append(generic)
+            let type = TypeVariable(shortName: name,constraints:constraints)
+            types.append(type)
             }
         while self.token.isComma
-        return(genericTypes)
+        return(types)
         }
         
     private func parseTypeDeclaration() throws
@@ -1242,7 +1249,7 @@ internal class Parser:CompilerPhase
                 throw(CompilerError(.rightBrocketExpected,self.token.location))
                 }
             self.advance()
-            return(Pointer(shortName: Argon.nextName("POINTER"),elementType: TypeVariable(shortName:"ELEMENT",class:elementType)))
+            return(PointerClass(shortName: Argon.nextName("POINTER"),elementType:elementType))
             }
         else if token.isLeftPar
             {
@@ -1431,8 +1438,8 @@ internal class Parser:CompilerPhase
             {
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
-        let pointerClass = Module.argonModule.lookupClass("Pointer") as! GenericPointerClass
-        let specializedClass = pointerClass.specialize(elementType:TypeVariable(shortName: "ELEMENT", class: elementType))
+        let pointerClass = Module.argonModule.lookupClass("Pointer") as! PointerClass
+        let specializedClass = pointerClass.specialize(with:[elementType])
         return(specializedClass)
         }
 
@@ -1450,7 +1457,7 @@ internal class Parser:CompilerPhase
             {
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
-        let listClass = Module.argonModule.lookupClass("List") as! GenericListClass
+        let listClass = Module.argonModule.lookupClass("List") as! TemplateListClass
         let specializedClass = listClass.specialize(elementType:elementType)
         return(specializedClass)
         }
@@ -1469,7 +1476,7 @@ internal class Parser:CompilerPhase
             {
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
-        let setClass = Module.argonModule.lookupClass("Set") as! GenericSetClass
+        let setClass = Module.argonModule.lookupClass("Set") as! TemplateSetClass
         let specializedClass = setClass.specialize(elementType:elementType)
         return(specializedClass)
         }
@@ -1493,7 +1500,7 @@ internal class Parser:CompilerPhase
             {
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
-        let dictionaryClass = Module.argonModule.lookupClass("Dictionary") as! GenericDictionaryClass
+        let dictionaryClass = Module.argonModule.lookupClass("Dictionary") as! TemplateDictionaryClass
         let specializedClass = dictionaryClass.specialize(keyType: keyTypeClass, valueType: valueTypeClass)
         return(specializedClass)
         }

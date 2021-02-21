@@ -37,3 +37,8 @@ public class CollectionClass:TemplateClass
         fatalError("This should have been overridden")
         }
     }
+
+
+public class SystemPlaceholderCollectionClass:CollectionClass
+    {
+    }

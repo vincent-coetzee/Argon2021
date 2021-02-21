@@ -1,20 +1,33 @@
 //
-//  TypeVariable.swift
-//  spark
+//  ValueClass.swift
+//  Argon
 //
-//  Created by Vincent Coetzee on 22/05/2020.
-//  Copyright © 2020 Vincent Coetzee. All rights reserved.
+//  Created by Vincent Coetzee on 2021/02/21.
 //
 
 import Foundation
 
-public class TemplateClass:Class
+public class ValueClass:Class
+    {
+    public override func encode(with coder:NSCoder)
+        {
+        super.encode(with:coder)
+        }
+    }
+
+public class SystemPlaceholderValueClass:ValueClass
+    {
+    }
+    
+public class TemplateValueClass:ValueClass
     {
     public override var isTemplateClass:Bool
         {
         return(true)
         }
         
+    public var typeVariables:Array<TypeVariable> = []
+    
     internal override init(shortName:String)
         {
         super.init(shortName: shortName)
@@ -40,4 +53,6 @@ public class TemplateClass:Class
         }
 }
 
-typealias TemplateClasses = Array<TemplateClass>
+public class SystemPlaceholderTemplateValueClass:TemplateValueClass
+    {
+    }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class GenericDictionaryClass:TemplateClass
+public class TemplateDictionaryClass:TemplateClass
     {
     private var typeNames:[String] = []
     
@@ -31,7 +31,7 @@ public class GenericDictionaryClass:TemplateClass
         }
         
         
-    func specialize(keyType:Class,valueType:Class) -> DictionaryClass
+    func specialize(keyType:Class,valueType:Class) -> Class
         {
         return(DictionaryClass(shortName:self.shortName,elementType:AssociationClass(keyClass: keyType, valueClass: valueType)))
         }
@@ -52,5 +52,22 @@ public class DictionaryClass:CollectionClass
     public required init?(coder:NSCoder)
         {
         fatalError("init(coder:) has not been implemented")
+        }
+    }
+
+public class SystemPlaceholderDictionaryClass:DictionaryClass
+    {
+    }
+    
+public class SystemPlaceholderTemplateDictionaryClass:TemplateDictionaryClass
+    {
+    public override func specialize(with:[Class]) -> Class
+        {
+        return(SystemPlaceholderDictionaryClass(shortName:self.shortName,elementType:with[0]))
+        }
+        
+    public override func specialize(keyType:Class,valueType:Class) -> Class
+        {
+        return(SystemPlaceholderDictionaryClass(shortName:self.shortName,elementType:AssociationClass(keyClass: keyType, valueClass: valueType)))
         }
     }

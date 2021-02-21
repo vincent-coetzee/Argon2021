@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class GenericArrayClass:TemplateClass
+public class TemplateArrayClass:TemplateClass
     {
     private var typeNames:[String] = []
     
@@ -30,7 +30,7 @@ public class GenericArrayClass:TemplateClass
         return(ArrayClass(shortName:self.shortName,indexType: (with[0] as! IndexType).indexType,elementType:with[1]))
         }
         
-    func specialize(indexType:Type.ArrayIndexType,elementType:Class) -> ArrayClass
+    func specialize(indexType:Type.ArrayIndexType,elementType:Class) -> Class
         {
         return(ArrayClass(shortName:self.shortName,indexType:indexType,elementType:elementType))
         }
@@ -59,5 +59,22 @@ public class ArrayClass:CollectionClass
     public required init?(coder:NSCoder)
         {
         fatalError("init(coder:) has not been implemented")
+        }
+    }
+
+public class SystemPlaceholderArrayClass:ArrayClass
+    {
+    }
+    
+public class SystemPlaceholderTemplateArrayClass:TemplateArrayClass
+    {
+    public override func specialize(with:[Class]) -> Class
+        {
+        return(SystemPlaceholderArrayClass(shortName:self.shortName,indexType: (with[0] as! IndexType).indexType,elementType:with[1]))
+        }
+        
+    public override func specialize(indexType:Type.ArrayIndexType,elementType:Class) -> Class
+        {
+        return(ArrayClass(shortName:self.shortName,indexType:indexType,elementType:elementType))
         }
     }

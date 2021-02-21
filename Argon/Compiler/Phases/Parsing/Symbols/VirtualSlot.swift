@@ -15,13 +15,3 @@ internal class VirtualSlot:Slot
         return(VirtualSlot(shortName:self.shortName,class:self._class,container:self.containingSymbol,attributes:self.attributes))
         }
     }
-
-//internal class ModuleSlot:Slot
-//    {
-//    }
-//    
-//internal class MetaSlot:Slot
-//    {
-//    }
-//
-//

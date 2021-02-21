@@ -7,15 +7,6 @@
 
 import Cocoa
 
-public protocol BrowserItem
-    {
-    var isLeaf:Bool { get }
-    var title:String { get }
-    var image:NSImage { get }
-    var childCount:Int { get }
-    func child(at:Int) -> BrowserItem
-    }
-    
 class ArgonProjectBrowserViewController: NSViewController
     {
     @IBOutlet var browser:NSBrowser!
@@ -23,6 +14,7 @@ class ArgonProjectBrowserViewController: NSViewController
     override func viewDidLoad()
         {
         super.viewDidLoad()
+        self.browser.setCellClass(IconTitleCell.self)
         self.browser.delegate = self
         }
     }
@@ -50,9 +42,8 @@ extension ArgonProjectBrowserViewController:NSBrowserDelegate
     func browser(_ browser:NSBrowser,willDisplayCell cell:Any, atRow row:Int,column:Int)
         {
         let item = browser.item(atRow: row, inColumn: column) as! BrowserItem
-        let image = item.image
-        let theCell = cell as! NSTextFieldCell
-        theCell.image = image
+        let theCell = cell as! IconTitleCell
+        theCell.image = item.image.resized(to: NSSize(width:64,height:64))
         theCell.stringValue = item.title
         }
 

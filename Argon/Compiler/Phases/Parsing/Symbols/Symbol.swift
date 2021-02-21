@@ -146,7 +146,7 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,BrowserItem
     
     public var image: NSImage
         {
-        return(NSImage(named:"IconArgonClass")!)
+        return(NSImage(named:"IconClass64")!)
         }
     
     public var childCount: Int

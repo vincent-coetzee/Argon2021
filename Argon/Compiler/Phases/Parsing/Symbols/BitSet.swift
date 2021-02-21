@@ -111,3 +111,31 @@ public class BitSetMaker:Method
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+public class BitSetClass:CollectionClass
+    {
+    public let keyType:Type
+    public let valueType:Type
+    
+    init(shortName:String,keyType:Type,valueType:Type)
+        {
+        self.keyType = keyType
+        self.valueType = valueType
+        super.init(shortName:shortName)
+        }
+    
+    internal required init() {
+        fatalError("init() has not been implemented")
+    }
+    
+    public required init?(coder:NSCoder)
+        {
+        fatalError("init(coder:) has not been implemented")
+        }
+    
+    internal override func typeWithIndex(_ type:Type.ArrayIndexType) -> Type
+        {
+        return(Type.bitset(keyType:self.keyType,valueType:self.valueType))
+        }
+    }
+

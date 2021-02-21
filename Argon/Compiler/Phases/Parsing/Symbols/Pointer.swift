@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class GenericPointerClass:Class
+public class TemplatePointerClass:TemplateClass
     {
     private var typeNames:[String] = []
     
@@ -21,22 +21,26 @@ public class GenericPointerClass:Class
         fatalError("init(coder:) has not been implemented")
     }
     
-    func specialize(elementType:TypeVariable) -> Pointer
+    internal required init() {
+        fatalError("init() has not been implemented")
+    }
+    
+    func specialize(elementType:Class) -> Class
         {
-        return(Pointer(shortName:self.shortName,elementType:elementType))
+        return(PointerClass(shortName:self.shortName,elementType:elementType))
         }
     }
     
-public class Pointer:TemplateClass
+public class PointerClass:TemplateClass
     {
-    private var elementType:TypeVariable?
+    private var elementType:Class?
     
     public override var isTemplateClass:Bool
         {
         return(true)
         }
         
-    public init(shortName:String,elementType:TypeVariable)
+    public init(shortName:String,elementType:Class)
         {
         super.init(shortName:shortName)
         self.elementType = elementType
@@ -51,3 +55,20 @@ public class Pointer:TemplateClass
         fatalError("init(coder:) has not been implemented")
         }
 }
+
+public class SystemPlaceholderPointerClass:PointerClass
+    {
+    }
+    
+public class SystemPlaceholderTemplatePointerClass:TemplatePointerClass
+    {
+    public override func specialize(with:[Class]) -> Class
+        {
+        return(SystemPlaceholderPointerClass(shortName:self.shortName,elementType:with[0]))
+        }
+        
+    public override func specialize(elementType:Class) -> Class
+        {
+        return(SystemPlaceholderSetClass(shortName:self.shortName,elementType: elementType))
+        }
+    }

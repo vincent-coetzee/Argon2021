@@ -15,6 +15,7 @@ public class TypeVariable:Symbol
         }
         
     internal var concreteClass:Class?
+    internal var constraints:Array<Class> = []
     
     init(shortName:String,class:Class? = nil)
         {
@@ -22,6 +23,12 @@ public class TypeVariable:Symbol
         super.init(shortName:shortName)
         }
     
+    init(shortName:String,constraints:Array<Class>)
+        {
+        self.constraints = constraints
+        super.init(shortName:shortName)
+        }
+        
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
