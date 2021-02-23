@@ -626,7 +626,7 @@ internal class Parser:CompilerPhase
         var aClass:Class
         if self.token.isLeftBrocket
             {
-            let theClass = TemplateClass(shortName: name)
+            let theClass = Class(shortName: name)
             var types = Array<TypeVariable>()
             try self.parseBrockets
                 {
@@ -1249,7 +1249,8 @@ internal class Parser:CompilerPhase
                 throw(CompilerError(.rightBrocketExpected,self.token.location))
                 }
             self.advance()
-            return(PointerClass(shortName: Argon.nextName("POINTER"),elementType:elementType))
+            let pointer = Module.argonModule.lookupClass("Pointer")!
+            return(pointer.specialize(elementType:elementType))
             }
         else if token.isLeftPar
             {
@@ -1418,10 +1419,9 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
         self.advance()
-        let arrayClass = ArrayClass(shortName:Argon.nextName("ARRAY"),indexType: indexType,elementType: elementTypeClass)
-        let module = Module.rootModule.lookupModule("Argon/Collections")
-        arrayClass.parent = module
-        return(arrayClass)
+        let arrayClass = Module.argonModule.lookupClass("Array")!
+        let aClass = arrayClass.specialize(indexType:indexType,elementType: elementTypeClass)
+        return(aClass)
         }
         
     @discardableResult
@@ -1438,7 +1438,7 @@ internal class Parser:CompilerPhase
             {
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
-        let pointerClass = Module.argonModule.lookupClass("Pointer") as! PointerClass
+        let pointerClass = Module.argonModule.lookupClass("Pointer")!
         let specializedClass = pointerClass.specialize(with:[elementType])
         return(specializedClass)
         }
@@ -1457,7 +1457,7 @@ internal class Parser:CompilerPhase
             {
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
-        let listClass = Module.argonModule.lookupClass("List") as! TemplateListClass
+        let listClass = Module.argonModule.lookupClass("List")!
         let specializedClass = listClass.specialize(elementType:elementType)
         return(specializedClass)
         }
@@ -1476,7 +1476,7 @@ internal class Parser:CompilerPhase
             {
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
-        let setClass = Module.argonModule.lookupClass("Set") as! TemplateSetClass
+        let setClass = Module.argonModule.lookupClass("Set")!
         let specializedClass = setClass.specialize(elementType:elementType)
         return(specializedClass)
         }
@@ -1500,9 +1500,10 @@ internal class Parser:CompilerPhase
             {
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
-        let dictionaryClass = Module.argonModule.lookupClass("Dictionary") as! TemplateDictionaryClass
-        let specializedClass = dictionaryClass.specialize(keyType: keyTypeClass, valueType: valueTypeClass)
-        return(specializedClass)
+        let dictionaryClass = Module.argonModule.lookupClass("Dictionary")!
+//        let specializedClass = dictionaryClass.specialize(elementType:
+        fatalError()
+//        return(specializedClass)
         }
         
     private func parseIdentifier() throws -> Identifier
@@ -2657,7 +2658,7 @@ internal class Parser:CompilerPhase
         return(ClassMakerInvocationExpression(class:aClass,arguments:arguments))
         }
         
-    func parseGenericClassSpecialization(_ aClass:TemplateClass) throws -> Class
+    func parseGenericClassSpecialization(_ aClass:Class) throws -> Class
         {
         if !self.token.isLeftBrocket
             {
@@ -2693,26 +2694,26 @@ internal class Parser:CompilerPhase
                 }
             return(expression)
             }
-        else if object is Class && (object as! Class).isTemplateClass
+        else if object is Class
             {
             let aClass = object as! Class
-            if aClass.isTemplateClass
-                {
-                let specializedClass = try self.parseGenericClassSpecialization(aClass as! TemplateClass)
-                if self.token.isLeftPar
-                    {
-                    return(try self.parseMakerInvocation(specializedClass))
-                    }
-                return(ClassExpression(class:specializedClass))
-                }
-            else
-                {
+//            if aClass.isTemplateClass
+//                {
+//                let specializedClass = try self.parseGenericClassSpecialization(aClass)
+//                if self.token.isLeftPar
+//                    {
+//                    return(try self.parseMakerInvocation(specializedClass))
+//                    }
+//                return(ClassExpression(class:specializedClass))
+//                }
+//            else
+//                {
                 if self.token.isLeftPar
                     {
                     return(try self.parseMakerInvocation(aClass))
                     }
                 return(ClassExpression(class:object as! Class))
-                }
+//                }
             }
         else if object is Closure
             {

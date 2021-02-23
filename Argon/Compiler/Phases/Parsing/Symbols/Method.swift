@@ -5,7 +5,7 @@
 //  Created by Vincent Coetzee on 2020/12/20.
 //
 
-import Foundation
+import Cocoa
 
 public class Method:Symbol,NSCoding
     {
@@ -20,6 +20,11 @@ public class Method:Symbol,NSCoding
     public var parameterTypes:[Type]
         {
         fatalError("This should have been defined in the method instance")
+        }
+        
+    public override var image:NSImage
+        {
+        return(NSImage(named:"IconMethod64")!)
         }
         
     public var returnType:Type

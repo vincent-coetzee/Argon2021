@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class ParseNode:NSObject,Scope
+public class ParseNode:Scope
     {
     internal var parentScope:Scope?
     internal var index:Int = Argon.nextIndex()

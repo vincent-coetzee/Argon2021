@@ -7,78 +7,69 @@
 
 import Cocoa
 
-class ArgonProjectBrowserViewController: NSViewController
+public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSource,NSOutlineViewDelegate
     {
-    @IBOutlet var browser:NSBrowser!
+    @IBOutlet var text:NSTextField!
+    @IBOutlet var outliner:NSOutlineView!
     
-    override func viewDidLoad()
+    public override func viewDidLoad()
         {
         super.viewDidLoad()
-        self.browser.setCellClass(IconTitleCell.self)
-        self.browser.delegate = self
+        Module.argonModule.initArgonModule()
+        self.outliner.delegate = self
+        self.outliner.dataSource = self
+        self.outliner.reloadData()
         }
-    }
-    
-extension ArgonProjectBrowserViewController:NSBrowserDelegate
-    {
-    func rootItem(for: NSBrowser) -> Any?
-        {
-        Module.initModules()
-        return(Module.rootModule)
-        }
-        
-    func browser(_ browser: NSBrowser, numberOfChildrenOfItem item: Any?) -> Int
+
+    public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int
         {
         if item == nil
             {
-            return(1)
+            return(Module.rootModule.childCount)
             }
-        else
+        if let item = item as? OutlineItem
             {
-            let browserItem = item as! BrowserItem
-            return(browserItem.childCount)
+            return(item.childCount)
             }
+        return(0)
         }
-    func browser(_ browser:NSBrowser,willDisplayCell cell:Any, atRow row:Int,column:Int)
-        {
-        let item = browser.item(atRow: row, inColumn: column) as! BrowserItem
-        let theCell = cell as! IconTitleCell
-        theCell.image = item.image.resized(to: NSSize(width:64,height:64))
-        theCell.stringValue = item.title
-        }
+        
 
-    func browser(_ browser: NSBrowser, child index: Int, ofItem item: Any?) -> Any
+    public func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any
         {
-        if let browserItem = item as? BrowserItem
+        if item == nil
             {
-            guard index < browserItem.childCount else
-                {
-                fatalError()
-                }
-            return(browserItem.child(at:index))
+            return(Module.rootModule)
             }
-        fatalError()
+        let outlineItem = item as! OutlineItem
+        return(outlineItem.child(at:index))
         }
 
-    
-    func browser(_ browser: NSBrowser, isLeafItem item: Any?) -> Bool
+    public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool
         {
-        guard let browserItem = item as? BrowserItem else
+        if let outlineItem = item as? OutlineItem
             {
-            fatalError()
+            return(!outlineItem.isLeaf)
             }
-        return(browserItem.isLeaf)
+        return(false)
         }
 
-    
-
-    func browser(_ browser: NSBrowser, objectValueForItem item: Any?) -> Any?
+    public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView?
         {
-        return((item as? BrowserItem)?.title)
+        let outlineItem = item as! OutlineItem
+        let aClass = outlineItem.itemClass
+        let symbol = outlineItem as! Symbol
+        let view = aClass.init(symbol:symbol)
+        return(view)
         }
 
-    func browser(_ browser: NSBrowser, heightOfRow row: Int, inColumn columnIndex: Int) -> CGFloat
+    public func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat
         {
-        return(64.0)
+//        let row = outlineView.row(forItem:item)
+//        if let cell = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false),let aCell = cell as? OutlineItemCell
+//            {
+//            return(32)
+//            }
+        return(32)
         }
     }

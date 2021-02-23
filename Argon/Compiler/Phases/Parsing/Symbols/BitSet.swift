@@ -112,7 +112,7 @@ public class BitSetMaker:Method
     }
 }
 
-public class BitSetClass:CollectionClass
+public class BitSetClass:Class
     {
     public let keyType:Type
     public let valueType:Type

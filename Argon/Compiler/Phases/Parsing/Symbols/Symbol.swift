@@ -8,9 +8,9 @@
 
 import Cocoa
 
-public class Symbol:ParseNode,SymbolVisitorAcceptor,BrowserItem
+public class Symbol:ParseNode,SymbolVisitorAcceptor,OutlineItem,Hashable
     {
-    public override var debugDescription: String
+    public var debugDescription: String
         {
         return("\(Swift.type(of:self))(\(self.shortName))")
         }
@@ -35,6 +35,11 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,BrowserItem
     internal var memoryAddress:MemoryAddress = .zero
     internal var parentId:UUID?
     
+    public func hash(into hasher:inout Hasher)
+        {
+        hasher.combine(self.shortName)
+        }
+        
     public var module:Module
         {
         var object = self.parent
@@ -47,6 +52,11 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,BrowserItem
             fatalError("Can not find containing module for \(self)")
             }
         return(object as! Module)
+        }
+        
+    public var itemClass:OutlineItemCell.Type
+        {
+        return(OutlineItemCell.self)
         }
         
     public var isPlaceholder:Bool
@@ -148,13 +158,13 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,BrowserItem
         {
         return(NSImage(named:"IconClass64")!)
         }
-    
+        
     public var childCount: Int
         {
         return(0)
         }
     
-    public func child(at: Int) -> BrowserItem
+    public func child(at: Int) -> OutlineItem
         {
         fatalError()
         }

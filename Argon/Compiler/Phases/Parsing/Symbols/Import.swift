@@ -13,7 +13,7 @@ public class Import:Symbol
         {
         if let module = self.importedModule
             {
-            return(module.exportedSymbols.reduce(into:[:]){ dictionary,symbol in dictionary[symbol.shortName] = symbol})
+            return(module.allSymbols.reduce(into:[:]){ dictionary,symbol in dictionary[symbol.shortName] = symbol})
             }
         return([:])
         }

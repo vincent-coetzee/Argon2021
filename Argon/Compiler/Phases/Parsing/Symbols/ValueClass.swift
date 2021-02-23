@@ -21,13 +21,6 @@ public class SystemPlaceholderValueClass:ValueClass
     
 public class TemplateValueClass:ValueClass
     {
-    public override var isTemplateClass:Bool
-        {
-        return(true)
-        }
-        
-    public var typeVariables:Array<TypeVariable> = []
-    
     internal override init(shortName:String)
         {
         super.init(shortName: shortName)
@@ -47,7 +40,7 @@ public class TemplateValueClass:ValueClass
         fatalError("init(coder:) has not been implemented")
         }
         
-    public func specialize(with:[Class]) -> Class
+    public override func specialize(with:[Class]) -> Class
         {
         fatalError()
         }

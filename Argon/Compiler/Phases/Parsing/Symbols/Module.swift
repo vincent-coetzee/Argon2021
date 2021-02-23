@@ -21,11 +21,6 @@ public class Module:SymbolContainer,NSCoding
     public static let rootModule = RootModule(shortName: "Root")
     public static let rootScope = Module.rootModule
         
-    public var exportedSymbols:[Symbol]
-        {
-        return(self.symbols.values.flatMap{$0.symbols}.filter{$0.accessLevel == .export})
-        }
-        
     internal override func pushScope()
         {
         self.push()
@@ -36,18 +31,22 @@ public class Module:SymbolContainer,NSCoding
         self.pop()
         }
         
-    public private(set) var genericTypes:[TemplateClass] = []
+    public private(set) var genericTypes:[TypeVariable] = []
     private var exitFunction:ModuleFunction?
     private var entryFunction:ModuleFunction?
     public var moduleKey = UUID()
     private var versionKey:SemanticVersionNumber = .one
     private var moduleSlots:Dictionary<String,Slot> = [:]
     private var imports = ImportVector()
-    private var symbolList:[Symbol] = []
-    
+        
     public override var isModuleLevelSymbol:Bool
         {
         return(true)
+        }
+        
+    public override var image: NSImage
+        {
+        return(NSImage(named:"IconModule64")!)
         }
         
     public var isRootModule:Bool
@@ -71,7 +70,6 @@ public class Module:SymbolContainer,NSCoding
         
     internal override func addSymbol(_ symbol:Symbol)
         {
-        self.symbolList.append(symbol)
         symbol.definingScope = self
         if symbol is Slot
             {
@@ -216,6 +214,10 @@ public class Module:SymbolContainer,NSCoding
         let aClass = SystemPlaceholderClass(shortName: name)
         aClass.accessLevel = .export
         aClass.superclasses = parents
+        for parent in parents
+            {
+            parent.subclasses.insert(aClass)
+            }
         self.addSymbol(aClass)
         return(aClass)
         }
@@ -274,20 +276,15 @@ public class Module:SymbolContainer,NSCoding
         {
         return(false)
         }
-    
-    public override var image: NSImage
-        {
-        return(NSImage(named:"IconArgonClass")!)
-        }
-    
+
     public override var childCount: Int
         {
-        return(self.symbolList.count)
+        return(self.allSymbols.count)
         }
     
-    public override func child(at: Int) -> BrowserItem
+    public override func child(at: Int) -> OutlineItem
         {
-        return(self.symbolList[at])
+        return(self.allSymbols[at])
         }
     }
 

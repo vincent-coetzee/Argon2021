@@ -10,9 +10,19 @@ import Foundation
 
 public class Class:Symbol,NSCoding
     {
+    public override func hash(into hasher:inout Hasher)
+        {
+        hasher.combine(self.shortName)
+        }
+        
     public static func ==(lhs:Class,rhs:Class) -> Bool
         {
-        return(Swift.type(of:rhs)==Swift.type(of:lhs) && rhs.shortName == lhs.shortName)
+        return(rhs.shortName == lhs.shortName)
+        }
+        
+    public override var hashValue:Int
+        {
+        return(self.shortName.hashValue)
         }
         
     public static let rootClass = SystemPlaceholderClass(shortName:"Root")
@@ -64,13 +74,15 @@ public class Class:Symbol,NSCoding
     public static let float32Class = SystemPlaceholderValueClass(shortName:"Float32").superclass(.bitValueClass)
     public static let float64Class = SystemPlaceholderValueClass(shortName:"Float64").superclass(.bitValueClass)
     public static let float16Class = SystemPlaceholderValueClass(shortName:"Float16").superclass(.bitValueClass)
-    public static let collectionClass = SystemPlaceholderCollectionClass(shortName:"Collection").superclass(.objectClass)
-    public static let arrayClass = SystemPlaceholderTemplateArrayClass(shortName:"Array").superclass(.collectionClass)
-    public static let setClass = SystemPlaceholderTemplateSetClass(shortName:"Set").superclass(.collectionClass)
-    public static let listClass = SystemPlaceholderTemplateListClass(shortName:"List").superclass(.collectionClass)
+    public static let hashedClass = SystemPlaceholderClass(shortName:"Hashed").superclass(.objectClass)
+    public static let collectionClass = SystemPlaceholderClass(shortName:"Collection").typeVariable("ELEMENT",.hashedClass).superclass(.objectClass)
+    public static let arrayClass = SystemPlaceholderClass(shortName:"Array").superclass(.collectionClass)
+    public static let setClass = SystemPlaceholderClass(shortName:"Set").superclass(.collectionClass)
+    public static let listClass = SystemPlaceholderClass(shortName:"List").superclass(.collectionClass)
     public static let bitSetClass = BitSetClass(shortName:"BitSet",keyType:.void,valueType:.void).superclass(.collectionClass)
-    public static let dictionaryClass = SystemPlaceholderTemplateDictionaryClass(shortName:"Array").superclass(.collectionClass)
-    public static let pointerClass = SystemPlaceholderTemplatePointerClass(shortName:"Pointer").superclass(.collectionClass)
+    public static let associationClass = SystemPlaceholderClass(shortName:"Association").typeVariable("KEY").typeVariable("VALUE").superclass(.objectClass)
+    public static let dictionaryClass = SystemPlaceholderClass(shortName:"Dictionary").typeVariable("ELEMENT",.associationClass).superclass(.collectionClass)
+    public static let pointerClass = SystemPlaceholderClass(shortName:"Pointer").superclass(.collectionClass)
     
     public static var voidTypeVariable:TypeVariable
         {
@@ -82,6 +94,7 @@ public class Class:Symbol,NSCoding
         return("$\(self.shortName)")
         }
         
+    public var typeVariables:[TypeVariable] = []
     public var superclasses = Classes()
     internal var localSlots:[String:Slot] = [:]
     private var allSlots:Array<Slot> = []
@@ -91,10 +104,23 @@ public class Class:Symbol,NSCoding
     internal var symbols:[String:Symbol] = [:]
     private  var slotBlockOffsets:[Class:Int] = [:]
     private var wasLaidOut:Bool = false
-        
-    public var isTemplateClass:Bool
+    public var subclasses = Set<Class>()
+    public var indexType:Type.ArrayIndexType?
+    public var elementType:Class?
+    
+    public override var isLeaf: Bool
         {
-        return(false)
+        return(self.subclasses.count < 1)
+        }
+
+    public var uniqueSubclasses:Array<Symbol>
+        {
+        return(Array<Symbol>(self.subclasses).sorted{$0.shortName<$1.shortName})
+        }
+    
+    public override var childCount: Int
+        {
+        return(self.uniqueSubclasses.count)
         }
         
     private var uniqueSuperclasses:OrderedSet<Class>
@@ -152,6 +178,11 @@ public class Class:Symbol,NSCoding
         return(self)
         }
         
+    public override func child(at: Int) -> OutlineItem
+        {
+        return(self.uniqueSubclasses[at])
+        }
+        
    public override func accept(_ visitor:SymbolVisitor)
         {
         visitor.acceptClass(self)
@@ -184,9 +215,11 @@ public class Class:Symbol,NSCoding
         return(Type.undefined)
         }
         
+    @discardableResult
     internal func superclass(_ parent:Class) -> Class
         {
         self.superclasses.append(parent)
+        parent.subclasses.insert(self)
         return(self)
         }
         
@@ -223,6 +256,14 @@ public class Class:Symbol,NSCoding
         slot.symbolAdded(to: self)
         }
     
+    @discardableResult
+    func typeVariable(_ name:String,_ constraints:Class...) -> Class
+        {
+        let typeVariable = TypeVariable(shortName:name,constraints:constraints)
+        self.typeVariables.append(typeVariable)
+        return(self)
+        }
+        
     func isSubclass(of superclass:Class) -> Bool
         {
         for parent in self.superclasses
@@ -270,13 +311,24 @@ public class Class:Symbol,NSCoding
         return(self.parentScope?.lookup(shortName:shortName))
         }
         
-    func sllSuperclasses() -> Set<Class>
+    @discardableResult
+    func superclasses(_ some:[Class]) -> Class
+        {
+        self.superclasses = some
+        for aClass in some
+            {
+            aClass.subclasses.insert(self)
+            }
+        return(self)
+        }
+        
+    func allSuperclasses() -> Set<Class>
         {
         var set = Set<Class>()
         for aClass in self.superclasses
             {
             set.insert(aClass)
-            for newClass in aClass.sllSuperclasses()
+            for newClass in aClass.allSuperclasses()
                 {
                 set.insert(newClass)
                 }
@@ -393,6 +445,34 @@ public class Class:Symbol,NSCoding
         slot.slotOffset = offset
         self.addRawSlot(slot)
         return(self)
+        }
+        
+    public func specialize(with:[Class]) -> Class
+        {
+        let aClass = Class(shortName:self.shortName)
+        aClass.elementType = with[1]
+        aClass.subclasses = self.subclasses
+        aClass.localSlots = self.localSlots
+        return(aClass)
+        }
+        
+    func specialize(indexType:Type.ArrayIndexType,elementType:Class) -> Class
+        {
+        let aClass = Class(shortName:self.shortName)
+        aClass.indexType = indexType
+        aClass.elementType = elementType
+        aClass.subclasses = self.subclasses
+        aClass.localSlots = self.localSlots
+        return(aClass)
+        }
+        
+    func specialize(elementType:Class) -> Class
+        {
+        let aClass = Class(shortName:self.shortName)
+        aClass.elementType = elementType
+        aClass.subclasses = self.subclasses
+        aClass.localSlots = self.localSlots
+        return(aClass)
         }
     }
 

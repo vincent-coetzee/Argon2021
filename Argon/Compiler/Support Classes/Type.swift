@@ -297,12 +297,10 @@ typealias Types = Array<Type>
 
 public class IndexType:Class
     {
-    let indexType:Type.ArrayIndexType
-    
     init(_ type:Type.ArrayIndexType)
         {
-        self.indexType = type
         super.init(shortName:"")
+        self.indexType = type
         }
     
     public required init?(coder: NSCoder) {

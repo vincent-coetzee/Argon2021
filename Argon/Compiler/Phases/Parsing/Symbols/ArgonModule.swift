@@ -55,7 +55,6 @@ public class ArgonModule:Module
         self.addSymbol(Class.bitValueClass)
         self.addSymbol(Class.tupleClass)
         self.addSymbol(Class.moduleClass)
-
         self.addSymbol(Class.pointerClass)
         self.addSymbol(Class.functionClass)
         self.addSymbol(Class.conduitClass)
@@ -130,16 +129,16 @@ public class ArgonModule:Module
         let indexClass = collectionsModule.placeholderClass("Index",parents:[.valueClass])
         let processionClass = collectionsModule.placeholderClass("Procession",parents:[.valueClass]).placeholderSlot("currentIndex",class:indexClass).placeholderSlot("nextIndex",class:indexClass).placeholderSlot("previousIndex",class:indexClass).placeholderSlot("isLastIndex",class:.booleanClass)
         let collectionClass = Class.collectionClass.placeholderSlot("count",class:.integerClass).placeholderSlot("firstIndex",class:indexClass).placeholderSlot("lastIndex",class:indexClass)
-        let arrayClass = Class.arrayClass
+        let arrayClass = Class.arrayClass.superclasses([collectionClass])
         collectionsModule.placeholderClass("ByteArray",parents:[arrayClass])
-        let listClass = collectionsModule.placeholderClass("List",parents:[collectionClass])
-        let setClass = collectionsModule.placeholderClass("Set",parents:[collectionClass])
-        let dictionaryClass = collectionsModule.placeholderClass("Dictionary",parents:[collectionClass])
+        Class.listClass.superclasses([collectionClass])
+        Class.setClass.superclasses([collectionClass])
+        Class.dictionaryClass.superclasses([collectionClass])
         collectionsModule.placeholderMethodInstance("proceed",processionClass,Parameter("collection",arrayClass, true))
-        collectionsModule.placeholderMethodInstance("proceed",processionClass,Parameter("collection",listClass, true))
-        collectionsModule.placeholderMethodInstance("proceed",processionClass,Parameter("collection",arrayClass, true))
-        collectionsModule.placeholderMethodInstance("proceed",processionClass,Parameter("collection",setClass, true))
-        collectionsModule.placeholderMethodInstance("proceed",processionClass,Parameter("collection",dictionaryClass, true))
+        collectionsModule.placeholderMethodInstance("proceed",processionClass,Parameter("collection",Class.listClass, true))
+        collectionsModule.placeholderMethodInstance("proceed",processionClass,Parameter("collection",Class.arrayClass, true))
+        collectionsModule.placeholderMethodInstance("proceed",processionClass,Parameter("collection",Class.setClass, true))
+        collectionsModule.placeholderMethodInstance("proceed",processionClass,Parameter("collection",Class.dictionaryClass, true))
         }
         
     private func initIOModule()

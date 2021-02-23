@@ -8,11 +8,11 @@
 
 import Foundation
 
-public class Statement:ParseNode
+public class Statement:ParseNode,Equatable
     {
     public static func ==(lhs:Statement,rhs:Statement) -> Bool
         {
-        fatalError("Function \(#function) should not have been called")
+        return(lhs.index == rhs.index)
         }
         
     internal var isReturnStatement:Bool

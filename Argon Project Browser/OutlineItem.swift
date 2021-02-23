@@ -7,13 +7,13 @@
 
 import Cocoa
 
-public protocol BrowserItem
+public protocol OutlineItem
     {
-//    var browserCell:NSBrowserCell { get }
+    var itemClass:OutlineItemCell.Type { get }
     var isLeaf:Bool { get }
     var title:String { get }
     var image:NSImage { get }
     var childCount:Int { get }
-    func child(at:Int) -> BrowserItem
+    func child(at:Int) -> OutlineItem
     }
     

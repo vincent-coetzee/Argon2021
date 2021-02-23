@@ -16,18 +16,26 @@ public class SymbolContainer:Symbol
         }
         
     internal var symbols:[String:SymbolSet] = [:]
+    internal var _allSymbols:Array<Symbol> = []
     
-    public var allSymbols:[Symbol]
+    public var allSymbols:Array<Symbol>
         {
-        var someSymbols:[Symbol] = []
+        var values = Array<Symbol>()
         for set in self.symbols.values
             {
-            for symbol in set.symbols
+            values.append(contentsOf:set.symbols)
+            }
+        self._allSymbols = Array<Symbol>(Set<Symbol>(values)).sorted{$0.shortName<$1.shortName}
+        var newList = Array<Symbol>()
+        for symbol in self._allSymbols
+            {
+            if !newList.contains(where:{$0.shortName == symbol.shortName})
                 {
-                someSymbols.append(symbol)
+                newList.append(symbol)
                 }
             }
-        return(someSymbols)
+        self._allSymbols = newList
+        return(newList)
         }
         
     public init(shortName:String)
