@@ -9,6 +9,10 @@ import Cocoa
 
 public class Method:Symbol,NSCoding
     {
+    public override var isLeaf:Bool
+        {
+        return(false)
+        }
         
     public var displayString: String
         {
@@ -32,6 +36,11 @@ public class Method:Symbol,NSCoding
         fatalError("This should have been defined in the method instance")
         }
         
+    public override var childCount:Int
+        {
+        return(self.allSymbols.count)
+        }
+        
     public var returnTypeClass:Class
         {
         fatalError("This should have been defined in the method instance")
@@ -41,6 +50,16 @@ public class Method:Symbol,NSCoding
         {
         super.init(shortName:shortName)
         self.memoryAddress = .zero
+        }
+        
+    public override func buildSymbols()
+        {
+        self.allSymbols = self.instances
+        }
+        
+    public override func child(at:Int) -> OutlineItem
+        {
+        return(self.allSymbols[at])
         }
         
     internal override func relinkSymbolsUsingIds(symbols:Dictionary<UUID,Symbol>)

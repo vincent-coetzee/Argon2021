@@ -68,6 +68,8 @@ public class ArgonModule:Module
         self.addSymbol(Class.bitValueClass)
         self.addSymbol(Class.bufferClass)
         self.addSymbol(Class.behaviorClass)
+        self.addSymbol(Class.associationClass)
+        self.addSymbol(Class.hashedClass)
         }
         
     public override var fullName:Name
@@ -131,6 +133,7 @@ public class ArgonModule:Module
         
     private func initBaseObjects()
         {
+        Class.stringClass.addSubclass(Class.symbolClass)
         Class.objectClass.placeholderRawSlot("header", class: Class.wordClass,offset:0).placeholderRawSlot("class", class: Class.classClass,offset:Argon.kWordSizeInBytes)
         Class.classClass.placeholderRawSlot("regularSlotCount", class: Class.integerClass,offset:Argon.kWordSizeInBytes * 2).placeholderRawSlot("classSlotCount", class: Class.integerClass,offset:Argon.kWordSizeInBytes * 3)
         Class.dateClass.placeholderRawSlot("day", class: Class.integerClass,offset:Argon.kWordSizeInBytes * 2).placeholderRawSlot("month", class: Class.integerClass,offset:Argon.kWordSizeInBytes * 3).placeholderRawSlot("year", class: Class.integerClass,offset:Argon.kWordSizeInBytes * 4).placeholderClassSlot("Today",class:.dateClass)
@@ -152,7 +155,6 @@ public class ArgonModule:Module
         Class.listClass.superclasses([collectionClass])
         Class.setClass.superclasses([collectionClass])
         Class.dictionaryClass.superclasses([collectionClass])
-        collectionsModule.placeholderMethodInstance("proceed",processionClass,Parameter("collection",arrayClass, true))
         collectionsModule.placeholderMethodInstance("proceed",processionClass,Parameter("collection",Class.listClass, true))
         collectionsModule.placeholderMethodInstance("proceed",processionClass,Parameter("collection",Class.arrayClass, true))
         collectionsModule.placeholderMethodInstance("proceed",processionClass,Parameter("collection",Class.setClass, true))

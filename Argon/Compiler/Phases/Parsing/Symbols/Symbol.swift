@@ -18,8 +18,13 @@ public enum SymbolKind
     case symbol
     }
     
-public class Symbol:ParseNode,SymbolVisitorAcceptor,OutlineItem,Hashable
+public class Symbol:ParseNode,SymbolVisitorAcceptor,OutlineItem,Hashable,Equatable
     {
+    public static func ==(lhs:Symbol,rhs:Symbol) -> Bool
+        {
+        return(lhs.id == rhs.id)
+        }
+        
     public var symbolKind:SymbolKind
         {
         return(.symbol)
@@ -130,11 +135,6 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,OutlineItem,Hashable
         let aName = self.parent?.name
         return(aName == nil ? Name(self.shortName) : (aName! + ("->" + self.shortName)))
         }
-    
-    public static func ==(lhs:Symbol,rhs:Symbol) -> Bool
-        {
-        return(lhs.index == rhs.index)
-        }
         
     internal var isModuleLevelSymbol:Bool
         {
@@ -159,6 +159,16 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,OutlineItem,Hashable
         super.init()
         }
 
+    public func menu(for:NSEvent,in:Int,on:OutlineItem) -> NSMenu?
+        {
+        return(nil)
+        }
+        
+    public var allClasses:Array<Symbol>
+        {
+        return(self.allSymbols.filter{$0 is Class || $0 is Module})
+        }
+        
     public var isLeaf: Bool
         {
         return(true)

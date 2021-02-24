@@ -10,7 +10,7 @@ import Cocoa
 public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSource,NSOutlineViewDelegate
     {
     @IBOutlet var fieldView:NSView!
-    @IBOutlet var outliner:NSOutlineView!
+    @IBOutlet var outliner:ArgonProjectOutlineView!
     
     private var currentController:NSViewController?
     private var popover:NSPopover?
@@ -64,6 +64,10 @@ public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSourc
         self.outliner.dataSource = self
         self.outliner.reloadData()
         self.outliner.action = #selector(onItemClicked)
+                Module.initModules()
+        Module.rootModule.buildSymbols()
+        let hierarchy = Module.rootModule.rootClass
+        print(hierarchy)
         }
 
     @IBAction func onItemClicked(_ sender:Any?)
@@ -146,7 +150,7 @@ public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSourc
 //            {
 //            return(32)
 //            }
-        return(20)
+        return(24)
         }
         
     public func popoverForType(at view:NSView)

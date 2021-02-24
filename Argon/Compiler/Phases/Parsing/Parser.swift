@@ -25,7 +25,7 @@ internal class Parser:CompilerPhase
     internal var tokenIndex = 0
     private var tokens = Array<Token>()
     private var topModule:Module?
-    
+    private var tokenStream:TokenStream = TokenStream()
     private var accessModifierStack = Stack<AccessModifier>()
         
     public var effectiveAccessModifier:AccessModifier
@@ -73,12 +73,12 @@ internal class Parser:CompilerPhase
 
     private func loadTokens(from source:String)
         {
-        let tokenStream = TokenStream(source:source)
-        var aToken = tokenStream.nextToken()
+        self.tokenStream = TokenStream(source:source)
+        var aToken = self.tokenStream.nextToken()
         while !aToken.isEnd
             {
             self.tokens.append(aToken)
-            aToken = tokenStream.nextToken()
+            aToken = self.tokenStream.nextToken()
             }
         self.tokens.append(aToken)
         self.tokenIndex = 0
@@ -464,6 +464,7 @@ internal class Parser:CompilerPhase
     
     private func parseMethodDeclaration() throws
         {
+        let start = self.token.location
         self.advance()
         let location = self.token.location
         let name = try self.parseIdentifier()
@@ -490,6 +491,8 @@ internal class Parser:CompilerPhase
         instance.returnTypeClass = returnType
         instance.parameters = parameters
         instance.addDeclaration(location: location)
+        let finish = self.token.location
+        instance.source = self.tokenStream.source(from:start,to:finish)
         theMethod.addInstance(instance)
         theMethod.accessLevel = self.effectiveAccessModifier
         }
@@ -517,6 +520,7 @@ internal class Parser:CompilerPhase
         enumeration.addDeclaration(location: location)
         Module.innerScope.addSymbol(enumeration)
         enumeration.accessLevel = self.effectiveAccessModifier
+        Class.enumerationClass.addSubclass(enumeration)
         }
         
     private func parseEnumerationCase() throws -> EnumerationCase
@@ -584,6 +588,14 @@ internal class Parser:CompilerPhase
             let superclass = self.lookupClass(shortName: name)
             aClass.superclasses = [superclass]
             }
+        else
+            {
+            aClass.superclasses = [Class.valueClass]
+            }
+        for someClass in aClass.superclasses
+            {
+            someClass.subclasses.insert(aClass)
+            }
         try self.parseBraces
             {
             repeat
@@ -640,6 +652,7 @@ internal class Parser:CompilerPhase
             aClass = Class(shortName:name)
             }
         Module.innerScope.addSymbol(aClass)
+        var hasSuperclass = false
         if self.token.isGluon
             {
             self.advance()
@@ -651,6 +664,7 @@ internal class Parser:CompilerPhase
                 try self.parseParentheses
                     {
                     aClass.superclasses = try self.parseSuperclasses()
+                    hasSuperclass = true
                     }
                 }
             //
@@ -661,7 +675,16 @@ internal class Parser:CompilerPhase
                 let name = try self.parseName()
                 let superclass = self.lookupClass(name: name)
                 aClass.superclasses = [superclass]
+                hasSuperclass = true
                 }
+            }
+        if !hasSuperclass
+            {
+            aClass.superclasses = [Class.objectClass]
+            }
+        for someClass in aClass.superclasses
+            {
+            someClass.subclasses.insert(aClass)
             }
         try self.parseBraces
             {

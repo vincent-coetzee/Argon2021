@@ -17,5 +17,6 @@ public protocol OutlineItem
     func child(at:Int) -> OutlineItem
     func localSymbols(_ kinds:SymbolKind...) -> Array<Symbol>
     func buildSymbols()
+    func menu(for event:NSEvent,in row:Int,on item:OutlineItem) -> NSMenu?
     }
     

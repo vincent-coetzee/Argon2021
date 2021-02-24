@@ -6,7 +6,7 @@
 //  Copyright © 2020 Vincent Coetzee. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 
 public class Class:Symbol,NSCoding
     {
@@ -94,8 +94,18 @@ public class Class:Symbol,NSCoding
         return("$\(self.shortName)")
         }
         
+    public var superclasses:Classes = Classes()
+        {
+        didSet
+            {
+            for aClass in self.superclasses
+                {
+                aClass.subclasses.insert(self)
+                }
+            }
+        }
+        
     public var typeVariables:[TypeVariable] = []
-    public var superclasses = Classes()
     internal var localSlots:[String:Slot] = [:]
     private var allSlots:Array<Slot> = []
     internal var localClassSlots:[String:Slot] = [:]
@@ -131,6 +141,16 @@ public class Class:Symbol,NSCoding
                 break
                 }
             }
+        }
+        
+    public override var itemClass:OutlineItemCell.Type
+        {
+        return(OutlineItemClassCell.self)
+        }
+        
+    public override var image:NSImage
+        {
+        return(NSImage(named:"IconClass64")!)
         }
         
     public override var childCount: Int
@@ -189,6 +209,12 @@ public class Class:Symbol,NSCoding
     internal override var typeClass:Class
         {
         return(self)
+        }
+        
+    public func addSubclass(_ aClass:Class)
+        {
+        aClass.superclasses = aClass.superclasses + [self]
+        self.subclasses.insert(aClass)
         }
         
     @discardableResult

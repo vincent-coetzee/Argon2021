@@ -6,7 +6,7 @@
 //  Copyright © 2020 Vincent Coetzee. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 
 public class MethodInstance:Symbol,NSCoding
     {
@@ -31,6 +31,22 @@ public class MethodInstance:Symbol,NSCoding
             }
         }
         
+    public override var itemClass:OutlineItemCell.Type
+        {
+        return(OutlineItemMethodInstanceCell.self)
+        }
+        
+    public var parameterDisplayString:String
+        {
+        let strings = self.parameters.map{$0.shortName + "::" + $0.typeClass.shortName}
+        return("(" + strings.joined(separator: ",") + ")")
+        }
+        
+    public override var image:NSImage
+        {
+        return(NSImage(named:"IconMethodInstance64")!)
+        }
+        
     internal var owner:Symbol?
     internal var ownerId:UUID?
     internal var functionName:String?
@@ -40,7 +56,8 @@ public class MethodInstance:Symbol,NSCoding
     internal var codeBuffer = A3CodeBuffer()
     internal var localVariables:[LocalVariable] = []
     internal var stackLocalStorageSizeInBytes = 0
-        
+    internal var source:String = ""
+    
     public override func encode(with coder:NSCoder)
         {
         super.encode(with:coder)

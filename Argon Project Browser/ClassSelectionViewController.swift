@@ -18,17 +18,18 @@ class ClassSelectionViewController: NSViewController,NSOutlineViewDataSource,NSO
         self.outliner.reloadData()
         // Do view setup here.
     }
-    
+        
     public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int
         {
         if item == nil
             {
             Module.rootModule.buildSymbols()
-            return(Module.rootModule.localSymbols(.class,.module).count)
+            return(1)
             }
         if let item = item as? OutlineItem
             {
-            return(item.localSymbols(.class,.module).count)
+            item.buildSymbols()
+            return((item as! Symbol).allClasses.count)
             }
         return(0)
         }
@@ -38,10 +39,10 @@ class ClassSelectionViewController: NSViewController,NSOutlineViewDataSource,NSO
         {
         if item == nil
             {
-            return(Module.rootModule.localSymbols(.class,.module)[index])
+            return(Module.rootModule.rootClass)
             }
-        let outlineItem = item as! OutlineItem
-        return(outlineItem.localSymbols(.class,.module)[index])
+        let outlineItem = item as! Symbol
+        return(outlineItem.allClasses[index])
         }
 
     public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool
@@ -56,20 +57,21 @@ class ClassSelectionViewController: NSViewController,NSOutlineViewDataSource,NSO
     public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView?
         {
         let outlineItem = item as! OutlineItem
+        let aClass = outlineItem.itemClass
         let symbol = outlineItem as! Symbol
         symbol.buildSymbols()
-        let view = OutlineItemClassCell.init(symbol:symbol)
+        let view = aClass.init(symbol:symbol)
         return(view)
         }
 
-//    public func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat
-//        {
-////        let row = outlineView.row(forItem:item)
-////        if let cell = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false),let aCell = cell as? OutlineItemCell
-////            {
-////            return(32)
-////            }
-//        }
-
+    public func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat
+        {
+//        let row = outlineView.row(forItem:item)
+//        if let cell = outlineView.view(atColumn: 0, row: row, makeIfNecessary: false),let aCell = cell as? OutlineItemCell
+//            {
+//            return(32)
+//            }
+        return(24)
+    }
     
 }

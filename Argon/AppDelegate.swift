@@ -14,6 +14,9 @@ class AppDelegate: NSObject, NSApplicationDelegate
     func applicationDidFinishLaunching(_ aNotification: Notification)
         {
         Module.initModules()
+        Module.rootModule.buildSymbols()
+        let hierarchy = Module.rootModule.rootClass
+        print(hierarchy)
 //        let sourceItem = SourceFolder(path:"/Users/vincent/Development/Development2021/Argon Projects/Medicine/")
 //        let items = [sourceItem.children[1],sourceItem.children[0]]
 //        for item in items

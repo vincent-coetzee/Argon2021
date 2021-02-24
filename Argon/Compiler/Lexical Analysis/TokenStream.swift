@@ -129,6 +129,13 @@ public class TokenStream:Equatable
         return(newStream)
         }
     
+    public func source(from:SourceLocation,to:SourceLocation) -> String
+        {
+        let start = from.tokenStart
+        let end = to.tokenStop
+        return(self.source.substring(with: start..<end))
+        }
+        
     public func tokens(withComments:Bool) -> [Token]
         {
         self.parseComments = withComments

@@ -46,7 +46,7 @@ public class Module:SymbolContainer,NSCoding
     
     public override func buildSymbols()
         {
-        var classes = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Class}
+        var classes = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Class && !($0 is Enumeration)}
         var classesToRemove = Array<Symbol>()
         for aClass in classes
             {
@@ -62,7 +62,7 @@ public class Module:SymbolContainer,NSCoding
         let enumerations = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Enumeration}
         let methods = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Method}
         let modules = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Module}
-        self.allSymbols = (modules + classes + enumerations + methods).sorted{$0.shortName<$1.shortName}
+        self.allSymbols = modules.sorted{$0.shortName<$1.shortName} + classes.sorted{$0.shortName<$1.shortName} + enumerations.sorted{$0.shortName<$1.shortName} + methods.sorted{$0.shortName<$1.shortName}
         }
 
     public func reset()
@@ -318,11 +318,22 @@ public class Module:SymbolContainer,NSCoding
         return(self.allSymbols[at])
         }
         
-    public var allClasses:Array<Class>
+    public var rootClass:Class
+        {
+        let classes = self.allClasses
+        let roots = classes.filter{($0 as! Class).superclasses.isEmpty}
+        if roots.count > 1
+            {
+            fatalError("There should only be one root")
+            }
+        return(roots[0] as! Class)
+        }
+        
+    public override var allClasses:Array<Symbol>
         {
         let allElements = self.symbols.values.reduce(into:[]){$0.append(contentsOf:$1.symbols)}
         let modules = allElements.filter{$0 is Module}.map{$0 as! Module}
-        var classes = Array<Class>()
+        var classes = Array<Symbol>()
         for module in modules
             {
             let newClasses = module.allClasses
