@@ -1419,7 +1419,7 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
         self.advance()
-        let arrayClass = Module.argonModule.lookupClass("Array")!
+        let arrayClass = Module.argonModule.lookupClass("Collections/Array")!
         let aClass = arrayClass.specialize(indexType:indexType,elementType: elementTypeClass)
         return(aClass)
         }
@@ -2534,7 +2534,7 @@ internal class Parser:CompilerPhase
         else if self.token.isIdentifier || self.token.isKeyword
             {
             let identifier = self.token.isKeyword ? self.token.keyword.rawValue : self.token.identifier
-            if identifier == "People"
+            if identifier == "Pointer"
                 {
                 print("selfmhalt")
                 }
@@ -2583,7 +2583,7 @@ internal class Parser:CompilerPhase
         else
             {
             print(self.token)
-            return(EmptyExpression())
+            return(VoidExpression())
             }
         }
         
@@ -2674,6 +2674,7 @@ internal class Parser:CompilerPhase
                 self.advance()
                 }
             }
+        self.advance()
         return(aClass.specialize(with: classes))
         }
         
@@ -2697,23 +2698,23 @@ internal class Parser:CompilerPhase
         else if object is Class
             {
             let aClass = object as! Class
-//            if aClass.isTemplateClass
-//                {
-//                let specializedClass = try self.parseGenericClassSpecialization(aClass)
-//                if self.token.isLeftPar
-//                    {
-//                    return(try self.parseMakerInvocation(specializedClass))
-//                    }
-//                return(ClassExpression(class:specializedClass))
-//                }
-//            else
-//                {
+            if aClass.isGenericClass
+                {
+                let specializedClass = try self.parseGenericClassSpecialization(aClass)
+                if self.token.isLeftPar
+                    {
+                    return(try self.parseMakerInvocation(specializedClass))
+                    }
+                return(ClassExpression(class:specializedClass))
+                }
+            else
+                {
                 if self.token.isLeftPar
                     {
                     return(try self.parseMakerInvocation(aClass))
                     }
                 return(ClassExpression(class:object as! Class))
-//                }
+                }
             }
         else if object is Closure
             {

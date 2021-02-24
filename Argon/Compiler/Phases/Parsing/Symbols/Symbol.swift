@@ -8,8 +8,23 @@
 
 import Cocoa
 
+public enum SymbolKind
+    {
+    case any
+    case module
+    case `class`
+    case enumeration
+    case slot
+    case symbol
+    }
+    
 public class Symbol:ParseNode,SymbolVisitorAcceptor,OutlineItem,Hashable
     {
+    public var symbolKind:SymbolKind
+        {
+        return(.symbol)
+        }
+    
     public var debugDescription: String
         {
         return("\(Swift.type(of:self))(\(self.shortName))")
@@ -56,7 +71,7 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,OutlineItem,Hashable
         
     public var itemClass:OutlineItemCell.Type
         {
-        return(OutlineItemCell.self)
+        return(OutlineItemSymbolCell.self)
         }
         
     public var isPlaceholder:Bool
@@ -169,6 +184,10 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,OutlineItem,Hashable
         fatalError()
         }
         
+    public func buildSymbols()
+        {
+        }
+        
     public func accept(_ visitor:SymbolVisitor)
         {
         visitor.acceptSymbol(self)
@@ -258,6 +277,30 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,OutlineItem,Hashable
         self.accessLevel = AccessModifier(rawValue: (coder.decodeObject(forKey:"accessLevel") as! String))!
         self.parent = coder.decodeObject(forKey:"parent") as? Symbol
         self.memoryAddress = coder.decodeObject(forKey:"memoryAddress") as! MemoryAddress
+        }
+        
+    public var allSymbols:Array<Symbol> = []
+        
+    public func localSymbols(_ kinds:SymbolKind...) -> Array<Symbol>
+        {
+        self.buildSymbols()
+        var validSymbols = Array<Symbol>()
+        for symbol in self.allSymbols
+            {
+            for kind in kinds
+                {
+                if symbol.symbolKind == kind  || kind == .any
+                    {
+                    validSymbols.append(symbol)
+                    }
+                }
+            }
+        return(validSymbols)
+        }
+     
+    public func localClasses() -> Array<Class>
+        {
+        return(self.localSymbols(.class) as! Array<Class>)
         }
     }
 

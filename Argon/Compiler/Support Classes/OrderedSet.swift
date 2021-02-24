@@ -42,6 +42,14 @@ public struct OrderedSet<Element>:Collection where Element:Hashable
             }
         }
         
+    init(_ elements:Set<Element>)
+        {
+        for element in elements
+            {
+            self.insert(element)
+            }
+        }
+        
     init()
         {
         }

@@ -20,13 +20,13 @@ public class LocalVariable:Variable,NSCoding
     override init(name:Name,class:Class)
         {
         super.init(shortName:name.first,class:`class`)
-        self.memoryAddress = Compiler.shared.stackSegment.zero
+        self.memoryAddress = .zero
         }
     
     override init(shortName:String,class:Class)
         {
         super.init(shortName:shortName,class:`class`)
-        self.memoryAddress = Compiler.shared.stackSegment.zero
+        self.memoryAddress = .zero
         }
         
     internal required init() {

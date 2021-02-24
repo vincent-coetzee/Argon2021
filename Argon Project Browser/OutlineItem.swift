@@ -15,5 +15,7 @@ public protocol OutlineItem
     var image:NSImage { get }
     var childCount:Int { get }
     func child(at:Int) -> OutlineItem
+    func localSymbols(_ kinds:SymbolKind...) -> Array<Symbol>
+    func buildSymbols()
     }
     

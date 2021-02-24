@@ -94,8 +94,8 @@
             filePath = "Argon/Compiler/Phases/Parsing/Parser.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2820"
-            endingLineNumber = "2820"
+            startingLineNumber = "2821"
+            endingLineNumber = "2821"
             landmarkName = "parseObjectTerm(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -177,22 +177,6 @@
             startingLineNumber = "114"
             endingLineNumber = "114"
             landmarkName = "init()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "024ADD0D-3215-4E8D-AB87-51766C599C95"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Argon/Compiler/Phases/Parsing/Expressions/SlotExpression.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "30"
-            endingLineNumber = "30"
-            landmarkName = "generateIntermediateCode(in:codeHolder:into:using:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -407,38 +391,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5E2B12BD-C1B3-4E23-994A-429AE5B804BB"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Argon/Compiler/Phases/Parsing/Parser.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2539"
-            endingLineNumber = "2539"
-            landmarkName = "parsePrimaryTerm()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "FD080483-4503-469F-9D19-B0073D50A6B0"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Argon/Compiler/Phases/Parsing/Expressions/EmptyExpression.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "14"
-            endingLineNumber = "14"
-            landmarkName = "init()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "AE1178AE-0D43-42D6-A881-1A79A3F59083"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -455,38 +407,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "04B853B0-744D-4921-8423-A66252D27516"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Argon/Compiler/Phases/Parsing/Parser.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1765"
-            endingLineNumber = "1765"
-            landmarkName = "parseLetStatement()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "8ECEC702-75F6-40B4-AFB3-D1C17D42EB46"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Argon/Compiler/Phases/Parsing/Symbols/Class.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
-            landmarkName = "childCount"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "558C8802-55BA-418B-B3F2-3EBFA8B6805E"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -494,8 +414,8 @@
             filePath = "Argon/Compiler/Phases/Parsing/Symbols/Symbol.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "164"
-            endingLineNumber = "164"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
             landmarkName = "childCount"
             landmarkType = "24">
          </BreakpointContent>
@@ -503,16 +423,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "635659CE-BB96-46EB-ADDB-83F6848B3648"
+            uuid = "A0FD98D2-0C5E-487C-9238-B57F419BCE59"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Argon/Compiler/Phases/Parsing/Symbols/ArgonModule.swift"
+            filePath = "Argon Project Browser/ArgonProjectBrowserViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
-            landmarkName = "initArgonModule()"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
+            landmarkName = "outlineViewSelectionDidChange(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E230DEF5-E879-4C8A-893C-A8AC4CDAC163"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Argon/Compiler/Phases/Parsing/Expressions/EmptyExpression.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "14"
+            endingLineNumber = "14"
+            landmarkName = "init()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -106,7 +106,7 @@ public class MethodInstance:Symbol,NSCoding
         self.returnTypeClass = .voidClass
         self.ownerId = owner?.id
         super.init(shortName: shortName)
-        self.memoryAddress = Compiler.shared.codeSegment.zero
+        self.memoryAddress = .zero
         }
         
     internal required init()
@@ -115,7 +115,7 @@ public class MethodInstance:Symbol,NSCoding
         self.ownerId = nil
         self.returnTypeClass = .voidClass
         super.init()
-        self.memoryAddress = Compiler.shared.codeSegment.zero
+        self.memoryAddress = .zero
         }
         
     public func addParameter(_ parameter:Parameter)

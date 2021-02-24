@@ -6,10 +6,15 @@
 //  Copyright © 2020 Vincent Coetzee. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 
 public class Slot:Variable,NSCoding
     {
+    public override var symbolKind:SymbolKind
+        {
+        return(.slot)
+        }
+        
     public var slotNameHornerHashValue:Int
         {
         var hashValue:UInt = 0
@@ -25,6 +30,13 @@ public class Slot:Variable,NSCoding
             hashValue &= ~intermediate
             }
         return(Int(hashValue))
+        }
+        
+    public var isLastSlot:Bool = false
+        
+    public override var itemClass:OutlineItemCell.Type
+        {
+        return(OutlineItemSlotCell.self)
         }
         
     public var cloned:Slot
@@ -45,6 +57,11 @@ public class Slot:Variable,NSCoding
     public var isClassSlot:Bool
         {
         return(self.attributes.contains(.class))
+        }
+        
+    public override var image:NSImage
+        {
+        return(NSImage(named:"IconSlot64")!)
         }
         
     public var slotName:String

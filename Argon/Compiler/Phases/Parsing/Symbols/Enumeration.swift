@@ -6,7 +6,7 @@
 //  Copyright © 2020 Vincent Coetzee. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 
 public class Enumeration:Class
     {
@@ -25,6 +25,11 @@ public class Enumeration:Class
         return(true)
         }
 
+    public override var image:NSImage
+        {
+        return(NSImage(named:"IconEnumeration64")!)
+        }
+        
     internal override var typeClass:Class
         {
         return(self._class)

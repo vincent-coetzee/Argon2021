@@ -10,6 +10,8 @@ import Foundation
 
 public class ArgonModule:Module
     {
+    private var wasInitialized = false
+    
     public override var isArgonModule:Bool
         {
         return(true)
@@ -75,11 +77,27 @@ public class ArgonModule:Module
         
     internal func initArgonModule() -> Self
         {
+        if self.wasInitialized
+            {
+            return(self)
+            }
+        self.wasInitialized = true
+        self.reset()
         self.initBaseModules()
         self.initBaseClasses()
         self.initSystemModules()
         SymbolWalker().walkSymbols(self)
         return(self)
+        }
+        
+    public override func buildSymbols()
+        {
+        let classes = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Class}.filter{($0 as! Class).superclasses.isEmpty}
+        let enumerations = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Enumeration}
+        let methods = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Method}
+        let modules = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Module}
+        self.allSymbols = (modules + classes + enumerations + methods).sorted{$0.shortName<$1.shortName}
+        Class.pointerClass.typeVariable("ELEMENT")
         }
         
     internal override func allocateAddresses(using compiler:Compiler) throws
@@ -169,7 +187,8 @@ public class ArgonModule:Module
         let sinks = conduitsModule.placeholderEnumeration("Sink",class: .uIntegerClass).case("#none",value:0).case("#memory",value:1).case("#socket",value:2).case("#file",value:3)
         let conduitMode = conduitsModule.placeholderEnumeration("ConduitMode",class: .uIntegerClass).case("#none",value:0).case("#read",value:1).case("#write",value:2).case("#readwrite",value:3).case("#extend",value:4).case("#text",value:5).case("#raw",value:6)
         let sinksModule = self.placeholderModule("Sinks",in:conduitsModule)
-        let conduitClass = conduitsModule.placeholderClass("Conduit",parents:[.objectClass]).placeholderSlot("sink",class:sinks).placeholderSlot("atEnd",class:.booleanClass).placeholderSlot("count",class:.integerClass)
+        let conduitClass = Class.conduitClass.placeholderSlot("sink",class:sinks).placeholderSlot("atEnd",class:.booleanClass).placeholderSlot("count",class:.integerClass)
+        conduitsModule.addSymbol(conduitClass)
         conduitClass.placeholderSlot("isReadConduit",class:.booleanClass).placeholderSlot("isWriteConduit",class:.booleanClass).placeholderSlot("isOpen",class:.booleanClass).placeholderSlot("isClosed",class:.booleanClass)
         conduitsModule.placeholderMethodInstance("open",.booleanClass,Parameter("mode", conduitMode, true))
         let readConduit = conduitsModule.placeholderClass("ReadConduit",parents:[conduitClass])

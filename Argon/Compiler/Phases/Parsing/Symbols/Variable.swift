@@ -45,21 +45,21 @@ public class Variable:Symbol
         {
         self._class = `class`
         super.init(shortName:shortName)
-        self.memoryAddress = Compiler.shared.dataSegment.zero
+        self.memoryAddress = .zero
         }
         
     internal init(name:Name,class:Class)
         {
         self._class = `class`
         super.init(name:name)
-        self.memoryAddress = Compiler.shared.dataSegment.zero
+        self.memoryAddress = .zero
         }
         
     internal required init()
         {
         self._class = Class.voidClass
         super.init()
-        self.memoryAddress = Compiler.shared.dataSegment.zero
+        self.memoryAddress = .zero
         }
     
     public required init?(coder:NSCoder)

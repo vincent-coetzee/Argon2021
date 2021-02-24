@@ -40,7 +40,7 @@ public class Method:Symbol,NSCoding
     public init(shortName:String)
         {
         super.init(shortName:shortName)
-        self.memoryAddress = Compiler.shared.codeSegment.zero
+        self.memoryAddress = .zero
         }
         
     internal override func relinkSymbolsUsingIds(symbols:Dictionary<UUID,Symbol>)

@@ -89,6 +89,7 @@ public class SymbolWalker:SymbolVisitor
     
     public func acceptModule(_ module:Module)
         {
+        module.buildSymbols()
         self.indented
             {
             if visitedSymbols.contains(module)

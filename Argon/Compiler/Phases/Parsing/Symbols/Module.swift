@@ -10,6 +10,11 @@ import Cocoa
 
 public class Module:SymbolContainer,NSCoding
     {
+    public override var symbolKind:SymbolKind
+        {
+        return(.module)
+        }
+        
     public static func initModules()
         {
         let _ = Module.rootModule
@@ -38,7 +43,33 @@ public class Module:SymbolContainer,NSCoding
     private var versionKey:SemanticVersionNumber = .one
     private var moduleSlots:Dictionary<String,Slot> = [:]
     private var imports = ImportVector()
-        
+    
+    public override func buildSymbols()
+        {
+        var classes = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Class}
+        var classesToRemove = Array<Symbol>()
+        for aClass in classes
+            {
+            for superclass in (aClass as! Class).superclasses
+                {
+                if classes.contains(superclass)
+                    {
+                    classesToRemove.append(aClass)
+                    }
+                }
+            }
+        classes.removeAll(where: {classesToRemove.contains($0)})
+        let enumerations = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Enumeration}
+        let methods = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Method}
+        let modules = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Module}
+        self.allSymbols = (modules + classes + enumerations + methods).sorted{$0.shortName<$1.shortName}
+        }
+
+    public func reset()
+        {
+        self.allSymbols = []
+        self.symbols = [:]
+        }
     public override var isModuleLevelSymbol:Bool
         {
         return(true)
@@ -251,7 +282,7 @@ public class Module:SymbolContainer,NSCoding
     public override init(shortName:String)
         {
         super.init(shortName:shortName)
-        self.memoryAddress = Compiler.shared.staticSegment.zero
+        self.memoryAddress = .zero
         }
         
     public override func encode(with coder: NSCoder)
@@ -285,6 +316,20 @@ public class Module:SymbolContainer,NSCoding
     public override func child(at: Int) -> OutlineItem
         {
         return(self.allSymbols[at])
+        }
+        
+    public var allClasses:Array<Class>
+        {
+        let allElements = self.symbols.values.reduce(into:[]){$0.append(contentsOf:$1.symbols)}
+        let modules = allElements.filter{$0 is Module}.map{$0 as! Module}
+        var classes = Array<Class>()
+        for module in modules
+            {
+            let newClasses = module.allClasses
+            classes.append(contentsOf: newClasses)
+            }
+        classes.append(contentsOf:allElements.filter{$0 is Class}.map{$0 as! Class})
+        return(classes.sorted{$0.shortName<$1.shortName})
         }
     }
 

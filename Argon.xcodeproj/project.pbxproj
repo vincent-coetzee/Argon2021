@@ -100,6 +100,9 @@
 		BF08FC3725803AB100C4AC6F /* ArgonBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FC3325803AB100C4AC6F /* ArgonBrowserViewController.swift */; };
 		BF08FC3825803AB100C4AC6F /* SourceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FC3425803AB100C4AC6F /* SourceProvider.swift */; };
 		BF08FC3925803AB100C4AC6F /* DisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF08FC3525803AB100C4AC6F /* DisplayView.swift */; };
+		BF0A932025E5D7CE000AFDA6 /* SlotEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0A931E25E5D7CE000AFDA6 /* SlotEditorViewController.swift */; };
+		BF0A932125E5D7CE000AFDA6 /* SlotEditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF0A931F25E5D7CE000AFDA6 /* SlotEditorViewController.xib */; };
+		BF0A932425E5DA44000AFDA6 /* SlotEditorCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF0A932325E5DA44000AFDA6 /* SlotEditorCellView.xib */; };
 		BF163E7325E59C7900A3C4B0 /* NSColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF163E7225E59C7900A3C4B0 /* NSColor+Extensions.swift */; };
 		BF1F082425D28B8D001A8DC5 /* RawMemory.c in Sources */ = {isa = PBXBuildFile; fileRef = BF1F082325D28B8D001A8DC5 /* RawMemory.c */; };
 		BF1F082725D2B4E6001A8DC5 /* RawSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F082625D2B4E6001A8DC5 /* RawSlot.swift */; };
@@ -153,7 +156,6 @@
 		BF64816F25B4660900D75675 /* SystemPlaceholderEnumeration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF64816E25B4660900D75675 /* SystemPlaceholderEnumeration.swift */; };
 		BF7952BA2592A54D00B90AE3 /* AliasSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7952B92592A54D00B90AE3 /* AliasSlot.swift */; };
 		BF7B46CA25C006D300FB22DC /* VoidExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46C925C006D300FB22DC /* VoidExpression.swift */; };
-		BF7B46CD25C006E800FB22DC /* EmptyExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46CC25C006E800FB22DC /* EmptyExpression.swift */; };
 		BF7B46D025C006FC00FB22DC /* NullExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46CF25C006FC00FB22DC /* NullExpression.swift */; };
 		BF7B46D325C0071900FB22DC /* BinaryExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46D225C0071900FB22DC /* BinaryExpression.swift */; };
 		BF7B46D625C0073400FB22DC /* UnaryExpression.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7B46D525C0073400FB22DC /* UnaryExpression.swift */; };
@@ -215,6 +217,8 @@
 		BF8CF0A625C0A02E00A8FE30 /* MemoryImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8CF0A525C0A02E00A8FE30 /* MemoryImage.swift */; };
 		BF8CF0A925C0A06900A8FE30 /* MemorySegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8CF0A825C0A06900A8FE30 /* MemorySegment.swift */; };
 		BF8CF0AD25C0A12400A8FE30 /* StaticSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8CF0AC25C0A12400A8FE30 /* StaticSegment.swift */; };
+		BF90934525E5EB1C0051E54F /* ClassSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF90934325E5EB1C0051E54F /* ClassSelectionViewController.swift */; };
+		BF90934625E5EB1C0051E54F /* ClassSelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF90934425E5EB1C0051E54F /* ClassSelectionViewController.xib */; };
 		BF928B0A25DE80EB00F318C3 /* TypeVariable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF928B0925DE80EB00F318C3 /* TypeVariable.swift */; };
 		BF979DB52580F8ED002AFB7F /* TokenStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF979DB42580F8ED002AFB7F /* TokenStyle.swift */; };
 		BF979DB925832410002AFB7F /* NSFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF979DB825832410002AFB7F /* NSFont+Extension.swift */; };
@@ -366,6 +370,9 @@
 		BF08FC3325803AB100C4AC6F /* ArgonBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArgonBrowserViewController.swift; sourceTree = "<group>"; };
 		BF08FC3425803AB100C4AC6F /* SourceProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceProvider.swift; sourceTree = "<group>"; };
 		BF08FC3525803AB100C4AC6F /* DisplayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DisplayView.swift; sourceTree = "<group>"; };
+		BF0A931E25E5D7CE000AFDA6 /* SlotEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlotEditorViewController.swift; sourceTree = "<group>"; };
+		BF0A931F25E5D7CE000AFDA6 /* SlotEditorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SlotEditorViewController.xib; sourceTree = "<group>"; };
+		BF0A932325E5DA44000AFDA6 /* SlotEditorCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SlotEditorCellView.xib; sourceTree = "<group>"; };
 		BF163E7225E59C7900A3C4B0 /* NSColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Extensions.swift"; sourceTree = "<group>"; };
 		BF1F082125D28B8D001A8DC5 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		BF1F082225D28B8D001A8DC5 /* RawMemory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RawMemory.h; sourceTree = "<group>"; };
@@ -422,7 +429,6 @@
 		BF64816E25B4660900D75675 /* SystemPlaceholderEnumeration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPlaceholderEnumeration.swift; sourceTree = "<group>"; };
 		BF7952B92592A54D00B90AE3 /* AliasSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasSlot.swift; sourceTree = "<group>"; };
 		BF7B46C925C006D300FB22DC /* VoidExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoidExpression.swift; sourceTree = "<group>"; };
-		BF7B46CC25C006E800FB22DC /* EmptyExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyExpression.swift; sourceTree = "<group>"; };
 		BF7B46CF25C006FC00FB22DC /* NullExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullExpression.swift; sourceTree = "<group>"; };
 		BF7B46D225C0071900FB22DC /* BinaryExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryExpression.swift; sourceTree = "<group>"; };
 		BF7B46D525C0073400FB22DC /* UnaryExpression.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnaryExpression.swift; sourceTree = "<group>"; };
@@ -484,6 +490,8 @@
 		BF8CF0A525C0A02E00A8FE30 /* MemoryImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryImage.swift; sourceTree = "<group>"; };
 		BF8CF0A825C0A06900A8FE30 /* MemorySegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorySegment.swift; sourceTree = "<group>"; };
 		BF8CF0AC25C0A12400A8FE30 /* StaticSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticSegment.swift; sourceTree = "<group>"; };
+		BF90934325E5EB1C0051E54F /* ClassSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassSelectionViewController.swift; sourceTree = "<group>"; };
+		BF90934425E5EB1C0051E54F /* ClassSelectionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClassSelectionViewController.xib; sourceTree = "<group>"; };
 		BF928B0925DE80EB00F318C3 /* TypeVariable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeVariable.swift; sourceTree = "<group>"; };
 		BF979DB42580F8ED002AFB7F /* TokenStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStyle.swift; sourceTree = "<group>"; };
 		BF979DB825832410002AFB7F /* NSFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSFont+Extension.swift"; sourceTree = "<group>"; };
@@ -795,7 +803,6 @@
 				BF7B473825C00A6600FB22DC /* ClosureInvocationExpression.swift */,
 				BF7B477125C00D1A00FB22DC /* DateTimeValueExpression.swift */,
 				BF7B476B25C00CF900FB22DC /* DateValueExpression.swift */,
-				BF7B46CC25C006E800FB22DC /* EmptyExpression.swift */,
 				BF7B46FF25C0089C00FB22DC /* EnumerationCaseValueExpression.swift */,
 				BF7B474725C00BE300FB22DC /* ExecutableExpression.swift */,
 				BF08FBA525803A6A00C4AC6F /* Expression.swift */,
@@ -1045,6 +1052,11 @@
 				BF558F3325E57CF20055087B /* OutlineItemCell.swift */,
 				BF558F3725E589440055087B /* ArgonRawBrowser.swift */,
 				BF163E7225E59C7900A3C4B0 /* NSColor+Extensions.swift */,
+				BF0A931E25E5D7CE000AFDA6 /* SlotEditorViewController.swift */,
+				BF0A931F25E5D7CE000AFDA6 /* SlotEditorViewController.xib */,
+				BF0A932325E5DA44000AFDA6 /* SlotEditorCellView.xib */,
+				BF90934325E5EB1C0051E54F /* ClassSelectionViewController.swift */,
+				BF90934425E5EB1C0051E54F /* ClassSelectionViewController.xib */,
 			);
 			path = "Argon Project Browser";
 			sourceTree = "<group>";
@@ -1123,6 +1135,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF0A932125E5D7CE000AFDA6 /* SlotEditorViewController.xib in Resources */,
 				BF3B7FDD25893CA900582C17 /* ArgonIntegers.argon in Resources */,
 				BFA4BFE2258BF5AD0040DE86 /* MedicineModule.argon in Resources */,
 				BFA4BFE1258BF5AD0040DE86 /* Location.argon in Resources */,
@@ -1131,8 +1144,10 @@
 				BFA4BFE4258BF5AD0040DE86 /* Location(Location).argon in Resources */,
 				BF08FB5025803A2900C4AC6F /* Main.storyboard in Resources */,
 				BFA4BFE5258BF5AD0040DE86 /* People.argon in Resources */,
+				BF90934625E5EB1C0051E54F /* ClassSelectionViewController.xib in Resources */,
 				BFA4BFE3258BF5AD0040DE86 /* People(Professions).argon in Resources */,
 				BF3B7FDE25893CA900582C17 /* ArgonCollections.argon in Resources */,
+				BF0A932425E5DA44000AFDA6 /* SlotEditorCellView.xib in Resources */,
 				BF3B7FDC25893CA900582C17 /* ArgonNumbers.argon in Resources */,
 				BF3B7FDF25893CA900582C17 /* ArgonStandardLibrary(Collections).argon in Resources */,
 				BF3B7FE025893CA900582C17 /* Argon.argon in Resources */,
@@ -1284,6 +1299,7 @@
 				BFD58CEC258F355800B2ADDD /* Method.swift in Sources */,
 				BF7B474225C00BAB00FB22DC /* MakerInvocationExpression.swift in Sources */,
 				BF08FBDF25803A6A00C4AC6F /* IntermediateCodeGenerator.swift in Sources */,
+				BF0A932025E5D7CE000AFDA6 /* SlotEditorViewController.swift in Sources */,
 				BF2357FC25DB56CC0087E27F /* SymbolVisitor.swift in Sources */,
 				BF7B472D25C00A1100FB22DC /* IdentifierExpression.swift in Sources */,
 				BF57C36925B6FE760024F95F /* LayoutSlot.swift in Sources */,
@@ -1332,12 +1348,12 @@
 				BF08FC0125803A6A00C4AC6F /* ForkStatement.swift in Sources */,
 				BFC3FD8525E2981E0099944C /* SequenceGeneratorClass.swift in Sources */,
 				BF7B46EB25C007E100FB22DC /* RelationalExpression.swift in Sources */,
-				BF7B46CD25C006E800FB22DC /* EmptyExpression.swift in Sources */,
 				BF7B475D25C00C9400FB22DC /* SlotExpression.swift in Sources */,
 				BF08FBFE25803A6A00C4AC6F /* ElseIfClause.swift in Sources */,
 				BF7B471E25C0097300FB22DC /* LiteralFloatExpression.swift in Sources */,
 				BF08FC0525803A6A00C4AC6F /* LocalStatement.swift in Sources */,
 				BF5AFF7D25A53C3C00CED0AC /* LayoutModifier.swift in Sources */,
+				BF90934525E5EB1C0051E54F /* ClassSelectionViewController.swift in Sources */,
 				BF64816925B45D6B00D75675 /* SystemPlaceholderClass.swift in Sources */,
 				BF08FBF725803A6A00C4AC6F /* ForInStatement.swift in Sources */,
 				BF5AFF6725A3651200CED0AC /* String+Extensions.swift in Sources */,

@@ -10,6 +10,11 @@ import Foundation
 
 public class Class:Symbol,NSCoding
     {
+    public override var symbolKind:SymbolKind
+        {
+        return(.class)
+        }
+        
     public override func hash(into hasher:inout Hasher)
         {
         hasher.combine(self.shortName)
@@ -83,11 +88,6 @@ public class Class:Symbol,NSCoding
     public static let associationClass = SystemPlaceholderClass(shortName:"Association").typeVariable("KEY").typeVariable("VALUE").superclass(.objectClass)
     public static let dictionaryClass = SystemPlaceholderClass(shortName:"Dictionary").typeVariable("ELEMENT",.associationClass).superclass(.collectionClass)
     public static let pointerClass = SystemPlaceholderClass(shortName:"Pointer").superclass(.collectionClass)
-    
-    public static var voidTypeVariable:TypeVariable
-        {
-        return(TypeVariable(shortName: "", class: .voidClass))
-        }
 
     public var displayString:String
         {
@@ -108,19 +108,40 @@ public class Class:Symbol,NSCoding
     public var indexType:Type.ArrayIndexType?
     public var elementType:Class?
     
+    public var isGenericClass:Bool
+        {
+        return(!self.typeVariables.isEmpty)
+        }
+        
     public override var isLeaf: Bool
         {
         return(self.subclasses.count < 1)
         }
 
-    public var uniqueSubclasses:Array<Symbol>
+    public override func buildSymbols()
         {
-        return(Array<Symbol>(self.subclasses).sorted{$0.shortName<$1.shortName})
+        let slots = Array(localSlots.values)
+        let classes = self.uniqueSubclasses.items
+        self.allSymbols = (slots.sorted{$0.shortName<$1.shortName} + classes.sorted{$0.shortName<$1.shortName})
+        for symbol in self.allSymbols.reversed()
+            {
+            if let slot = symbol as? Slot
+                {
+                slot.isLastSlot = true
+                break
+                }
+            }
         }
-    
+        
     public override var childCount: Int
         {
-        return(self.uniqueSubclasses.count)
+        return(self.allSymbols.count)
+        }
+        
+    private var uniqueSubclasses:OrderedSet<Class>
+        {
+        let set = OrderedSet<Class>(self.subclasses)
+        return(set)
         }
         
     private var uniqueSuperclasses:OrderedSet<Class>
@@ -180,7 +201,7 @@ public class Class:Symbol,NSCoding
         
     public override func child(at: Int) -> OutlineItem
         {
-        return(self.uniqueSubclasses[at])
+        return(self.allSymbols[at])
         }
         
    public override func accept(_ visitor:SymbolVisitor)
@@ -226,13 +247,13 @@ public class Class:Symbol,NSCoding
     init(shortName:String)
         {
         super.init(shortName:shortName)
-        self.memoryAddress = Compiler.shared.staticSegment.zero
+        self.memoryAddress = .zero
         }
         
     init(name:Name)
         {
         super.init(name:name)
-        self.memoryAddress = Compiler.shared.staticSegment.zero
+        self.memoryAddress = .zero
         }
         
     func addRegularSlot(_ slot:Slot)
@@ -450,7 +471,7 @@ public class Class:Symbol,NSCoding
     public func specialize(with:[Class]) -> Class
         {
         let aClass = Class(shortName:self.shortName)
-        aClass.elementType = with[1]
+        aClass.elementType = with[0]
         aClass.subclasses = self.subclasses
         aClass.localSlots = self.localSlots
         return(aClass)

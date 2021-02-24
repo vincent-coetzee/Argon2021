@@ -9,4 +9,7 @@ import Foundation
 
 public class VoidExpression:Expression
     {
+    internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws
+        {
+        }
     }

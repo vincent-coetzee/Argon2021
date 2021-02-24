@@ -10,8 +10,6 @@ import Foundation
 
 public class Compiler
     {
-    public static let shared = Compiler()
-    
     public var modules:Array<Module> = []
     
     public let staticSegment = StaticSegment(sizeInBytes:1024*1024*10)
