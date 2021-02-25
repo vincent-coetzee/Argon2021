@@ -34,13 +34,3 @@ public class SlotEditorView:NSView
         }
     }
     
-class SlotEditorViewController: NSViewController {
-
-
-    @IBOutlet var tableView:NSTableView!
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do view setup here.
-    }
-    
-}

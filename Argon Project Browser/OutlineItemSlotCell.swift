@@ -7,7 +7,7 @@
 
 import Cocoa
 
-public class OutlineItemSlotCell:OutlineItemCell
+public class OutlineItemSlotCell:ItemBrowserCell
     {
     private let slot:Slot
     private let trashButton = NSButton(frame:.zero)
@@ -19,7 +19,7 @@ public class OutlineItemSlotCell:OutlineItemCell
     required init(symbol:Symbol)
         {
         self.slot = symbol as! Slot
-        super.init(symbol:symbol)
+        super.init()
         self.addIconView()
         self.addSlotNameView()
 //        self.addSlotTypeView()
@@ -30,12 +30,16 @@ public class OutlineItemSlotCell:OutlineItemCell
             }
         self.wantsLayer = true
         self.layer?.borderWidth = 1
-        self.layer?.borderColor = NSColor.sexyPink.cgColor
+        self.layer?.borderColor = NSColor.argonSexyPink.cgColor
         self.layer?.cornerRadius = 8
         }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    required init() {
+        fatalError("init() has not been implemented")
     }
     
     @IBAction func onAddClicked(_ sender:Any?)
@@ -61,7 +65,7 @@ public class OutlineItemSlotCell:OutlineItemCell
     private func addIconView()
         {
         self.addSubview(self.iconView)
-        self.iconView.image = slot.image
+        self.iconView.image = slot.icon
         self.iconView.frame = NSRect(x:Self.kRowHeight,y:0,width:Self.kRowHeight,height:Self.kRowHeight)
         }
         
@@ -83,7 +87,7 @@ public class OutlineItemSlotCell:OutlineItemCell
         self.slotNameView.font = Self.kDefaultFont
         self.slotNameView.drawsBackground = false
         self.slotNameView.isBezeled = false
-        self.slotNameView.textColor = NSColor.sexyPink
+        self.slotNameView.textColor = NSColor.argonSexyPink
         }
         
     private func addSlotTypeView()
@@ -94,7 +98,7 @@ public class OutlineItemSlotCell:OutlineItemCell
         self.slotTypeView.font = Self.kDefaultFont
         self.slotTypeView.drawsBackground = false
         self.slotTypeView.isBezeled = false
-        self.slotTypeView.textColor = NSColor.sexyPink
+        self.slotTypeView.textColor = NSColor.argonSexyPink
         }
         
     public override func layout()

@@ -25,7 +25,7 @@ public class Enumeration:Class
         return(true)
         }
 
-    public override var image:NSImage
+    public override var icon:NSImage
         {
         return(NSImage(named:"IconEnumeration64")!)
         }

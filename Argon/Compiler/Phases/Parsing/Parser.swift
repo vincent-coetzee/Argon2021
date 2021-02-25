@@ -520,7 +520,6 @@ internal class Parser:CompilerPhase
         enumeration.addDeclaration(location: location)
         Module.innerScope.addSymbol(enumeration)
         enumeration.accessLevel = self.effectiveAccessModifier
-        Class.enumerationClass.addSubclass(enumeration)
         }
         
     private func parseEnumerationCase() throws -> EnumerationCase

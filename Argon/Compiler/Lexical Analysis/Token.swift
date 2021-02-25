@@ -291,6 +291,55 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             }
         }
         
+    public var rawTokenType:Int
+        {
+        switch(self)
+            {
+        case .none:
+            return(0)
+        case .comment(_, _):
+            return(1)
+        case .end(_):
+            return(2)
+        case .identifier(_, _):
+            return(3)
+        case .keyword(_, _):
+            return(4)
+        case .symbol(_, _):
+            return(5)
+        case .hashString(_, _):
+            return(6)
+        case .string(_, _):
+            return(7)
+        case .integer(_, _):
+            return(8)
+        case .byte(_, _):
+            return(9)
+        case .true(_):
+            return(10)
+        case .false(_):
+            return(11)
+        case .float(_, _):
+            return(12)
+        case .character(_, _):
+            return(13)
+        case .boolean(_, _):
+            return(14)
+        case .text(_, _):
+            return(15)
+        case .nativeType(_, _):
+            return(16)
+        case .tag(_, _):
+            return(17)
+        case .operator(_, _):
+            return(18)
+        case .marker:
+            return(19)
+        case .error(_):
+            return(20)
+            }
+        }
+        
     public var customOperatorString:String
         {
         switch(self)

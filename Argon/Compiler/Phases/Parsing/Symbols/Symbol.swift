@@ -18,7 +18,7 @@ public enum SymbolKind
     case symbol
     }
     
-public class Symbol:ParseNode,SymbolVisitorAcceptor,OutlineItem,Hashable,Equatable
+public class Symbol:ParseNode,SymbolVisitorAcceptor,BrowsableItem,Hashable,Equatable,EditableItem
     {
     public static func ==(lhs:Symbol,rhs:Symbol) -> Bool
         {
@@ -74,9 +74,14 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,OutlineItem,Hashable,Equatab
         return(object as! Module)
         }
         
-    public var itemClass:OutlineItemCell.Type
+    public var browserCell:ItemBrowserCell
         {
-        return(OutlineItemSymbolCell.self)
+        return(OutlineItemSymbolCell(symbol:self))
+        }
+        
+    public var editorCell:ItemEditorCell
+        {
+        return(ItemEditorCell(item:self))
         }
         
     public var isPlaceholder:Bool
@@ -159,7 +164,7 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,OutlineItem,Hashable,Equatab
         super.init()
         }
 
-    public func menu(for:NSEvent,in:Int,on:OutlineItem) -> NSMenu?
+    public func menu(for:NSEvent,in:Int,on:BrowsableItem) -> NSMenu?
         {
         return(nil)
         }
@@ -179,7 +184,7 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,OutlineItem,Hashable,Equatab
         return(self.shortName)
         }
     
-    public var image: NSImage
+    public var icon: NSImage
         {
         return(NSImage(named:"IconClass64")!)
         }
@@ -189,7 +194,7 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,OutlineItem,Hashable,Equatab
         return(0)
         }
     
-    public func child(at: Int) -> OutlineItem
+    public func child(at: Int) -> BrowsableItem
         {
         fatalError()
         }

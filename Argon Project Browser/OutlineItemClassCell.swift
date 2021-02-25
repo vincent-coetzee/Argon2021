@@ -7,7 +7,7 @@
 
 import Cocoa
 
-public class OutlineItemClassCell:OutlineItemCell
+public class OutlineItemClassCell:ItemBrowserCell
     {
     public let nameView = NSTextField(frame:.zero)
     public let iconView = NSImageView(frame:.zero)
@@ -17,7 +17,7 @@ public class OutlineItemClassCell:OutlineItemCell
     required init(symbol:Symbol)
         {
         self.symbol = symbol
-        super.init(symbol:symbol)
+        super.init()
         self.addClassNameView()
         self.addIconView()
         }
@@ -25,8 +25,12 @@ public class OutlineItemClassCell:OutlineItemCell
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    public override func menu(for event:NSEvent,in row:Int,on item:OutlineItem) -> NSMenu?
+    
+    required init() {
+        fatalError("init() has not been implemented")
+    }
+    
+    public override func menu(for event:NSEvent,in row:Int,on item:BrowsableItem) -> NSMenu?
         {
         let menu = NSMenu(title: "Classes")
         var item = menu.addItem(withTitle: "New Class", action: #selector(onNewClassClicked), keyEquivalent: "C")
@@ -47,10 +51,6 @@ public class OutlineItemClassCell:OutlineItemCell
         
     @IBAction func onNewClassClicked(_ sender:Any?)
         {
-        let controller = NewArgonClassWindowController(windowNibName: "NewArgonClassWindowController")
-        let _ = controller.window
-        controller.runModal(in:self.window!)
-        print(controller)
         }
         
     @IBAction func onDeleteClassClicked(_ sender:Any?)
@@ -73,13 +73,13 @@ public class OutlineItemClassCell:OutlineItemCell
         self.nameView.font = Self.kDefaultFont
         self.nameView.drawsBackground = false
         self.nameView.isBezeled = false
-        self.nameView.textColor = NSColor.neonOrange
+        self.nameView.textColor = NSColor.argonNeonOrange
         }
         
     private func addIconView()
         {
         self.addSubview(self.iconView)
-        self.iconView.image = symbol.image
+        self.iconView.image = symbol.icon
         self.iconView.frame = NSRect(x:0,y:0,width:Self.kRowHeight,height:Self.kRowHeight)
         }
         

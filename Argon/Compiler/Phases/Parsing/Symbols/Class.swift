@@ -143,12 +143,12 @@ public class Class:Symbol,NSCoding
             }
         }
         
-    public override var itemClass:OutlineItemCell.Type
+    public override var browserCell:ItemBrowserCell
         {
-        return(OutlineItemClassCell.self)
+        return(OutlineItemClassCell(symbol:self))
         }
         
-    public override var image:NSImage
+    public override var icon:NSImage
         {
         return(NSImage(named:"IconClass64")!)
         }
@@ -225,7 +225,7 @@ public class Class:Symbol,NSCoding
         return(self)
         }
         
-    public override func child(at: Int) -> OutlineItem
+    public override func child(at: Int) -> BrowsableItem
         {
         return(self.allSymbols[at])
         }

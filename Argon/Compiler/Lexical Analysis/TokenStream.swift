@@ -599,6 +599,12 @@ public class TokenStream:Equatable
             self.nextChar()
             return(.tag(currentString + ":",self.sourceLocation()))
             }
+        else if self.currentChar == ":" && self.peekChar(at:0) == ":"
+            {
+            self.nextChar()
+            self.nextChar()
+            return(.tag(currentString + "::",self.sourceLocation()))
+            }
         return(checkForSymbolOrKeywordOrIdentifier(currentString))
         }
     

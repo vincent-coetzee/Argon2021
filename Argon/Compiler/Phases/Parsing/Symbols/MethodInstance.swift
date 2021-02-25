@@ -31,9 +31,9 @@ public class MethodInstance:Symbol,NSCoding
             }
         }
         
-    public override var itemClass:OutlineItemCell.Type
+    public override var browserCell:ItemBrowserCell
         {
-        return(OutlineItemMethodInstanceCell.self)
+        return(OutlineItemMethodInstanceCell(symbol:self))
         }
         
     public var parameterDisplayString:String
@@ -42,7 +42,7 @@ public class MethodInstance:Symbol,NSCoding
         return("(" + strings.joined(separator: ",") + ")")
         }
         
-    public override var image:NSImage
+    public override var icon:NSImage
         {
         return(NSImage(named:"IconMethodInstance64")!)
         }

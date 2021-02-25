@@ -75,7 +75,7 @@ public class Module:SymbolContainer,NSCoding
         return(true)
         }
         
-    public override var image: NSImage
+    public override var icon: NSImage
         {
         return(NSImage(named:"IconModule64")!)
         }
@@ -313,20 +313,16 @@ public class Module:SymbolContainer,NSCoding
         return(self.allSymbols.count)
         }
     
-    public override func child(at: Int) -> OutlineItem
+    public override func child(at: Int) -> BrowsableItem
         {
         return(self.allSymbols[at])
         }
         
-    public var rootClass:Class
+    public var rootClasses:Classes
         {
         let classes = self.allClasses
         let roots = classes.filter{($0 as! Class).superclasses.isEmpty}
-        if roots.count > 1
-            {
-            fatalError("There should only be one root")
-            }
-        return(roots[0] as! Class)
+        return(roots as! Classes)
         }
         
     public override var allClasses:Array<Symbol>

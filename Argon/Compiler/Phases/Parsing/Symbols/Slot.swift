@@ -34,9 +34,9 @@ public class Slot:Variable,NSCoding
         
     public var isLastSlot:Bool = false
         
-    public override var itemClass:OutlineItemCell.Type
+    public override var browserCell:ItemBrowserCell
         {
-        return(OutlineItemSlotCell.self)
+        return(OutlineItemSlotCell(symbol:self))
         }
         
     public var cloned:Slot
@@ -59,7 +59,7 @@ public class Slot:Variable,NSCoding
         return(self.attributes.contains(.class))
         }
         
-    public override var image:NSImage
+    public override var icon:NSImage
         {
         return(NSImage(named:"IconSlot64")!)
         }

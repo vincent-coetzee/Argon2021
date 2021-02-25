@@ -24,9 +24,9 @@ class ClassSelectionViewController: NSViewController,NSOutlineViewDataSource,NSO
         if item == nil
             {
             Module.rootModule.buildSymbols()
-            return(1)
+            return(Module.rootModule.rootClasses.count)
             }
-        if let item = item as? OutlineItem
+        if let item = item as? BrowsableItem
             {
             item.buildSymbols()
             return((item as! Symbol).allClasses.count)
@@ -39,7 +39,7 @@ class ClassSelectionViewController: NSViewController,NSOutlineViewDataSource,NSO
         {
         if item == nil
             {
-            return(Module.rootModule.rootClass)
+            return(Module.rootModule.rootClasses[index])
             }
         let outlineItem = item as! Symbol
         return(outlineItem.allClasses[index])
@@ -47,7 +47,7 @@ class ClassSelectionViewController: NSViewController,NSOutlineViewDataSource,NSO
 
     public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool
         {
-        if let outlineItem = item as? OutlineItem
+        if let outlineItem = item as? BrowsableItem
             {
             return(!outlineItem.isLeaf)
             }
@@ -56,12 +56,9 @@ class ClassSelectionViewController: NSViewController,NSOutlineViewDataSource,NSO
 
     public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView?
         {
-        let outlineItem = item as! OutlineItem
-        let aClass = outlineItem.itemClass
-        let symbol = outlineItem as! Symbol
-        symbol.buildSymbols()
-        let view = aClass.init(symbol:symbol)
-        return(view)
+        let outlineItem = item as! BrowsableItem
+        let cell = outlineItem.browserCell
+        return(cell)
         }
 
     public func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat

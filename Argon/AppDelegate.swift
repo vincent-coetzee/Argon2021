@@ -15,7 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate
         {
         Module.initModules()
         Module.rootModule.buildSymbols()
-        let hierarchy = Module.rootModule.rootClass
+        let hierarchy = Module.rootModule.rootClasses
         print(hierarchy)
 //        let sourceItem = SourceFolder(path:"/Users/vincent/Development/Development2021/Argon Projects/Medicine/")
 //        let items = [sourceItem.children[1],sourceItem.children[0]]
@@ -66,9 +66,7 @@ class AppDelegate: NSObject, NSApplicationDelegate
             {
             for name in filenames
                 {
-                let project = try ArgonProjectDocument(atPath: name)
-                let keys = project.childFileKeys
-                print(keys)
+                print(name)
                 }
             }
         catch let error

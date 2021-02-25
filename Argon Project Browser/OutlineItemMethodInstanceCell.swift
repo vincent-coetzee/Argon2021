@@ -7,7 +7,7 @@
 
 import Cocoa
 
-public class OutlineItemMethodInstanceCell:OutlineItemCell
+public class OutlineItemMethodInstanceCell:ItemBrowserCell
     {
     public let nameView = NSTextField(frame:.zero)
     public let iconView = NSImageView(frame:.zero)
@@ -17,7 +17,7 @@ public class OutlineItemMethodInstanceCell:OutlineItemCell
     required init(symbol:Symbol)
         {
         self.methodInstance = symbol as! MethodInstance
-        super.init(symbol:symbol)
+        super.init()
         self.addClassNameView()
         self.addIconView()
         }
@@ -25,7 +25,11 @@ public class OutlineItemMethodInstanceCell:OutlineItemCell
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    required init() {
+        fatalError("init() has not been implemented")
+    }
+    
     private func addClassNameView()
         {
         self.addSubview(self.nameView)
@@ -34,13 +38,13 @@ public class OutlineItemMethodInstanceCell:OutlineItemCell
         self.nameView.font = Self.kDefaultFont
         self.nameView.drawsBackground = false
         self.nameView.isBezeled = false
-        self.nameView.textColor = NSColor.sizzlingRed
+        self.nameView.textColor = NSColor.argonSizzlingRed
         }
         
     private func addIconView()
         {
         self.addSubview(self.iconView)
-        self.iconView.image = methodInstance.image
+        self.iconView.image = methodInstance.icon
         self.iconView.frame = NSRect(x:0,y:0,width:Self.kRowHeight,height:Self.kRowHeight)
         }
         

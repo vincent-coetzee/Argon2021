@@ -14,6 +14,7 @@ public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSourc
     
     private var currentController:NSViewController?
     private var popover:NSPopover?
+    private var localBrowsables:[BrowsableItem] = []
     
     @IBAction func onNewFile(_ sender:Any?)
         {
@@ -33,19 +34,15 @@ public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSourc
         let fileEnding =  (filename.path as NSString).pathExtension
         if fileEnding == "argon"
             {
-            self.compileFile(atPath: filename)
+            let outlineItem = ArgonFile(path: filename.path)
+            self.localBrowsables.append(outlineItem)
+            self.outliner.reloadData()
             }
         }
         
     private func compileFile(atPath path:URL)
         {
-        let compiler = Compiler()
-        if let source = try? String(contentsOf:path)
-            {
-            compiler.compile(source:source)
-            self.outliner.reloadData()
-                    SymbolWalker().walkSymbols(Module.rootModule)
-            }
+
         }
         
     @IBAction func onSaveFile(_ sender:Any?)
@@ -59,28 +56,27 @@ public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSourc
     public override func viewDidLoad()
         {
         super.viewDidLoad()
-        Module.argonModule.initArgonModule()
+        Module.initModules()
         self.outliner.delegate = self
         self.outliner.dataSource = self
-        self.outliner.reloadData()
         self.outliner.action = #selector(onItemClicked)
-                Module.initModules()
         Module.rootModule.buildSymbols()
-        let hierarchy = Module.rootModule.rootClass
-        print(hierarchy)
+        self.localBrowsables = Module.rootModule.allSymbols as Array<BrowsableItem>
+        self.outliner.reloadData()
         }
 
     @IBAction func onItemClicked(_ sender:Any?)
         {
         let clickedRow = self.outliner.clickedRow
+        guard clickedRow >= 0 else
+            {
+            return
+            }
         let item = self.outliner.item(atRow: clickedRow)
-        let outlineItem = item as! OutlineItem
-//        if outlineItem is Class
-//            {
-//            let view = self.outliner.view(atColumn: 0, row: clickedRow, makeIfNecessary: false)
-//            let cell = view as! OutlineItemSymbolCell
-//            self.popoverForType(at:cell.nameView)
-//            }
+        let outlineItem = item as! BrowsableItem
+        let editor = outlineItem.editorCell
+        editor.frame = self.fieldView.bounds
+        fieldView.addSubview(editor)
         }
         
     public func outlineViewSelectionDidChange(_ notification: Notification)
@@ -99,13 +95,9 @@ public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSourc
         if item == nil
             {
             Module.rootModule.buildSymbols()
-            for item in Module.rootModule.allSymbols
-                {
-                print("\(item.shortName) \(Swift.type(of:item))")
-                }
-            return(Module.rootModule.childCount)
+            return(self.localBrowsables.count)
             }
-        if let item = item as? OutlineItem
+        if let item = item as? BrowsableItem
             {
             item.buildSymbols()
             return(item.childCount)
@@ -118,15 +110,15 @@ public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSourc
         {
         if item == nil
             {
-            return(Module.rootModule.child(at:index))
+            return(self.localBrowsables[index])
             }
-        let outlineItem = item as! OutlineItem
+        let outlineItem = item as! BrowsableItem
         return(outlineItem.child(at:index))
         }
 
     public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool
         {
-        if let outlineItem = item as? OutlineItem
+        if let outlineItem = item as? BrowsableItem
             {
             return(!outlineItem.isLeaf)
             }
@@ -135,12 +127,9 @@ public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSourc
 
     public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView?
         {
-        let outlineItem = item as! OutlineItem
-        let aClass = outlineItem.itemClass
-        let symbol = outlineItem as! Symbol
-        symbol.buildSymbols()
-        let view = aClass.init(symbol:symbol)
-        return(view)
+        let outlineItem = item as! BrowsableItem
+        let cell = outlineItem.browserCell
+        return(cell)
         }
 
     public func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat

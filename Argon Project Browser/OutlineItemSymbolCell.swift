@@ -7,7 +7,7 @@
 
 import Cocoa
 
-public class OutlineItemSymbolCell:OutlineItemCell
+public class OutlineItemSymbolCell:ItemBrowserCell
     {
     internal let symbol:Symbol
     internal let iconView = NSImageView(frame:.zero)
@@ -16,7 +16,7 @@ public class OutlineItemSymbolCell:OutlineItemCell
     required init(symbol:Symbol)
         {
         self.symbol = symbol
-        super.init(symbol:symbol)
+        super.init()
         self.addIconView()
         self.addTitleView()
         }
@@ -30,7 +30,7 @@ public class OutlineItemSymbolCell:OutlineItemCell
         {
         self.addSubview(self.iconView)
         self.iconView.frame = NSRect(x:0,y:0,width:Self.kRowHeight,height:Self.kRowHeight)
-        self.iconView.image = symbol.image.resized(to:NSSize(width:Self.kRowHeight,height:Self.kRowHeight))
+        self.iconView.image = symbol.icon.resized(to:NSSize(width:Self.kRowHeight,height:Self.kRowHeight))
         }
         
     private func addTitleView()
@@ -43,23 +43,23 @@ public class OutlineItemSymbolCell:OutlineItemCell
         self.titleView.isBezeled = false
         if symbol is Module
             {
-            self.titleView.textColor = NSColor.lime
+            self.titleView.textColor = NSColor.argonLime
             }
         else if symbol is Class
             {
-            self.titleView.textColor = NSColor.neonOrange
+            self.titleView.textColor = NSColor.argonNeonOrange
             }
         else if symbol is Method
             {
-            self.titleView.textColor = NSColor.sizzlingRed
+            self.titleView.textColor = NSColor.argonSizzlingRed
             }
         else if symbol is Enumeration
             {
-            self.titleView.textColor = NSColor.neonPink
+            self.titleView.textColor = NSColor.argonNeonPink
             }
         else if symbol is Slot
             {
-            self.titleView.textColor = NSColor.cheese
+            self.titleView.textColor = NSColor.argonCheese
             }
         else
             {
@@ -76,5 +76,9 @@ public class OutlineItemSymbolCell:OutlineItemCell
         
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    required init() {
+        fatalError("init() has not been implemented")
     }
 }

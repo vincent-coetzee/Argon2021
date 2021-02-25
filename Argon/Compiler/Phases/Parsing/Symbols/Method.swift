@@ -26,7 +26,7 @@ public class Method:Symbol,NSCoding
         fatalError("This should have been defined in the method instance")
         }
         
-    public override var image:NSImage
+    public override var icon:NSImage
         {
         return(NSImage(named:"IconMethod64")!)
         }
@@ -57,7 +57,7 @@ public class Method:Symbol,NSCoding
         self.allSymbols = self.instances
         }
         
-    public override func child(at:Int) -> OutlineItem
+    public override func child(at:Int) -> BrowsableItem
         {
         return(self.allSymbols[at])
         }
