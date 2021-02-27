@@ -54,22 +54,22 @@ public class LineNumberTextView: NSTextView {
     }
 
 
-    public func addCartouche(icon:NSImage,at line:Int)
+    public func addAnnotation(_ annotation:LineAnnotation)
         {
-        self.lineNumberGutter?.addCartouche(icon: icon, at: line)
+        self.lineNumberGutter?.addAnnotation(annotation)
         }
         
-    public func removeCartouche(at line:Int)
+    public func removeAnnotation(at line:Int)
         {
-        self.lineNumberGutter?.removeCartouche(at:line)
+        self.lineNumberGutter?.removeAnnotation(at:line)
         }
         
-    public func removeAllCartouches()
+    public func removeAllAnnotations()
         {
-        self.lineNumberGutter?.removeAllCartouches()
+        self.lineNumberGutter?.removeAllAnnotations()
         }
         
-    public func cartouche(_ cartouche:LineCartouche,drawnIn rect:NSRect)
+    public func cartouche(_ cartouche:LineAnnotation,drawnIn rect:NSRect)
         {
         }
         

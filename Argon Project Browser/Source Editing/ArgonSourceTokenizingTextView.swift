@@ -15,7 +15,7 @@ public class ArgonSourceTokenizingTextView:LineNumberTextView
         var types:[TokenType] = []
         types.append(TokenType(type:.comment,color:NSColor.argonPurple,font: font))
         types.append(TokenType(type:.keyword,color:NSColor.argonNeonPink,font: font))
-        types.append(TokenType(type:.nativeType,color:NSColor.argonPersianRose,font: font))
+        types.append(TokenType(type:.nativeType,color:NSColor.argonSeaGreen,font: font))
         types.append(TokenType(type:.identifier,color:NSColor.argonCheese,font: font))
         types.append(TokenType(type:.symbol,color:NSColor.argonGreen,font: font))
         types.append(TokenType(type:.string,color:NSColor.argonCyan,font: font))
@@ -107,7 +107,7 @@ public class ArgonSourceTokenizingTextView:LineNumberTextView
         self.textStorage?.setAttributedString(string)
         }
         
-    public override func cartouche(_ cartouche:LineCartouche,drawnIn rect:NSRect)
+    public override func cartouche(_ cartouche:LineAnnotation,drawnIn rect:NSRect)
         {
 //        let bounds = self.bounds
 //        let newLine = CALayer()

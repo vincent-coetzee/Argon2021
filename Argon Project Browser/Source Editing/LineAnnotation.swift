@@ -7,7 +7,7 @@
 
 import Cocoa
 
-public class LineCartouche
+public class LineAnnotation
     {
     public var area:NSRect = .zero
     public let icon:NSImage

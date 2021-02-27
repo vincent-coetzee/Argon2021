@@ -7,14 +7,30 @@
 
 import Cocoa
 
+public class OutlinerController:NSViewController
+    {
+    }
+    
+public class FieldController:NSViewController
+    {
+    }
+    
 public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSource,NSOutlineViewDelegate
     {
-    @IBOutlet var fieldView:NSView!
+    @IBOutlet var leftFieldView:FramingView!
+    @IBOutlet var rightFieldView:FramingView!
     @IBOutlet var outliner:ArgonProjectOutlineView!
+    @IBOutlet var containerView:FrameContainerView!
     
     private var currentController:NSViewController?
     private var popover:NSPopover?
     private var localBrowsables:[BrowsableItem] = []
+    private var leftSplitView:NSSplitView = NSSplitView(frame:.zero)
+    private var rightSplitView:NSSplitView = NSSplitView(frame:.zero)
+    
+    private var splitViewController = NSSplitViewController()
+
+    private let paneView = PaneView(frame:.zero)
     
     @IBAction func onNewFile(_ sender:Any?)
         {
@@ -56,15 +72,124 @@ public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSourc
     public override func viewDidLoad()
         {
         super.viewDidLoad()
-        Module.initModules()
-        self.outliner.delegate = self
-        self.outliner.dataSource = self
-        self.outliner.action = #selector(onItemClicked)
-        Module.rootModule.buildSymbols()
-        self.localBrowsables = Module.rootModule.allSymbols as Array<BrowsableItem>
-        self.outliner.reloadData()
+//        self.configureViews()
+//        Module.initModules()
+//        self.outliner.delegate = self
+//        self.outliner.dataSource = self
+//        self.outliner.action = #selector(onItemClicked)
+//        Module.rootModule.buildSymbols()
+//        self.localBrowsables = Module.rootModule.allSymbols as Array<BrowsableItem>
+//        self.outliner.reloadData()
+        self.containerView.removeFromSuperview()
+        self.outliner.removeFromSuperview()
+        self.leftFieldView.removeFromSuperview()
+        self.rightFieldView.removeFromSuperview()
+        self.view.addSubview(paneView)
+        self.paneView.frame = self.view.bounds
+        self.paneView.initDemoPanes()
+        }
+        
+    public override func viewDidLayout()
+        {
+        super.viewDidLayout()
+        self.paneView.frame = self.view.bounds
         }
 
+    private func configureViews()
+        {
+        containerView.addChildView(Framer(self.outliner,inFrame:LayoutFrame(left:0,0,top:0,0,right:0.33,0,bottom: 1,0)))
+        containerView.addChildView(Framer(self.leftFieldView,inFrame:LayoutFrame(left:0.33,0,top:0,0,right:0.66,0,bottom: 1,0)))
+        containerView.addChildView(Framer(self.rightFieldView,inFrame:LayoutFrame(left:0.66,0,top:0,0,right:1,0,bottom: 1,0)))
+        self.view.wantsLayer = true
+        self.view.layer?.backgroundColor = NSColor.blue.cgColor
+        outliner.wantsLayer = true
+        outliner.layer?.backgroundColor = NSColor.red.cgColor
+        leftFieldView.wantsLayer = true
+        leftFieldView.layer?.backgroundColor = NSColor.red.cgColor
+        rightFieldView.wantsLayer = true
+        rightFieldView.layer?.backgroundColor = NSColor.red.cgColor
+//        outliner.translatesAutoresizingMaskIntoConstraints = false
+//        outliner.widthAnchor.constraint(equalTo: self.leftFieldView.widthAnchor).isActive = true
+//        outliner.widthAnchor.constraint(equalTo: self.rightFieldView.widthAnchor).isActive = true
+//        leftFieldView.widthAnchor.constraint(equalTo: self.rightFieldView.widthAnchor).isActive = true
+//        outliner.heightAnchor.constraint(greaterThanOrEqualToConstant: 400).isActive = true
+//        outliner.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+//        outliner.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//        leftFieldView.widthAnchor.constraint(equalTo: self.view.widthAnchor,multiplier: 0.3).isActive = true
+//        leftFieldView.translatesAutoresizingMaskIntoConstraints = false
+//        leftFieldView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+//        leftFieldView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//        leftFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: 400).isActive = true
+//        rightFieldView.translatesAutoresizingMaskIntoConstraints = false
+//        rightFieldView.widthAnchor.constraint(equalTo: self.view.widthAnchor,multiplier: 0.3).isActive = true
+//        rightFieldView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+//        rightFieldView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//        rightFieldView.heightAnchor.constraint(greaterThanOrEqualToConstant: 400).isActive = true
+//        splitViewController.splitView.translatesAutoresizingMaskIntoConstraints = false
+//        splitViewController.splitView.dividerStyle = .paneSplitter
+////        self.view.addSubview(splitViewController.splitView)
+//        self.splitViewController.splitView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+//        self.splitViewController.splitView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+//        self.splitViewController.splitView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//        self.splitViewController.splitView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+//        var controller:NSViewController = OutlinerController()
+//        outliner.translatesAutoresizingMaskIntoConstraints = false
+//        leftFieldView.translatesAutoresizingMaskIntoConstraints = false
+//        rightFieldView.translatesAutoresizingMaskIntoConstraints = false
+//        outliner.widthAnchor.constraint(greaterThanOrEqualToConstant: 80).isActive = true
+//        leftFieldView.widthAnchor.constraint(greaterThanOrEqualToConstant: 80).isActive = true
+//        rightFieldView.widthAnchor.constraint(greaterThanOrEqualToConstant: 80).isActive = true
+//        controller.view = outliner
+//        splitViewController.splitView.addSubview(controller.view)
+//        self.sizeView(outliner)
+//        var item = NSSplitViewItem(viewController: controller)
+//        splitViewController.addSplitViewItem(item)
+//        controller = FieldController()
+//        controller.view = leftFieldView
+//        splitViewController.splitView.addSubview(controller.view)
+//        self.sizeView(leftFieldView)
+//        item = NSSplitViewItem(viewController: controller)
+//        controller = FieldController()
+//        controller.view = rightFieldView
+//        splitViewController.splitView.addSubview(controller.view)
+//        item = NSSplitViewItem(viewController: controller)
+//        splitViewController.splitView.isVertical = true
+//        self.sizeView(rightFieldView)
+//        splitViewController.addSplitViewItem(item)
+////        outliner.removeFromSuperview()
+////        leftFieldView.removeFromSuperview()
+////        rightFieldView.removeFromSuperview()
+////        self.view.addSubview(leftSplitView)
+////        self.view.addSubview(rightSplitView)
+////        leftSplitView.delegate = self
+////        rightSplitView.delegate = self
+//        leftFieldView.wantsLayer = true
+//        leftFieldView.layer?.backgroundColor = NSColor.argonLime.cgColor
+//        rightFieldView.wantsLayer = true
+//        rightFieldView.layer?.backgroundColor = NSColor.argonSeaGreen.cgColor
+////        leftSplitView.translatesAutoresizingMaskIntoConstraints = false
+////        rightSplitView.translatesAutoresizingMaskIntoConstraints = false
+////        leftSplitView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+////        leftSplitView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+////        leftSplitView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+////        leftSplitView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+////        rightSplitView.isVertical = true
+////        leftSplitView.addSubview(self.outliner)
+////        leftSplitView.addSubview(self.leftFieldView)
+////        leftSplitView.addSubview(self.rightFieldView)
+////        leftSplitView.adjustSubviews()
+////        leftSplitView.addArrangedSubview(rightSplitView)
+////        rightSplitView.addArrangedSubview(leftFieldView)
+////        rightSplitView.addArrangedSubview(rightFieldView)
+        }
+        
+    private func sizeView(_ view:NSView)
+        {
+        view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        view.widthAnchor.constraint(greaterThanOrEqualToConstant: 100).isActive = true
+        view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        }
+        
     @IBAction func onItemClicked(_ sender:Any?)
         {
         let clickedRow = self.outliner.clickedRow
@@ -75,8 +200,9 @@ public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSourc
         let item = self.outliner.item(atRow: clickedRow)
         let outlineItem = item as! BrowsableItem
         let editor = outlineItem.editorCell
-        editor.frame = self.fieldView.bounds
-        fieldView.addSubview(editor)
+        self.leftFieldView.contentView = editor
+        editor.layout(inView:self.leftFieldView)
+        leftFieldView.addSubview(editor)
         }
         
     public func outlineViewSelectionDidChange(_ notification: Notification)
@@ -85,8 +211,8 @@ public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSourc
         if item is Class
             {
             self.currentController = ClassSelectionViewController(nibName:"ClassSelectionViewController",bundle: nil)
-            self.fieldView.addSubview(self.currentController!.view)
-            self.currentController!.view.frame = self.fieldView.bounds
+            self.leftFieldView.addSubview(self.currentController!.view)
+            self.currentController!.view.frame = self.leftFieldView.bounds
             }
         }
         
@@ -148,5 +274,18 @@ public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSourc
         self.popover!.contentViewController = ClassSelectionViewController(nibName: "ClassSelectionViewController", bundle: nil)
         self.popover!.contentSize = NSSize(width:400,height:1100)
         self.popover!.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX )
+        }
+    }
+
+extension ArgonBrowserViewController:NSSplitViewDelegate
+    {
+    public func splitView(_ splitView: NSSplitView,constrainMaxCoordinate proposedMaximumPosition: CGFloat,ofSubviewAt dividerIndex: Int) -> CGFloat
+        {
+        return(proposedMaximumPosition)
+        }
+        
+    public func splitView(_ splitView: NSSplitView,constrainMinCoordinate proposedMinimumPosition: CGFloat,ofSubviewAt dividerIndex: Int) -> CGFloat
+        {
+        return(proposedMinimumPosition)
         }
     }

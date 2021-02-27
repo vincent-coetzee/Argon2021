@@ -100,7 +100,20 @@
 		BF0A932025E5D7CE000AFDA6 /* SlotEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0A931E25E5D7CE000AFDA6 /* SlotEditorViewController.swift */; };
 		BF0A932125E5D7CE000AFDA6 /* SlotEditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF0A931F25E5D7CE000AFDA6 /* SlotEditorViewController.xib */; };
 		BF0A932425E5DA44000AFDA6 /* SlotEditorCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF0A932325E5DA44000AFDA6 /* SlotEditorCellView.xib */; };
+		BF13ACD725E93FC700FE32B3 /* Pane.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACD625E93FC700FE32B3 /* Pane.swift */; };
+		BF13ACDC25E94A8300FE32B3 /* PaneLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACDB25E94A8300FE32B3 /* PaneLayer.swift */; };
+		BF13ACE225E94CC500FE32B3 /* PaneOverlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACE125E94CC500FE32B3 /* PaneOverlayer.swift */; };
+		BF13ACE525E9550D00FE32B3 /* PaneComposite.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACE425E9550D00FE32B3 /* PaneComposite.swift */; };
+		BF13ACE825E9552C00FE32B3 /* PaneText.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACE725E9552C00FE32B3 /* PaneText.swift */; };
+		BF13ACEB25E9553800FE32B3 /* PaneIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACEA25E9553800FE32B3 /* PaneIcon.swift */; };
+		BF13ACEE25E9556500FE32B3 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACED25E9556500FE32B3 /* Array+Extensions.swift */; };
+		BF13ACF225E9859700FE32B3 /* CGSize+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACF125E9859700FE32B3 /* CGSize+Extensions.swift */; };
+		BF13ACF525E9863300FE32B3 /* NSRect+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACF425E9863300FE32B3 /* NSRect+Extensions.swift */; };
+		BF13ACF825E9885C00FE32B3 /* PaneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACF725E9885C00FE32B3 /* PaneView.swift */; };
+		BF13ACFB25E9A3DE00FE32B3 /* PaneHand.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACFA25E9A3DE00FE32B3 /* PaneHand.swift */; };
+		BF13ACFE25E9B7F200FE32B3 /* NSPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACFD25E9B7F200FE32B3 /* NSPoint+Extensions.swift */; };
 		BF163E7325E59C7900A3C4B0 /* NSColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF163E7225E59C7900A3C4B0 /* NSColor+Extensions.swift */; };
+		BF1DAA1D25EA793200F065E4 /* NSBezierPath+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1DAA1C25EA793200F065E4 /* NSBezierPath+Extensions.swift */; };
 		BF1F082425D28B8D001A8DC5 /* RawMemory.c in Sources */ = {isa = PBXBuildFile; fileRef = BF1F082325D28B8D001A8DC5 /* RawMemory.c */; };
 		BF1F082725D2B4E6001A8DC5 /* RawSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F082625D2B4E6001A8DC5 /* RawSlot.swift */; };
 		BF1F082B25D2CB17001A8DC5 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1F082A25D2CB17001A8DC5 /* OrderedSet.swift */; };
@@ -114,6 +127,12 @@
 		BF3B7FDE25893CA900582C17 /* ArgonCollections.argon in Resources */ = {isa = PBXBuildFile; fileRef = BF3B7FD925893CA900582C17 /* ArgonCollections.argon */; };
 		BF3B7FDF25893CA900582C17 /* ArgonStandardLibrary(Collections).argon in Resources */ = {isa = PBXBuildFile; fileRef = BF3B7FDA25893CA900582C17 /* ArgonStandardLibrary(Collections).argon */; };
 		BF3B7FE025893CA900582C17 /* Argon.argon in Resources */ = {isa = PBXBuildFile; fileRef = BF3B7FDB25893CA900582C17 /* Argon.argon */; };
+		BF3EC5D425E8C043000AD5C7 /* FramingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3EC5D325E8C043000AD5C7 /* FramingView.swift */; };
+		BF3EC5D825E8C45F000AD5C7 /* ItemEditorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3EC5D725E8C45F000AD5C7 /* ItemEditorCell.swift */; };
+		BF3EC5E125E8E240000AD5C7 /* Framer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3EC5E025E8E240000AD5C7 /* Framer.swift */; };
+		BF3EC5E425E8E3F2000AD5C7 /* ArgonFileItemBrowserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3EC5E325E8E3F2000AD5C7 /* ArgonFileItemBrowserCell.swift */; };
+		BF3EC5EB25E8EECA000AD5C7 /* StylePalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3EC5EA25E8EECA000AD5C7 /* StylePalette.swift */; };
+		BF3EC5EE25E8F56B000AD5C7 /* ViewPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3EC5ED25E8F56B000AD5C7 /* ViewPane.swift */; };
 		BF4458CE25A2189000CB52BE /* SourceFileElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4458CD25A2189000CB52BE /* SourceFileElement.swift */; };
 		BF4458D225A264A200CB52BE /* SharedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4458D125A264A200CB52BE /* SharedObject.swift */; };
 		BF45F1E02593EF6000376006 /* ClassLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF45F1DF2593EF6000376006 /* ClassLayout.swift */; };
@@ -127,7 +146,7 @@
 		BF5A547925C1A6D100C8D55F /* ManagedSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5A547825C1A6D100C8D55F /* ManagedSegment.swift */; };
 		BF5AFF6725A3651200CED0AC /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5AFF6625A3651200CED0AC /* String+Extensions.swift */; };
 		BF5D894225E7D6B70037E98E /* LayoutFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5D894125E7D6B70037E98E /* LayoutFrame.swift */; };
-		BF5D894525E7DCDA0037E98E /* LineCartouche.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5D894425E7DCDA0037E98E /* LineCartouche.swift */; };
+		BF5D894525E7DCDA0037E98E /* LineAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5D894425E7DCDA0037E98E /* LineAnnotation.swift */; };
 		BF5D894825E7F16E0037E98E /* SourceItemClassEditorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5D894725E7F16E0037E98E /* SourceItemClassEditorCell.swift */; };
 		BF5D894B25E7F1BC0037E98E /* SourceItemClassEditorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF5D894A25E7F1BC0037E98E /* SourceItemClassEditorView.xib */; };
 		BF5D894E25E7F6560037E98E /* DecoratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5D894D25E7F6560037E98E /* DecoratorView.swift */; };
@@ -363,7 +382,20 @@
 		BF0A931E25E5D7CE000AFDA6 /* SlotEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlotEditorViewController.swift; sourceTree = "<group>"; };
 		BF0A931F25E5D7CE000AFDA6 /* SlotEditorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SlotEditorViewController.xib; sourceTree = "<group>"; };
 		BF0A932325E5DA44000AFDA6 /* SlotEditorCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SlotEditorCellView.xib; sourceTree = "<group>"; };
+		BF13ACD625E93FC700FE32B3 /* Pane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pane.swift; sourceTree = "<group>"; };
+		BF13ACDB25E94A8300FE32B3 /* PaneLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneLayer.swift; sourceTree = "<group>"; };
+		BF13ACE125E94CC500FE32B3 /* PaneOverlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneOverlayer.swift; sourceTree = "<group>"; };
+		BF13ACE425E9550D00FE32B3 /* PaneComposite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneComposite.swift; sourceTree = "<group>"; };
+		BF13ACE725E9552C00FE32B3 /* PaneText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneText.swift; sourceTree = "<group>"; };
+		BF13ACEA25E9553800FE32B3 /* PaneIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneIcon.swift; sourceTree = "<group>"; };
+		BF13ACED25E9556500FE32B3 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		BF13ACF125E9859700FE32B3 /* CGSize+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Extensions.swift"; sourceTree = "<group>"; };
+		BF13ACF425E9863300FE32B3 /* NSRect+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRect+Extensions.swift"; sourceTree = "<group>"; };
+		BF13ACF725E9885C00FE32B3 /* PaneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneView.swift; sourceTree = "<group>"; };
+		BF13ACFA25E9A3DE00FE32B3 /* PaneHand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneHand.swift; sourceTree = "<group>"; };
+		BF13ACFD25E9B7F200FE32B3 /* NSPoint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSPoint+Extensions.swift"; sourceTree = "<group>"; };
 		BF163E7225E59C7900A3C4B0 /* NSColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Extensions.swift"; sourceTree = "<group>"; };
+		BF1DAA1C25EA793200F065E4 /* NSBezierPath+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSBezierPath+Extensions.swift"; sourceTree = "<group>"; };
 		BF1F082125D28B8D001A8DC5 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		BF1F082225D28B8D001A8DC5 /* RawMemory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RawMemory.h; sourceTree = "<group>"; };
 		BF1F082325D28B8D001A8DC5 /* RawMemory.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RawMemory.c; sourceTree = "<group>"; };
@@ -379,6 +411,12 @@
 		BF3B7FD925893CA900582C17 /* ArgonCollections.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ArgonCollections.argon; sourceTree = "<group>"; };
 		BF3B7FDA25893CA900582C17 /* ArgonStandardLibrary(Collections).argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ArgonStandardLibrary(Collections).argon"; sourceTree = "<group>"; };
 		BF3B7FDB25893CA900582C17 /* Argon.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Argon.argon; sourceTree = "<group>"; };
+		BF3EC5D325E8C043000AD5C7 /* FramingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FramingView.swift; sourceTree = "<group>"; };
+		BF3EC5D725E8C45F000AD5C7 /* ItemEditorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemEditorCell.swift; sourceTree = "<group>"; };
+		BF3EC5E025E8E240000AD5C7 /* Framer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Framer.swift; sourceTree = "<group>"; };
+		BF3EC5E325E8E3F2000AD5C7 /* ArgonFileItemBrowserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgonFileItemBrowserCell.swift; sourceTree = "<group>"; };
+		BF3EC5EA25E8EECA000AD5C7 /* StylePalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylePalette.swift; sourceTree = "<group>"; };
+		BF3EC5ED25E8F56B000AD5C7 /* ViewPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewPane.swift; sourceTree = "<group>"; };
 		BF4458CD25A2189000CB52BE /* SourceFileElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceFileElement.swift; sourceTree = "<group>"; };
 		BF4458D125A264A200CB52BE /* SharedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedObject.swift; sourceTree = "<group>"; };
 		BF45F1DF2593EF6000376006 /* ClassLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassLayout.swift; sourceTree = "<group>"; };
@@ -393,7 +431,7 @@
 		BF5A547825C1A6D100C8D55F /* ManagedSegment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedSegment.swift; sourceTree = "<group>"; };
 		BF5AFF6625A3651200CED0AC /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		BF5D894125E7D6B70037E98E /* LayoutFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutFrame.swift; sourceTree = "<group>"; };
-		BF5D894425E7DCDA0037E98E /* LineCartouche.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineCartouche.swift; sourceTree = "<group>"; };
+		BF5D894425E7DCDA0037E98E /* LineAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineAnnotation.swift; sourceTree = "<group>"; };
 		BF5D894725E7F16E0037E98E /* SourceItemClassEditorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceItemClassEditorCell.swift; sourceTree = "<group>"; };
 		BF5D894A25E7F1BC0037E98E /* SourceItemClassEditorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SourceItemClassEditorView.xib; sourceTree = "<group>"; };
 		BF5D894D25E7F6560037E98E /* DecoratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecoratorView.swift; sourceTree = "<group>"; };
@@ -549,6 +587,7 @@
 		BF08FB3A25803A2900C4AC6F = {
 			isa = PBXGroup;
 			children = (
+				BF3EC5DC25E8CB7C000AD5C7 /* Extensions */,
 				BFC3FD9A25E2C2780099944C /* Subclass NSBrowserCell */,
 				BFC2217F25DFF653002F47AF /* Argon Project Browser */,
 				BFA4F6A025DAD8C20057C375 /* ArgonFFI */,
@@ -902,6 +941,21 @@
 			path = Optimisation;
 			sourceTree = "<group>";
 		};
+		BF13ACD525E93FAD00FE32B3 /* Lantern */ = {
+			isa = PBXGroup;
+			children = (
+				BF13ACD625E93FC700FE32B3 /* Pane.swift */,
+				BF13ACE425E9550D00FE32B3 /* PaneComposite.swift */,
+				BF13ACEA25E9553800FE32B3 /* PaneIcon.swift */,
+				BF13ACDB25E94A8300FE32B3 /* PaneLayer.swift */,
+				BF13ACE125E94CC500FE32B3 /* PaneOverlayer.swift */,
+				BF13ACE725E9552C00FE32B3 /* PaneText.swift */,
+				BF13ACF725E9885C00FE32B3 /* PaneView.swift */,
+				BF13ACFA25E9A3DE00FE32B3 /* PaneHand.swift */,
+			);
+			path = Lantern;
+			sourceTree = "<group>";
+		};
 		BF1F082025D28A89001A8DC5 /* RawMemory */ = {
 			isa = PBXGroup;
 			children = (
@@ -931,6 +985,51 @@
 			);
 			name = Argon;
 			path = "../Argon Projects/Argon";
+			sourceTree = "<group>";
+		};
+		BF3EC5DC25E8CB7C000AD5C7 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				BF163E7225E59C7900A3C4B0 /* NSColor+Extensions.swift */,
+				BFC3FDA025E2C8360099944C /* NSImage+Extensions.swift */,
+				BF13ACED25E9556500FE32B3 /* Array+Extensions.swift */,
+				BF13ACF125E9859700FE32B3 /* CGSize+Extensions.swift */,
+				BF13ACF425E9863300FE32B3 /* NSRect+Extensions.swift */,
+				BF13ACFD25E9B7F200FE32B3 /* NSPoint+Extensions.swift */,
+				BF1DAA1C25EA793200F065E4 /* NSBezierPath+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		BF3EC5DF25E8E228000AD5C7 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				BF3EC5D325E8C043000AD5C7 /* FramingView.swift */,
+				BF5D894125E7D6B70037E98E /* LayoutFrame.swift */,
+				BF3EC5E025E8E240000AD5C7 /* Framer.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		BF3EC5E725E8E685000AD5C7 /* Source Editing */ = {
+			isa = PBXGroup;
+			children = (
+				BF999CAD25E7BD9B00FED411 /* LineNumberTextView.swift */,
+				BF999CB025E7BDC100FED411 /* LineNumberGutter.swift */,
+				BF5D894425E7DCDA0037E98E /* LineAnnotation.swift */,
+				BF999CA525E794A000FED411 /* ArgonSourceTokenizingTextView.swift */,
+			);
+			path = "Source Editing";
+			sourceTree = "<group>";
+		};
+		BF3EC5E825E8EAAF000AD5C7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BF08FB4E25803A2900C4AC6F /* Main.storyboard */,
+				BF08FB4C25803A2900C4AC6F /* Assets.xcassets */,
+				BF3EC5EA25E8EECA000AD5C7 /* StylePalette.swift */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		BF8CF0A425C0A01100A8FE30 /* Executable Image */ = {
@@ -989,24 +1088,24 @@
 		BFC2217F25DFF653002F47AF /* Argon Project Browser */ = {
 			isa = PBXGroup;
 			children = (
+				BF13ACD525E93FAD00FE32B3 /* Lantern */,
+				BF3EC5E825E8EAAF000AD5C7 /* Resources */,
+				BF3EC5E725E8E685000AD5C7 /* Source Editing */,
 				BF999C9F25E7681B00FED411 /* ArgonFile.swift */,
+				BF3EC5E325E8E3F2000AD5C7 /* ArgonFileItemBrowserCell.swift */,
 				BFB21A6025E6CFC0001280BD /* ArgonListViewController.swift */,
 				BFB21A6125E6CFC0001280BD /* ArgonListViewController.xib */,
 				BFC2218525DFFA83002F47AF /* ArgonProjectBrowserViewController.swift */,
 				BF9D2C1225E65F580051D225 /* ArgonProjectOutlineView.swift */,
 				BFA2064625D3E87C00376EB8 /* ArgonSourceDocument.swift */,
-				BF999CA525E794A000FED411 /* ArgonSourceTokenizingTextView.swift */,
-				BF08FB4C25803A2900C4AC6F /* Assets.xcassets */,
 				BFC3FDA325E2D8740099944C /* BrowsableItem.swift */,
 				BF90934325E5EB1C0051E54F /* ClassSelectionViewController.swift */,
 				BF90934425E5EB1C0051E54F /* ClassSelectionViewController.xib */,
+				BF5D894D25E7F6560037E98E /* DecoratorView.swift */,
 				BFC3FD9D25E2C38C0099944C /* IconTitleCelll.swift */,
 				BF558F3325E57CF20055087B /* ItemBrowserCell.swift */,
-				BF999CB025E7BDC100FED411 /* LineNumberGutter.swift */,
-				BF999CAD25E7BD9B00FED411 /* LineNumberTextView.swift */,
-				BF08FB4E25803A2900C4AC6F /* Main.storyboard */,
-				BF163E7225E59C7900A3C4B0 /* NSColor+Extensions.swift */,
-				BFC3FDA025E2C8360099944C /* NSImage+Extensions.swift */,
+				BF3EC5D725E8C45F000AD5C7 /* ItemEditorCell.swift */,
+				BF3EC5DF25E8E228000AD5C7 /* Layout */,
 				BF9D2C1B25E661690051D225 /* OutlineItemClassCell.swift */,
 				BF9D2C1E25E6619A0051D225 /* OutlineItemMethodInstanceCell.swift */,
 				BF9D2C1825E6613D0051D225 /* OutlineItemSlotCell.swift */,
@@ -1014,12 +1113,10 @@
 				BF0A932325E5DA44000AFDA6 /* SlotEditorCellView.xib */,
 				BF0A931E25E5D7CE000AFDA6 /* SlotEditorViewController.swift */,
 				BF0A931F25E5D7CE000AFDA6 /* SlotEditorViewController.xib */,
-				BF999CB725E7C4DD00FED411 /* SourceItemFileEditorCell.swift */,
-				BF5D894125E7D6B70037E98E /* LayoutFrame.swift */,
-				BF5D894425E7DCDA0037E98E /* LineCartouche.swift */,
 				BF5D894725E7F16E0037E98E /* SourceItemClassEditorCell.swift */,
 				BF5D894A25E7F1BC0037E98E /* SourceItemClassEditorView.xib */,
-				BF5D894D25E7F6560037E98E /* DecoratorView.swift */,
+				BF999CB725E7C4DD00FED411 /* SourceItemFileEditorCell.swift */,
+				BF3EC5ED25E8F56B000AD5C7 /* ViewPane.swift */,
 			);
 			path = "Argon Project Browser";
 			sourceTree = "<group>";
@@ -1136,12 +1233,15 @@
 				BF7B473325C00A4300FB22DC /* MethodInvocationExpression.swift in Sources */,
 				BF979DD32583B28E002AFB7F /* TokenLocation.swift in Sources */,
 				BF08FC2625803A6A00C4AC6F /* ClassMaker.swift in Sources */,
+				BF3EC5EB25E8EECA000AD5C7 /* StylePalette.swift in Sources */,
 				BF7B46F725C0085000FB22DC /* LiteralExpression.swift in Sources */,
 				BF08FC0E25803A6A00C4AC6F /* SymbolContainer.swift in Sources */,
 				BF7B476F25C00D0500FB22DC /* TimeValueExpression.swift in Sources */,
 				BF999CA025E7681B00FED411 /* ArgonFile.swift in Sources */,
 				BF08FBD125803A6A00C4AC6F /* CompilerPhase.swift in Sources */,
+				BF13ACFE25E9B7F200FE32B3 /* NSPoint+Extensions.swift in Sources */,
 				BF08FBFA25803A6A00C4AC6F /* AliasStatement.swift in Sources */,
+				BF13ACF525E9863300FE32B3 /* NSRect+Extensions.swift in Sources */,
 				BF08FC1325803A6A00C4AC6F /* AccessModifier.swift in Sources */,
 				BFD04BE02590BED5003FDD90 /* RegisterIndex.swift in Sources */,
 				BF7B474E25C00C0700FB22DC /* ModuleExpression.swift in Sources */,
@@ -1173,9 +1273,11 @@
 				BFE0A0932593B2C700B85ADF /* LHSValue.swift in Sources */,
 				BF85B1C425B1208C00C40C03 /* SemanticVersionNumber.swift in Sources */,
 				BF979DB925832410002AFB7F /* NSFont+Extension.swift in Sources */,
-				BF5D894525E7DCDA0037E98E /* LineCartouche.swift in Sources */,
+				BF13ACE525E9550D00FE32B3 /* PaneComposite.swift in Sources */,
+				BF5D894525E7DCDA0037E98E /* LineAnnotation.swift in Sources */,
 				BF64815C25B41A7C00D75675 /* SelectElementClause.swift in Sources */,
 				BF08FBF225803A6A00C4AC6F /* AssignmentStatement.swift in Sources */,
+				BF3EC5EE25E8F56B000AD5C7 /* ViewPane.swift in Sources */,
 				BFEE2F67258B7820006C47F6 /* Import.swift in Sources */,
 				BF24C87025C2CD4F00104E2E /* Word.swift in Sources */,
 				BF08FC1F25803A6A00C4AC6F /* Variable.swift in Sources */,
@@ -1191,6 +1293,7 @@
 				BFE0A0902593AC5E00B85ADF /* MethodClass.swift in Sources */,
 				BF08FBF525803A6A00C4AC6F /* ControlFlowStatement.swift in Sources */,
 				BF7B470325C008BD00FB22DC /* PseudoVariableValueExpression.swift in Sources */,
+				BF13ACF225E9859700FE32B3 /* CGSize+Extensions.swift in Sources */,
 				BF08FBDC25803A6A00C4AC6F /* TypeChecker.swift in Sources */,
 				BFC3FDA125E2C8360099944C /* NSImage+Extensions.swift in Sources */,
 				BF08FBD325803A6A00C4AC6F /* Token.swift in Sources */,
@@ -1198,6 +1301,7 @@
 				BF999CAE25E7BD9B00FED411 /* LineNumberTextView.swift in Sources */,
 				BFD58CE8258F07DF00B2ADDD /* Identifier.swift in Sources */,
 				BF7B473F25C00B9500FB22DC /* TypeMakerInvocationExpression.swift in Sources */,
+				BF13ACE825E9552C00FE32B3 /* PaneText.swift in Sources */,
 				BF8CF0A925C0A06900A8FE30 /* MemorySegment.swift in Sources */,
 				BF08FC1E25803A6A00C4AC6F /* Module.swift in Sources */,
 				BF7B472425C009CF00FB22DC /* LiteralArrayExpression.swift in Sources */,
@@ -1218,7 +1322,9 @@
 				BFD04BEC2590C730003FDD90 /* Address.swift in Sources */,
 				BF7B46D025C006FC00FB22DC /* NullExpression.swift in Sources */,
 				BF08FBEE25803A6A00C4AC6F /* RootScope.swift in Sources */,
+				BF1DAA1D25EA793200F065E4 /* NSBezierPath+Extensions.swift in Sources */,
 				BF7B473025C00A3300FB22DC /* InvocationExpression.swift in Sources */,
+				BF13ACFB25E9A3DE00FE32B3 /* PaneHand.swift in Sources */,
 				BFC3FD8E25E298670099944C /* ValueClass.swift in Sources */,
 				BF8CF0AD25C0A12400A8FE30 /* StaticSegment.swift in Sources */,
 				BF08FBF425803A6A00C4AC6F /* ReturnStatement.swift in Sources */,
@@ -1228,6 +1334,7 @@
 				BF08FBF825803A6A00C4AC6F /* MethodInvocationStatement.swift in Sources */,
 				BF08FC1625803A6A00C4AC6F /* Enumeration.swift in Sources */,
 				BF08FBCC25803A6A00C4AC6F /* Argument.swift in Sources */,
+				BF13ACEB25E9553800FE32B3 /* PaneIcon.swift in Sources */,
 				BF7B46F425C0080E00FB22DC /* ScalarExpression.swift in Sources */,
 				BFD04BE92590C6E0003FDD90 /* RegisterSet.swift in Sources */,
 				BF999CB125E7BDC100FED411 /* LineNumberGutter.swift in Sources */,
@@ -1251,6 +1358,7 @@
 				BFE0A0992593DA7600B85ADF /* A3CodeBuffer.swift in Sources */,
 				BFC3FD8825E298380099944C /* ConstantClass.swift in Sources */,
 				BF64816C25B45DE100D75675 /* SystemPlaceholderModule.swift in Sources */,
+				BF13ACF825E9885C00FE32B3 /* PaneView.swift in Sources */,
 				BF7B46FD25C0088400FB22DC /* LiteralEnumerationExpression.swift in Sources */,
 				BF7952BA2592A54D00B90AE3 /* AliasSlot.swift in Sources */,
 				BF1F082E25D2F676001A8DC5 /* Max+Extensions.swift in Sources */,
@@ -1264,6 +1372,7 @@
 				BF0A932025E5D7CE000AFDA6 /* SlotEditorViewController.swift in Sources */,
 				BF2357FC25DB56CC0087E27F /* SymbolVisitor.swift in Sources */,
 				BF7B472D25C00A1100FB22DC /* IdentifierExpression.swift in Sources */,
+				BF13ACDC25E94A8300FE32B3 /* PaneLayer.swift in Sources */,
 				BF57C36925B6FE760024F95F /* LayoutSlot.swift in Sources */,
 				BF08FBF325803A6A00C4AC6F /* SelectStatement.swift in Sources */,
 				BFA2064725D3E87C00376EB8 /* ArgonSourceDocument.swift in Sources */,
@@ -1280,6 +1389,8 @@
 				BFB21A6225E6CFC0001280BD /* ArgonListViewController.swift in Sources */,
 				BF7B474525C00BCB00FB22DC /* VectorExpression.swift in Sources */,
 				BF7B475125C00C1300FB22DC /* ClassExpression.swift in Sources */,
+				BF3EC5D825E8C45F000AD5C7 /* ItemEditorCell.swift in Sources */,
+				BF3EC5D425E8C043000AD5C7 /* FramingView.swift in Sources */,
 				BF08FBFF25803A6A00C4AC6F /* IfStatement.swift in Sources */,
 				BF08FBD425803A6A00C4AC6F /* SourceLocation.swift in Sources */,
 				BF08FBE125803A6A00C4AC6F /* VirtualSlotReadSlotBlock.swift in Sources */,
@@ -1292,6 +1403,7 @@
 				BF08FBDE25803A6A00C4AC6F /* ObjectFileGenerator.swift in Sources */,
 				BF08FC1525803A6A00C4AC6F /* InductionVariable.swift in Sources */,
 				BFBB0F3A25B39293008F8E3E /* Int+Extensions.swift in Sources */,
+				BF3EC5E425E8E3F2000AD5C7 /* ArgonFileItemBrowserCell.swift in Sources */,
 				BF9D2C1C25E661690051D225 /* OutlineItemClassCell.swift in Sources */,
 				BF7B46E525C007AF00FB22DC /* BooleanExpression.swift in Sources */,
 				BF08FC0825803A6A00C4AC6F /* Expression.swift in Sources */,
@@ -1299,6 +1411,7 @@
 				BF08FC0325803A6A00C4AC6F /* Statement.swift in Sources */,
 				BF08FC0425803A6A00C4AC6F /* ResumeStatement.swift in Sources */,
 				BF45F1E02593EF6000376006 /* ClassLayout.swift in Sources */,
+				BF13ACEE25E9556500FE32B3 /* Array+Extensions.swift in Sources */,
 				BF08FC3825803AB100C4AC6F /* SourceProvider.swift in Sources */,
 				BF08FBFD25803A6A00C4AC6F /* ElseClause.swift in Sources */,
 				BFBB0F3D25B3A41F008F8E3E /* IndirectMemoryRegisterOffsetAddress.swift in Sources */,
@@ -1308,6 +1421,7 @@
 				BF08FC0125803A6A00C4AC6F /* ForkStatement.swift in Sources */,
 				BFC3FD8525E2981E0099944C /* SequenceGeneratorClass.swift in Sources */,
 				BF7B46EB25C007E100FB22DC /* RelationalExpression.swift in Sources */,
+				BF13ACE225E94CC500FE32B3 /* PaneOverlayer.swift in Sources */,
 				BF7B475D25C00C9400FB22DC /* SlotExpression.swift in Sources */,
 				BF08FBFE25803A6A00C4AC6F /* ElseIfClause.swift in Sources */,
 				BF7B471E25C0097300FB22DC /* LiteralFloatExpression.swift in Sources */,
@@ -1337,6 +1451,7 @@
 				BF08FBE225803A6A00C4AC6F /* Block.swift in Sources */,
 				BF5D894825E7F16E0037E98E /* SourceItemClassEditorCell.swift in Sources */,
 				BF7B477225C00D1A00FB22DC /* DateTimeValueExpression.swift in Sources */,
+				BF3EC5E125E8E240000AD5C7 /* Framer.swift in Sources */,
 				BF1F082725D2B4E6001A8DC5 /* RawSlot.swift in Sources */,
 				BF08FC2525803A6A00C4AC6F /* SlotAttributes.swift in Sources */,
 				BF08FC1225803A6A00C4AC6F /* TypeSymbol.swift in Sources */,
@@ -1364,6 +1479,7 @@
 				BF85B1C725B126CA00C40C03 /* RelocatableReference.swift in Sources */,
 				BF08FC2925803A6A00C4AC6F /* PeepholeCodeOptimiser.swift in Sources */,
 				BF08FBCD25803A6A00C4AC6F /* Type.swift in Sources */,
+				BF13ACD725E93FC700FE32B3 /* Pane.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

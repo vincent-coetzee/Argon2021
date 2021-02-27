@@ -10,7 +10,7 @@ import Cocoa
 class ClassSelectionViewController: NSViewController,NSOutlineViewDataSource,NSOutlineViewDelegate
     {
     @IBOutlet var outliner:NSOutlineView!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.outliner.delegate = self
@@ -18,7 +18,7 @@ class ClassSelectionViewController: NSViewController,NSOutlineViewDataSource,NSO
         self.outliner.reloadData()
         // Do view setup here.
     }
-        
+
     public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int
         {
         if item == nil
@@ -33,7 +33,7 @@ class ClassSelectionViewController: NSViewController,NSOutlineViewDataSource,NSO
             }
         return(0)
         }
-        
+
 
     public func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any
         {
@@ -70,5 +70,5 @@ class ClassSelectionViewController: NSViewController,NSOutlineViewDataSource,NSO
 //            }
         return(24)
     }
-    
+
 }

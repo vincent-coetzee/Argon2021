@@ -56,7 +56,7 @@ public class ArgonFile:BrowsableItem,EditableItem
 
     public var browserCell: ItemBrowserCell
         {
-       return(ItemBrowserCell())
+       return(ArgonFileItemBrowserCell(item:self))
         }
         
     public var editorCell:ItemEditorCell
@@ -89,3 +89,4 @@ public class ArgonFile:BrowsableItem,EditableItem
             }
         }
     }
+

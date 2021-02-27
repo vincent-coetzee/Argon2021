@@ -49,23 +49,23 @@ class LineNumberGutter: NSRulerView {
         
     }
     
-    internal var cartouches:[Int:LineCartouche] = [:]
+    internal var annotations:[Int:LineAnnotation] = [:]
 
 
-    public func addCartouche(icon:NSImage,at line:Int)
+    public func addAnnotation(_ annotation:LineAnnotation)
         {
-        self.cartouches[line] = LineCartouche(line:line,icon:icon)
+        self.annotations[annotation.line] = annotation
         }
         
-    public func removeCartouche(at line:Int)
+    public func removeAnnotation(at line:Int)
         {
-        self.cartouches[line] = nil
+        self.annotations[line] = nil
         self.needsDisplay = true
         }
         
-    public func removeAllCartouches()
+    public func removeAllAnnotations()
         {
-        self.cartouches = [:]
+        self.annotations = [:]
         self.needsDisplay = true
         }
         
@@ -166,9 +166,9 @@ class LineNumberGutter: NSRulerView {
                 // Draw the current line number;
                 // When lineWrapCount > 0 the current line spans multiple rows.
                 if lineWrapCount == 0 {
-                    if let cartouche = self.cartouches[lineNumber]
+                    if let cartouche = self.annotations[lineNumber]
                         {
-                        self.drawCartouche(cartouche,atYPosition: lineRect.minY)
+                        self.drawAnnotation(cartouche,atYPosition: lineRect.minY)
                         }
                     self.drawLineNumber(num: lineNumber, atYPosition: lineRect.minY)
                 } else {
@@ -191,7 +191,7 @@ class LineNumberGutter: NSRulerView {
         }
     }
     
-    func drawCartouche(_ cartouche:LineCartouche,atYPosition y:CGFloat)
+    func drawAnnotation(_ cartouche:LineAnnotation,atYPosition y:CGFloat)
         {
         guard let textView = self.clientView as? NSTextView else {
             return
