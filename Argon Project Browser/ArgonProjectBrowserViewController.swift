@@ -72,6 +72,7 @@ public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSourc
     public override func viewDidLoad()
         {
         super.viewDidLoad()
+        StylePalette.dumpAllFontNames()
 //        self.configureViews()
 //        Module.initModules()
 //        self.outliner.delegate = self

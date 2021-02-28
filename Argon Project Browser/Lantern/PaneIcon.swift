@@ -24,6 +24,6 @@ public class PaneIcon:Pane
         
     internal override func measure() -> CGSize
         {
-        return(self.imageSize.expandedBy(StylePalette.kPaneBorderWidth))
+        return(self.imageSize)
         }
     }

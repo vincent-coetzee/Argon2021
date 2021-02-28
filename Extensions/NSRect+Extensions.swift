@@ -11,6 +11,11 @@ extension NSRect
     {
     public static let zero = NSRect(x:0,y:0,width:0,height:0)
     
+    public var center:NSPoint
+        {
+        return(NSPoint(x:self.midX,y:self.midY))
+        }
+        
     public func insetBy(_ amount:CGFloat) -> NSRect
         {
         return(self.insetBy(dx:amount,dy:amount))
@@ -27,16 +32,16 @@ extension NSRect
     public func mergedRow(_ size:CGSize) -> NSRect
         {
         var newRect = self
-        newRect.size.width += size.width
-        newRect.size.height = max(newRect.size.height,size.height)
+        newRect.size.height += size.height
+        newRect.size.width = max(newRect.size.width,size.width)
         return(newRect)
         }
         
     public func mergedColumn(_ size:CGSize) -> NSRect
         {
         var newRect = self
-        newRect.size.width = max(newRect.size.width,size.width)
-        newRect.size.height += size.height
+        newRect.size.height = max(newRect.size.height,size.height)
+        newRect.size.width += size.width
         return(newRect)
         }
         

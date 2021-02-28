@@ -12,7 +12,7 @@ class PaneView: NSView
     private let paneLayer = PaneLayer()
     private var isDragging = false
     private var mouseIsDown = false
-    private var hand = PaneHand()
+    private var hand = DragHand()
     private var handOffset:NSPoint = .zero
     private var trackingArea:NSTrackingArea?
     
@@ -23,7 +23,6 @@ class PaneView: NSView
         self.layer?.addSublayer(self.paneLayer)
         self.paneLayer.frame = self.layer!.bounds
         self.hand = self.paneLayer.hand
-        self.paneLayer.addSublayer(hand)
         self.paneLayer.drawsAsynchronously = true
         self.paneLayer.removeAllAnimations()
         self.trackingArea = NSTrackingArea(rect: self.frame, options: [.mouseEnteredAndExited,.activeAlways,.inVisibleRect,.mouseMoved],owner: self, userInfo: nil)
@@ -34,8 +33,50 @@ class PaneView: NSView
         fatalError("init(coder:) has not been implemented")
     }
     
+    public override var isFlipped:Bool
+        {
+        return(true)
+        }
+        
+    public func initDemoPanes()
+        {
+        self.initDemoTextPanes()
+        self.initDemoCompositePanes()
+        }
+        
+    private func initDemoTextPanes()
+        {
+        var pane = TextPane(text:"Hello World")
+        pane.frame = NSRect(origin:NSPoint(x:300,y:300),size: pane.measure())
+        pane.font = StylePalette.kDefaultFont
+        pane.textColor = StylePalette.kPrimaryTextColor
+        self.addPane(pane.withBorder())
+        pane = TextPane(text:"This is a rather long piece of text\nthat will serve as a demonstration of how panes handle\nallsorts of text.\nThe quick brown fox jumped over the lazy dog\nwhich was fast asleep on the couch.")
+        pane.frame = NSRect(origin:NSPoint(x:40,y:700),size: pane.measure())
+        pane.font = StylePalette.kHeadlineFont
+        pane.textColor = StylePalette.kHeadlineTextColor
+        self.addPane(pane.withBorder())
+        }
+        
+    private func initDemoCompositePanes()
+        {
+        let titlePane = TitledPane(title:"Classified Items")
+        let count = Int.random(in: 5..<15)
+        for _ in 0..<count
+            {
+            let word = EnglishWord.randomWord()
+            let element = TextPane(text:word.stringValue)
+            titlePane.addKid(element)
+            }
+        titlePane.layoutToFit()
+        titlePane.position = NSPoint.random(in: self.bounds)
+        self.addPane(titlePane)
+        }
+        
     public func addPane(_ pane:Pane)
         {
+        pane.layoutToFit()
+        pane.position = self.bounds.center
         self.paneLayer.addPane(pane)
         }
         
@@ -48,42 +89,25 @@ class PaneView: NSView
         self.paneLayer.setNeedsDisplay()
         }
         
-    public override func mouseDown(with event:NSEvent)
-        {
-        self.mouseIsDown = true
-        let localPoint = self.convert(event.locationInWindow,from:nil)
-        self.hand.movePositionTo(localPoint)
-        if let pane = self.paneLayer.paneUnder(point:localPoint)
-            {
-            pane.removeFromSuperlayer()
-            self.hand.addKid(pane)
-            self.hand.layout()
-            }
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
+//    public override func mouseDown(with event:NSEvent)
+//        {
+//        self.mouseIsDown = true
+//        let localPoint = self.convert(event.locationInWindow,from:nil)
+//        self.hand.movePositionTo(localPoint)
+//        if let pane = self.paneLayer.paneUnder(point:localPoint)
+//            {
+//            pane.removeFromSuperlayer()
+//            self.hand.addKid(pane)
+//            self.hand.layout()
+//            }
+//        CATransaction.begin()
+//        CATransaction.setDisableActions(true)
+//
+//        self.paneLayer.displayIfNeeded()
+//        CATransaction.commit()
+//        }
+        
 
-        self.paneLayer.displayIfNeeded()
-        CATransaction.commit()
-        }
-        
-    public func initDemoPanes()
-        {
-        self.initDemoTextPanes()
-        }
-        
-    private func initDemoTextPanes()
-        {
-        var pane = PaneText(text:"Hello World")
-        pane.frame = NSRect(origin:NSPoint(x:300,y:300),size: pane.measure())
-        pane.font = StylePalette.kDefaultFont
-        pane.textColor = StylePalette.kPrimaryTextColor
-        self.addPane(pane)
-        pane = PaneText(text:"This is a rather long piece of text\nthat will serve as a demonstration of how panes handle\nallsorts of text.\nThe quick brown fox jumped over the lazy dog\nwhich was fast asleep on the couch.")
-        pane.frame = NSRect(origin:NSPoint(x:40,y:700),size: pane.measure())
-        pane.font = StylePalette.kHeadlineFont
-        pane.textColor = StylePalette.kHeadlineTextColor
-        self.addPane(pane)
-        }
         
 //    public override func mouseDragged(with event:NSEvent)
 //        {
@@ -97,22 +121,21 @@ class PaneView: NSView
         
     public override func mouseUp(with event:NSEvent)
         {
-        self.mouseIsDown = false
-        let localPoint = self.convert(event.locationInWindow,from:nil)
-        CATransaction.begin()
-        CATransaction.setDisableActions(true)
-        self.hand.movePositionTo(localPoint)
-        self.paneLayer.displayIfNeeded()
-        CATransaction.commit()
+//        self.mouseIsDown = false
+//        let localPoint = self.convert(event.locationInWindow,from:nil)
+//        CATransaction.begin()
+//        CATransaction.setDisableActions(true)
+//        self.hand.movePositionTo(localPoint)
+//        self.paneLayer.displayIfNeeded()
+//        CATransaction.commit()
         }
         
     public override func mouseMoved(with event:NSEvent)
         {
-        self.mouseIsDown = false
-        let localPoint = self.convert(event.locationInWindow,from:nil)
         CATransaction.begin()
         CATransaction.setDisableActions(true)
-        self.hand.movePositionTo(localPoint)
+        let localPoint = self.convert(event.locationInWindow,from:nil)
+        self.paneLayer.dragTo(localPoint)
         self.paneLayer.displayIfNeeded()
         CATransaction.commit()
         }
@@ -120,6 +143,7 @@ class PaneView: NSView
     public override func mouseEntered(with event:NSEvent)
         {
         let localPoint = self.convert(event.locationInWindow,from:nil)
-        self.hand.movePositionTo(localPoint)
+//        self.hand.movePositionTo(localPoint)
+        self.paneLayer.moveTo(localPoint)
         }
     }

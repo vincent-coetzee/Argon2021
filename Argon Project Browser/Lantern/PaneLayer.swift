@@ -13,8 +13,8 @@ class PaneLayer: CALayer
     private let arrowLayer = CALayer()
     private let dragLayer = CALayer()
     private var panes = Panes()
-    public var hand = PaneHand()
-    
+    public var hand = DragHand()
+    private var theLayer = CALayer()
     public override init(layer:Any)
         {
         super.init(layer:layer)
@@ -28,10 +28,14 @@ class PaneLayer: CALayer
         self.addSublayer(self.paneLayer)
         self.addSublayer(self.arrowLayer)
         self.addSublayer(self.dragLayer)
-        self.hand.frame = NSRect(origin:.zero,size:self.hand.measure())
+        self.dragLayer.addSublayer(self.hand)
+        self.hand.frame = NSRect(origin:NSPoint(x:0,y:0),size:self.hand.measure())
+        self.dragLayer.setNeedsLayout()
         self.hand.layout()
-        self.addSublayer(hand)
         self.removeAllAnimations()
+        self.theLayer.frame = NSRect(x:100,y:100,width: 100,height:100)
+        self.theLayer.backgroundColor = NSColor.red.cgColor
+//        self.dragLayer.addSublayer(self.theLayer)
         }
     
     required init?(coder: NSCoder) {
@@ -42,8 +46,19 @@ class PaneLayer: CALayer
         {
         self.panes += pane
         self.paneLayer.addSublayer(pane)
+        pane.bounds = NSPoint.zero.extent(pane.measure())
         self.paneLayer.setNeedsLayout()
         self.paneLayer.setNeedsDisplay()
+        }
+        
+    public func dragTo(_ point:NSPoint)
+        {
+        self.dragLayer.position = point
+        }
+        
+    public func moveTo(_ point:NSPoint)
+        {
+        self.dragLayer.position = point
         }
         
     public func layout()
@@ -64,6 +79,8 @@ class PaneLayer: CALayer
         self.paneLayer.frame = theBounds
         self.arrowLayer.frame = theBounds
         self.dragLayer.frame = theBounds
+        self.hand.position = self.dragLayer.bounds.center
+        self.theLayer.position = self.dragLayer.bounds.center
         self.layout()
         }
         

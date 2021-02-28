@@ -16,42 +16,32 @@ public typealias Panes = Array<Pane>
 
 public class Pane:CAShapeLayer
     {
-    internal var layoutFrame = LayoutFrame.zero
+    public enum HorizontalAlgnment
+        {
+        case left
+        case right
+        case center
+        case justified
+        }
         
-    internal var parentPane:Pane?
+    public enum VerticalAlignment
+        {
+        case top
+        case middle
+        case bottom
+        }
+        
+    internal var layoutFrame = LayoutFrame.zero
         
     public override init()
         {
         super.init()
-        self.initBorderStyle()
-        self.initShadowStyle()
-        self.initMasking()
-        self.initGrounds()
+        self.style()
         self.removeAllAnimations()
         }
     
-    internal func initGrounds()
+    internal func style()
         {
-        // set backGROUND
-        // set foreGROUND
-        }
-    internal func initMasking()
-        {
-        self.masksToBounds = true
-        }
-        
-    internal func initShadowStyle()
-        {
-        self.shadowColor = StylePalette.kShadowColor.cgColor
-        self.shadowRadius = StylePalette.kShadowRadius
-        self.shadowOffset = StylePalette.kShadowOffset
-        }
-        
-    internal func initBorderStyle()
-        {
-        self.cornerRadius = StylePalette.kCornerRadius
-        self.borderWidth = StylePalette.kBorderWidth
-        self.borderColor = StylePalette.kPrimaryBorderColor.cgColor
         }
         
     public override init(layer:Any)
@@ -63,9 +53,14 @@ public class Pane:CAShapeLayer
         fatalError("init(coder:) has not been implemented")
     }
     
+    internal func withBorder(style:StylePalette.BorderStyle = StylePalette.kDefaultBorderStyle) -> Pane
+        {
+        return(BorderedPane(pane:self,borderStyle:style))
+        }
+        
     internal func measure() -> CGSize
         {
-        return(CGSize.defaultPaneSize.expandedBy(StylePalette.kPaneBorderWidth))
+        return(CGSize.defaultPaneSize)
         }
         
     @discardableResult
@@ -89,8 +84,23 @@ public class Pane:CAShapeLayer
         return(self)
         }
     
+    //
+    // layout lays out the pane it does NOT size it, panes are assigned
+    // their size and location by their parent
+    //
     public func layout()
         {
+        }
+        
+    //
+    // When this method is called as opposed to layout, the pane szes itself
+    // according to whatever policy it has. The layout method does NOT self
+    // size and should be called when externally assigned bounds are required.
+    //
+    public func layoutToFit()
+        {
+        self.bounds = NSRect(origin: .zero,size: self.measure())
+        self.layout()
         }
     }
     
