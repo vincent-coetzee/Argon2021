@@ -36,7 +36,7 @@ public class OutlineItemSymbolCell:ItemBrowserCell
     private func addTitleView()
         {
         self.addSubview(self.titleView)
-        self.titleView.frame = NSRect(x:Self.kRowHeight,y:0,width:Self.kRowHeight,height:Self.kRowHeight)
+        self.titleView.frame = NSRect(x:Self.kRowHeight,y:-self.textAlignmentInCell(self.titleView.stringValue),width:Self.kRowHeight,height:Self.kRowHeight)
         self.titleView.stringValue = self.symbol.shortName + " \(Swift.type(of:symbol))"
         self.titleView.font = Self.kDefaultFont
         self.titleView.drawsBackground = false
@@ -51,7 +51,7 @@ public class OutlineItemSymbolCell:ItemBrowserCell
             }
         else if symbol is Method
             {
-            self.titleView.textColor = NSColor.argonSizzlingRed
+            self.titleView.textColor = NSColor.argonSeaGreen
             }
         else if symbol is Enumeration
             {
@@ -71,7 +71,7 @@ public class OutlineItemSymbolCell:ItemBrowserCell
         {
         super.layout()
         let rect = self.frame
-        self.titleView.frame = NSRect(x:Self.kRowHeight + 4,y:-6,width:rect.size.width-Self.kRowHeight,height:Self.kRowHeight)
+        self.titleView.frame = NSRect(x:Self.kRowHeight + 4,y:-self.textAlignmentInCell(self.titleView.stringValue),width:rect.size.width-Self.kRowHeight,height:Self.kRowHeight)
         }
         
     required init?(coder: NSCoder) {

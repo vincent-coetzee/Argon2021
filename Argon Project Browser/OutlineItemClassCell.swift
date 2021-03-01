@@ -68,7 +68,7 @@ public class OutlineItemClassCell:ItemBrowserCell
     private func addClassNameView()
         {
         self.addSubview(self.nameView)
-        self.nameView.frame = NSRect(x:Self.kRowHeight,y:0,width:Self.kRowHeight,height:Self.kRowHeight)
+        self.nameView.frame = NSRect(x:Self.kRowHeight,y:-self.textAlignmentInCell(self.nameView.stringValue),width:Self.kRowHeight,height:Self.kRowHeight)
         self.nameView.stringValue = self.symbol.fullName.stringName
         self.nameView.font = Self.kDefaultFont
         self.nameView.drawsBackground = false
@@ -87,7 +87,7 @@ public class OutlineItemClassCell:ItemBrowserCell
         {
         super.layout()
         let rect = self.frame
-        self.nameView.frame = NSRect(x:Self.kRowHeight,y:-6,width:rect.size.width - Self.kRowHeight,height:Self.kRowHeight)
+        self.nameView.frame = NSRect(x:Self.kRowHeight,y:-self.textAlignmentInCell(self.nameView.stringValue),width:rect.size.width - Self.kRowHeight,height:Self.kRowHeight)
         self.iconView.frame = NSRect(x:0,y:0,width:Self.kRowHeight,height:Self.kRowHeight)
         }
     }

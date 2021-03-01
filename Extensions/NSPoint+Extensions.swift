@@ -21,10 +21,15 @@ extension NSPoint
         return(NSPoint(x: lhs.x - rhs.x,y: lhs.y - rhs.y))
         }
         
+    public static func +(lhs:NSPoint,rhs:NSPoint) -> NSPoint
+        {
+        return(NSPoint(x: lhs.x + rhs.x,y: lhs.y + rhs.y))
+        }
+        
     public static func random(in rect:NSRect) -> NSPoint
         {
-        let x = CGFloat.random(in: rect.origin.x..<rect.size.width + rect.origin.x)
-        let y = CGFloat.random(in: rect.origin.y..<rect.size.height + rect.origin.y)
+        let x = CGFloat.random(in: rect.origin.x..<(rect.size.width + rect.origin.x))
+        let y = CGFloat.random(in: rect.origin.y..<(rect.size.height + rect.origin.y))
         return(NSPoint(x:x,y:y))
         }
         

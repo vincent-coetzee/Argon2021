@@ -34,6 +34,7 @@ extension NSColor
     public static let argonMangoGreen:NSColor = NSColor(hex: 0x96ff00)
     public static let argonSeaGreen:NSColor = NSColor(hex: 0x007563)
     public static let argonDarkGray:NSColor = NSColor(hex: 0x121212)
+    public static let argonNeonYellow:NSColor = NSColor(hex: 0xF3F315)
     public static let argonNeonOrange = NSColor(red: 237.0/255.0,green: 111.0/255.0,blue:45.0/255.0,alpha:1)
     public static let argonLime = NSColor(red: 122.0/255.0,green: 154.0/255.0,blue:1.0/255.0,alpha:1)
     public static let argonNeonPink = NSColor(red: 255.0/255.0,green: 0/255.0,blue:153.0/255.0,alpha:1)

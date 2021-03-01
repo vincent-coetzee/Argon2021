@@ -9,6 +9,8 @@ import Foundation
 
 extension CGSize
     {
+    public static let defaultPaneSize = CGSize(width:50,height:50)
+    
     public func rectOfSize(centeredOn point:NSPoint) -> NSRect
         {
         let deltaX = self.width / 2

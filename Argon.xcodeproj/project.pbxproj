@@ -255,7 +255,12 @@
 		BFB21A6325E6CFC0001280BD /* ArgonListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFB21A6125E6CFC0001280BD /* ArgonListViewController.xib */; };
 		BFBB0F3A25B39293008F8E3E /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBB0F3925B39293008F8E3E /* Int+Extensions.swift */; };
 		BFBB0F3D25B3A41F008F8E3E /* IndirectMemoryRegisterOffsetAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBB0F3C25B3A41F008F8E3E /* IndirectMemoryRegisterOffsetAddress.swift */; };
-		BFC2218625DFFA83002F47AF /* ArgonProjectBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC2218525DFFA83002F47AF /* ArgonProjectBrowserViewController.swift */; };
+		BFC008EC25ECEAAD00A28897 /* ComposingRowPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC008EB25ECEAAD00A28897 /* ComposingRowPane.swift */; };
+		BFC008EF25ECEEC800A28897 /* PaneEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC008EE25ECEEC800A28897 /* PaneEdge.swift */; };
+		BFC008FA25ED26CF00A28897 /* ElementalBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC008F925ED26CF00A28897 /* ElementalBrowserViewController.swift */; };
+		BFC008FD25ED272600A28897 /* ListBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC008FC25ED272600A28897 /* ListBrowserViewController.swift */; };
+		BFC0090125ED274C00A28897 /* DetailEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC0090025ED274C00A28897 /* DetailEditorViewController.swift */; };
+		BFC2218625DFFA83002F47AF /* ArgonBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC2218525DFFA83002F47AF /* ArgonBrowserViewController.swift */; };
 		BFC3FD7E25E2978F0099944C /* AssociationClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3FD7D25E2978F0099944C /* AssociationClass.swift */; };
 		BFC3FD8125E297B10099944C /* ImportedClassReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3FD8025E297B10099944C /* ImportedClassReference.swift */; };
 		BFC3FD8525E2981E0099944C /* SequenceGeneratorClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC3FD8425E2981E0099944C /* SequenceGeneratorClass.swift */; };
@@ -551,7 +556,12 @@
 		BFB21A6125E6CFC0001280BD /* ArgonListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArgonListViewController.xib; sourceTree = "<group>"; };
 		BFBB0F3925B39293008F8E3E /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		BFBB0F3C25B3A41F008F8E3E /* IndirectMemoryRegisterOffsetAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndirectMemoryRegisterOffsetAddress.swift; sourceTree = "<group>"; };
-		BFC2218525DFFA83002F47AF /* ArgonProjectBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgonProjectBrowserViewController.swift; sourceTree = "<group>"; };
+		BFC008EB25ECEAAD00A28897 /* ComposingRowPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposingRowPane.swift; sourceTree = "<group>"; };
+		BFC008EE25ECEEC800A28897 /* PaneEdge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneEdge.swift; sourceTree = "<group>"; };
+		BFC008F925ED26CF00A28897 /* ElementalBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementalBrowserViewController.swift; sourceTree = "<group>"; };
+		BFC008FC25ED272600A28897 /* ListBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListBrowserViewController.swift; sourceTree = "<group>"; };
+		BFC0090025ED274C00A28897 /* DetailEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailEditorViewController.swift; sourceTree = "<group>"; };
+		BFC2218525DFFA83002F47AF /* ArgonBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArgonBrowserViewController.swift; sourceTree = "<group>"; };
 		BFC3FD7D25E2978F0099944C /* AssociationClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociationClass.swift; sourceTree = "<group>"; };
 		BFC3FD8025E297B10099944C /* ImportedClassReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportedClassReference.swift; sourceTree = "<group>"; };
 		BFC3FD8425E2981E0099944C /* SequenceGeneratorClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceGeneratorClass.swift; sourceTree = "<group>"; };
@@ -971,6 +981,8 @@
 				BF2A148825EBFD250088513B /* RowPane.swift */,
 				BF13ACE725E9552C00FE32B3 /* TextPane.swift */,
 				BF2A149125EBFDA30088513B /* TitledPane.swift */,
+				BFC008EB25ECEAAD00A28897 /* ComposingRowPane.swift */,
+				BFC008EE25ECEEC800A28897 /* PaneEdge.swift */,
 			);
 			path = Lantern;
 			sourceTree = "<group>";
@@ -1111,7 +1123,7 @@
 				BF3EC5E325E8E3F2000AD5C7 /* ArgonFileItemBrowserCell.swift */,
 				BFB21A6025E6CFC0001280BD /* ArgonListViewController.swift */,
 				BFB21A6125E6CFC0001280BD /* ArgonListViewController.xib */,
-				BFC2218525DFFA83002F47AF /* ArgonProjectBrowserViewController.swift */,
+				BFC2218525DFFA83002F47AF /* ArgonBrowserViewController.swift */,
 				BF9D2C1225E65F580051D225 /* ArgonProjectOutlineView.swift */,
 				BFA2064625D3E87C00376EB8 /* ArgonSourceDocument.swift */,
 				BFC3FDA325E2D8740099944C /* BrowsableItem.swift */,
@@ -1133,6 +1145,9 @@
 				BF5D894A25E7F1BC0037E98E /* SourceItemClassEditorView.xib */,
 				BF999CB725E7C4DD00FED411 /* SourceItemFileEditorCell.swift */,
 				BF3EC5ED25E8F56B000AD5C7 /* ViewPane.swift */,
+				BFC008F925ED26CF00A28897 /* ElementalBrowserViewController.swift */,
+				BFC008FC25ED272600A28897 /* ListBrowserViewController.swift */,
+				BFC0090025ED274C00A28897 /* DetailEditorViewController.swift */,
 			);
 			path = "Argon Project Browser";
 			sourceTree = "<group>";
@@ -1267,6 +1282,7 @@
 				BF08FC2025803A6A00C4AC6F /* ForInductionVariable.swift in Sources */,
 				BF2A148F25EBFD660088513B /* DecoratorPane.swift in Sources */,
 				BF7B46DF25C0078E00FB22DC /* PowerExpression.swift in Sources */,
+				BFC008FA25ED26CF00A28897 /* ElementalBrowserViewController.swift in Sources */,
 				BF7B473C25C00B7700FB22DC /* ClassMakerInvocationExpression.swift in Sources */,
 				BF08FC3025803A7D00C4AC6F /* Break.m in Sources */,
 				BFE0A09C2593DAE200B85ADF /* A3Label.swift in Sources */,
@@ -1293,6 +1309,7 @@
 				BF7B46DC25C0075E00FB22DC /* AdditionExpression.swift in Sources */,
 				BFE0A0932593B2C700B85ADF /* LHSValue.swift in Sources */,
 				BF85B1C425B1208C00C40C03 /* SemanticVersionNumber.swift in Sources */,
+				BFC008EF25ECEEC800A28897 /* PaneEdge.swift in Sources */,
 				BF979DB925832410002AFB7F /* NSFont+Extension.swift in Sources */,
 				BF13ACE525E9550D00FE32B3 /* CompositePane.swift in Sources */,
 				BF5D894525E7DCDA0037E98E /* LineAnnotation.swift in Sources */,
@@ -1348,6 +1365,7 @@
 				BF1DAA1D25EA793200F065E4 /* NSBezierPath+Extensions.swift in Sources */,
 				BF7B473025C00A3300FB22DC /* InvocationExpression.swift in Sources */,
 				BF13ACFB25E9A3DE00FE32B3 /* DragHand.swift in Sources */,
+				BFC008FD25ED272600A28897 /* ListBrowserViewController.swift in Sources */,
 				BFC3FD8E25E298670099944C /* ValueClass.swift in Sources */,
 				BF8CF0AD25C0A12400A8FE30 /* StaticSegment.swift in Sources */,
 				BF08FBF425803A6A00C4AC6F /* ReturnStatement.swift in Sources */,
@@ -1364,7 +1382,7 @@
 				BF600B4C25A7ABF000930318 /* CodeHolder.swift in Sources */,
 				BF5A547625C1A32C00C8D55F /* StackSegment.swift in Sources */,
 				BF7B470C25C0091700FB22DC /* LiteralClassExpression.swift in Sources */,
-				BFC2218625DFFA83002F47AF /* ArgonProjectBrowserViewController.swift in Sources */,
+				BFC2218625DFFA83002F47AF /* ArgonBrowserViewController.swift in Sources */,
 				BF8CF0A625C0A02E00A8FE30 /* MemoryImage.swift in Sources */,
 				BF08FBE925803A6A00C4AC6F /* Scope.swift in Sources */,
 				BF64816F25B4660900D75675 /* SystemPlaceholderEnumeration.swift in Sources */,
@@ -1390,6 +1408,7 @@
 				BF08FBE525803A6A00C4AC6F /* VirtualSlotWriteSlotBlock.swift in Sources */,
 				BF64816625B45CFC00D75675 /* SystemPlaceholderMethodInstance.swift in Sources */,
 				BF979DC9258347D8002AFB7F /* ParameterName.swift in Sources */,
+				BFC0090125ED274C00A28897 /* DetailEditorViewController.swift in Sources */,
 				BFD58CEC258F355800B2ADDD /* Method.swift in Sources */,
 				BF7B474225C00BAB00FB22DC /* MakerInvocationExpression.swift in Sources */,
 				BF08FBDF25803A6A00C4AC6F /* IntermediateCodeGenerator.swift in Sources */,
@@ -1413,6 +1432,7 @@
 				BF08FBF625803A6A00C4AC6F /* SignalStatement.swift in Sources */,
 				BFB21A6225E6CFC0001280BD /* ArgonListViewController.swift in Sources */,
 				BF7B474525C00BCB00FB22DC /* VectorExpression.swift in Sources */,
+				BFC008EC25ECEAAD00A28897 /* ComposingRowPane.swift in Sources */,
 				BF7B475125C00C1300FB22DC /* ClassExpression.swift in Sources */,
 				BF3EC5D825E8C45F000AD5C7 /* ItemEditorCell.swift in Sources */,
 				BF3EC5D425E8C043000AD5C7 /* FramingView.swift in Sources */,

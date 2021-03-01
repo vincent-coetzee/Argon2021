@@ -50,12 +50,20 @@ class PaneView: NSView
         pane.frame = NSRect(origin:NSPoint(x:300,y:300),size: pane.measure())
         pane.font = StylePalette.kDefaultFont
         pane.textColor = StylePalette.kPrimaryTextColor
-        self.addPane(pane.withBorder())
+        var point = NSPoint.random(in: self.bounds)
+        print("RANDOM POINT IN BOUNDS \(self.bounds) IS \(point)")
+        var borderPane = pane.withBorder()
+        borderPane.position = point
+        self.addPane(borderPane)
         pane = TextPane(text:"This is a rather long piece of text\nthat will serve as a demonstration of how panes handle\nallsorts of text.\nThe quick brown fox jumped over the lazy dog\nwhich was fast asleep on the couch.")
         pane.frame = NSRect(origin:NSPoint(x:40,y:700),size: pane.measure())
         pane.font = StylePalette.kHeadlineFont
         pane.textColor = StylePalette.kHeadlineTextColor
-        self.addPane(pane.withBorder())
+        point = NSPoint.random(in: self.bounds)
+        print("RANDOM POINT IN BOUNDS \(self.bounds) IS \(point)")
+        borderPane = pane.withBorder()
+        borderPane.position = point
+        self.addPane(borderPane)
         }
         
     private func initDemoCompositePanes()
@@ -76,7 +84,6 @@ class PaneView: NSView
     public func addPane(_ pane:Pane)
         {
         pane.layoutToFit()
-        pane.position = self.bounds.center
         self.paneLayer.addPane(pane)
         }
         
@@ -89,45 +96,43 @@ class PaneView: NSView
         self.paneLayer.setNeedsDisplay()
         }
         
-//    public override func mouseDown(with event:NSEvent)
-//        {
-//        self.mouseIsDown = true
-//        let localPoint = self.convert(event.locationInWindow,from:nil)
-//        self.hand.movePositionTo(localPoint)
-//        if let pane = self.paneLayer.paneUnder(point:localPoint)
-//            {
-//            pane.removeFromSuperlayer()
-//            self.hand.addKid(pane)
-//            self.hand.layout()
-//            }
-//        CATransaction.begin()
-//        CATransaction.setDisableActions(true)
-//
-//        self.paneLayer.displayIfNeeded()
-//        CATransaction.commit()
-//        }
+    public override func mouseDown(with event:NSEvent)
+        {
+        self.mouseIsDown = true
+        let localPoint = self.convert(event.locationInWindow,from:nil)
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        self.paneLayer.dragTo(localPoint)
+        if let pane = self.paneLayer.paneUnder(point:localPoint)
+            {
+            self.hand.collectDragPane(pane,atPoint:localPoint,inLayer:self.layer!)
+            }
+        self.paneLayer.displayIfNeeded()
+        CATransaction.commit()
+        }
         
 
         
-//    public override func mouseDragged(with event:NSEvent)
-//        {
-//        let localPoint = self.convert(event.locationInWindow,from:nil)
-//        CATransaction.begin()
-//        CATransaction.setDisableActions(true)
-//        self.hand.movePositionTo(localPoint)
-//        self.paneLayer.displayIfNeeded()
-//        CATransaction.commit()
-//        }
+    public override func mouseDragged(with event:NSEvent)
+        {
+        let localPoint = self.convert(event.locationInWindow,from:nil)
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        self.paneLayer.dragTo(localPoint)
+        self.paneLayer.displayIfNeeded()
+        CATransaction.commit()
+        }
         
     public override func mouseUp(with event:NSEvent)
         {
-//        self.mouseIsDown = false
-//        let localPoint = self.convert(event.locationInWindow,from:nil)
-//        CATransaction.begin()
-//        CATransaction.setDisableActions(true)
-//        self.hand.movePositionTo(localPoint)
-//        self.paneLayer.displayIfNeeded()
-//        CATransaction.commit()
+        self.mouseIsDown = false
+        let localPoint = self.convert(event.locationInWindow,from:nil)
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        self.paneLayer.dragTo(localPoint)
+        self.hand.dropDragPane(atPoint:localPoint,inLayer:self.layer!)
+        self.paneLayer.displayIfNeeded()
+        CATransaction.commit()
         }
         
     public override func mouseMoved(with event:NSEvent)

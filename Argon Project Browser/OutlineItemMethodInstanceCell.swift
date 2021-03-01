@@ -33,12 +33,12 @@ public class OutlineItemMethodInstanceCell:ItemBrowserCell
     private func addClassNameView()
         {
         self.addSubview(self.nameView)
-        self.nameView.frame = NSRect(x:Self.kRowHeight,y:0,width:Self.kRowHeight,height:Self.kRowHeight)
+        self.nameView.frame = NSRect(x:Self.kRowHeight,y:-self.textAlignmentInCell(self.nameView.stringValue),width:Self.kRowHeight,height:Self.kRowHeight)
         self.nameView.stringValue = self.methodInstance.shortName + self.methodInstance.parameterDisplayString
         self.nameView.font = Self.kDefaultFont
         self.nameView.drawsBackground = false
         self.nameView.isBezeled = false
-        self.nameView.textColor = NSColor.argonSizzlingRed
+        self.nameView.textColor = NSColor.argonSeaGreen
         }
         
     private func addIconView()
@@ -52,7 +52,7 @@ public class OutlineItemMethodInstanceCell:ItemBrowserCell
         {
         super.layout()
         let rect = self.frame
-        self.nameView.frame = NSRect(x:Self.kRowHeight,y:-6,width:rect.size.width - Self.kRowHeight,height:Self.kRowHeight)
+        self.nameView.frame = NSRect(x:Self.kRowHeight,y:-self.textAlignmentInCell(self.nameView.stringValue),width:rect.size.width - Self.kRowHeight,height:Self.kRowHeight)
         self.iconView.frame = NSRect(x:0,y:0,width:Self.kRowHeight,height:Self.kRowHeight)
         }
     }

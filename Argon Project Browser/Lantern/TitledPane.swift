@@ -22,7 +22,7 @@ public class TitledPane:RowPane
     
     internal override func style()
         {
-        self.titlePane.font = NSFont(name:"Ubuntu-Bold",size:18)!
+        self.titlePane.font = StylePalette.kHeadlineFont
         }
         
     private func initTitle()

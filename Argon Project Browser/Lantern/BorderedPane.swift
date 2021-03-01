@@ -11,7 +11,7 @@ public class BorderedPane:Pane
     {
     private let contentPane:Pane
     
-    public var borderStyle:StylePalette.BorderStyle = StylePalette.kDefaultBorderStyle
+    public var borderStyle:StylePalette.BorderStyle = StylePalette.shared.paneStyle.borderStyle
         {
         didSet
             {
@@ -20,7 +20,7 @@ public class BorderedPane:Pane
             }
         }
         
-     init(pane:Pane,borderStyle:StylePalette.BorderStyle = StylePalette.kDefaultBorderStyle)
+     init(pane:Pane,borderStyle:StylePalette.BorderStyle = StylePalette.shared.paneStyle.borderStyle)
         {
         self.contentPane = pane
         self.borderStyle = borderStyle

@@ -10,8 +10,8 @@ import Cocoa
 public class ArgonFileItemBrowserCell:ItemBrowserCell,Framed
     {
     private let fileItem:ArgonFile
-    private let iconPane = Framer(NSImageView(frame:.zero),inFrame:.square(24))
-    private let titlePane = Framer(NSTextField(frame:.zero),inFrame:.remainder(from:24,0))
+    private let iconPane = NSImageView(frame:.zero)
+    private let titlePane = NSTextField(frame: .zero)
     
     public var layoutFrame:LayoutFrame
     
@@ -27,12 +27,12 @@ public class ArgonFileItemBrowserCell:ItemBrowserCell,Framed
         {
         self.addSubview(iconPane)
         self.addSubview(titlePane)
-        iconPane.contentView?.image = NSImage(named:"IconFile64")!.resized(to: NSSize(width:24,height:24))
-        titlePane.contentView?.font = StylePalette.kDefaultFont
-        titlePane.contentView?.textColor = StylePalette.kPrimaryTextColor
-        titlePane.contentView?.isBezeled = false
-        titlePane.contentView?.drawsBackground = false
-        titlePane.contentView?.stringValue = fileItem.title
+        iconPane.image = NSImage(named:"IconFile64")!.resized(to: NSSize(width:Self.kRowHeight,height:Self.kRowHeight))
+        titlePane.font = StylePalette.kDefaultFont
+        titlePane.textColor = NSColor.argonSizzlingRed
+        titlePane.isBezeled = false
+        titlePane.drawsBackground = false
+        titlePane.stringValue = fileItem.title
         }
         
     required init() {
@@ -47,15 +47,14 @@ public class ArgonFileItemBrowserCell:ItemBrowserCell,Framed
         {
         super.layout()
         self.frame = inView.bounds
-        self.iconPane.layout(inView:self)
-        self.titlePane.layout(inView:self)
+        self.iconPane.frame = NSPoint.zero.extent(NSSize(width:Self.kRowHeight,height:Self.kRowHeight))
+        self.titlePane.frame = NSPoint(x:Self.kRowHeight,y: -self.textAlignmentInCell(self.titlePane.stringValue)).extent(NSSize(width:self.bounds.size.width - Self.kRowHeight,height:Self.kRowHeight))
         }
         
     public override func layout()
         {
         super.layout()
-        self.frame = self.bounds
-        self.iconPane.layout(inView:self)
-        self.titlePane.layout(inView:self)
+        self.iconPane.frame = NSPoint.zero.extent(NSSize(width:Self.kRowHeight,height:Self.kRowHeight))
+        self.titlePane.frame = NSPoint(x:Self.kRowHeight,y:-self.textAlignmentInCell(self.titlePane.stringValue)).extent(NSSize(width:self.bounds.size.width - Self.kRowHeight,height:Self.kRowHeight))
         }
     }

@@ -20,11 +20,19 @@ public class ItemBrowserCell:NSTableCellView
     }
     
     public static let kDefaultFont = NSFont(name:"SunSans-Demi",size:12)!
-    public static let kRowHeight:CGFloat = 24
+    public static let kRowHeight:CGFloat = 18
+    public static let kSlotRowHeight:CGFloat = 24
     
     public func menu(for event:NSEvent,in row:Int,on item:BrowsableItem) -> NSMenu?
         {
         return(nil)
+        }
+        
+    public func textAlignmentInCell(_ text:String) -> CGFloat
+        {
+        let string = NSAttributedString(string:text,attributes:[.font:Self.kDefaultFont])
+        let size = string.size()
+        return((Self.kRowHeight - size.height) / 2)
         }
     }
 

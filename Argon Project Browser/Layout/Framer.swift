@@ -49,7 +49,6 @@ public class Framer<PaneType>:NSView,Framed where PaneType:NSView
             {
             innerView.frame = self.bounds
             }
-
         }
         
     required init?(coder: NSCoder) {

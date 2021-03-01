@@ -7,30 +7,10 @@
 
 import Cocoa
 
-extension CGSize
-    {
-    public static let defaultPaneSize = CGSize(width:50,height:50)
-    }
-    
 public typealias Panes = Array<Pane>
 
 public class Pane:CAShapeLayer
     {
-    public enum HorizontalAlgnment
-        {
-        case left
-        case right
-        case center
-        case justified
-        }
-        
-    public enum VerticalAlignment
-        {
-        case top
-        case middle
-        case bottom
-        }
-        
     internal var layoutFrame = LayoutFrame.zero
         
     public override init()
@@ -53,14 +33,24 @@ public class Pane:CAShapeLayer
         fatalError("init(coder:) has not been implemented")
     }
     
-    internal func withBorder(style:StylePalette.BorderStyle = StylePalette.kDefaultBorderStyle) -> Pane
+    internal func withBorder(style:StylePalette.BorderStyle = StylePalette.shared.paneStyle.borderStyle) -> Pane
         {
         return(BorderedPane(pane:self,borderStyle:style))
+        }
+        
+    internal func withRandomPosition(in rect:NSRect) -> Pane
+        {
+        self.position = NSPoint.random(in:rect)
+        return(self)
         }
         
     internal func measure() -> CGSize
         {
         return(CGSize.defaultPaneSize)
+        }
+        
+    internal func compose(edge:PaneEdge,of:Pane,into:NSBezierPath)
+        {
         }
         
     @discardableResult
