@@ -7,7 +7,7 @@
 
 import Cocoa
 
-public class OutlineItemSlotCell:ItemBrowserCell
+public class ItemSlotBrowserCell:ItemBrowserCell
     {
     private let slot:Slot
     private let trashButton = NSButton(frame:.zero)
@@ -30,7 +30,7 @@ public class OutlineItemSlotCell:ItemBrowserCell
             }
         self.wantsLayer = true
         self.layer?.borderWidth = 1
-        self.layer?.borderColor = NSColor.argonSexyPink.cgColor
+        self.layer?.borderColor = NSColor.argonNeonPink.cgColor
         self.layer?.cornerRadius = 8
         }
     
@@ -87,7 +87,7 @@ public class OutlineItemSlotCell:ItemBrowserCell
         self.slotNameView.font = Self.kDefaultFont
         self.slotNameView.drawsBackground = false
         self.slotNameView.isBezeled = false
-        self.slotNameView.textColor = NSColor.argonSexyPink
+        self.slotNameView.textColor = NSColor.argonNeonOrange
         }
         
     private func addSlotTypeView()
@@ -98,7 +98,7 @@ public class OutlineItemSlotCell:ItemBrowserCell
         self.slotTypeView.font = Self.kDefaultFont
         self.slotTypeView.drawsBackground = false
         self.slotTypeView.isBezeled = false
-        self.slotTypeView.textColor = NSColor.argonSexyPink
+        self.slotTypeView.textColor = NSColor.argonNeonOrange
         }
         
     public override func layout()

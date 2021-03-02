@@ -12,7 +12,7 @@ class ElementalBrowserViewController: NSViewController,NSOutlineViewDataSource,N
     @IBOutlet var outliner:NSOutlineView!
     @IBOutlet var selectedField:NSTextField!
     
-    private var localBrowsables:[BrowsableItem] = []
+    private var elementals = Elementals()
     
     override func viewDidLoad()
         {
@@ -20,8 +20,7 @@ class ElementalBrowserViewController: NSViewController,NSOutlineViewDataSource,N
         self.outliner.delegate = self
         self.outliner.dataSource = self
         Module.initModules()
-        Module.rootModule.buildSymbols()
-        self.localBrowsables = Module.rootModule.allSymbols as Array<BrowsableItem>
+        self.elementals = Module.rootModule.elementals
         self.outliner.reloadData()
         (self.parent as! ArgonBrowserViewController).elementalBrowserController = self
         self.outliner.target = self
@@ -35,14 +34,20 @@ class ElementalBrowserViewController: NSViewController,NSOutlineViewDataSource,N
             {
             return
             }
-        let item = self.outliner.item(atRow: clickedRow) as! BrowsableItem
+        let item = self.outliner.item(atRow: clickedRow) as! Elemental
         self.selectedField.stringValue = item.title
-        let editor = item.editorCell
+        self.selectedField.textColor = item.elementalColor
+//        let editor = item.editorCell
         }
         
-    public func addBrowsableItem(_ item:BrowsableItem)
+    public func outlineView(_ tableView: NSOutlineView, rowViewForItem row: Any) -> NSTableRowView?
         {
-        self.localBrowsables.append(item)
+        return RowView()
+        }
+
+    public func addBrowsableItem(_ item:Elemental)
+        {
+        self.elementals.append(item)
         self.outliner.reloadData()
         }
         
@@ -54,16 +59,19 @@ class ElementalBrowserViewController: NSViewController,NSOutlineViewDataSource,N
             }
         }
         
+    public func outlineView(_ outlineView: NSOutlineView,shouldEdit tableColumn: NSTableColumn?,item: Any) -> Bool
+        {
+        return(false)
+        }
+                     
     public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int
         {
         if item == nil
             {
-            Module.rootModule.buildSymbols()
-            return(self.localBrowsables.count)
+            return(self.elementals.count)
             }
-        if let item = item as? BrowsableItem
+        if let item = item as? Elemental
             {
-            item.buildSymbols()
             return(item.childCount)
             }
         return(0)
@@ -74,31 +82,32 @@ class ElementalBrowserViewController: NSViewController,NSOutlineViewDataSource,N
         {
         if item == nil
             {
-            return(self.localBrowsables[index])
+            return(self.elementals[index])
             }
-        let outlineItem = item as! BrowsableItem
-        return(outlineItem.child(at:index))
+        let outlineItem = item as! Elemental
+        return(outlineItem[index])
         }
 
     public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool
         {
-        if let outlineItem = item as? BrowsableItem
+        if let outlineItem = item as? Elemental
             {
-            return(!outlineItem.isLeaf)
+            return(outlineItem.isExpandable)
             }
         return(false)
         }
 
     public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView?
         {
-        let outlineItem = item as! BrowsableItem
+        let outlineItem = item as! Elemental
         let cell = outlineItem.browserCell
         return(cell)
         }
 
     public func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat
         {
-        if item is Slot
+        let elemental = item as! Elemental
+        if elemental.isSlot
             {
             return(ItemBrowserCell.kSlotRowHeight)
             }

@@ -31,6 +31,11 @@ public class Method:Symbol,NSCoding
         return(NSImage(named:"IconMethod64")!)
         }
         
+    public override var browserCell:ItemBrowserCell
+        {
+        return(ItemSymbolBrowserCell(symbol:self))
+        }
+        
     public var returnType:Type
         {
         fatalError("This should have been defined in the method instance")
@@ -52,14 +57,13 @@ public class Method:Symbol,NSCoding
         self.memoryAddress = .zero
         }
         
-    public override func buildSymbols()
+    public override var elementals:Elementals
         {
-        self.allSymbols = self.instances
-        }
-        
-    public override func child(at:Int) -> BrowsableItem
-        {
-        return(self.allSymbols[at])
+        if self._elementals == nil
+            {
+            self._elementals = self.instances.map{ElementalSymbol(symbol:$0)}
+            }
+        return(self._elementals!)
         }
         
     internal override func relinkSymbolsUsingIds(symbols:Dictionary<UUID,Symbol>)
@@ -101,6 +105,7 @@ public class Method:Symbol,NSCoding
         {
         self.instances.append(instance)
         instance.symbolAdded(to: self)
+        self._elementals = nil
         }
         
     public override func typeCheck() throws

@@ -10,6 +10,8 @@ import Foundation
     
 public struct Name:Hashable,ExpressibleByArrayLiteral
     {
+    public static let kNameSeparator = "\\"
+    
     public static func anchoredName() -> Name
         {
         return(Name(anchored:true))
@@ -94,7 +96,7 @@ public struct Name:Hashable,ExpressibleByArrayLiteral
         
     public var stringName:String
         {
-        return(self.components.map{$0.string}.joined(separator:"/"))
+        return(self.components.map{$0.string}.joined(separator: Self.kNameSeparator))
         }
         
     public var first:String
@@ -117,7 +119,7 @@ public struct Name:Hashable,ExpressibleByArrayLiteral
         
     public var names:[String]
         {
-        return(self.components.map{$0.isAnchor ? "/" : $0.string})
+        return(self.components.map{$0.isAnchor ? Self.kNameSeparator : $0.string})
         }
         
     private var components:[NameComponent] = []
@@ -174,7 +176,7 @@ public struct Name:Hashable,ExpressibleByArrayLiteral
         
     public init(_ piece:String)
         {
-        let pieces = piece.components(separatedBy: "/")
+        let pieces = piece.components(separatedBy: Self.kNameSeparator)
         if pieces.count > 0 && pieces.first!.isEmpty
             {
             self.components = [NameComponent.anchor] + Array(pieces.dropFirst()).map{.element($0)}

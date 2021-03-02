@@ -7,7 +7,7 @@
 
 import Cocoa
 
-public class ArgonFile:BrowsableItem,EditableItem
+public class ArgonFile:Elemental,EditableItem
     {
     private let filename:String
     private let path:String
@@ -28,33 +28,23 @@ public class ArgonFile:BrowsableItem,EditableItem
         return(true)
         }
         
-    public var childCount:Int
+    public override var childCount:Int
         {
         return(0)
         }
         
-    public func child(at:Int) -> BrowsableItem
+    public override subscript(_ index:Int) -> Elemental
         {
         fatalError("This method \(#function) should not be called on an ArgonFile")
         }
         
-    public func localSymbols(_ kinds:SymbolKind...) -> Array<Symbol>
-        {
-        fatalError("This method \(#function) should not be called on an ArgonFile")
-        }
-        
-    public func buildSymbols()
-        {
-        fatalError("This method \(#function) should not be called on an ArgonFile")
-        }
-        
-    public func menu(for event:NSEvent,in row:Int,on item:BrowsableItem) -> NSMenu?
+    public func menu(for event:NSEvent,in row:Int,on item:Elemental) -> NSMenu?
         {
         return(nil)
         }
         
 
-    public var browserCell: ItemBrowserCell
+    public override var browserCell: ItemBrowserCell
         {
        return(ArgonFileItemBrowserCell(item:self))
         }
@@ -64,7 +54,7 @@ public class ArgonFile:BrowsableItem,EditableItem
         return(SourceFileItemEditorCell(item:self))
         }
         
-    public var title:String
+    public override var title:String
         {
         return(self.filename)
         }

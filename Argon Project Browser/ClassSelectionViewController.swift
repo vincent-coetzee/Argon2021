@@ -23,12 +23,10 @@ class ClassSelectionViewController: NSViewController,NSOutlineViewDataSource,NSO
         {
         if item == nil
             {
-            Module.rootModule.buildSymbols()
-            return(Module.rootModule.rootClasses.count)
+            return(Module.rootModule.rootElementals.count)
             }
-        if let item = item as? BrowsableItem
+        if let item = item as? Elemental
             {
-            item.buildSymbols()
             return((item as! Symbol).allClasses.count)
             }
         return(0)
@@ -39,7 +37,7 @@ class ClassSelectionViewController: NSViewController,NSOutlineViewDataSource,NSO
         {
         if item == nil
             {
-            return(Module.rootModule.rootClasses[index])
+            return(Module.rootModule.rootElementals[index])
             }
         let outlineItem = item as! Symbol
         return(outlineItem.allClasses[index])
@@ -47,16 +45,16 @@ class ClassSelectionViewController: NSViewController,NSOutlineViewDataSource,NSO
 
     public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool
         {
-        if let outlineItem = item as? BrowsableItem
+        if let outlineItem = item as? Elemental
             {
-            return(!outlineItem.isLeaf)
+            return(!outlineItem.isExpandable)
             }
         return(false)
         }
 
     public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView?
         {
-        let outlineItem = item as! BrowsableItem
+        let outlineItem = item as! Elemental
         let cell = outlineItem.browserCell
         return(cell)
         }

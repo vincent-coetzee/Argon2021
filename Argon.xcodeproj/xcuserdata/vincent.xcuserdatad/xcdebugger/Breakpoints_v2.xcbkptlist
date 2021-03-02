@@ -222,8 +222,8 @@
             filePath = "Argon/AppDelegate.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
             landmarkName = "applicationDidFinishLaunching(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -398,8 +398,8 @@
             filePath = "Argon/Compiler/Phases/Parsing/Symbols/Symbol.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
+            startingLineNumber = "197"
+            endingLineNumber = "197"
             landmarkName = "childCount"
             landmarkType = "24">
          </BreakpointContent>
@@ -462,8 +462,8 @@
             filePath = "Argon/AppDelegate.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "19"
-            endingLineNumber = "19"
+            startingLineNumber = "18"
+            endingLineNumber = "18"
             landmarkName = "applicationDidFinishLaunching(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -513,22 +513,6 @@
             startingLineNumber = "59"
             endingLineNumber = "59"
             landmarkName = "mouseDown(with:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B0946497-CC31-4A6C-8640-04C10BA81ADB"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Argon Project Browser/ElementalBrowserViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "24"
-            endingLineNumber = "24"
-            landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

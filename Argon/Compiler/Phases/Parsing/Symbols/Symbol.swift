@@ -18,7 +18,9 @@ public enum SymbolKind
     case symbol
     }
     
-public class Symbol:ParseNode,SymbolVisitorAcceptor,BrowsableItem,Hashable,Equatable,EditableItem
+public typealias Symbols = Array<Symbol>
+
+public class Symbol:ParseNode,SymbolVisitorAcceptor,Hashable,Equatable,Browsable
     {
     public static func ==(lhs:Symbol,rhs:Symbol) -> Bool
         {
@@ -45,6 +47,11 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,BrowsableItem,Hashable,Equat
         return(Word.kSizeInBytes)
         }
         
+    public var completeName:String
+        {
+        return(self.fullName.stringName)
+        }
+        
     public let id:UUID
     internal var shortName:String
     internal var wasDeclaredForward = false
@@ -54,6 +61,7 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,BrowsableItem,Hashable,Equat
     internal var definingScope:Scope?
     internal var memoryAddress:MemoryAddress = .zero
     internal var parentId:UUID?
+    internal var _elementals:Elementals?
     
     public func hash(into hasher:inout Hasher)
         {
@@ -72,16 +80,6 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,BrowsableItem,Hashable,Equat
             fatalError("Can not find containing module for \(self)")
             }
         return(object as! Module)
-        }
-        
-    public var browserCell:ItemBrowserCell
-        {
-        return(OutlineItemSymbolCell(symbol:self))
-        }
-        
-    public var editorCell:ItemEditorCell
-        {
-        return(ItemEditorCell(item:self))
         }
         
     public var isPlaceholder:Bool
@@ -146,6 +144,11 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,BrowsableItem,Hashable,Equat
         return(false)
         }
         
+    public var browserCell:ItemBrowserCell
+        {
+        fatalError("This should have been overridden in a subclass")
+        }
+        
     internal init(shortName:String = "",parent:Symbol? = nil)
         {
         self.shortName = shortName
@@ -164,7 +167,7 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,BrowsableItem,Hashable,Equat
         super.init()
         }
 
-    public func menu(for:NSEvent,in:Int,on:BrowsableItem) -> NSMenu?
+    public func menu(for:NSEvent,in:Int,on:Elemental) -> NSMenu?
         {
         return(nil)
         }
@@ -194,13 +197,14 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,BrowsableItem,Hashable,Equat
         return(0)
         }
     
-    public func child(at: Int) -> BrowsableItem
+    public func child(at: Int) -> Elemental
         {
         fatalError()
         }
         
-    public func buildSymbols()
+    public var elementals:Elementals
         {
+        return([])
         }
         
     public func accept(_ visitor:SymbolVisitor)
@@ -298,8 +302,7 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,BrowsableItem,Hashable,Equat
         
     public func localSymbols(_ kinds:SymbolKind...) -> Array<Symbol>
         {
-        self.buildSymbols()
-        var validSymbols = Array<Symbol>()
+        var validSymbols = Symbols()
         for symbol in self.allSymbols
             {
             for kind in kinds

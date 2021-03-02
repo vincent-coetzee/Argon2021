@@ -23,7 +23,7 @@ public class ItemBrowserCell:NSTableCellView
     public static let kRowHeight:CGFloat = 18
     public static let kSlotRowHeight:CGFloat = 24
     
-    public func menu(for event:NSEvent,in row:Int,on item:BrowsableItem) -> NSMenu?
+    public func menu(for event:NSEvent,in row:Int,on item:Elemental) -> NSMenu?
         {
         return(nil)
         }

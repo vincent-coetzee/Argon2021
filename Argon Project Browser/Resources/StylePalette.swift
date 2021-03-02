@@ -53,7 +53,7 @@ public class StylePalette
     public static let kDefaultPadding:CGFloat = 4
     public static let kTitleEdgePadding:CGFloat = 5                             // The padding around a title in a TitlePane
     public static let kDefaultShadowOpacity:Float = 0.5
-    
+    public static let kSelectionColor = NSColor(hex: 0x616161)
     public static func dumpAllFontNames()
         {
         for name in NSFontManager.shared.availableFontFamilies

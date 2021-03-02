@@ -7,8 +7,19 @@
 
 import Cocoa
 
-public class OutlineItemClassCell:ItemBrowserCell
+public class ItemClassBrowserCell:ItemBrowserCell
     {
+    private static var _cachedIcon:NSImage?
+    
+    private static func cachedIcon(for symbol:Symbol) -> NSImage
+        {
+        if self._cachedIcon == nil
+            {
+            self._cachedIcon = symbol.icon.coloredWith(color:NSColor.argonNeonOrange)
+            }
+        return(self._cachedIcon!)
+        }
+        
     public let nameView = NSTextField(frame:.zero)
     public let iconView = NSImageView(frame:.zero)
     
@@ -30,7 +41,7 @@ public class OutlineItemClassCell:ItemBrowserCell
         fatalError("init() has not been implemented")
     }
     
-    public override func menu(for event:NSEvent,in row:Int,on item:BrowsableItem) -> NSMenu?
+    public override func menu(for event:NSEvent,in row:Int,on item:Elemental) -> NSMenu?
         {
         let menu = NSMenu(title: "Classes")
         var item = menu.addItem(withTitle: "New Class", action: #selector(onNewClassClicked), keyEquivalent: "C")
@@ -69,7 +80,7 @@ public class OutlineItemClassCell:ItemBrowserCell
         {
         self.addSubview(self.nameView)
         self.nameView.frame = NSRect(x:Self.kRowHeight,y:-self.textAlignmentInCell(self.nameView.stringValue),width:Self.kRowHeight,height:Self.kRowHeight)
-        self.nameView.stringValue = self.symbol.fullName.stringName
+        self.nameView.stringValue = self.symbol.completeName
         self.nameView.font = Self.kDefaultFont
         self.nameView.drawsBackground = false
         self.nameView.isBezeled = false
@@ -79,7 +90,8 @@ public class OutlineItemClassCell:ItemBrowserCell
     private func addIconView()
         {
         self.addSubview(self.iconView)
-        self.iconView.image = symbol.icon
+        let icon = Self.cachedIcon(for:self.symbol)
+        self.iconView.image = icon
         self.iconView.frame = NSRect(x:0,y:0,width:Self.kRowHeight,height:Self.kRowHeight)
         }
         

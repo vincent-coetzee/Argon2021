@@ -81,13 +81,13 @@ public class Class:Symbol,NSCoding
     public static let float16Class = SystemPlaceholderValueClass(shortName:"Float16").superclass(.bitValueClass)
     public static let hashedClass = SystemPlaceholderClass(shortName:"Hashed").superclass(.objectClass)
     public static let collectionClass = SystemPlaceholderClass(shortName:"Collection").typeVariable("ELEMENT",.hashedClass).superclass(.objectClass)
-    public static let arrayClass = SystemPlaceholderClass(shortName:"Array").superclass(.collectionClass)
-    public static let setClass = SystemPlaceholderClass(shortName:"Set").superclass(.collectionClass)
-    public static let listClass = SystemPlaceholderClass(shortName:"List").superclass(.collectionClass)
+    public static let arrayClass = SystemPlaceholderClass(shortName:"Array").superclass(.collectionClass).typeVariable("ELEMENT")
+    public static let setClass = SystemPlaceholderClass(shortName:"Set").superclass(.collectionClass).typeVariable("ELEMENT")
+    public static let listClass = SystemPlaceholderClass(shortName:"List").superclass(.collectionClass).typeVariable("ELEMENT")
     public static let bitSetClass = BitSetClass(shortName:"BitSet",keyType:.void,valueType:.void).superclass(.collectionClass)
     public static let associationClass = SystemPlaceholderClass(shortName:"Association").typeVariable("KEY").typeVariable("VALUE").superclass(.objectClass)
     public static let dictionaryClass = SystemPlaceholderClass(shortName:"Dictionary").typeVariable("ELEMENT",.associationClass).superclass(.collectionClass)
-    public static let pointerClass = SystemPlaceholderClass(shortName:"Pointer").superclass(.collectionClass)
+    public static let pointerClass = SystemPlaceholderClass(shortName:"Pointer").superclass(.objectClass).typeVariable("ELEMENT")
 
     public var displayString:String
         {
@@ -102,6 +102,24 @@ public class Class:Symbol,NSCoding
                 {
                 aClass.subclasses.insert(self)
                 }
+            }
+        }
+        
+    public override var browserCell:ItemBrowserCell
+        {
+        return(ItemClassBrowserCell(symbol:self))
+        }
+        
+    public override var completeName:String
+        {
+        if self.typeVariables.isEmpty
+            {
+            return(self.fullName.stringName)
+            }
+        else
+            {
+            let values = "<" + self.typeVariables.map{$0.shortName}.joined(separator: ",") + ">"
+            return(self.fullName.stringName + values)
             }
         }
         
@@ -128,24 +146,17 @@ public class Class:Symbol,NSCoding
         return(self.subclasses.count < 1)
         }
 
-    public override func buildSymbols()
+    public override var elementals:Elementals
         {
+        if self._elementals != nil
+            {
+            return(self._elementals!)
+            }
         let slots = Array(localSlots.values)
         let classes = self.uniqueSubclasses.items
-        self.allSymbols = (slots.sorted{$0.shortName<$1.shortName} + classes.sorted{$0.shortName<$1.shortName})
-        for symbol in self.allSymbols.reversed()
-            {
-            if let slot = symbol as? Slot
-                {
-                slot.isLastSlot = true
-                break
-                }
-            }
-        }
-        
-    public override var browserCell:ItemBrowserCell
-        {
-        return(OutlineItemClassCell(symbol:self))
+        let some = classes.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)}
+        self._elementals = some
+        return(self._elementals!)
         }
         
     public override var icon:NSImage
@@ -224,12 +235,7 @@ public class Class:Symbol,NSCoding
         self.localClassSlots[slot.shortName] = slot
         return(self)
         }
-        
-    public override func child(at: Int) -> BrowsableItem
-        {
-        return(self.allSymbols[at])
-        }
-        
+
    public override func accept(_ visitor:SymbolVisitor)
         {
         visitor.acceptClass(self)

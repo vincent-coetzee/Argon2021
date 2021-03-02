@@ -36,6 +36,11 @@ public class Module:SymbolContainer,NSCoding
         self.pop()
         }
         
+    public override var browserCell:ItemBrowserCell
+        {
+        return(ItemSymbolBrowserCell(symbol:self))
+        }
+        
     public private(set) var genericTypes:[TypeVariable] = []
     private var exitFunction:ModuleFunction?
     private var entryFunction:ModuleFunction?
@@ -44,8 +49,12 @@ public class Module:SymbolContainer,NSCoding
     private var moduleSlots:Dictionary<String,Slot> = [:]
     private var imports = ImportVector()
     
-    public override func buildSymbols()
+    public override var elementals:Elementals
         {
+        if self._elementals != nil
+            {
+            return(self._elementals!)
+            }
         var classes = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Class && !($0 is Enumeration)}
         var classesToRemove = Array<Symbol>()
         for aClass in classes
@@ -62,7 +71,8 @@ public class Module:SymbolContainer,NSCoding
         let enumerations = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Enumeration}
         let methods = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Method}
         let modules = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Module}
-        self.allSymbols = modules.sorted{$0.shortName<$1.shortName} + classes.sorted{$0.shortName<$1.shortName} + enumerations.sorted{$0.shortName<$1.shortName} + methods.sorted{$0.shortName<$1.shortName}
+        self._elementals = modules.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)} + classes.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)}  + enumerations.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)}  + methods.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)}
+        return(self._elementals!)
         }
 
     public func reset()
@@ -307,22 +317,12 @@ public class Module:SymbolContainer,NSCoding
         {
         return(false)
         }
-
-    public override var childCount: Int
-        {
-        return(self.allSymbols.count)
-        }
-    
-    public override func child(at: Int) -> BrowsableItem
-        {
-        return(self.allSymbols[at])
-        }
         
-    public var rootClasses:Classes
+    public var rootElementals:Elementals
         {
         let classes = self.allClasses
-        let roots = classes.filter{($0 as! Class).superclasses.isEmpty}
-        return(roots as! Classes)
+        let roots = classes.filter{($0 as! Class).superclasses.isEmpty}.sorted{$0.shortName < $1.shortName}.map{ElementalSymbol(symbol:$0)}
+        return(roots)
         }
         
     public override var allClasses:Array<Symbol>

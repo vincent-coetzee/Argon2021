@@ -15,7 +15,7 @@ public class ArgonFileItemBrowserCell:ItemBrowserCell,Framed
     
     public var layoutFrame:LayoutFrame
     
-    init(item:BrowsableItem)
+    init(item:Elemental)
         {
         self.layoutFrame = .sizeToBounds
         self.fileItem = item as! ArgonFile

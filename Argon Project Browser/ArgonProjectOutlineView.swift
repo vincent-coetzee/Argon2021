@@ -22,6 +22,6 @@ class ArgonProjectOutlineView: NSOutlineView
             {
             return nil
             }
-        return((view as! ItemBrowserCell).menu(for:event,in:row,on:item as! BrowsableItem))
+        return((view as! ItemBrowserCell).menu(for:event,in:row,on:item as! Elemental))
         }
     }

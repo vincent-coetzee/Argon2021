@@ -31,11 +31,6 @@ public class MethodInstance:Symbol,NSCoding
             }
         }
         
-    public override var browserCell:ItemBrowserCell
-        {
-        return(OutlineItemMethodInstanceCell(symbol:self))
-        }
-        
     public var parameterDisplayString:String
         {
         let strings = self.parameters.map{$0.shortName + "::" + $0.typeClass.shortName}
@@ -45,6 +40,11 @@ public class MethodInstance:Symbol,NSCoding
     public override var icon:NSImage
         {
         return(NSImage(named:"IconMethodInstance64")!)
+        }
+        
+    public override var browserCell:ItemBrowserCell
+        {
+        return(ItemMethodInstanceBrowserCell(symbol:self))
         }
         
     internal var owner:Symbol?

@@ -7,7 +7,7 @@
 
 import Cocoa
 
-public class OutlineItemSymbolCell:ItemBrowserCell
+public class ItemSymbolBrowserCell:ItemBrowserCell
     {
     internal let symbol:Symbol
     internal let iconView = NSImageView(frame:.zero)
@@ -26,45 +26,50 @@ public class OutlineItemSymbolCell:ItemBrowserCell
         return(Self.kRowHeight)
         }
         
+    private var elementalColor:NSColor
+        {
+        if symbol is Module
+            {
+            return(NSColor.argonLime)
+            }
+        else if symbol is Class
+            {
+            return(NSColor.argonNeonOrange)
+            }
+        else if symbol is Method
+            {
+            return(NSColor.argonSeaGreen)
+            }
+        else if symbol is Enumeration
+            {
+            return(NSColor.argonNeonYellow)
+            }
+        else if symbol is Slot
+            {
+            return(NSColor.argonNeonPink)
+            }
+        else
+            {
+            return(NSColor.lightGray)
+            }
+        }
+        
     private func addIconView()
         {
         self.addSubview(self.iconView)
         self.iconView.frame = NSRect(x:0,y:0,width:Self.kRowHeight,height:Self.kRowHeight)
-        self.iconView.image = symbol.icon.resized(to:NSSize(width:Self.kRowHeight,height:Self.kRowHeight))
+        self.iconView.image = symbol.icon.resized(to:NSSize(width:Self.kRowHeight,height:Self.kRowHeight)).coloredWith(color:self.elementalColor)
         }
         
     private func addTitleView()
         {
         self.addSubview(self.titleView)
         self.titleView.frame = NSRect(x:Self.kRowHeight,y:-self.textAlignmentInCell(self.titleView.stringValue),width:Self.kRowHeight,height:Self.kRowHeight)
-        self.titleView.stringValue = self.symbol.shortName + " \(Swift.type(of:symbol))"
+        self.titleView.stringValue = self.symbol.completeName
         self.titleView.font = Self.kDefaultFont
         self.titleView.drawsBackground = false
         self.titleView.isBezeled = false
-        if symbol is Module
-            {
-            self.titleView.textColor = NSColor.argonLime
-            }
-        else if symbol is Class
-            {
-            self.titleView.textColor = NSColor.argonNeonOrange
-            }
-        else if symbol is Method
-            {
-            self.titleView.textColor = NSColor.argonSeaGreen
-            }
-        else if symbol is Enumeration
-            {
-            self.titleView.textColor = NSColor.argonNeonPink
-            }
-        else if symbol is Slot
-            {
-            self.titleView.textColor = NSColor.argonCheese
-            }
-        else
-            {
-            self.titleView.textColor = NSColor.lightGray
-            }
+        self.titleView.textColor = self.elementalColor
         }
         
     public override func layout()

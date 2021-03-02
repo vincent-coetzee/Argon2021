@@ -7,7 +7,7 @@
 
 import Cocoa
 
-public class OutlineItemMethodInstanceCell:ItemBrowserCell
+public class ItemMethodInstanceBrowserCell:ItemBrowserCell
     {
     public let nameView = NSTextField(frame:.zero)
     public let iconView = NSImageView(frame:.zero)
@@ -44,7 +44,7 @@ public class OutlineItemMethodInstanceCell:ItemBrowserCell
     private func addIconView()
         {
         self.addSubview(self.iconView)
-        self.iconView.image = methodInstance.icon
+        self.iconView.image = self.methodInstance.icon.resized(to:NSSize(width:Self.kRowHeight,height:Self.kRowHeight)).coloredWith(color:NSColor.argonSeaGreen)
         self.iconView.frame = NSRect(x:0,y:0,width:Self.kRowHeight,height:Self.kRowHeight)
         }
         

@@ -34,11 +34,6 @@ public class Slot:Variable,NSCoding
         
     public var isLastSlot:Bool = false
         
-    public override var browserCell:ItemBrowserCell
-        {
-        return(OutlineItemSlotCell(symbol:self))
-        }
-        
     public var cloned:Slot
         {
         return(Slot(shortName:self.shortName,class:self._class,container:self.containingSymbol,attributes:self.attributes))

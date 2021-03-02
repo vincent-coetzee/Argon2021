@@ -89,7 +89,6 @@ public class SymbolWalker:SymbolVisitor
     
     public func acceptModule(_ module:Module)
         {
-        module.buildSymbols()
         self.indented
             {
             if visitedSymbols.contains(module)
@@ -103,11 +102,11 @@ public class SymbolWalker:SymbolVisitor
                     print("\(indent) IMPORTED MODULE")
                     }
                 print("\n\(indent)START Module \(module.shortName) ------------------------------")
-                for symbol in module.allSymbols.filter{$0 is Module}
+                for symbol in module.elementals.filter{$0.isModule}
                     {
                     symbol.accept(self)
                     }
-                for symbol in module.allSymbols.filter{!($0 is Module)}
+                for symbol in module.elementals.filter{!($0.isModule)}
                     {
                     symbol.accept(self)
                     }

@@ -551,13 +551,13 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DFj-Ma-E1h">
-                                <rect key="frame" x="0.0" y="0.0" width="450" height="258"/>
+                                <rect key="frame" x="0.0" y="0.0" width="450" height="265"/>
                                 <clipView key="contentView" id="bAB-aQ-Wj8">
-                                    <rect key="frame" x="1" y="1" width="448" height="256"/>
+                                    <rect key="frame" x="1" y="1" width="448" height="263"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="20" outlineTableColumn="iZT-fC-maU" id="kkN-4R-bth">
-                                            <rect key="frame" x="0.0" y="0.0" width="448" height="256"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="448" height="263"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="17" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -600,7 +600,7 @@
                                     </subviews>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="XJJ-IZ-Dle">
-                                    <rect key="frame" x="1" y="283" width="448" height="16"/>
+                                    <rect key="frame" x="1" y="241" width="448" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="9rI-rr-UW5">
@@ -608,33 +608,33 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <textField wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kTk-4d-has">
-                                <rect key="frame" x="8" y="268" width="132" height="22"/>
+                            <textField wantsLayer="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="kTk-4d-has">
+                                <rect key="frame" x="6" y="273" width="116" height="19"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Argon Elementals" id="c4T-OB-twC">
-                                    <font key="font" size="16" name="Ubuntu-MediumItalic"/>
+                                    <font key="font" size="14" name="Ubuntu-MediumItalic"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mUj-xl-MEW">
-                                <rect key="frame" x="372" y="268" width="70" height="22"/>
+                                <rect key="frame" x="382" y="273" width="62" height="19"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Selection" id="nzR-Fx-MMI">
-                                    <font key="font" size="16" name="Ubuntu-MediumItalic"/>
+                                    <font key="font" size="14" name="Ubuntu-MediumItalic"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="DFj-Ma-E1h" firstAttribute="top" secondItem="kTk-4d-has" secondAttribute="bottom" constant="10" id="10b-CT-Nxd"/>
-                            <constraint firstItem="DFj-Ma-E1h" firstAttribute="top" secondItem="mUj-xl-MEW" secondAttribute="bottom" constant="10" id="NvZ-J9-bAg"/>
-                            <constraint firstItem="kTk-4d-has" firstAttribute="top" secondItem="lmP-9v-rQ4" secondAttribute="top" constant="10" id="Ytv-Jk-mp0"/>
-                            <constraint firstAttribute="trailing" secondItem="mUj-xl-MEW" secondAttribute="trailing" constant="10" id="dIg-am-IkU"/>
-                            <constraint firstItem="mUj-xl-MEW" firstAttribute="top" secondItem="lmP-9v-rQ4" secondAttribute="top" constant="10" id="kJv-3u-DsE"/>
+                            <constraint firstItem="DFj-Ma-E1h" firstAttribute="top" secondItem="kTk-4d-has" secondAttribute="bottom" constant="8" id="9eQ-9y-4CQ"/>
+                            <constraint firstItem="DFj-Ma-E1h" firstAttribute="top" secondItem="mUj-xl-MEW" secondAttribute="bottom" constant="8" id="NvZ-J9-bAg"/>
+                            <constraint firstItem="kTk-4d-has" firstAttribute="leading" secondItem="lmP-9v-rQ4" secondAttribute="leading" constant="8" id="TkX-av-x5J"/>
+                            <constraint firstAttribute="trailing" secondItem="mUj-xl-MEW" secondAttribute="trailing" constant="8" id="dIg-am-IkU"/>
+                            <constraint firstItem="kTk-4d-has" firstAttribute="top" secondItem="lmP-9v-rQ4" secondAttribute="top" constant="8" id="gcB-Ql-1WF"/>
+                            <constraint firstItem="mUj-xl-MEW" firstAttribute="top" secondItem="lmP-9v-rQ4" secondAttribute="top" constant="8" id="kJv-3u-DsE"/>
                             <constraint firstAttribute="bottom" secondItem="DFj-Ma-E1h" secondAttribute="bottom" id="pRF-wE-gnK"/>
                             <constraint firstAttribute="trailing" secondItem="DFj-Ma-E1h" secondAttribute="trailing" id="sHu-iZ-0LD"/>
                             <constraint firstItem="DFj-Ma-E1h" firstAttribute="leading" secondItem="lmP-9v-rQ4" secondAttribute="leading" id="xYb-PD-VS1"/>
-                            <constraint firstItem="kTk-4d-has" firstAttribute="leading" secondItem="lmP-9v-rQ4" secondAttribute="leading" constant="10" id="yG0-8b-T7d"/>
                         </constraints>
                     </view>
                     <connections>

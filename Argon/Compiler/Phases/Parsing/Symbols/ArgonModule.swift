@@ -74,7 +74,7 @@ public class ArgonModule:Module
         
     public override var fullName:Name
         {
-        return(Name("/Argon"))
+        return(Name("\(Name.kNameSeparator)Argon"))
         }
         
     internal func initArgonModule() -> Self
@@ -92,14 +92,19 @@ public class ArgonModule:Module
         return(self)
         }
         
-    public override func buildSymbols()
+    public override var elementals:Elementals
         {
+        if self._elementals != nil
+            {
+            return(self._elementals!)
+            }
         let classes = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Class}.filter{($0 as! Class).superclasses.isEmpty}
         let enumerations = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Enumeration}
         let methods = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Method}
         let modules = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Module}
-        self.allSymbols = (modules + classes + enumerations + methods).sorted{$0.shortName<$1.shortName}
-        Class.pointerClass.typeVariable("ELEMENT")
+        let someSymbols = (modules + classes + enumerations + methods).sorted{$0.shortName<$1.shortName}
+        self._elementals = someSymbols.map{ElementalSymbol(symbol:$0)}
+        return(self._elementals!)
         }
         
     internal override func allocateAddresses(using compiler:Compiler) throws
@@ -164,7 +169,7 @@ public class ArgonModule:Module
     private func initIOModule()
         {
         let ioModule = self.placeholderModule("IO",in: self)
-        let conduitClass = self.lookupClass("Conduits/Conduit")!
+        let conduitClass = self.lookupClass("Conduits\\Conduit")!
         ioModule.placeholderMethodInstance("write",.integerClass,Parameter("conduit",conduitClass,false),Parameter("format",.stringClass,true),VariadicParameter("arguments",.allClass,false))
         }
         
@@ -178,7 +183,7 @@ public class ArgonModule:Module
         socketClass.placeholderSlot("isConnected",class:.booleanClass).placeholderSlot("flags",class:.uInteger64Class)
         socketsModule.placeholderMethodInstance("connect",.booleanClass,Parameter("socket",socketClass, true),Parameter("address",Class.addressClass, true),Parameter("port",Class.uInteger16Class, true))
         socketsModule.placeholderMethodInstance("close",.booleanClass,Parameter("socket",socketClass, true))
-        let byteArrayClass = self.lookupClass("Collections/ByteArray")!
+        let byteArrayClass = self.lookupClass("Collections\\ByteArray")!
         socketsModule.placeholderMethodInstance("read",byteArrayClass,Parameter("socket",socketClass, true))
         socketsModule.placeholderMethodInstance("write",.integerClass,Parameter("socket",socketClass, true),Parameter("buffer",byteArrayClass,true),Parameter("length",.integerClass,true))
         }

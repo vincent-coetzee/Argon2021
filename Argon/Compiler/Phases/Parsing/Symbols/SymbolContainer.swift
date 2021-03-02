@@ -17,23 +17,28 @@ public class SymbolContainer:Symbol
         
     internal var symbols:[String:SymbolSet] = [:]
 
-    public override func buildSymbols()
+    public override var elementals:Elementals
         {
+        if self._elementals != nil
+            {
+            return(self._elementals!)
+            }
         var values = Array<Symbol>()
         for set in self.symbols.values
             {
             values.append(contentsOf:set.symbols)
             }
-        self.allSymbols = Array<Symbol>(Set<Symbol>(values)).sorted{$0.shortName<$1.shortName}
+        let someSymbols = Array<Symbol>(Set<Symbol>(values)).sorted{$0.shortName<$1.shortName}
         var newList = Array<Symbol>()
-        for symbol in self.allSymbols
+        for symbol in someSymbols
             {
             if !newList.contains(where:{$0.shortName == symbol.shortName})
                 {
                 newList.append(symbol)
                 }
             }
-        self.allSymbols = newList
+        self._elementals = newList.map{ElementalSymbol(symbol:$0)}
+        return(self._elementals!)
         }
         
     public init(shortName:String)
@@ -76,6 +81,7 @@ public class SymbolContainer:Symbol
 
     internal override func addSymbol(_ symbol:Symbol)
         {
+        self._elementals = nil
         if symbol.isModuleLevelSymbol && !(self is Module)
             {
             fatalError("This should not be called")
