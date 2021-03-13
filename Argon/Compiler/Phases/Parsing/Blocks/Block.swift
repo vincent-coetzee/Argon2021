@@ -8,11 +8,11 @@
 
 import Foundation
 
-public class Block:Statement,SlotContainer
+public class Block:Statement
     {
     static func ==(lhs:Block,rhs:Block) -> Bool
         {
-        return(lhs.statements == rhs.statements && lhs.symbols == rhs.symbols)
+        return(lhs.statements == rhs.statements && lhs.localVariables == rhs.localVariables)
         }
         
     internal var lastStatementIsNotReturn:Bool
@@ -27,38 +27,36 @@ public class Block:Statement,SlotContainer
         
     internal var blockLocalVariables:[LocalVariable]
         {
-        return(self.symbols.values.flatMap{$0.symbols}.filter{$0 is LocalVariable}.map{$0 as! LocalVariable})
+        return(self.localVariables.values.map{$0 as! LocalVariable})
         }
         
     internal var statements:[Statement] = []
-    internal var symbols:[String:SymbolSet] = [:]
+    internal var localVariables = Dictionary<String,LocalVariable>()
     internal var marker:Int?
+    internal var container:SymbolContainer = .nothing
     
-    convenience init(parentScope:Scope?)
+    convenience init(container:SymbolContainer)
         {        
         self.init()
-        self.parentScope = parentScope
+        self.container = container
         }
         
     init(block:Block)
         {
         self.statements = block.statements
-        self.symbols = block.symbols
+        self.localVariables = block.localVariables
         self.marker = block.marker
         }
-        
-    init(parentScope:Scope)
-        {
-        self.marker = Argon.nextIndex()
-        super.init()
-        self.parentScope = parentScope
-        }
     
+    init(statement:Statement)
+        {
+        }
+        
     init(inductionVariable:InductionVariable)
         {
         self.marker = Argon.nextIndex()
         super.init()
-        self.addSymbol(inductionVariable)
+        self.addLocalVariable(inductionVariable)
         }
         
     override init(location:SourceLocation = .zero)
@@ -77,10 +75,7 @@ public class Block:Statement,SlotContainer
             {
             try statement.allocateAddresses(using:compiler)
             }
-        for set in self.symbols.values
-            {
-            try set.allocateAddresses(using:compiler)
-            }
+        fatalError("")
         }
         
     internal var lastStatement:Statement
@@ -88,22 +83,10 @@ public class Block:Statement,SlotContainer
         return(self.statements.last!)
         }
         
-    internal func addSlot(_ slot:Slot)
+    
+    internal func addLocalVariable(_ variable:LocalVariable)
         {
-        self.addSymbol(slot)
-        }
-
-    internal override func addSymbol(_ symbol:Symbol)
-        {
-        symbol.definingScope = self
-        if let set = self.symbols[symbol.shortName]
-            {
-            set.append(symbol)
-            }
-        else
-            {
-            self.symbols[symbol.shortName] = SymbolSet(symbol)
-            }
+        self.localVariables[variable.shortName] = variable
         }
         
     internal override func addStatement(_ statement:Statement?)
@@ -119,41 +102,31 @@ public class Block:Statement,SlotContainer
         self.statements = statements
         }
         
-    internal override func lookup(shortName:String) -> SymbolSet?
+    public override func lookup(shortName:String) -> SymbolSet
         {
-        if let set = self.symbols[shortName]
+        if let variable = self.localVariables[shortName]
             {
-            return(set)
+            return(SymbolSet(variable))
             }
-        return(self.parentScope?.lookup(shortName:shortName))
+        return(self.container.lookup(shortName:shortName))
         }
         
-    internal override func lookup(name:Name) -> SymbolSet?
+    public override func lookup(name:Name) -> SymbolSet
         {
         if name.isAnchored
             {
             return(Module.rootModule.lookup(name:name))
             }
-        if let set = self.symbols[name.first]?.first
+        if let variable = self.localVariables[name.first]
             {
-            return(set.lookup(name:name.withoutFirst()))
+            return(SymbolSet(variable))
             }
-        return(self.parentScope?.lookup(name:name))
+        return(self.container.lookup(name:name))
         }
         
     internal override func lookupMethod(shortName:String) -> Method?
         {
-        if let set = self.symbols[shortName]
-            {
-            for symbol in set.symbols
-                {
-                if let result = symbol as? Method
-                    {
-                    return(result)
-                    }
-                }
-            }
-        return(self.parentScope?.lookupMethod(shortName:shortName))
+        return(self.container.lookupMethod(shortName:shortName))
         }
         
     public override func typeCheck() throws

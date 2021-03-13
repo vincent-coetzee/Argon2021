@@ -70,6 +70,8 @@ public class ArgonModule:Module
         self.addSymbol(Class.behaviorClass)
         self.addSymbol(Class.associationClass)
         self.addSymbol(Class.hashedClass)
+        self.addSymbol(Class.symbolClass)
+        self.addSymbol(Class.wordClass)
         }
         
     public override var fullName:Name
@@ -77,6 +79,7 @@ public class ArgonModule:Module
         return(Name("\(Name.kNameSeparator)Argon"))
         }
         
+    @discardableResult
     internal func initArgonModule() -> Self
         {
         if self.wasInitialized
@@ -181,20 +184,23 @@ public class ArgonModule:Module
         socketsModule.placeholderClass("IP6Address",parents:[ipAddressClass])
         let socketClass = socketsModule.placeholderClass("Socket",parents:[.objectClass]).placeholderSlot("handle",class:.integerClass).placeholderSlot("hasData",class:.booleanClass).placeholderSlot("localAddress",class:ipAddressClass).placeholderSlot("remoteAddress",class:ipAddressClass).placeholderSlot("port",class:.uInteger16Class)
         socketClass.placeholderSlot("isConnected",class:.booleanClass).placeholderSlot("flags",class:.uInteger64Class)
-        socketsModule.placeholderMethodInstance("connect",.booleanClass,Parameter("socket",socketClass, true),Parameter("address",Class.addressClass, true),Parameter("port",Class.uInteger16Class, true))
-        socketsModule.placeholderMethodInstance("close",.booleanClass,Parameter("socket",socketClass, true))
+        socketsModule.addFunction(toMethodNamed:"connect",name:"connect",libraryName:"Sockets",cName:"_connectSocket",returnClass:.booleanClass,parameters:Parameter("socket",socketClass, true),Parameter("address",Class.addressClass, true),Parameter("port",Class.uInteger16Class, true))
+        socketsModule.addFunction(toMethodNamed:"close",name:"close",libraryName:"Sockets",cName:"_closeSocket",returnClass:.booleanClass,parameters:Parameter("socket",socketClass, true))
         let byteArrayClass = self.lookupClass("Collections\\ByteArray")!
-        socketsModule.placeholderMethodInstance("read",byteArrayClass,Parameter("socket",socketClass, true))
-        socketsModule.placeholderMethodInstance("write",.integerClass,Parameter("socket",socketClass, true),Parameter("buffer",byteArrayClass,true),Parameter("length",.integerClass,true))
+        socketsModule.addFunction(toMethodNamed:"read",name:"read",libraryName:"Sockets",cName:"_readSocket",returnClass:byteArrayClass,parameters:Parameter("socket",socketClass, true))
+        socketsModule.addFunction(toMethodNamed:"write",name:"write",libraryName:"Sockets",cName:"_writeSocket",returnClass:.integerClass,parameters:Parameter("socket",socketClass, true),Parameter("bytes",byteArrayClass, true))
         }
         
     private func initConduitsModule()
         {
         let conduitsModule = self.placeholderModule("Conduits",in: self)
-        let sinks = conduitsModule.placeholderEnumeration("Sink",class: .uIntegerClass).case("#none",value:0).case("#memory",value:1).case("#socket",value:2).case("#file",value:3)
+        let constant = Constant(shortName:"$DefaultPacketSize",class: .integerClass,integer: 128)
+        conduitsModule.addSymbol(constant)
+        let sink = conduitsModule.placeholderEnumeration("Sink",class: .uIntegerClass).case("#none",value:0).case("#memory",value:1).case("#socket",value:2).case("#file",value:3)
         let conduitMode = conduitsModule.placeholderEnumeration("ConduitMode",class: .uIntegerClass).case("#none",value:0).case("#read",value:1).case("#write",value:2).case("#readwrite",value:3).case("#extend",value:4).case("#text",value:5).case("#raw",value:6)
         let sinksModule = self.placeholderModule("Sinks",in:conduitsModule)
-        let conduitClass = Class.conduitClass.placeholderSlot("sink",class:sinks).placeholderSlot("atEnd",class:.booleanClass).placeholderSlot("count",class:.integerClass)
+        sinksModule.addSymbol(sink)
+        let conduitClass = Class.conduitClass.placeholderSlot("sink",class:sink).placeholderSlot("atEnd",class:.booleanClass).placeholderSlot("count",class:.integerClass)
         conduitsModule.addSymbol(conduitClass)
         conduitClass.placeholderSlot("isReadConduit",class:.booleanClass).placeholderSlot("isWriteConduit",class:.booleanClass).placeholderSlot("isOpen",class:.booleanClass).placeholderSlot("isClosed",class:.booleanClass)
         conduitsModule.placeholderMethodInstance("open",.booleanClass,Parameter("mode", conduitMode, true))
@@ -218,8 +224,7 @@ public class ArgonModule:Module
             }
         let module = SystemPlaceholderModule(shortName:name)
         searchModule.addSymbol(module)
-        module.parentScope = searchModule
-        module.parent = searchModule
+        module.container = .module(searchModule)
         return(module)
         }
     }

@@ -20,6 +20,22 @@ public class Enumeration:Class
         return(_class)
         }
         
+        
+    public override var browserCell:ItemBrowserCell
+        {
+        return(ItemEnumerationBrowserCell(enumeration:self))
+        }
+        
+    public override var elementals:Elementals
+        {
+        if self._elementals != nil
+            {
+            return(self._elementals!)
+            }
+        self._elementals = self.cases.map{ElementalSymbol(symbol:$0)}
+        return(self._elementals!)
+        }
+        
     internal override var isModuleLevelSymbol:Bool
         {
         return(true)
@@ -94,7 +110,7 @@ public class Enumeration:Class
         return(nil as EnumerationCase?)
         }
         
-    internal override func lookup(shortName:String) -> SymbolSet?
+    public override func lookup(shortName:String) -> SymbolSet?
         {
         for aCase in self.cases
             {
@@ -103,17 +119,7 @@ public class Enumeration:Class
                 return(SymbolSet(aCase))
                 }
             }
-        return(self.parentScope?.lookup(shortName: shortName))
-        }
-        
-    internal override func pushScope()
-        {
-        self.push()
-        }
-    
-    internal override func popScope()
-        {
-        self.pop()
+        return(self.container.lookup(shortName: shortName))
         }
         
     internal func `case`(_ symbol:Argon.Symbol,associatedTypes:Classes = [],value:Expression?  = nil) -> Enumeration
@@ -133,6 +139,16 @@ public class Enumeration:Class
 
 public class EnumerationCase:Symbol
     {
+    public override var icon:NSImage
+        {
+        return(NSImage(named:"IconEnumeration64")!)
+        }
+        
+    public override var browserCell:ItemBrowserCell
+        {
+        return(ItemEnumerationCaseBrowserCell(enumerationCase:self))
+        }
+        
     let symbol:Argon.Symbol
     let associatedTypes:Classes
     let value:Expression?

@@ -27,7 +27,9 @@ internal class Parser:CompilerPhase
     private var topModule:Module?
     private var tokenStream:TokenStream = TokenStream()
     private var accessModifierStack = Stack<AccessModifier>()
-        
+    private var isFirstModule = true
+    private var currentContainer:SymbolContainer = .nothing
+    
     public var effectiveAccessModifier:AccessModifier
         {
         return(self.accessModifierStack.peek())
@@ -44,7 +46,7 @@ internal class Parser:CompilerPhase
             }
         if let aModule = module
             {
-            compiler.append(module:aModule)
+            compiler.topModule = aModule as! TopModule
             }
         }
         
@@ -52,7 +54,7 @@ internal class Parser:CompilerPhase
         {
         }
         
-    internal func postProcess(modules:Array<Module>,using compiler:Compiler) throws
+    internal func postProcess(module:TopModule,using compiler:Compiler) throws
         {
         print("halt")
         }
@@ -108,7 +110,7 @@ internal class Parser:CompilerPhase
         
     private func popAccessModifier()
         {
-        self.accessModifierStack.pop()
+        self.accessModifierStack.popScope()
         }
         
     internal func parse(using:Compiler,sourceFile:SourceFile) throws
@@ -156,16 +158,16 @@ internal class Parser:CompilerPhase
         {
         self.advance()
         let moduleName = try self.parseIdentifier()
-        var module = Module.innerScope.lookup(shortName: moduleName)?.first as? Module
+        var module = Module.currentScope.lookup(shortName: moduleName).first as? Module
         if module == nil
             {
-            module = Module(shortName:moduleName)
-            Module.innerScope.addSymbol(module!)
+            module = isFirstModule ? TopModule(shortName:moduleName) : Module(shortName:moduleName)
+            Module.currentScope.addSymbol(module!)
             }
-        module!.push()
+        module!.pushScope()
         defer
             {
-            module!.pop()
+            module!.popScope()
             }
         self.topModule = module
         try self.parseBraces
@@ -186,7 +188,7 @@ internal class Parser:CompilerPhase
                     {
                     let statement = try self.parseHandlerStatement() as! HandlerStatement
                     let symbol = statement.asHandlerSymbol()
-                    Module.innerScope.addSymbol(symbol)
+                    Module.currentScope.addSymbol(symbol)
                     }
                 if self.token.isLet
                     {
@@ -202,7 +204,7 @@ internal class Parser:CompilerPhase
                     }
                 else if self.token.isSlot
                     {
-                    Module.innerScope.addSymbol(try self.parseSlotDeclaration(slotAttributes:[.module]))
+                    Module.currentScope.addSymbol(try self.parseSlotDeclaration(slotAttributes:[.module]))
                     }
                 else if self.token.isLocal
                     {
@@ -210,7 +212,7 @@ internal class Parser:CompilerPhase
                     }
                 else if self.token.isConstant
                     {
-                    Module.innerScope.addSymbol(try self.parseConstantDeclaration())
+                    Module.currentScope.addSymbol(try self.parseConstantDeclaration())
                     }
                 else if self.token.isImport
                     {
@@ -350,7 +352,7 @@ internal class Parser:CompilerPhase
             localVariable.initialValue = expression
             }
         localVariable.addDeclaration(location: location)
-        Module.innerScope.addSymbol(localVariable)
+        Module.currentScope.addSymbol(localVariable)
         }
         
     private func parseConstantDeclaration() throws -> Constant
@@ -399,7 +401,7 @@ internal class Parser:CompilerPhase
         let moduleImport = Import(shortName:name,path:path)
         moduleImport.isPathBased = isPathBased
         moduleImport.addDeclaration(location: location)
-        Module.innerScope.addSymbol(moduleImport)
+        Module.currentScope.addSymbol(moduleImport)
         }
         
     private func parseVariableDeclaration() throws
@@ -421,7 +423,7 @@ internal class Parser:CompilerPhase
             variable.initialValue = expression
             }
         variable.addDeclaration(location: location)
-        Module.innerScope.addSymbol(variable)
+        Module.currentScope.addSymbol(variable)
         }
         
     private func parseFunctionDeclaration() throws
@@ -457,7 +459,7 @@ internal class Parser:CompilerPhase
             let type = try self.parseTypeClass()
             function.returnTypeClass = type
             }
-        Module.innerScope.addSymbol(function)
+        Module.currentScope.addSymbol(function)
         function.addDeclaration(location: location)
         function.accessLevel = self.effectiveAccessModifier
         }
@@ -469,14 +471,14 @@ internal class Parser:CompilerPhase
         let location = self.token.location
         let name = try self.parseIdentifier()
         var theMethod:Method
-        if let method = Module.innerScope.lookup(shortName:name)?.first as? Method
+        if let method = Module.currentScope.lookup(shortName:name).first as? Method
             {
             theMethod = method
             }
         else
             {
             theMethod = Method(shortName:name)
-            Module.innerScope.addSymbol(theMethod)
+            Module.currentScope.addSymbol(theMethod)
             }
         let parameters = try self.parseFormalParameters()
         var returnType:Class = .voidClass
@@ -485,7 +487,7 @@ internal class Parser:CompilerPhase
             self.advance()
             returnType = try self.parseTypeClass()
             }
-        let block = try self.parseBlock(parameters:parameters,parentScope:Module.innerScope)
+        let block = try self.parseBlock(parameters:parameters,container:Module.currentScope.asSymbolContainer())
         let instance = MethodInstance(shortName:name)
         instance.block = block
         instance.returnTypeClass = returnType
@@ -518,7 +520,7 @@ internal class Parser:CompilerPhase
                 }
             }
         enumeration.addDeclaration(location: location)
-        Module.innerScope.addSymbol(enumeration)
+        Module.currentScope.addSymbol(enumeration)
         enumeration.accessLevel = self.effectiveAccessModifier
         }
         
@@ -579,7 +581,7 @@ internal class Parser:CompilerPhase
             aClass = ValueClass(shortName:name)
             }
         aClass.addDeclaration(location: location)
-        Module.innerScope.addSymbol(aClass)
+        Module.currentScope.addSymbol(aClass)
         if self.token.isGluon
             {
             self.advance()
@@ -613,11 +615,11 @@ internal class Parser:CompilerPhase
                     }
                 else if self.token.isIdentifier && self.token.identifier == aClass.shortName
                     {
-                    aClass.appendMaker(try self.parseMakerDeclaration())
+                    aClass.addMaker(try self.parseMakerDeclaration())
                     }
                 else if self.token.isConstant
                     {
-                    aClass.appendConstant(try self.parseConstantDeclaration())
+                    aClass.addConstant(try self.parseConstantDeclaration())
                     }
                 else
                     {
@@ -650,7 +652,7 @@ internal class Parser:CompilerPhase
             {
             aClass = Class(shortName:name)
             }
-        Module.innerScope.addSymbol(aClass)
+        Module.currentScope.addSymbol(aClass)
         var hasSuperclass = false
         if self.token.isGluon
             {
@@ -715,11 +717,11 @@ internal class Parser:CompilerPhase
                     }
                 else if self.token.isIdentifier && self.token.identifier == aClass.shortName
                     {
-                    aClass.appendMaker(try self.parseMakerDeclaration())
+                    aClass.addMaker(try self.parseMakerDeclaration())
                     }
                 else if self.token.isConstant
                     {
-                    aClass.appendConstant(try self.parseConstantDeclaration())
+                    aClass.addConstant(try self.parseConstantDeclaration())
                     }
                 else
                     {
@@ -870,37 +872,37 @@ internal class Parser:CompilerPhase
         
     private func lookupClass(shortName:String) -> Class
         {
-        if let aClass = Module.innerScope.lookup(shortName:shortName)?.first as? Class
+        if let aClass = Module.currentScope.lookup(shortName:shortName)?.first as? Class
             {
             return(aClass)
             }
         let newClass = Class(shortName:shortName)
         newClass.wasDeclaredForward = true
-        Module.innerScope.addSymbol(newClass)
+        Module.currentScope.addSymbol(newClass)
         return(newClass)
         }
         
     private func lookupClass(name:Name) -> Class
         {
-        if let aClass = Module.innerScope.lookup(name:name)?.first as? Class
+        if let aClass = Module.currentScope.lookup(name:name)?.first as? Class
             {
             return(aClass)
             }
         let newClass = Class(shortName:name.last)
         newClass.wasDeclaredForward = true
-        try? Module.innerScope.addSymbol(newClass,atName:name)
+        try? Module.currentScope.addSymbol(newClass,atName:name)
         return(newClass)
         }
         
     private func lookupClass(name:String) -> Class
         {
-        if let aClass = Module.innerScope.lookup(shortName:name)?.first as? Class
+        if let aClass = Module.currentScope.lookup(shortName:name).first as? Class
             {
             return(aClass)
             }
         let newClass = Class(shortName:name)
         newClass.wasDeclaredForward = true
-        Module.innerScope.addSymbol(newClass)
+        Module.currentScope.addSymbol(newClass)
         return(newClass)
         }
         
@@ -988,7 +990,7 @@ internal class Parser:CompilerPhase
         let name = try self.parseIdentifier()
         let alias = TypeSymbol(shortName: name, class: baseType)
         alias.addDeclaration(location: location)
-        Module.innerScope.addSymbol(alias)
+        Module.currentScope.addSymbol(alias)
         alias.accessLevel = self.effectiveAccessModifier
         }
         
@@ -1011,13 +1013,13 @@ internal class Parser:CompilerPhase
         if keyClass != nil
             {
             let bitSet = BitSet(shortName:setName,keyClass:keyClass!,valueClass:valueKind!)
-            Module.innerScope.addSymbol(bitSet)
+            Module.currentScope.addSymbol(bitSet)
             let maker = BitSetMaker(shortName:bitSet.shortName,bitSet:bitSet)
-            Module.innerScope.addSymbol(maker)
+            Module.currentScope.addSymbol(maker)
             return
             }
         let bitSet = BitSet(shortName:setName,keyClass:nil,valueClass:valueKind!)
-        Module.innerScope.addSymbol(bitSet)
+        Module.currentScope.addSymbol(bitSet)
         try self.parseBraces
             {
             var currentOffset = Argon.Integer(0)
@@ -1064,7 +1066,7 @@ internal class Parser:CompilerPhase
             while self.token.isIdentifier
             }
         let maker = BitSetMaker(shortName:bitSet.shortName,bitSet:bitSet)
-        Module.innerScope.addSymbol(maker)
+        Module.currentScope.addSymbol(maker)
         bitSet.accessLevel = self.effectiveAccessModifier
         }
         
@@ -1246,7 +1248,7 @@ internal class Parser:CompilerPhase
                     return(object.typeClass)
                     }
                 }
-            else if let object = Module.innerScope.lookup(name:name)?.first
+            else if let object = Module.currentScope.lookup(name:name)?.first
                 {
                 return(object.typeClass)
                 }
@@ -1361,7 +1363,7 @@ internal class Parser:CompilerPhase
             self.advance()
             let module = Module.rootModule.lookupModule("Argon/Collections")
             let generator = SequenceGeneratorClass(baseClass: aClass, start: LiteralIntegerExpression(integer: startInteger), step: Expression(), end: LiteralIntegerExpression(integer: endInteger))
-            generator.parent = module
+            generator.module = module!
             return(generator)
             }
         else
@@ -1399,7 +1401,7 @@ internal class Parser:CompilerPhase
         else if self.token.isIdentifier
             {
             let name = try self.parseIdentifier()
-            if let result = Module.innerScope.lookup(shortName:name)?.first
+            if let result = Module.currentScope.lookup(shortName:name)?.first
                 {
                 if let enumeration = result as? Enumeration
                     {
@@ -1414,7 +1416,7 @@ internal class Parser:CompilerPhase
                 {
                 let enumeration = Enumeration(shortName:name,class: .voidClass)
                 enumeration.wasDeclaredForward = true
-                Module.innerScope.addSymbol(enumeration)
+                Module.currentScope.addSymbol(enumeration)
                 }
             }
         return(.none)
@@ -1441,7 +1443,7 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
         self.advance()
-        let arrayClass = Module.argonModule.lookupClass("Collections/Array")!
+        let arrayClass = Module.argonModule.lookupClass("Collections\\Array")!
         let aClass = arrayClass.specialize(indexType:indexType,elementType: elementTypeClass)
         return(aClass)
         }
@@ -1580,12 +1582,12 @@ internal class Parser:CompilerPhase
         throw(CompilerError(.tagExpected,self.token.location))
         }
         
-    private func parseBlock(parameters:Parameters,parentScope:Scope?) throws -> Block
+    private func parseBlock(parameters:Parameters,container:SymbolContainer) throws -> Block
         {
-        let block = Block(parentScope:parentScope)
+        let block = Block(container:container)
         for parameter in parameters
             {
-            block.addSymbol(parameter)
+            block.addVariable(parameter)
             }
         try self.parseBlock(block)
         return(block)
@@ -1594,10 +1596,10 @@ internal class Parser:CompilerPhase
     @discardableResult
     private func parseBlock(_ block:Block) throws -> Block
         {
-        block.push()
+        block.pushScope()
         defer
             {
-            block.pop()
+            block.popScope()
             }
         try self.parseBraces
             {
@@ -1614,10 +1616,10 @@ internal class Parser:CompilerPhase
         {
         let closure = Closure(shortName:"_CLOSURE_\(Argon.nextIndex())")
         closure.returnTypeClass = .voidClass
-        closure.push()
+        closure.pushScope()
         defer
             {
-            closure.pop()
+            closure.popScope()
             }
         try self.parseBraces
             {
@@ -1800,7 +1802,7 @@ internal class Parser:CompilerPhase
             variable.initialValue = expression
             }
         variable.addDeclaration(location: location)
-        Module.innerScope.addSymbol(variable)
+        Module.currentScope.addSymbol(variable)
         return(LetStatement(location:location,variable:variable))
         }
         
@@ -1824,7 +1826,7 @@ internal class Parser:CompilerPhase
             }
         localVariable.addDeclaration(location: location)
         let statement = LocalStatement(localVariable:localVariable)
-        Module.innerScope.addSymbol(localVariable)
+        Module.currentScope.addSymbol(localVariable)
         return(statement)
         }
 
@@ -1861,9 +1863,12 @@ internal class Parser:CompilerPhase
         var value:Expression? = nil
         try self.parseParentheses
             {
-            value = try self.parseExpression()
+            if !self.token.isRightPar
+                {
+                value = try self.parseExpression()
+                }
             }
-        return(ReturnStatement(location:location,value:value!))
+        return(ReturnStatement(location:location,value:value))
         }
         
     private func parseResumeStatement() throws -> Statement
@@ -1898,10 +1903,10 @@ internal class Parser:CompilerPhase
             }
         let statement = SelectStatement(expression:selectionExpression!)
         statement.location = location
-        statement.push()
+        statement.pushScope()
         defer
             {
-            statement.pop()
+            statement.popScope()
             }
         try self.parseBraces
             {
@@ -1913,7 +1918,7 @@ internal class Parser:CompilerPhase
                     {
                     whenExpression = try self.parseExpression()
                     }
-                statement.whenClauses.append(WhenClause(expression:whenExpression!,block:try self.parseBlock(Block(parentScope:statement))))
+                statement.whenClauses.append(WhenClause(expression:whenExpression!,block:try self.parseBlock(Block(container:statement))))
                 }
             if self.token.isOtherwise
                 {
@@ -1931,10 +1936,10 @@ internal class Parser:CompilerPhase
         let condition = try self.parseExpression()
         let statement = IfStatement(condition:condition,block:try self.parseBlock(Block()))
         statement.location = location
-        statement.push()
+        statement.pushScope()
         defer
             {
-            statement.pop()
+            statement.popScope()
             }
         while self.token.isElse
             {
@@ -1989,11 +1994,11 @@ internal class Parser:CompilerPhase
             while self.token.isComma
             }
         let block = Block()
-        block.push()
+        block.pushScope()
         var variable:InductionVariable?
         defer
             {
-            block.pop()
+            block.popScope()
             }
         try self.parseBraces
             {
@@ -2100,7 +2105,7 @@ internal class Parser:CompilerPhase
             }
         self.advance()
         let inductionVariable = ForInductionVariable(shortName:name)
-        inductionVariable.definingScope = Module.innerScope
+        inductionVariable.definingScope = Module.currentScope
         let block = Block(inductionVariable: inductionVariable)
         try self.parseBlock(block)
         inductionVariable.addDeclaration(location: location)
@@ -2198,7 +2203,7 @@ internal class Parser:CompilerPhase
             {
             let name = self.token.identifier
             self.advance()
-            if let object = Module.innerScope.lookup(shortName:name)?.first as? Variable
+            if let object = Module.currentScope.lookup(shortName:name)?.first as? Variable
                 {
                 value = .variable(object)
                 }
@@ -2574,11 +2579,11 @@ internal class Parser:CompilerPhase
                         self.advance()
                         }
                     }
-                object = Module.innerScope.lookup(name:name)?.first
+                object = Module.currentScope.lookup(name:name)?.first
                 }
             else
                 {
-                object = Module.innerScope.lookup(shortName: identifier)?.first
+                object = Module.currentScope.lookup(shortName: identifier)?.first
                 }
             if object != nil
                 {
@@ -2605,7 +2610,7 @@ internal class Parser:CompilerPhase
         else
             {
             print(self.token)
-            return(VoidExpression())
+            throw(CompilerError(.invalidExpression,self.token.location))
             }
         }
         
@@ -2820,7 +2825,7 @@ internal class Parser:CompilerPhase
             if self.token.isLeftPar
                 {
                 let arguments = try self.parseArguments()
-                if let method = Module.innerScope.lookupMethod(shortName: bitSet.shortName)
+                if let method = Module.currentScope.lookupMethod(shortName: bitSet.shortName)
                     {
                     return(MethodInvocationExpression(methodName: method.shortName, method:method, arguments: arguments))
                     }
@@ -2905,6 +2910,34 @@ internal class Parser:CompilerPhase
             {
             throw(CompilerError(.literalValueExpected,self.token.location))
             }
+        }
+        
+    private func parseMacro() throws -> Macro
+        {
+        self.advance()
+        let name = try self.parseIdentifier()
+        var argumentNames = Array<String>()
+        try self.parseParentheses
+            {
+            while !self.token.isRightPar
+                {
+                let argument = try self.parseIdentifier()
+                argumentNames.append(argument)
+                if self.token.isComma
+                    {
+                    self.advance()
+                    }
+                }
+            }
+        if !self.token.isMacroStart
+            {
+            throw(CompilerError(.macroStartMarkerExpected,self.token.location))
+            }
+        self.advance()
+        let text = self.tokenStream.scanTextUntilMacroEndMarker()
+        let macro = Macro(shortName:name,argumentNames:argumentNames,source:text)
+        Module.currentScope.addSymbol(macro)
+        return(macro)
         }
         
     private func parseLiteralIntegerArray() throws -> Expression

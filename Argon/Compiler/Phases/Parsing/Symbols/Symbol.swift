@@ -7,44 +7,19 @@
 //
 
 import Cocoa
-
-public enum SymbolKind
-    {
-    case any
-    case module
-    case `class`
-    case enumeration
-    case slot
-    case symbol
-    }
     
 public typealias Symbols = Array<Symbol>
 
-public class Symbol:ParseNode,SymbolVisitorAcceptor,Hashable,Equatable,Browsable
+public class Symbol:ParseNode,SymbolVisitorAcceptor,Browsable
     {
     public static func ==(lhs:Symbol,rhs:Symbol) -> Bool
         {
         return(lhs.id == rhs.id)
         }
-        
-    public var symbolKind:SymbolKind
-        {
-        return(.symbol)
-        }
     
-    public var debugDescription: String
+    public override var debugDescription: String
         {
         return("\(Swift.type(of:self))(\(self.shortName))")
-        }
-        
-    public var fullHash:Int
-        {
-        return(self.fullName.hashValue)
-        }
-        
-    public var sizeInBytes:Int
-        {
-        return(Word.kSizeInBytes)
         }
         
     public var completeName:String
@@ -57,29 +32,14 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Hashable,Equatable,Browsable
     internal var wasDeclaredForward = false
     internal var references:[SourceReference] = []
     internal var accessLevel = AccessModifier.public
-    internal var parent:Symbol?
-    internal var definingScope:Scope?
     internal var memoryAddress:MemoryAddress = .zero
     internal var parentId:UUID?
     internal var _elementals:Elementals?
+    public var container:SymbolContainer = .nothing
     
-    public func hash(into hasher:inout Hasher)
+    public var symbolTable:SymbolTable?
         {
-        hasher.combine(self.shortName)
-        }
-        
-    public var module:Module
-        {
-        var object = self.parent
-        while object != nil && !(object is Module)
-            {
-            object = object?.parent
-            }
-        if object == nil
-            {
-            fatalError("Can not find containing module for \(self)")
-            }
-        return(object as! Module)
+        return(nil)
         }
         
     public var isPlaceholder:Bool
@@ -107,16 +67,6 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Hashable,Equatable,Browsable
         return(false)
         }
         
-    internal var typeName:String
-        {
-        return(self.shortName)
-        }
-        
-    internal var type:Type
-        {
-        fatalError("This should have been overridden in a subclass")
-        }
-        
     internal var typeClass:Class
         {
         fatalError("This should have been overridden in a subclass")
@@ -124,19 +74,7 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Hashable,Equatable,Browsable
         
     public var fullName:Name
         {
-        if self.parent == nil
-            {
-            fatalError("parent is nil, my name is \(self.shortName) I am a \(Swift.type(of:self))")
-            }
-        var aName = self.parent?.fullName ?? Name()
-        aName = aName + self.shortName
-        return(aName)
-        }
-        
-    internal var name:Name
-        {
-        let aName = self.parent?.name
-        return(aName == nil ? Name(self.shortName) : (aName! + ("->" + self.shortName)))
+        return(self.container.fullName + self.shortName)
         }
         
     internal var isModuleLevelSymbol:Bool
@@ -149,20 +87,18 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Hashable,Equatable,Browsable
         fatalError("This should have been overridden in a subclass")
         }
         
-    internal init(shortName:String = "",parent:Symbol? = nil)
+    internal init(shortName:String = "",container:SymbolContainer = .nothing)
         {
         self.shortName = shortName
-        self.parent = parent
-        self.parentId = self.parent?.id
+        self.container = container
         self.id = UUID()
         super.init()
         }
     
-    internal init(name:Name,parent:Symbol? = nil)
+    internal init(name:Name,container:SymbolContainer = .nothing)
         {
         self.shortName = name.last
-        self.parent = parent
-        self.parentId = self.parent?.id
+        self.container = container
         self.id = UUID()
         super.init()
         }
@@ -170,11 +106,6 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Hashable,Equatable,Browsable
     public func menu(for:NSEvent,in:Int,on:Elemental) -> NSMenu?
         {
         return(nil)
-        }
-        
-    public var allClasses:Array<Symbol>
-        {
-        return(self.allSymbols.filter{$0 is Class || $0 is Module})
         }
         
     public var isLeaf: Bool
@@ -214,10 +145,6 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Hashable,Equatable,Browsable
         
     internal func relinkSymbolsUsingIds(symbols:Dictionary<UUID,Symbol>)
         {
-        if let anId = self.parentId,let symbol = symbols[anId]
-            {
-            self.parent = symbol
-            }
         }
         
     internal func symbolsKeyedById() -> Dictionary<UUID,Symbol>
@@ -243,12 +170,6 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Hashable,Equatable,Browsable
     internal override func lookup(name:Name) -> SymbolSet?
         {
         fatalError("\(#function) should have been overridden in a subclass of Symbol")
-        }
-        
-    internal func symbolAdded(to node:ParseNode)
-        {
-        self.parent = node as? Symbol
-        self.parentId = self.parent?.id
         }
         
     internal func typeCheck() throws
@@ -279,7 +200,7 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Hashable,Equatable,Browsable
             reference.encode(with:coder)
             }
         coder.encode(self.accessLevel.rawValue,forKey:"accessLevel")
-        coder.encode(self.parent,forKey:"parent")
+        self.container.encode(with:coder)
         coder.encode(self.memoryAddress,forKey:"memoryAddress")
         }
     
@@ -294,31 +215,8 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Hashable,Equatable,Browsable
             self.references.append(SourceReference(coder:coder)!)
             }
         self.accessLevel = AccessModifier(rawValue: (coder.decodeObject(forKey:"accessLevel") as! String))!
-        self.parent = coder.decodeObject(forKey:"parent") as? Symbol
+        self.container = SymbolContainer(with:coder)
         self.memoryAddress = coder.decodeObject(forKey:"memoryAddress") as! MemoryAddress
-        }
-        
-    public var allSymbols:Array<Symbol> = []
-        
-    public func localSymbols(_ kinds:SymbolKind...) -> Array<Symbol>
-        {
-        var validSymbols = Symbols()
-        for symbol in self.allSymbols
-            {
-            for kind in kinds
-                {
-                if symbol.symbolKind == kind  || kind == .any
-                    {
-                    validSymbols.append(symbol)
-                    }
-                }
-            }
-        return(validSymbols)
-        }
-     
-    public func localClasses() -> Array<Class>
-        {
-        return(self.localSymbols(.class) as! Array<Class>)
         }
     }
 

@@ -19,25 +19,18 @@ internal class TypeChecker:CompilerPhase
         
     internal func process(source:String,using compiler:Compiler) throws
         {
-        for module in compiler.modules
-            {
-            try self.typeCheck(module)
-            }
+        try self.typeCheck(compiler.topModule!)
         }
         
     internal func preProcess(source:String,using compiler:Compiler) throws
         {
         }
         
-    internal func postProcess(modules:Array<Module>,using compiler:Compiler) throws
+    internal func postProcess(module:TopModule,using compiler:Compiler) throws
         {
         }
         
     private func typeCheck(_ module:Module) throws
         {
-        for symbol in module.symbols.values
-            {
-            try symbol.typeCheck()
-            }
         }
     }

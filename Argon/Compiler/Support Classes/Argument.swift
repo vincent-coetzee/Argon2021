@@ -69,13 +69,6 @@ public typealias Arguments = Array<Argument>
 
 extension Arguments
     {
-    func typesPrefixed(by:Type) -> [Type]
-        {
-        var types = self.map{$0.type}
-        types.append(by)
-        return(types)
-        }
-        
     internal func allocateAddresses(using compiler:Compiler) throws
         {
         for argument in self

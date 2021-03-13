@@ -12,6 +12,6 @@ internal class VirtualSlot:Slot
     {
     public override var cloned:Slot
         {
-        return(VirtualSlot(shortName:self.shortName,class:self._class,container:self.containingSymbol,attributes:self.attributes))
+        return(VirtualSlot(shortName:self.shortName,class:self._class,container:self.container,attributes:self.attributes))
         }
     }

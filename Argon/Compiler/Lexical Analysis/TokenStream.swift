@@ -200,7 +200,7 @@ public class TokenStream:Equatable
     @inline(__always)
     public func popPosition()
         {
-        let position = self.positionStack.pop()
+        let position = self.positionStack.popScope()
         self.currentChar = position.current
         self.line = position.line
         self.characterOffset = position.offset
@@ -587,7 +587,13 @@ public class TokenStream:Equatable
         while alphanumerics.contains(self.currentChar) && !self.atEnd && !self.atEndOfLine
         if currentString == "?"
             {
-            return(.identifier("?",self.sourceLocation()))
+            self.nextChar()
+            while digits.contains(self.currentChar)
+                {
+                currentString.append(String(self.currentChar))
+                self.nextChar()
+                }
+            return(.identifier(currentString,self.sourceLocation()))
             }
         if self.currentChar == ":" && self.currentString != "otherwise"
             {
@@ -604,6 +610,19 @@ public class TokenStream:Equatable
             self.nextChar()
             self.nextChar()
             return(.tag(currentString + "::",self.sourceLocation()))
+            }
+        else if self.currentChar == "$"
+            {
+            self.nextChar()
+            if self.currentChar == "{"
+                {
+                self.nextChar()
+                return(.symbol(.macroStart,self.sourceLocation()))
+                }
+            else
+                {
+                return(.symbol(.dollar,self.sourceLocation()))
+                }
             }
         return(checkForSymbolOrKeywordOrIdentifier(currentString))
         }
@@ -627,6 +646,32 @@ public class TokenStream:Equatable
             }
         }
     
+    @discardableResult
+    public func scanTextUntilMacroEndMarker() -> String
+        {
+        var macroEndHit = false
+        var text:String = ""
+        while !macroEndHit && !self.atEnd
+            {
+            if self.currentChar == "}" && self.peekChar(at:1) == "$"
+                {
+                self.nextChar()
+                self.nextChar()
+                macroEndHit = true
+                }
+            else
+                {
+                text.append(String(self.currentChar))
+                self.nextChar()
+                }
+            }
+        if !atEnd
+            {
+            self.nextChar()
+            }
+        return(text)
+        }
+        
     private func nextSymbol() -> Token
         {
         var operatorString:String = ""
@@ -658,6 +703,11 @@ public class TokenStream:Equatable
         else if self.currentChar == "}"
             {
             self.nextChar()
+            if self.currentChar == "$"
+                {
+                self.nextChar()
+                return(.symbol(.macroEnd,self.sourceLocation()))
+                }
             return(.symbol(.rightBrace,self.sourceLocation()))
             }
         else if self.currentChar == "{"

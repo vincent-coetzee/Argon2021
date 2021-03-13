@@ -7,10 +7,8 @@
 
 import Cocoa
 
-public class ViewPane:NSView,Framed
+public class ViewPane:NSView
     {
-    public var layoutFrame:LayoutFrame = .zero
-    
     public func layout(inView: NSView)
         {
         self.frame = self.layoutFrame.frame(in:inView.bounds)

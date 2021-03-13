@@ -9,9 +9,14 @@ import Cocoa
 
 public class ElementalList:Elemental,Collection
     {
-    public override var browserCell:ItemBrowserCell
+    public override var isListable:Bool
         {
-        return(ItemListBrowserCell(list:self,textColor:NSColor.argonNeonPink))
+        return(true)
+        }
+        
+    public override var listCell:ItemListCell
+        {
+        return(ItemElementalListCell(self,textColor:NSColor.argonNeonPink))
         }
         
     public override var isList:Bool

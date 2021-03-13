@@ -10,12 +10,11 @@ import Cocoa
 public protocol Framed
     {
     var layoutFrame:LayoutFrame { get }
-    func layout(inView:NSView)
     }
     
 public typealias FrameView = NSView & Framed
 
-public class FramingView:NSView
+public class FramingView:OutlinerRowView
     {
     public var contentView:NSView?
         {
@@ -24,26 +23,34 @@ public class FramingView:NSView
             if let view = self.contentView as? FrameView
                 {
                 self.addSubview(view)
-                view.layout(inView:self)
+                view.frame = view.layoutFrame.frame(in: self.bounds)
                 }
             }
         }
     
+    public override var frame:NSRect
+        {
+        get
+            {
+            return(super.frame)
+            }
+        set
+            {
+            super.frame = newValue
+            self.contentView?.frame = self.bounds
+            }
+        }
+        
     public override func layout()
         {
         super.layout()
-        if let view = self.contentView as? Framed
-            {
-            view.layout(inView:self)
-            }
+        self.contentView?.frame = self.bounds
         }
     }
 
 
-public class FrameContainerView:NSView,Framed
+public class FrameContainerView:NSView
     {
-    public let layoutFrame = LayoutFrame.sizeToBounds
-    
     private var childViews:Array<FrameView> = []
     
     func addChildView(_ view:FrameView)

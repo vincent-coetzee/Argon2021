@@ -150,4 +150,5 @@ public enum SystemError:Equatable,Error
     case plusOrIntegerLiteralExpectedInBitSetField
     case makerForBitSetShouldHaveBeenAutoDeclared
     case typeSpecializationExpected
+    case macroStartMarkerExpected
     }

@@ -24,7 +24,7 @@ public class ItemListBrowserCell:ItemBrowserCell
     init(list:ElementalList,textColor:NSColor)
         {
         self.list = list
-        listView = ListView(frame:.zero,list:list.titles)
+        listView = ListView(title:list.title,frame:.zero,list:list.titles,elementType:.slot)
         listView.textColor = textColor
         listView.rowSpacing = 2
         listView.cornerRadius = 10

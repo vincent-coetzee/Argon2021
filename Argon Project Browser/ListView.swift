@@ -7,6 +7,85 @@
 
 import Cocoa
 
+public enum ListElementType
+    {
+    case slot
+    case typeVariable
+    case superclass
+    }
+    
+public class ListLayer:CALayer,Sizable
+    {
+    public var layoutFrame:LayoutFrame = .zero
+    
+    public func measureText(_ string:String) -> NSSize
+        {
+        let font = StylePalette.kDefaultFont
+        let attributes:[NSAttributedString.Key:Any] = [.font:font]
+        let text = NSAttributedString(string:string,attributes:attributes)
+        return(text.size())
+        }
+        
+    public func addSublayer(_ layer:ListLayer,in:LayoutFrame)
+        {
+        layer.layoutFrame = `in`
+        self.addSublayer(layer)
+        }
+        
+    public func addSublayer(_ layer:ListTextLayer,in:LayoutFrame)
+        {
+        layer.layoutFrame = `in`
+        self.addSublayer(layer)
+        }
+    }
+    
+public class ListTextLayer:CATextLayer,Sizable
+    {
+    public var layoutFrame:LayoutFrame = .zero
+    }
+    
+public class SlotLayer:ListLayer
+    {
+    let titleLayer = ListTextLayer()
+    let classLayer = ListTextLayer()
+    let deleteButtonLayer = ListTextLayer()
+    let addButtonLayer = ListTextLayer()
+    let theClass:Class
+    let slot:Slot
+    
+    init(slot:Slot)
+        {
+        self.slot = slot
+        self.theClass = slot.typeClass
+        self.titleLayer.string = slot.shortName
+        self.classLayer.string = "::" + slot.typeClass.shortName
+        self.deleteButtonLayer.string = "􀈓"
+        self.addButtonLayer.string = "􀁌"
+        super.init()
+        self.addSublayer(self.titleLayer,in:LayoutFrame.firstHalf)
+        let button1 = LayoutFrame(left:1,-2*24,top:0,0,right:1,-24,bottom:1,0)
+        let button2 = LayoutFrame(left:1,-1*24,top:0,0,right:1,0,bottom:1,0)
+        self.addSublayer(self.classLayer,in: LayoutFrame.lastHalf(after:button1,button2))
+        self.addSublayer(self.deleteButtonLayer,in:button1)
+        self.addSublayer(self.addButtonLayer,in:button2)
+        }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    public override func layoutSublayers()
+        {
+        super.layoutSublayers()
+        let myBounds = self.bounds
+        for layer in self.sublayers!
+            {
+            let sizable = layer as! Sizable
+            layer.frame = sizable.layoutFrame.frame(in: myBounds)
+            }
+        }
+    }
+    
 class ListView:NSView
     {
     private let list:Array<String>
@@ -81,10 +160,13 @@ class ListView:NSView
         
     public var size:NSSize = .zero
         
-    init(frame:NSRect,list:Array<String>)
+    init(title:String,frame:NSRect,list:Array<String>,elementType:ListElementType)
         {
         self.list = list
         var layers:Array<CATextLayer> = []
+        let layer = CATextLayer()
+        layer.string = title
+        layers.append(layer)
         for string in list
             {
             let text = CATextLayer()

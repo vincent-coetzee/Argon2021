@@ -31,6 +31,12 @@ public class Method:Symbol,NSCoding
         return(NSImage(named:"IconMethod64")!)
         }
         
+    public override var symbolKind:SymbolKind
+        {
+        return(.method)
+        }
+        
+        
     public override var browserCell:ItemBrowserCell
         {
         return(ItemSymbolBrowserCell(symbol:self))

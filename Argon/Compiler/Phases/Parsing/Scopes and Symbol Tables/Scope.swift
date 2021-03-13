@@ -9,51 +9,59 @@
 import Foundation
 
 fileprivate var scopeStack = Stack<Scope>()
-fileprivate var currentScope:Scope =
+fileprivate var currentGlobalScope:Scope =
     {
     Module.argonModule.initArgonModule()
     return(Module.rootModule)
     }()
+    
+fileprivate var rulingModule:Module = Module.rootModule
 
-internal protocol Scope:class,SymbolTable,StatementBlock
+public protocol Scope:class
     {
-    var parentScope:Scope? { get set }
-    var index:Int { get }
+    var container:SymbolContainer { get set }
+    func asSymbolContainer() -> SymbolContainer
+    func lookupSlot(name:Name) -> Slot?
+    func lookupVariable(name:Name) -> Variable? // Constant, LocalVariable or Parameter
+    func lookupClass(name:Name) -> Class?
+    func lookupMethod(name:Name) -> Method?
+    func addSymbol(_ symbol:Symbol)
     func pushScope()
     func popScope()
-    func localScope() -> Scope
     }
     
 extension Scope
     {
-    public static func ==(lhs:Scope,rhs:Scope) -> Bool
+    public func pushScope()
         {
-        return(lhs.index == rhs.index)
+        self.container = self.asSymbolContainer()
+        scopeStack.push(currentGlobalScope)
+        currentGlobalScope = self
+        if currentGlobalScope is Module
+            {
+            rulingModule = currentGlobalScope as! Module
+            }
         }
         
-    internal func push()
+    public func popScope()
         {
-        self.parentScope = currentScope
-        scopeStack.push(currentScope)
-        currentScope = self
-        }
-        
-    internal func pop()
-        {
-        currentScope = scopeStack.pop()
-        }
-        
-    internal func localScope() -> Scope
-        {
-        let scope = LocalScope()
-        return(scope)
+        currentGlobalScope = scopeStack.popScope()
+        if currentGlobalScope is Module
+            {
+            rulingModule = currentGlobalScope as! Module
+            }
         }
     }
 
 extension Module
     {
-    internal static var innerScope:Scope
+    public static var currentModule:Module
         {
-        return(currentScope)
+        return(rulingModule)
+        }
+        
+    public static var currentScope:Scope
+        {
+        return(currentGlobalScope)
         }
     }

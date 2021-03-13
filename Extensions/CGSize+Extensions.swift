@@ -9,6 +9,12 @@ import Foundation
 
 extension CGSize
     {
+    public static func +=(lhs:inout NSSize,rhs:NSSize)
+        {
+        lhs.width += rhs.width
+        lhs.height += rhs.height
+        }
+        
     public static let defaultPaneSize = CGSize(width:50,height:50)
     
     public func rectOfSize(centeredOn point:NSPoint) -> NSRect

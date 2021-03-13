@@ -26,7 +26,7 @@ internal class ObjectFileGenerator:CompilerPhase
         {
         }
         
-    internal func postProcess(modules:Array<Module>,using compiler:Compiler) throws
+    internal func postProcess(module:TopModule,using compiler:Compiler) throws
         {
         }
     }

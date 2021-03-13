@@ -16,6 +16,94 @@ public protocol TextStylable
     
 public typealias PaneStyle = StylePalette.CompositeStyle
 
+public enum SystemStyle
+    {
+    case module(NSFont,NSColor)
+    case `class`(NSFont,NSColor)
+    case slot(NSFont,NSColor)
+    case typeVariable(NSFont,NSColor)
+    case superclass(NSFont,NSColor)
+    case placeholderClass(NSFont,NSColor)
+    case file(NSFont,NSColor)
+    case method(NSFont,NSColor)
+    case methodInstance(NSFont,NSColor)
+    
+    public var color:NSColor
+        {
+        switch(self)
+            {
+            case .module(_,let color):
+                return(color)
+            case .class(_,let color):
+                return(color)
+            case .placeholderClass(_,let color):
+                return(color)
+            case .slot(_,let color):
+                return(color)
+            case .typeVariable(_,let color):
+                return(color)
+            case .superclass(_,let color):
+                return(color)
+            case .file(_,let color):
+                return(color)
+            case .method(_,let color):
+                return(color)
+            case .methodInstance(_,let color):
+                return(color)
+            }
+        }
+        
+    public var font:NSFont
+        {
+        switch(self)
+            {
+            case .module(let font,_):
+                return(font)
+            case .class(let font,_):
+                return(font)
+            case .placeholderClass(let font,_):
+                return(font)
+            case .slot(let font,_):
+                return(font)
+            case .typeVariable(let font,_):
+                return(font)
+            case .superclass(let font,_):
+                return(font)
+            case .file(let font,_):
+                return(font)
+            case .method(let font,_):
+                return(font)
+            case .methodInstance(let font,_):
+                return(font)
+            }
+        }
+        
+    public var name:String
+        {
+        switch(self)
+            {
+            case .module:
+                return("module")
+            case .class:
+                return("class")
+            case .placeholderClass:
+                return("placeholderClass")
+            case .slot:
+                return("slot")
+            case .typeVariable:
+                return("typeVariable")
+            case .superclass:
+                return("superclass")
+            case .file:
+                return("file")
+            case .method:
+                return("method")
+            case .methodInstance:
+                return("methodInstance")
+            }
+        }
+    }
+
 public class StylePalette
     {
     public static let shared = StylePalette()
@@ -222,7 +310,38 @@ public class StylePalette
             }
         }
         
+    public var moduleStyle:SystemStyle
+        {
+        return(self.systemStyles["module"]!)
+        }
+        
+    public var classStyle:SystemStyle
+        {
+        return(self.systemStyles["class"]!)
+        }
+        
+    public var placeholderClassStyle:SystemStyle
+        {
+        return(self.systemStyles["placeholderClass"]!)
+        }
+        
+    public var methodStyle:SystemStyle
+        {
+        return(self.systemStyles["method"]!)
+        }
+        
+    public var slotStyle:SystemStyle
+        {
+        return(self.systemStyles["slot"]!)
+        }
+        
+    public var fileStyle:SystemStyle
+        {
+        return(self.systemStyles["file"]!)
+        }
+        
     public let paneStyle:PaneStyle
+    public var systemStyles:[String:SystemStyle] = [:]
     
     init()
         {
@@ -236,6 +355,20 @@ public class StylePalette
         let borderStyle = BorderStyle(borderColor: StylePalette.kPrimaryBorderColor, borderWidth: StylePalette.kDefaultBorderWidth, cornerRadius: StylePalette.kDefaultCornerRadius, maskedCorners: [], gutterWidth: StylePalette.kTitleEdgePadding)
         let groundStyle = GroundStyle(backgroundColor: .black)
         self.paneStyle = CompositeStyle(texts: Array(textStyles.values), border: borderStyle, ground: groundStyle)
+        self.initSystemStyles()
+        }
+        
+    private func initSystemStyles()
+        {
+        self.systemStyles["module"] = .module(NSFont(name:"Ubuntu Regular",size:12)!,.argonBayside)
+        self.systemStyles["class"] = .module(NSFont(name:"Ubuntu Regular",size:12)!,.argonPink)
+        self.systemStyles["placeholderClass"] = .module(NSFont(name:"Ubuntu Regular",size:12)!,.argonNeonOrange)
+        self.systemStyles["method"] = .module(NSFont(name:"Ubuntu Regular",size:12)!,.argonSeaGreen)
+        self.systemStyles["methodInstance"] = .module(NSFont(name:"Ubuntu Regular",size:12)!,.argonSeaGreen)
+        self.systemStyles["slot"] = .module(NSFont(name:"Ubuntu Regular",size:12)!,.argonCheese)
+        self.systemStyles["superclass"] = .module(NSFont(name:"Ubuntu Regular",size:12)!,.argonNeonYellow)
+        self.systemStyles["typeVariable"] = .module(NSFont(name:"Ubuntu Regular",size:12)!,.argonSizzlingRed)
+        self.systemStyles["file"] = .module(NSFont(name:"Ubuntu Regular",size:12)!,.argonPurple)
         }
         
     private func initStyles()
@@ -246,5 +379,10 @@ public class StylePalette
         
     private func initTextStyles()
         {
+        }
+        
+    public func systemStyle(at:String) -> SystemStyle?
+        {
+        return(self.systemStyles[at])
         }
     }

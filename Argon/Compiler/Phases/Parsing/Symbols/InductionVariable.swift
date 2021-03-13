@@ -8,6 +8,6 @@
 
 import Foundation
 
-internal class InductionVariable:Variable
+internal class InductionVariable:LocalVariable
     {
     }

@@ -59,6 +59,7 @@ public class ArgonSourceTokenizingTextView:LineNumberTextView
         set
             {
             self._source = newValue
+            self.string = self._source
             self.tokenizeSource()
             }
         }
@@ -90,21 +91,23 @@ public class ArgonSourceTokenizingTextView:LineNumberTextView
         {
         self.wantsLayer = true
         self.indexTokenTypes()
-        self.string = self._source
+//        self.string = self._source
         self.textStorage?.font = self.defaultType.font
         self.textStorage?.foregroundColor = self.defaultType.color
-        let string = NSMutableAttributedString(string:self._source,attributes:[:])
-        self.tokenStream.reset(source:self._source)
+        let string = NSMutableAttributedString(string:self.string,attributes:[:])
+        self.tokenStream.reset(source:self.string)
         let tokens = self.tokenStream.tokens(withComments:true)
-        string.beginEditing()
+        let storage = self.textStorage!
+        storage.beginEditing()
         for token in tokens
             {
             let type = self.indexedTypes[token.tokenType] ?? self.defaultType
             let range = NSRange(location: token.location.tokenStart,length: token.location.tokenStop - token.location.tokenStart)
-            string.setAttributes(type.attributes,range: range)
+            storage.setAttributes(type.attributes,range: range)
             }
-        string.endEditing()
-        self.textStorage?.setAttributedString(string)
+        storage.endEditing()
+//        self.textStorage?.setAttributedString(string)
+        self._source = self.string
         }
         
     public override func cartouche(_ cartouche:LineAnnotation,drawnIn rect:NSRect)

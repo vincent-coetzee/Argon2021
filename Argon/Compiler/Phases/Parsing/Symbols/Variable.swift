@@ -86,3 +86,5 @@ public class HollowVariable:Variable
         return(true)
         }
     }
+
+public typealias VariableDictionary = Dictionary<String,Variable>

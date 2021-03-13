@@ -7,7 +7,7 @@
 
 import Cocoa
 
-public class Framer<PaneType>:NSView,Framed where PaneType:NSView
+public class Framer<PaneType>:NSView where PaneType:NSView
     {
     public var contentView:PaneType?
         {
@@ -32,13 +32,11 @@ public class Framer<PaneType>:NSView,Framed where PaneType:NSView
             self.contentView?.frame = self.bounds
             }
         }
-        
-    public var layoutFrame:LayoutFrame = .sizeToBounds
     
     init(_ contentView:PaneType,inFrame:LayoutFrame = .zero)
         {
-        self.layoutFrame = inFrame
         super.init(frame:.zero)
+        self.layoutFrame = inFrame
         self.contentView = contentView
         }
     

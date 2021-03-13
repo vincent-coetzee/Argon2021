@@ -72,6 +72,8 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         case other
         case cast = "to"
         case backslash = "\\"
+        case macroStart = "${"
+        case macroEnd = "}$"
         }
 
     public enum Keyword:String,CaseIterable,Equatable
@@ -1719,7 +1721,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         switch(self)
             {
             case .identifier(let value,_):
-                return(value == "?")
+                return(value.hasPrefix("?"))
             default:
                 return(false)
             }
@@ -2368,6 +2370,28 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             {
             case .keyword(let value,_):
                 return(value == .import)
+            default:
+                return(false)
+            }
+        }
+        
+    public var isMacroStart:Bool
+        {
+        switch(self)
+            {
+            case .symbol(let value,_):
+                return(value == .macroStart)
+            default:
+                return(false)
+            }
+        }
+        
+    public var isMacroEnd:Bool
+        {
+        switch(self)
+            {
+            case .symbol(let value,_):
+                return(value == .macroEnd)
             default:
                 return(false)
             }

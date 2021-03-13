@@ -43,7 +43,6 @@ public class MemorySegment
     public func updateAddress(_ symbol:Symbol)
         {
         symbol.memoryAddress.offset = self.currentOffset
-        self.currentOffset += symbol.sizeInBytes
         }
         
     @inlinable

@@ -9,6 +9,75 @@ import Cocoa
 
 public class ElementalSymbol:Elemental
     {
+    public override var classValue:Class
+        {
+        return(self.symbol as! Class)
+        }
+        
+    public override var isEditable:Bool
+        {
+        if self.symbol is Module
+            {
+            return(true)
+            }
+        else if self.symbol is Class
+            {
+            return(true)
+            }
+        else if self.symbol is Slot
+            {
+            return(false)
+            }
+        else if self.symbol is Method || self.symbol is MethodInstance
+            {
+            return(true)
+            }
+        else if symbol is Enumeration
+            {
+            return(true)
+            }
+        else if symbol is Slot
+            {
+            return(false)
+            }
+        else
+            {
+            return(false)
+            }
+        }
+        
+    public override var isListable:Bool
+        {
+        if self.symbol is Module
+            {
+            return(false)
+            }
+        else if self.symbol is Class
+            {
+            return(true)
+            }
+        else if self.symbol is Slot
+            {
+            return(false)
+            }
+        else if self.symbol is Method || self.symbol is MethodInstance
+            {
+            return(false)
+            }
+        else if symbol is Enumeration
+            {
+            return(true)
+            }
+        else if symbol is Slot
+            {
+            return(false)
+            }
+        else
+            {
+            return(false)
+            }
+        }
+        
     public override var elementalColor:NSColor
         {
         if self.symbol is Module
@@ -17,11 +86,11 @@ public class ElementalSymbol:Elemental
             }
         else if self.symbol is Class
             {
-            return(NSColor.argonNeonPink)
+            return(NSColor.argonNeonOrange)
             }
         else if self.symbol is Slot
             {
-            return(NSColor.argonNeonOrange)
+            return(NSColor.argonNeonPink)
             }
         else if self.symbol is Method || self.symbol is MethodInstance
             {
@@ -39,6 +108,11 @@ public class ElementalSymbol:Elemental
             {
             return(NSColor.white)
             }
+        }
+        
+    public override var listCell:ItemCell
+        {
+        return(self.symbol.browserCell)
         }
         
     public override var browserCell:ItemBrowserCell

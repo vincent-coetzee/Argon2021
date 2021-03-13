@@ -9,6 +9,11 @@ import Foundation
 
 public class LiteralFloatExpression:LiteralExpression
     {
+    public override var stringValue:String
+        {
+        return("\(self.float)")
+        }
+        
     public override var typeClass:Class
         {
         return(Class.floatClass)

@@ -13,6 +13,11 @@ public class Expression:Equatable
     private let location:SourceLocation
     internal let intermediateCodeBuffer = A3CodeBuffer()
     
+    public var stringValue:String
+        {
+        return("\(self)")
+        }
+        
     public var isHollowVariableExpression:Bool
         {
         return(false)

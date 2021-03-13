@@ -10,10 +10,6 @@ import Cocoa
 
 public class Slot:Variable,NSCoding
     {
-    public override var symbolKind:SymbolKind
-        {
-        return(.slot)
-        }
         
     public var slotNameHornerHashValue:Int
         {
@@ -36,7 +32,7 @@ public class Slot:Variable,NSCoding
         
     public var cloned:Slot
         {
-        return(Slot(shortName:self.shortName,class:self._class,container:self.containingSymbol,attributes:self.attributes))
+        return(Slot(shortName:self.shortName,class:self._class,container:self.container,attributes:self.attributes))
         }
         
     public var isRawSlot:Bool
@@ -54,6 +50,16 @@ public class Slot:Variable,NSCoding
         return(self.attributes.contains(.class))
         }
         
+    public var isVirtualSlot:Bool
+        {
+        return(false)
+        }
+        
+    public var isAliasSlot:Bool
+        {
+        return(false)
+        }
+        
     public override var icon:NSImage
         {
         return(NSImage(named:"IconSlot64")!)
@@ -61,36 +67,35 @@ public class Slot:Variable,NSCoding
         
     public var slotName:String
         {
-        return(self.containingSymbol!.shortName + "\\" + self.shortName)
+        return(self.container.shortName + "\\" + self.shortName)
         }
         
     public var slotOffset:Int = 0
-    public var containingSymbol:Symbol?
     internal let attributes:SlotAttributes
     internal var virtualReadBlock:VirtualSlotBlock?
     internal var virtualWriteBlock:VirtualSlotBlock?
     
-    internal init(name:Name,class:Class,container:Symbol? = nil,attributes:SlotAttributes)
+    internal init(name:Name,class:Class,container:SymbolContainer = .nothing,attributes:SlotAttributes)
         {
-        self.containingSymbol = container
         self.attributes = attributes
         super.init(shortName: name.first,class: `class`)
+        self.container = container
         self._class = `class`
         }
         
-    internal init(shortName:String,class:Class,container:Symbol? = nil,attributes:SlotAttributes)
+    internal init(shortName:String,class:Class,container:SymbolContainer = .nothing,attributes:SlotAttributes)
         {
-        self.containingSymbol = container
         self.attributes = attributes
         super.init(shortName: shortName,class: .voidClass)
+        self.container = container
         self._class = `class`
         }
         
     internal required init()
         {
-        self.containingSymbol = nil
         self.attributes = []
         super.init(shortName: "Nil",class: Class.nilClass)
+        self.container = container
         self._class = Class.nilClass
         }
         
@@ -107,16 +112,6 @@ public class Slot:Variable,NSCoding
         super.init(coder:coder)
         self.slotOffset = Int(coder.decodeInt64(forKey:"slotOffset"))
         }
-
-        
-    internal func slotType(_ slotNames:[String]) -> Type
-        {
-        if slotNames.count == 0
-            {
-            return(self.type)
-            }
-        return(self.type.slotType(slotNames))
-        }
         
     internal func fieldHash(n:Int) -> Int
         {
@@ -125,3 +120,5 @@ public class Slot:Variable,NSCoding
     }
 
 typealias Slots = Array<Slot>
+
+typealias SlotDictionary = Dictionary<String,Slot>

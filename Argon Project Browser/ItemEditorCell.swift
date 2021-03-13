@@ -13,15 +13,36 @@ public protocol EditableItem
     var icon:NSImage { get }
     }
     
-public class ItemEditorCell:NSView,Framed
+public class DefaultEditorItem:NSView,EditableItem
+    {        
+    public var title:String
+        {
+        return("")
+        }
+        
+    public var icon:NSImage
+        {
+        return(NSImage())
+        }
+    }
+    
+public class ItemEditorCell:ItemCell
     {
-    internal var item:EditableItem
-    public var layoutFrame:LayoutFrame = .zero
+    internal var item:EditableItem = DefaultEditorItem()
     
     init(item:EditableItem)
         {
         self.item = item
         super.init(frame:.zero)
+        }
+        
+    override init(frame:NSRect)
+        {
+        super.init(frame:frame)
+        }
+        
+    public func reload()
+        {
         }
         
     public func layout(inView view:NSView)

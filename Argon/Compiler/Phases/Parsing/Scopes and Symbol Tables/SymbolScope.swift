@@ -16,12 +16,12 @@ internal class SymbolScope:Scope
     
     internal func pushScope()
         {
-        self.push()
+        self.pushScope()
         }
         
     internal func popScope()
         {
-        self.pop()
+        self.popScope()
         }
         
     internal func addSymbol(_ symbol:Symbol,atName name:Name) throws

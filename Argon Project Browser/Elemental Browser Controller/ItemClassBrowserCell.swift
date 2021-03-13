@@ -8,29 +8,42 @@
 import Cocoa
 
 public class ItemClassBrowserCell:ItemBrowserCell
-    {
-    private static var _cachedIcon:NSImage?
-    
-    private static func cachedIcon(for symbol:Symbol) -> NSImage
+    {        
+    public override var textColor:NSColor
         {
-        if self._cachedIcon == nil
+        if self.symbol is SystemPlaceholderClass
             {
-            self._cachedIcon = symbol.icon.coloredWith(color:NSColor.argonNeonOrange)
+            return(.argonNeonOrange)
             }
-        return(self._cachedIcon!)
+        else if self.symbol is Class
+            {
+            return(.argonNeonPink)
+            }
+        else
+            {
+            return(.white)
+            }
+        }
+
+    public override var title:String
+        {
+        return(self.symbol.completeName)
         }
         
-    public let nameView = NSTextField(frame:.zero)
-    public let iconView = NSImageView(frame:.zero)
-    
+    public override var icon:NSImage
+        {
+        let image = self.symbol.icon
+        let newImage = image.tintedWith(self.textColor)
+        return(newImage)
+//        return(self.symbol.icon.coloredWith(color: self.textColor).resized(to: NSSize(width:Self.kRowHeight,height:Self.kRowHeight)))
+        }
+        
     private let symbol:Symbol
     
     required init(symbol:Symbol)
         {
         self.symbol = symbol
         super.init()
-        self.addClassNameView()
-        self.addIconView()
         }
     
     required init?(coder: NSCoder) {
@@ -74,32 +87,5 @@ public class ItemClassBrowserCell:ItemBrowserCell
         
     @IBAction func onNewClassSlotClicked(_ sender:Any?)
         {
-        }
-        
-    private func addClassNameView()
-        {
-        self.addSubview(self.nameView)
-        self.nameView.frame = NSRect(x:Self.kRowHeight,y:-self.textAlignmentInCell(self.nameView.stringValue),width:Self.kRowHeight,height:Self.kRowHeight)
-        self.nameView.stringValue = self.symbol.completeName
-        self.nameView.font = Self.kDefaultFont
-        self.nameView.drawsBackground = false
-        self.nameView.isBezeled = false
-        self.nameView.textColor = NSColor.argonNeonOrange
-        }
-        
-    private func addIconView()
-        {
-        self.addSubview(self.iconView)
-        let icon = Self.cachedIcon(for:self.symbol)
-        self.iconView.image = icon
-        self.iconView.frame = NSRect(x:0,y:0,width:Self.kRowHeight,height:Self.kRowHeight)
-        }
-        
-    public override func layout()
-        {
-        super.layout()
-        let rect = self.frame
-        self.nameView.frame = NSRect(x:Self.kRowHeight,y:-self.textAlignmentInCell(self.nameView.stringValue),width:rect.size.width - Self.kRowHeight,height:Self.kRowHeight)
-        self.iconView.frame = NSRect(x:0,y:0,width:Self.kRowHeight,height:Self.kRowHeight)
         }
     }

@@ -8,20 +8,61 @@
 
 import Foundation
 
-internal class SymbolSet:Equatable
+public class SymbolSet:Equatable
     {
-    static func ==(lhs:SymbolSet,rhs:SymbolSet) -> Bool
+    public static func ==(lhs:SymbolSet,rhs:SymbolSet) -> Bool
         {
         return(lhs.symbols == rhs.symbols)
         }
         
+    public var isEmpty:Bool
+        {
+        return(self.symbols.isEmpty)
+        }
+        
     internal var symbols:[Symbol] = []
         
-    internal var first:Symbol
+    internal var first:Symbol?
         {
-        return(self.symbols.first!)
+        return(self.symbols.first)
+        }
+        
+    internal var method:Method?
+        {
+        for symbol in self.symbols
+            {
+            if symbol is Method
+                {
+                return(symbol as? Method)
+                }
+            }
+        return(nil)
+        }
+        
+    internal var `class`:Class?
+        {
+        for symbol in self.symbols
+            {
+            if symbol is Class
+                {
+                return(symbol as? Class)
+                }
+            }
+        return(nil)
         }
 
+    internal var variable:Variable?
+        {
+        for symbol in self.symbols
+            {
+            if symbol is Variable
+                {
+                return(symbol as? Variable)
+                }
+            }
+        return(nil)
+        }
+        
     internal init(_ symbol:Symbol)
         {
         self.symbols.append(symbol)
@@ -54,5 +95,17 @@ internal class SymbolSet:Equatable
             {
             try symbol.generateIntermediateCode(in:module,codeHolder:codeHolder,into:buffer,using:compiler)
             }
+        }
+        
+    public func lookup(name:Name) -> SymbolSet?
+        {
+        for symbol in self.symbols
+            {
+            if let set = symbol.symbolTable?.lookup(name:name)
+                {
+                return(set)
+                }
+            }
+        return(nil)
         }
     }

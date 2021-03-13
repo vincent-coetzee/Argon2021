@@ -13,16 +13,6 @@ internal class RootScope:Scope
     private var symbols:[String:Symbol] = [:]
     internal var parentScope: Scope? = nil
     internal var index: Int = Argon.nextIndex()
-    
-    internal func pushScope()
-        {
-        self.push()
-        }
-        
-    internal func popScope()
-        {
-        self.pop()
-        }
         
     internal func lookup(shortName: String) -> SymbolSet?
         {
@@ -33,7 +23,7 @@ internal class RootScope:Scope
         return(nil as SymbolSet?)
         }
         
-    internal func lookup(name:Name) -> SymbolSet?
+    internal func lookup(name:Name) -> SymbolSet
         {
         if let item = self.symbols[name.first]
             {

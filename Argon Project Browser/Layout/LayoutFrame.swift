@@ -7,11 +7,33 @@
 
 import Foundation
 
+public protocol Sizable
+    {
+    var layoutFrame:LayoutFrame { get }
+    }
+    
 public class LayoutFrame
     {
     public static let sizeToBounds = LayoutFrame(left:0,0,top:0,0,right: 1.0,0,bottom:1.0,0)
     public static let zero = LayoutFrame(left:0,0,top:0,0,right: 0,0,bottom:0,0)
+    public static let firstHalf = LayoutFrame(left:0,0,top:0,0,right:0.5,0,bottom:1.0,0)
     
+    public static func firstHalf(inset:CGFloat) -> LayoutFrame
+        {
+        return(LayoutFrame(left:0,inset,top:0,0,right:0.5,0,bottom:1,0))
+        }
+        
+    public static func lastHalf(leftInset:CGFloat,rightInset:CGFloat) -> LayoutFrame
+        {
+        return(LayoutFrame(left:0.5,leftInset,top:0,0,right:1,rightInset,bottom:1,0))
+        }
+        
+    public static func lastHalf(after frames:LayoutFrame...) -> LayoutFrame
+        {
+        let width = frames.reduce(into: 0.0) {$0 += $1.rightOffset}
+        return(LayoutFrame(left:0.5,0,top:0,0,right:1.0,-width,bottom:1,0))
+        }
+        
     public static func square(_ value:CGFloat) -> LayoutFrame
         {
         return(LayoutFrame(left:0,0,top:0,0,right:0,value,bottom:0,value))
@@ -53,4 +75,3 @@ public class LayoutFrame
         return(NSRect(x:left,y:top,width: right - left,height:bottom - top))
         }
     }
-

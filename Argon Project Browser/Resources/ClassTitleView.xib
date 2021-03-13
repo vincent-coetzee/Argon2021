@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="GTm-Hw-17X" customClass="ClassSlotView" customModule="Argon" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="596" height="32"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="BLf-1b-Ice">
+                    <rect key="frame" x="533" y="0.0" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="32" id="2WW-if-QlS"/>
+                    </constraints>
+                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="trash.circle" catalog="system" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="r4E-eJ-FbN">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tGF-Gz-0pt">
+                    <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="32" id="X5b-6p-2ic"/>
+                    </constraints>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="IconSlot64" id="GI4-fY-PN8"/>
+                </imageView>
+                <popUpButton verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rlb-pW-AkH">
+                    <rect key="frame" x="37" y="2" width="492" height="25"/>
+                    <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="PXz-u2-eVT" id="lMS-71-dJw">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" id="38O-v0-oQG">
+                            <items>
+                                <menuItem title="Item 1" state="on" id="PXz-u2-eVT"/>
+                                <menuItem title="Item 2" id="BcW-va-ff5"/>
+                                <menuItem title="Item 3" id="vjj-FK-3ZK"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                </popUpButton>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="jnm-7Q-Vbc">
+                    <rect key="frame" x="564" y="0.0" width="32" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="32" id="HkU-5N-LtD"/>
+                    </constraints>
+                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="NSTouchBarAddDetailTemplate" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="Xwq-oO-GyN">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="BLf-1b-Ice" firstAttribute="leading" secondItem="rlb-pW-AkH" secondAttribute="trailing" constant="8" id="5F6-7k-GLz"/>
+                <constraint firstAttribute="bottom" secondItem="BLf-1b-Ice" secondAttribute="bottom" constant="3" id="AtZ-0v-ptI"/>
+                <constraint firstItem="tGF-Gz-0pt" firstAttribute="leading" secondItem="GTm-Hw-17X" secondAttribute="leading" id="HzO-1p-cnc"/>
+                <constraint firstItem="jnm-7Q-Vbc" firstAttribute="top" secondItem="GTm-Hw-17X" secondAttribute="top" constant="3" id="MJ3-bc-sVg"/>
+                <constraint firstAttribute="bottom" secondItem="rlb-pW-AkH" secondAttribute="bottom" constant="6" id="Nkc-xn-1eu"/>
+                <constraint firstAttribute="trailing" secondItem="jnm-7Q-Vbc" secondAttribute="trailing" id="bOn-IH-P5d"/>
+                <constraint firstAttribute="bottom" secondItem="tGF-Gz-0pt" secondAttribute="bottom" id="fp0-FQ-zKj"/>
+                <constraint firstItem="rlb-pW-AkH" firstAttribute="top" secondItem="GTm-Hw-17X" secondAttribute="top" constant="6" id="gxN-kw-DUP"/>
+                <constraint firstAttribute="bottom" secondItem="jnm-7Q-Vbc" secondAttribute="bottom" constant="3" id="kWb-yj-Eih"/>
+                <constraint firstItem="tGF-Gz-0pt" firstAttribute="top" secondItem="GTm-Hw-17X" secondAttribute="top" id="nNf-dg-wMC"/>
+                <constraint firstAttribute="trailing" secondItem="BLf-1b-Ice" secondAttribute="trailing" constant="31" id="zR1-FR-39h"/>
+                <constraint firstItem="BLf-1b-Ice" firstAttribute="top" secondItem="GTm-Hw-17X" secondAttribute="top" constant="3" id="zdA-NN-joJ"/>
+            </constraints>
+            <point key="canvasLocation" x="-195" y="60"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="IconSlot64" width="128" height="128"/>
+        <image name="NSTouchBarAddDetailTemplate" width="15" height="15"/>
+        <image name="trash.circle" catalog="system" width="15" height="15"/>
+    </resources>
+</document>

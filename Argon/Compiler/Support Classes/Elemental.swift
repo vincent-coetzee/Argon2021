@@ -9,12 +9,42 @@ import Cocoa
 
 public class Elemental
     {
+    public var classValue:Class
+        {
+        fatalError()
+        }
+        
+    public var isEditable:Bool
+        {
+        return(false)
+        }
+        
+    public var isListable:Bool
+        {
+        return(false)
+        }
+        
+    public var lists:Array<ElementalList>
+        {
+        return([])
+        }
+        
     public var elementalColor:NSColor
         {
         return(.white)
         }
         
-    public var browserCell:ItemBrowserCell
+    public var editorCell:ItemEditorCell
+        {
+        fatalError("This should have been overridden in a child class or should not have been called here")
+        }
+        
+    public var listCell:ItemCell
+        {
+        fatalError("This should have been overridden in a child class or should not have been called here")
+        }
+        
+    public var browserCell:ItemCell
         {
         fatalError("This should have been overridden in a child class or should not have been called here")
         }
@@ -60,6 +90,16 @@ public class Elemental
         }
         
     public var title:String
+        {
+        return("")
+        }
+        
+    public var hasSource:Bool
+        {
+        return(false)
+        }
+        
+    public var source:String
         {
         return("")
         }

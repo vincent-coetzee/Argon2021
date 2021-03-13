@@ -10,7 +10,7 @@ import Foundation
 
 public class Compiler
     {
-    public var modules:Array<Module> = []
+    public var topModule:TopModule?
     
     public let staticSegment = StaticSegment(sizeInBytes:1024*1024*10)
     public let dataSegment = DataSegment(sizeInBytes:1024*1024*10)
@@ -91,12 +91,7 @@ public class Compiler
         fatalError("Invalid segment")
         }
         
-    internal func append(module:Module)
-        {
-        self.modules.append(module)
-        }
-        
-    internal func compile(source:String)
+    internal func compile(source:String) -> TopModule?
         {
         do
             {
@@ -105,9 +100,10 @@ public class Compiler
                 {
                 try phase.preProcess(source:source,using:self)
                 try phase.process(source:source,using:self)
-                try phase.postProcess(modules:self.modules,using:self)
+                try phase.postProcess(module:self.topModule!,using:self)
                 currentPhase = phase.nextPhase
                 }
+            return(self.topModule!)
             }
         catch let error as CompilerError
             {
@@ -128,5 +124,6 @@ public class Compiler
             {
             print("Unknown error")
             }
+        return(nil)
         }
     }

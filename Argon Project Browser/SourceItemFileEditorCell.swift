@@ -57,7 +57,7 @@ public class SourceFileItemEditorCell:ItemEditorCell,NSTextViewDelegate
         
     public func textDidChange(_ notfication:Notification)
         {
-        self.sourceFile.source = self.textView.source
+//        self.sourceFile.source = self.textView.source
         }
         
     public override func layout()

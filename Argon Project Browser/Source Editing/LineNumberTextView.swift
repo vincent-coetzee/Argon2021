@@ -74,6 +74,7 @@ public class LineNumberTextView: NSTextView {
         }
         
     override public func awakeFromNib() {
+        super.awakeFromNib()
         // Get the enclosing scroll view
         guard let scrollView = self.enclosingScrollView else {
             fatalError("Unwrapping the text views scroll view failed!")

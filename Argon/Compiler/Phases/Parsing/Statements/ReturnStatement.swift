@@ -17,7 +17,7 @@ internal class ReturnStatement:ControlFlowStatement
         
     internal var value:Expression?
     
-    init(location:SourceLocation = .zero,value:Expression)
+    init(location:SourceLocation = .zero,value:Expression?)
         {
         self.value = value
         super.init(location:location)

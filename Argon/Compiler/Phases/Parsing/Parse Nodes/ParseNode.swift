@@ -8,22 +8,12 @@
 
 import Foundation
 
-public class ParseNode:Scope
+public class ParseNode:NSObject,Scope
     {
-    internal var parentScope:Scope?
     internal var index:Int = Argon.nextIndex()
+
     
-    func pushScope()
-        {
-        fatalError("This method \(#function) should have been overridden in a subclass")
-        }
-    
-    func popScope()
-        {
-        fatalError("This method \(#function) should have been overridden in a subclass")
-        }
-    
-    func addSymbol(_ symbol: Symbol)
+    public func addSymbol(_ symbol: Symbol)
         {
         fatalError("This method \(#function) should have been overridden in a subclass")
         }
@@ -38,12 +28,12 @@ public class ParseNode:Scope
         fatalError("This method \(#function) should have been overridden in a subclass")
         }
     
-    func lookup(shortName: String) -> SymbolSet?
+    public func lookup(shortName: String) -> SymbolSet
         {
         fatalError("This method \(#function) should have been overridden in a subclass")
         }
         
-    func lookup(name: Name) -> SymbolSet?
+    public func lookup(name: Name) -> SymbolSet
         {
         fatalError("This method \(#function) should have been overridden in a subclass - it's not defined for a \(Swift.type(of:self))")
         }

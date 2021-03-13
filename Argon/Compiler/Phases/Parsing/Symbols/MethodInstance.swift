@@ -10,11 +10,6 @@ import Cocoa
 
 public class MethodInstance:Symbol,NSCoding
     {
-    public override var sizeInBytes:Int
-        {
-        return(self.codeBuffer.sizeInBytes)
-        }
-        
     public var parameters:Parameters
         {
         get
@@ -92,24 +87,9 @@ public class MethodInstance:Symbol,NSCoding
         return(MethodInstanceClass(shortName:self.shortName,argumentClasses:self._parameters.map{$0.typeClass},returnTypeClass: self.returnTypeClass))
         }
         
-    internal override func pushScope()
+    internal func addLocalVariable(_ local:LocalVariable)
         {
-        self.push()
-        }
-    
-    internal override func popScope()
-        {
-        self.pop()
-        }
-    
-    public override func symbolAdded(to node:ParseNode)
-        {
-        self.block.parentScope = node as Scope
-        }
-        
-    internal override func addSymbol(_ symbol: Symbol)
-        {
-        self.block.addSymbol(symbol)
+        self.block.addLocalVariable(local)
         }
 
     internal override func addStatement(_ statement: Statement)
@@ -117,7 +97,7 @@ public class MethodInstance:Symbol,NSCoding
         self.block.addStatement(statement)
         }
     
-    internal init(shortName:String,owner:Symbol? = nil)
+    public init(shortName:String,owner:Symbol? = nil)
         {
         self.owner = owner
         self.returnTypeClass = .voidClass
@@ -140,7 +120,7 @@ public class MethodInstance:Symbol,NSCoding
         self._parameters.append(parameter)
         }
         
-    internal override func lookup(shortName:String) -> SymbolSet?
+    public override func lookup(shortName:String) -> SymbolSet
         {
         return(self.block.lookup(shortName:shortName))
         }

@@ -7,6 +7,8 @@
 
 import Cocoa
 
+private var cache:[NSImage:NSImage] = [:]
+
 extension NSImage
     {
     public func resized(to newSize:NSSize) -> NSImage
@@ -29,97 +31,59 @@ extension NSImage
         self.unlockFocus()
         }
         
+    public func tintedWith(_ color:NSColor) -> NSImage
+        {
+        self.isTemplate = true
+        let image = self.copy() as! NSImage
+        image.lockFocus()
+        color.set()
+        let imageRect = NSRect(origin:.zero,size:self.size)
+        imageRect.fill(using: .sourceIn)
+		image.unlockFocus()
+        image.isTemplate = false
+        return(image)
+        }
+        
     public func coloredWith(color:NSColor) -> NSImage
         {
+        if let image = cache[self]
+            {
+            return(image)
+            }
         var rect = NSPoint.zero.extent(self.size)
-        let finalImage = CIImage(cgImage:self.cgImage(forProposedRect:&rect,context:nil,hints:nil)!).replace(color:NSColor.green,with:color)!
-        let rep: NSCIImageRep = NSCIImageRep(ciImage: finalImage)
-        let nsImage: NSImage = NSImage(size: rep.size)
-        nsImage.addRepresentation(rep)
-        return(nsImage)
+        let finalImage = CIImage(cgImage:self.cgImage(forProposedRect:&rect,context:nil,hints:nil)!).replace(fromHue:0.3,toHue:0.4,with:color)!
+        let cgImage = self.ciImageToCGImage(finalImage)!
+        let image = NSImage(cgImage:cgImage,size:rect.size)
+        cache[self] = image
+        return(image)
+//        let rep: NSCIImageRep = NSCIImageRep(ciImage: finalImage)
+//        let nsImage: NSImage = NSImage(size: rep.size)
+//        nsImage.addRepresentation(rep)
+//        return(nsImage)
+        }
+        
+    func ciImageToCGImage(_ inputImage: CIImage) -> CGImage?
+        {
+        let context = CIContext(options: nil)
+        if let cgImage = context.createCGImage(inputImage, from: inputImage.extent)
+            {
+            return cgImage
+            }
+        return nil
         }
     }
 
 extension CIImage
     {
-    public static func findHue(red: CGFloat, green: CGFloat, blue: CGFloat) -> CGFloat
+    func localHue(red: Float, green: Float, blue: Float) -> CGFloat
         {
-        let color = NSColor(red: red, green: green, blue: blue, alpha: 1)
+        let color = NSColor(red: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue), alpha: 1)
         var hue: CGFloat = 0
         color.getHue(&hue, saturation: nil, brightness: nil, alpha: nil)
         return hue
         }
-        
-    public static func chromaKeyFilter(fromHue: CGFloat, toHue: CGFloat) -> CIFilter?
-        {
-        // 1
-        let size = 64
-        var cubeRGB = [Float]()
 
-        // 2
-        for z in 0 ..< size {
-            let blue = CGFloat(z) / CGFloat(size-1)
-            for y in 0 ..< size {
-                let green = CGFloat(y) / CGFloat(size-1)
-                for x in 0 ..< size {
-                    let red = CGFloat(x) / CGFloat(size-1)
-
-                    // 3
-                    let hue = self.findHue(red: red, green: green, blue: blue)
-                    let alpha: CGFloat = (hue >= fromHue && hue <= toHue) ? 0: 1
-
-                    // 4
-                    cubeRGB.append(Float(red * alpha))
-                    cubeRGB.append(Float(green * alpha))
-                    cubeRGB.append(Float(blue * alpha))
-                    cubeRGB.append(Float(alpha))
-                }
-            }
-        }
-        let data = Data(buffer: UnsafeBufferPointer(start: &cubeRGB, count: cubeRGB.count))
-
-        // 5
-        let colorCubeFilter = CIFilter(name: "CIColorCube", parameters: ["inputCubeDimension": size, "inputCubeData": data])
-        return colorCubeFilter
-        }
-        
-    func filterPixels(fromRange:CGFloat,toRange:CGFloat) -> CIImage
-        {
-        // Remove Green from the Source Image
-        let chromaCIFilter = Self.chromaKeyFilter(fromHue: fromRange, toHue: toRange)
-        chromaCIFilter?.setValue(self,forKey: kCIInputImageKey)
-        let sourceCIImageWithoutBackground = chromaCIFilter?.outputImage
-        var image = CIImage()
-        if let filteredImage = sourceCIImageWithoutBackground
-            {
-            image = filteredImage
-            }
-        return image
-        }
-        
-    func compositeImageOver(_ image:CIImage) -> CIImage
-        {
-        let compositor = CIFilter(name:"CISourceOverCompositing")
-        compositor?.setValue(image, forKey: kCIInputImageKey)
-        compositor?.setValue(self, forKey: kCIInputBackgroundImageKey)
-        let compositedCIImage = compositor?.outputImage
-        var image = CIImage()
-        if let compositeImage = compositedCIImage
-            {
-            image = compositeImage
-            }
-        return image
-        }
-        
-    struct EFUIntPixel
-        {
-        var red: UInt8 = 0
-        var green: UInt8 = 0
-        var blue: UInt8 = 0
-        var alpha: UInt8 = 0
-        }
-
-    func replace(color oldColor:NSColor,with newColor:NSColor) -> CIImage?
+    func replace(fromHue:CGFloat,toHue:CGFloat,with newColor:NSColor) -> CIImage?
         {
         var red:CGFloat = 0
         var green:CGFloat = 0
@@ -128,34 +92,24 @@ extension CIImage
     
         let cubeSize = 64
         let cubeData = { () -> [Float] in
-            oldColor.getRed(&red,green:&green,blue:&blue,alpha:&alpha)
-            let selectColor = (Float(red), Float(green), Float(blue), Float(alpha))
             newColor.getRed(&red,green:&green,blue:&blue,alpha:&alpha)
             let replaceColor = (Float(red), Float(green), Float(blue), Float(alpha))
 
             var data = [Float](repeating: 0, count: cubeSize * cubeSize * cubeSize * 4)
-            var tempRGB: [Float] = [0, 0, 0]
-            var newRGB: (r : Float, g : Float, b : Float, a: Float)
             var offset = 0
             for z in 0 ..< cubeSize {
-                tempRGB[2] = Float(z) / Float(cubeSize - 1) // blue value
+                let blue = Float(z) / Float(cubeSize - 1) // blue value
                 for y in 0 ..< cubeSize {
-                    tempRGB[1] = Float(y) / Float(cubeSize -  1) // green value
+                    let green = Float(y) / Float(cubeSize -  1) // green value
                     for x in 0 ..< cubeSize {
-                        tempRGB[0] = Float(x) / Float(cubeSize - 1) // red value
-                        // Select colorOld
-                        if tempRGB[0] == selectColor.0 && tempRGB[1] == selectColor.1 && tempRGB[2] == selectColor.2
-                            {
-                            newRGB = (replaceColor.0, replaceColor.1, replaceColor.2, replaceColor.3)
-                            }
-                        else
-                            {
-                            newRGB = (tempRGB[0], tempRGB[1], tempRGB[2], 1)
-                            }
-                        data[offset] = newRGB.r
-                        data[offset + 1] = newRGB.g
-                        data[offset + 2] = newRGB.b
-                        data[offset + 3] = 1.0
+                        let red = Float(x) / Float(cubeSize - 1) // red value
+                        let theHue = self.localHue(red:red,green:green,blue:blue)
+                        
+                        let alpha:Float = (theHue >= fromHue && theHue <= toHue) == true ? 1.0 : 0.0
+                        data[offset] = alpha > 0.0 ? replaceColor.0 * alpha : Float(0)
+                        data[offset + 1] = alpha > 0.0 ? replaceColor.1 * alpha : Float(0)
+                        data[offset + 2] = alpha > 0.0 ? replaceColor.2 * alpha : Float(0)
+                        data[offset + 3] = alpha
                         offset += 4
                     }
                 }
@@ -169,5 +123,5 @@ extension CIImage
         colorCube.setValue(data, forKey: "inputCubeData")
         colorCube.setValue(self, forKey: kCIInputImageKey)
         return colorCube.outputImage
-    }
+        }
     }

@@ -9,6 +9,11 @@ import Foundation
 
 public class LiteralIntegerExpression:LiteralExpression
     {
+    public override var stringValue:String
+        {
+        return("\(self.integer)")
+        }
+        
     public override var typeClass:Class
         {
         return(Class.integerClass)

@@ -48,11 +48,11 @@ internal class TypeSymbol:Symbol,NSCoding
         
     internal override func pushScope()
         {
-        super.push()
+        super.pushScope()
         }
     
     internal override func popScope()
         {
-        super.pop()
+        super.popScope()
         }
     }

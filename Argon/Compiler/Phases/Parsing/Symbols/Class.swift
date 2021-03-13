@@ -10,24 +10,9 @@ import Cocoa
 
 public class Class:Symbol,NSCoding
     {
-    public override var symbolKind:SymbolKind
-        {
-        return(.class)
-        }
-        
-    public override func hash(into hasher:inout Hasher)
-        {
-        hasher.combine(self.shortName)
-        }
-        
     public static func ==(lhs:Class,rhs:Class) -> Bool
         {
         return(rhs.shortName == lhs.shortName)
-        }
-        
-    public override var hashValue:Int
-        {
-        return(self.shortName.hashValue)
         }
         
     public static let rootClass = SystemPlaceholderClass(shortName:"Root")
@@ -105,6 +90,22 @@ public class Class:Symbol,NSCoding
             }
         }
         
+    public var allSubclasses:Array<Class>
+        {
+        var subclasses:Array<Class> = [self]
+        for aClass in self.uniqueSubclasses
+            {
+            subclasses.append(aClass)
+            subclasses.append(contentsOf: aClass.allSubclasses)
+            }
+        return(subclasses.sorted{$0.shortName<$1.shortName})
+        }
+        
+    public override var editorCell:ItemEditorCell
+        {
+        return(ClassEditorCell(class:self))
+        }
+        
     public override var browserCell:ItemBrowserCell
         {
         return(ItemClassBrowserCell(symbol:self))
@@ -129,12 +130,12 @@ public class Class:Symbol,NSCoding
     internal var localClassSlots:[String:Slot] = [:]
     private var allClassSlots:Array<Slot> = []
     internal var makers = ClassMakers()
-    internal var symbols:[String:Symbol] = [:]
     private  var slotBlockOffsets:[Class:Int] = [:]
     private var wasLaidOut:Bool = false
     public var subclasses = Set<Class>()
     public var indexType:Type.ArrayIndexType?
     public var elementType:Class?
+    public var constants:[String:Constant] = [:]
     
     public var isGenericClass:Bool
         {
@@ -148,11 +149,6 @@ public class Class:Symbol,NSCoding
 
     public override var elementals:Elementals
         {
-        if self._elementals != nil
-            {
-            return(self._elementals!)
-            }
-        let slots = Array(localSlots.values)
         let classes = self.uniqueSubclasses.items
         let some = classes.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)}
         self._elementals = some
@@ -162,11 +158,6 @@ public class Class:Symbol,NSCoding
     public override var icon:NSImage
         {
         return(NSImage(named:"IconClass64")!)
-        }
-        
-    public override var childCount: Int
-        {
-        return(self.allSymbols.count)
         }
         
     private var uniqueSubclasses:OrderedSet<Class>
@@ -180,20 +171,6 @@ public class Class:Symbol,NSCoding
         var set = OrderedSet<Class>(self.superclasses.flatMap{$0.uniqueSuperclasses})
         set.insert(self)
         return(set)
-        }
-        
-    public override var sizeInBytes:Int
-        {
-        var size = 0
-        size += Word.kSizeInBytes // class of the class
-        size += Word.kSizeInBytes // the name
-        size += Word.kSizeInBytes // regular slot count
-        size += self.localSlots.values.reduce(0) { total,slot in total + slot.sizeInBytes }
-        size += Word.kSizeInBytes // class slot count
-        size += self.localClassSlots.values.reduce(0) { total,slot in total + slot.sizeInBytes }
-        size += Word.kSizeInBytes // superclasses
-        size += Word.kSizeInBytes // generics
-        return(size)
         }
         
     public override func encode(with coder: NSCoder)
@@ -210,10 +187,6 @@ public class Class:Symbol,NSCoding
         self.superclasses = coder.decodeObject(forKey:"superclasses") as! Array<Class>
         self.localSlots = coder.decodeObject(forKey:"localSlots") as! Dictionary<String,Slot>
         self.localClassSlots = coder.decodeObject(forKey:"localClassSlots") as! Dictionary<String,Slot>
-        for symbol in coder.decodeObject(forKey:"symbols") as! Array<Symbol>
-            {
-            self.symbols[symbol.shortName] = symbol
-            }
         super.init(coder:coder)
         }
         
@@ -241,33 +214,6 @@ public class Class:Symbol,NSCoding
         visitor.acceptClass(self)
         }
         
-    internal func typeWithIndex(_ type:Type.ArrayIndexType) -> Type
-        {
-        fatalError("This should not have been called")
-        }
-        
-    internal func slotType(_ slotNames:[String]) -> Type
-        {
-        if slotNames.count == 0
-            {
-            return(self.type)
-            }
-        if let name = slotNames.first,let slot = self.localClassSlots.values.first(where: {$0.shortName == name})
-            {
-            return(slot.slotType(Array<String>(slotNames.dropFirst())))
-            }
-        return(Type.undefined)
-        }
-        
-    internal func slotType(_ slotName:String) -> Type
-        {
-        if let slot = self.localClassSlots.values.first(where: {$0.shortName == slotName})
-            {
-            return(slot.slotType(Array<String>()))
-            }
-        return(Type.undefined)
-        }
-        
     @discardableResult
     internal func superclass(_ parent:Class) -> Class
         {
@@ -291,22 +237,19 @@ public class Class:Symbol,NSCoding
     func addRegularSlot(_ slot:Slot)
         {
         self.localSlots[slot.shortName] = slot
-        slot.containingSymbol = self
-        slot.symbolAdded(to: self)
+        slot.container = .class(self)
         }
         
     func addRawSlot(_ slot:Slot)
         {
         self.localSlots[slot.shortName] = slot
-        slot.containingSymbol = self
-        slot.symbolAdded(to: self)
+        slot.container = .class(self)
         }
         
     func addClassSlot(_ slot:Slot)
         {
         self.localClassSlots[slot.shortName] = slot
-        slot.containingSymbol = self
-        slot.symbolAdded(to: self)
+        slot.container = .class(self)
         }
     
     @discardableResult
@@ -343,25 +286,25 @@ public class Class:Symbol,NSCoding
         return(elements)
         }
         
-    func appendConstant(_ constant:Constant)
+    func addConstant(_ constant:Constant)
         {
-        self.symbols[constant.shortName] = constant
-        constant.symbolAdded(to: self)
+        self.constants[constant.shortName] = constant
+        constant.container = .class(self)
         }
         
-    func appendMaker(_ maker:ClassMaker)
+    func addMaker(_ maker:ClassMaker)
         {
         self.makers.append(maker)
-        maker.symbolAdded(to: self)
+        maker.container = .class(self)
         }
         
-    override func lookup(shortName: String) -> SymbolSet?
+    public override func lookup(shortName: String) -> SymbolSet?
         {
         if let slot = self.localClassSlots[shortName]
             {
             return(SymbolSet(slot))
             }
-        return(self.parentScope?.lookup(shortName:shortName))
+        return(self.container.lookup(shortName:shortName))
         }
         
     @discardableResult
@@ -463,11 +406,11 @@ public class Class:Symbol,NSCoding
         {
         for slot in self.localSlots.values
             {
-            slot.containingSymbol = self
+            slot.container = .class(self)
             }
         for slot in self.localClassSlots.values
             {
-            slot.containingSymbol = self
+            slot.container = .class(self)
             }
         for parent in self.superclasses
             {
@@ -478,7 +421,7 @@ public class Class:Symbol,NSCoding
     @discardableResult
     func placeholderSlot(_ name:String,`class`:Class,attributes:SlotAttributes = [.regular]) -> Class
         {
-        let slot = SystemPlaceholderSlot(shortName:name,class: `class`,container:self,attributes: attributes)
+        let slot = SystemPlaceholderSlot(shortName:name,class: `class`,container:.class(self),attributes: attributes)
         self.addRegularSlot(slot)
         return(self)
         }
@@ -486,7 +429,7 @@ public class Class:Symbol,NSCoding
     @discardableResult
     func placeholderClassSlot(_ name:String,`class`:Class,attributes:SlotAttributes = [.class]) -> Class
         {
-        let slot = SystemPlaceholderSlot(shortName:name,class: `class`,container:self,attributes: attributes)
+        let slot = SystemPlaceholderSlot(shortName:name,class: `class`,container:.class(self),attributes: attributes)
         self.addClassSlot(slot)
         return(self)
         }
@@ -494,7 +437,7 @@ public class Class:Symbol,NSCoding
     @discardableResult
     func placeholderRawSlot(_ name:String,`class`:Class,attributes:SlotAttributes = [.raw],offset:Int) -> Class
         {
-        let slot = SystemPlaceholderSlot(shortName:name,class: `class`,container:self,attributes: attributes)
+        let slot = SystemPlaceholderSlot(shortName:name,class: `class`,container:.class(self),attributes: attributes)
         slot.slotOffset = offset
         self.addRawSlot(slot)
         return(self)

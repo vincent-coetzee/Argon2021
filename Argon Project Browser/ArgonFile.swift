@@ -14,13 +14,24 @@ public class ArgonFile:Elemental,EditableItem
     private let pathExtension:String
     private var loadFailed = false
     private var sourceChanged = false
+    private var module:TopModule?
     
-    public var source:String = ""
+    private var _source:String = ""
         {
         didSet
             {
-            self.sourceChanged = true
+            self.compile()
             }
+        }
+        
+    public override var hasSource:Bool
+        {
+        return(true)
+        }
+        
+    public override var source:String
+        {
+        return(self._source)
         }
         
     public var isLeaf:Bool
@@ -28,14 +39,42 @@ public class ArgonFile:Elemental,EditableItem
         return(true)
         }
         
+    public override var isExpandable:Bool
+        {
+        return(self.module == nil ? false : true)
+        }
+        
+    public var elementals:Elementals
+        {
+        if let module = self.module
+            {
+            return([ElementalSymbol(symbol:module)])
+            }
+        return([])
+        }
+        
+    @discardableResult
+    public func compile() -> Module?
+        {
+        let compiler = Compiler()
+        self.module = compiler.compile(source:self.source)
+        self.module?.path = path
+        if let module = self.module,let data = try? NSKeyedArchiver.archivedData(withRootObject: self.module, requiringSecureCoding: false)
+            {
+            let url = URL(fileURLWithPath: "/Users/vincent/Desktop/\(module.shortName).arb")
+            try? data.write(to: url)
+            }
+        return(self.module)
+        }
+        
     public override var childCount:Int
         {
-        return(0)
+        return(self.elementals.count)
         }
         
     public override subscript(_ index:Int) -> Elemental
         {
-        fatalError("This method \(#function) should not be called on an ArgonFile")
+        return(self.elementals[index])
         }
         
     public func menu(for event:NSEvent,in row:Int,on item:Elemental) -> NSMenu?
@@ -46,10 +85,10 @@ public class ArgonFile:Elemental,EditableItem
 
     public override var browserCell: ItemBrowserCell
         {
-       return(ArgonFileItemBrowserCell(item:self))
+       return(ItemFileBrowserCell(item:self))
         }
         
-    public var editorCell:ItemEditorCell
+    public override var editorCell:ItemEditorCell
         {
         return(SourceFileItemEditorCell(item:self))
         }
@@ -71,7 +110,7 @@ public class ArgonFile:Elemental,EditableItem
         self.path = path
         if let string = try? String(contentsOfFile: self.path)
             {
-            self.source = string
+            self._source = string
             }
         else
             {

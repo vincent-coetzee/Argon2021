@@ -7,18 +7,27 @@
 
 import Cocoa
 
-public class OutlinerController:NSViewController
+
+public protocol ElementalSink
     {
+    func setElemental(_ elemental:Elemental)
     }
     
-public class FieldController:NSViewController
+public class ArgonBrowserViewController: NSViewController
     {
-    }
+    public static var instance:ArgonBrowserViewController?
     
-public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSource,NSOutlineViewDelegate
-    {
     @IBOutlet var splitView:NSSplitView!
     @IBOutlet var elementalBrowserController:ElementalBrowserViewController!
+    @IBOutlet var sourceViewController:SourceViewController!
+        {
+        didSet
+           {
+           ArgonBrowserViewController.instance?.elementalBrowserController.sink = self.sourceViewController
+           }
+        }
+    
+    @IBOutlet var container1:NSView!
     
     @IBAction func onNewFile(_ sender:Any?)
         {
@@ -39,6 +48,7 @@ public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSourc
         if fileEnding == "argon"
             {
             let outlineItem = ArgonFile(path: filename.path)
+            outlineItem.compile()
             elementalBrowserController.addBrowsableItem(outlineItem)
             }
         }
@@ -64,6 +74,7 @@ public class ArgonBrowserViewController: NSViewController,NSOutlineViewDataSourc
         splitView.setPosition(size, ofDividerAt: 0)
         size = size + size
         splitView.setPosition(size, ofDividerAt: 1)
+        ArgonBrowserViewController.instance = self
         }
     }
 

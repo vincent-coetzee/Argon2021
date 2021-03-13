@@ -8,13 +8,8 @@
 
 import Cocoa
 
-public class Module:SymbolContainer,NSCoding
+public class Module:Symbol,NSCoding
     {
-    public override var symbolKind:SymbolKind
-        {
-        return(.module)
-        }
-        
     public static func initModules()
         {
         let _ = Module.rootModule
@@ -23,22 +18,22 @@ public class Module:SymbolContainer,NSCoding
         }
         
     public static let argonModule = ArgonModule(shortName: "Argon")
-    public static let rootModule = RootModule(shortName: "Root")
+    public static let rootModule = RootModule()
     public static let rootScope = Module.rootModule
-        
-    internal override func pushScope()
-        {
-        self.push()
-        }
-    
-    internal override func popScope()
-        {
-        self.pop()
-        }
         
     public override var browserCell:ItemBrowserCell
         {
         return(ItemSymbolBrowserCell(symbol:self))
+        }
+        
+    public var isTopModule:Bool
+        {
+        return(false)
+        }
+        
+    public var topModule:TopModule
+        {
+        return(self.container.topModule)
         }
         
     public private(set) var genericTypes:[TypeVariable] = []
@@ -47,14 +42,10 @@ public class Module:SymbolContainer,NSCoding
     public var moduleKey = UUID()
     private var versionKey:SemanticVersionNumber = .one
     private var moduleSlots:Dictionary<String,Slot> = [:]
-    private var imports = ImportVector()
+    internal var symbols = SymbolDictionary()
     
     public override var elementals:Elementals
         {
-        if self._elementals != nil
-            {
-            return(self._elementals!)
-            }
         var classes = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Class && !($0 is Enumeration)}
         var classesToRemove = Array<Symbol>()
         for aClass in classes
@@ -68,18 +59,14 @@ public class Module:SymbolContainer,NSCoding
                 }
             }
         classes.removeAll(where: {classesToRemove.contains($0)})
+        let constants = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Constant}
         let enumerations = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Enumeration}
         let methods = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Method}
         let modules = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Module}
-        self._elementals = modules.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)} + classes.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)}  + enumerations.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)}  + methods.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)}
+        self._elementals = constants.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)}  + enumerations.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)} + modules.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)} + classes.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)} + methods.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)}
         return(self._elementals!)
         }
 
-    public func reset()
-        {
-        self.allSymbols = []
-        self.symbols = [:]
-        }
     public override var isModuleLevelSymbol:Bool
         {
         return(true)
@@ -105,25 +92,58 @@ public class Module:SymbolContainer,NSCoding
         super.relinkSymbolsUsingIds(symbols:symbols)
         for slot in self.moduleSlots.values
             {
-            slot.containingSymbol = self
+            slot.container = .module(self)
             }
         }
         
-    internal override func addSymbol(_ symbol:Symbol)
+    @discardableResult
+    public func addFunction(toMethodNamed:String,name:String,libraryName:String,cName:String,returnClass:Class,parameters:Parameter...) -> Function
         {
-        symbol.definingScope = self
-        if symbol is Slot
-            {
-            self.moduleSlots[symbol.shortName] = (symbol as! Slot)
-            return
-            }
-        else if symbol is Import
-            {
-            self.imports += symbol as! Import
-            return
-            }
-        super.addSymbol(symbol)
-        symbol.symbolAdded(to: self)
+        let method = Method(shortName:toMethodNamed)
+        self.addSymbol(method)
+        let function = Function(shortName:name)
+        function.libraryName = libraryName
+        function.cName = cName
+        function.parameters = parameters
+        method.addInstance(function)
+        return(function)
+        }
+        
+    @discardableResult
+    public func addFunction(named:String,libraryName:String,cName:String,returnClass:Class,parameters:Parameter...) -> Function
+        {
+        let function = Function(shortName: named)
+        function.libraryName = libraryName
+        function.cName = cName
+        function.parameters = parameters
+        self.addSymbol(function)
+        return(function)
+        }
+        
+    public func addModule(_ module:Module)
+        {
+        self.symbols.addSymbol(module)
+        }
+        
+    public func addClass(_ `class`:Class)
+        {
+        self.symbols.addSymbol(`class`)
+        }
+        
+    public func addLocal(_ local:LocalVariable)
+        {
+        self.symbols.addSymbol(local)
+        }
+        
+    public func addMethod(_ method:Method)
+        {
+        self.symbols.addSymbol(method)
+        }
+        
+        
+    public func addConstant(_ constant:Constant)
+        {
+        self.symbols.addSymbol(constant)
         }
         
     public override func accept(_ visitor:SymbolVisitor)
@@ -141,13 +161,13 @@ public class Module:SymbolContainer,NSCoding
         return(self.lookup(name: Name(name))?.first as? Module)
         }
         
-    internal override func lookup(name inputName:Name) -> SymbolSet?
+    public override func lookup(name inputName:Name) -> SymbolSet
         {
         var entity:Symbol? = inputName.isAnchored ? Module.rootModule : self
         var name = inputName
         while !name.isEmpty && entity != nil
             {
-            if let object = entity?.lookup(shortName: name.first)?.first
+            if let object = entity?.lookup(shortName: name.first).first
                 {
                 entity = object
                 name = name.withoutFirst()
@@ -157,7 +177,7 @@ public class Module:SymbolContainer,NSCoding
                 entity = nil
                 }
             }
-        entity = entity == nil ? self.imports.lookup(name:inputName)?.first : entity
+        entity = (entity == nil ? self.imports.lookup(name:inputName).first : entity)
         return(entity == nil ? nil : SymbolSet(entity!))
         }
         
@@ -172,14 +192,14 @@ public class Module:SymbolContainer,NSCoding
             {
             return(set)
             }
-        if self.parentScope == nil && !self.isArgonModule
+        if !self.isArgonModule
             {
             if let set = Module.argonModule.lookup(shortName: shortName)
                 {
                 return(set)
                 }
             }
-        return(self.parentScope?.lookup(shortName: shortName))
+        return(self.container.lookup(shortName: shortName))
         }
         
     public override func lookupMethod(shortName:String) -> Method?
@@ -266,7 +286,7 @@ public class Module:SymbolContainer,NSCoding
     @discardableResult
     func placeholderSlot(_ name:String,`class`:Class,attributes:SlotAttributes = [.class]) -> Module
         {
-        let slot = SystemPlaceholderSlot(shortName:name,class: `class`,container:self,attributes: attributes)
+        let slot = SystemPlaceholderSlot(shortName:name,class: `class`,container:.module(self),attributes: attributes)
         slot.accessLevel = .protected
         self.addSymbol(slot)
         return(self)
@@ -275,7 +295,7 @@ public class Module:SymbolContainer,NSCoding
     @discardableResult
     func placeholderEnumeration(_ name:String,`class`:Class) -> Enumeration
         {
-        let anEnum = SystemPlaceholderEnumeration(shortName:"ConduitSink",class:.uIntegerClass)
+        let anEnum = SystemPlaceholderEnumeration(shortName:name,class:`class`)
         anEnum.accessLevel = .export
         return(anEnum)
         }
@@ -289,9 +309,9 @@ public class Module:SymbolContainer,NSCoding
         {
         }
         
-    public override init(shortName:String)
+    public override init(shortName:String,container:SymbolContainer = .nothing)
         {
-        super.init(shortName:shortName)
+        super.init(shortName:shortName,container:container)
         self.memoryAddress = .zero
         }
         
@@ -320,23 +340,8 @@ public class Module:SymbolContainer,NSCoding
         
     public var rootElementals:Elementals
         {
-        let classes = self.allClasses
-        let roots = classes.filter{($0 as! Class).superclasses.isEmpty}.sorted{$0.shortName < $1.shortName}.map{ElementalSymbol(symbol:$0)}
+        let roots = self.symbols.values.reduce(into:[]){$0.append(contentsOf:$1.symbols)}.filter{$0 is Class}.filter{($0 as! Class).superclasses.isEmpty}.sorted{$0.shortName < $1.shortName}.map{ElementalSymbol(symbol:$0)}
         return(roots)
-        }
-        
-    public override var allClasses:Array<Symbol>
-        {
-        let allElements = self.symbols.values.reduce(into:[]){$0.append(contentsOf:$1.symbols)}
-        let modules = allElements.filter{$0 is Module}.map{$0 as! Module}
-        var classes = Array<Symbol>()
-        for module in modules
-            {
-            let newClasses = module.allClasses
-            classes.append(contentsOf: newClasses)
-            }
-        classes.append(contentsOf:allElements.filter{$0 is Class}.map{$0 as! Class})
-        return(classes.sorted{$0.shortName<$1.shortName})
         }
     }
 
@@ -352,7 +357,7 @@ public class ImportedModuleReference:Module
     {
     public override var fullName:Name
         {
-        return(self.parent?.fullName ?? Name() + self.shortName)
+        return(self.container.fullName + self.shortName)
         }
         
     internal override func lookupClass(_ name:String) -> Class?
@@ -395,4 +400,41 @@ public class RootModule:Module
         {
         return(Name(anchored:true))
         }
+        
+    public init()
+        {
+        super.init(shortName:"Root")
+        self.container = .nothing
+        }
+    
+    public required init?(coder: NSCoder)
+        {
+        fatalError("init(coder:) has not been implemented")
+        }
+    }
+
+public class TopModule:Module
+    {
+    public init(shortName:String)
+        {
+        super.init(shortName:shortName)
+        self.container = .module(Module.rootModule)
+        }
+    
+    public required init?(coder: NSCoder)
+        {
+        fatalError("init(coder:) has not been implemented")
+        }
+        
+    public override var topModule:TopModule
+        {
+        return(self)
+        }
+        
+    public override var isTopModule:Bool
+        {
+        return(true)
+        }
+        
+    public var path:String = ""
     }

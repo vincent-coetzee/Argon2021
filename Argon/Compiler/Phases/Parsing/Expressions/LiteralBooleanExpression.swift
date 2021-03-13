@@ -10,6 +10,11 @@ import Foundation
     
 public class LiteralBooleanExpression:LiteralExpression
     {
+    public override var stringValue:String
+        {
+        return("\(self.boolean)")
+        }
+        
     public override var typeClass:Class
         {
         return(Class.booleanClass)

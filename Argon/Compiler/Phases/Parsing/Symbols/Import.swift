@@ -8,16 +8,7 @@
 import Foundation
 
 public class Import:Symbol
-    {
-    public var exportedSymbolsByShortName:Dictionary<String,Symbol>
-        {
-        if let module = self.importedModule
-            {
-            return(module.allSymbols.reduce(into:[:]){ dictionary,symbol in dictionary[symbol.shortName] = symbol})
-            }
-        return([:])
-        }
-        
+    {        
     let path:String?
     var isPathBased = true
     var importedModule:Module?

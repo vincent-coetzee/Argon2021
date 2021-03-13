@@ -10,18 +10,13 @@ import Foundation
 
 internal class LocalScope:Scope
     {
-    internal var parentScope:Scope?
+    internal var container:SymbolContainer
     internal var index:Int = Argon.nextIndex()
     private var symbols:[String:SymbolSet] = [:]
-    
-    internal func pushScope()
+            
+    init(container:SymbolContainer)
         {
-        self.push()
-        }
-        
-    internal func popScope()
-        {
-        self.pop()
+        self.container = container
         }
         
     internal func addStatement(_ statement:Statement)
@@ -57,26 +52,25 @@ internal class LocalScope:Scope
         
     public func lookupMethod(shortName:String) -> Method?
         {
-        if let set = self.lookup(shortName:shortName)
+        let set = self.lookup(shortName:shortName)
+        if set.isEmpty
             {
-            for symbol in set.symbols
-                {
-                if symbol is Method
-                    {
-                    return(symbol as? Method)
-                    }
-                }
+            return(nil)
+            }
+        if let method = set.method
+            {
+            return(method)
             }
         return(nil)
         }
         
-    internal func lookup(shortName:String) -> SymbolSet?
+    internal func lookup(shortName:String) -> SymbolSet
         {
         if let set = self.symbols[shortName]
             {
             return(set)
             }
-        return(self.parentScope?.lookup(shortName: shortName))
+        return(self.container.lookup(shortName: shortName))
         }
         
     internal func lookup(name:Name) -> SymbolSet?

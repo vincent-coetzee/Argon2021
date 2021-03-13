@@ -21,16 +21,6 @@ public class Parameter:Variable,NSCoding
     private var hasTag:Bool
     private var tag:String = ""
     internal var stackOffsetFromBasePointer:Int = 0
-    
-    internal override func pushScope()
-        {
-        self.push()
-        }
-    
-    internal override func popScope()
-        {
-        self.pop()
-        }
         
     internal init(_ tuple:ParameterTuple)
         {

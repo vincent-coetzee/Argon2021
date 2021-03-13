@@ -19,17 +19,14 @@ internal class IntermediateCodeGenerator:CompilerPhase
         
     internal func process(source:String,using compiler:Compiler) throws
         {
-        for module in compiler.modules
-            {
-            try self.intermediateCodeGenerate(in:module,codeHolder:.none,into: A3CodeBuffer(),using:compiler)
-            }
+        try self.intermediateCodeGenerate(in:compiler.topModule!,codeHolder:.none,into: A3CodeBuffer(),using:compiler)
         }
         
     internal func preProcess(source:String,using compiler:Compiler) throws
         {
         }
         
-    internal func postProcess(modules:Array<Module>,using compiler:Compiler) throws
+    internal func postProcess(module:TopModule,using compiler:Compiler) throws
         {
         }
         

@@ -36,36 +36,28 @@
                 <customObject id="pLd-Zt-h4z" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <viewController id="Ovx-Bn-ebV" customClass="ArgonBrowserViewController" customModule="Argon" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="d7T-N4-wlt" customClass="FrameContainerView" customModule="Argon" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="1016" height="530"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1016" height="510"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <splitView arrangesAllSubviews="NO" dividerStyle="paneSplitter" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ahG-Zj-VfU">
-                                <rect key="frame" x="0.0" y="0.0" width="1016" height="530"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1016" height="510"/>
                                 <subviews>
                                     <containerView fixedFrame="YES" id="Er1-G6-49z">
-                                        <rect key="frame" x="0.0" y="0.0" width="332" height="530"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="503" height="510"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <connections>
                                             <segue destination="owL-Rm-7Pc" kind="embed" id="icb-OW-zsu"/>
                                         </connections>
                                     </containerView>
                                     <containerView fixedFrame="YES" id="xuH-7o-eR5">
-                                        <rect key="frame" x="342" y="0.0" width="332" height="530"/>
+                                        <rect key="frame" x="513" y="0.0" width="503" height="510"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <connections>
                                             <segue destination="XUg-D8-9mE" kind="embed" id="2Cb-oA-QGs"/>
                                         </connections>
                                     </containerView>
-                                    <containerView fixedFrame="YES" id="COT-0x-gdS">
-                                        <rect key="frame" x="684" y="0.0" width="332" height="530"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <connections>
-                                            <segue destination="Pc8-X8-aTO" kind="embed" id="PMh-jb-sdg"/>
-                                        </connections>
-                                    </containerView>
                                 </subviews>
                                 <holdingPriorities>
-                                    <real value="250"/>
                                     <real value="250"/>
                                     <real value="250"/>
                                 </holdingPriorities>
@@ -86,7 +78,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="2577" y="-4"/>
+            <point key="canvasLocation" x="2577" y="-14"/>
         </scene>
         <!--Application-->
         <scene sceneID="1f9-0s-r5p">
@@ -516,31 +508,55 @@
             </objects>
             <point key="canvasLocation" x="1670" y="-730"/>
         </scene>
-        <!--List Browser-->
+        <!--Source View Scene-->
         <scene sceneID="64W-Fd-0Mu">
             <objects>
-                <viewController title="List Browser" id="XUg-D8-9mE" customClass="ListBrowserViewController" customModule="Argon" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="List Browser" id="XUg-D8-9mE" userLabel="Source View Scene" customClass="SourceViewController" customModule="Argon" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="SFl-iY-kZa">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z3q-ne-DTC">
+                                <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                                <clipView key="contentView" drawsBackground="NO" id="lAb-jB-QMr">
+                                    <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="1Pj-lW-VsA" customClass="ArgonSourceTokenizingTextView" customModule="Argon" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <size key="minSize" width="450" height="300"/>
+                                            <size key="maxSize" width="450" height="10000000"/>
+                                            <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        </textView>
+                                    </subviews>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="2mb-oE-gaD">
+                                    <rect key="frame" x="-100" y="-100" width="240" height="16"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="1EN-rW-DN6">
+                                    <rect key="frame" x="434" y="0.0" width="16" height="300"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="Z3q-ne-DTC" firstAttribute="top" secondItem="SFl-iY-kZa" secondAttribute="top" id="2Ne-E5-AOu"/>
+                            <constraint firstItem="Z3q-ne-DTC" firstAttribute="leading" secondItem="SFl-iY-kZa" secondAttribute="leading" id="R2R-ot-scj"/>
+                            <constraint firstAttribute="trailing" secondItem="Z3q-ne-DTC" secondAttribute="trailing" id="cRu-QX-vJK"/>
+                            <constraint firstAttribute="bottom" secondItem="Z3q-ne-DTC" secondAttribute="bottom" id="zYS-7j-uQS"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="sourceView" destination="1Pj-lW-VsA" id="zmG-b3-che"/>
+                    </connections>
                 </viewController>
                 <customObject id="sPc-QD-Loe" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2577" y="596"/>
-        </scene>
-        <!--DetailBrowser-->
-        <scene sceneID="6Yx-gb-3Rh">
-            <objects>
-                <viewController title="DetailBrowser" id="Pc8-X8-aTO" customClass="DetailEditorViewController" customModule="Argon" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="bCG-Xh-adI">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </view>
-                </viewController>
-                <customObject id="4Ek-sM-Z8H" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3068" y="596"/>
+            <point key="canvasLocation" x="2787" y="596"/>
         </scene>
         <!--Elemental Browser View Controller-->
         <scene sceneID="zk2-34-aZA">
@@ -552,7 +568,7 @@
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DFj-Ma-E1h">
                                 <rect key="frame" x="0.0" y="0.0" width="450" height="265"/>
-                                <clipView key="contentView" id="bAB-aQ-Wj8">
+                                <clipView key="contentView" drawsBackground="NO" id="bAB-aQ-Wj8">
                                     <rect key="frame" x="1" y="1" width="448" height="263"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
@@ -560,7 +576,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="448" height="263"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="17" height="2"/>
-                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
                                                 <tableColumn editable="NO" width="436" minWidth="40" maxWidth="1000" id="iZT-fC-maU">
@@ -576,7 +592,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="IOY-1m-3rf">
-                                                            <rect key="frame" x="8" y="1" width="431" height="24"/>
+                                                            <rect key="frame" x="18" y="1" width="431" height="24"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OP6-wf-nAS">
@@ -598,9 +614,10 @@
                                             </tableColumns>
                                         </outlineView>
                                     </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="XJJ-IZ-Dle">
-                                    <rect key="frame" x="1" y="241" width="448" height="16"/>
+                                    <rect key="frame" x="1" y="248" width="448" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="9rI-rr-UW5">

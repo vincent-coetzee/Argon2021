@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal protocol StatementBlock
+public protocol StatementBlock
     {
     var parentScope:Scope? { get set }
     func addStatement(_ statement:Statement)

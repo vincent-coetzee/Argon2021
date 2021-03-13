@@ -9,6 +9,11 @@ import Foundation
 
 public class LiteralSymbolExpression:LiteralExpression
     {
+    public override var stringValue:String
+        {
+        return("\(self.symbol)")
+        }
+        
     public override var typeClass:Class
         {
         return(Class.symbolClass)

@@ -7,10 +7,23 @@
 
 import Cocoa
 
+public protocol ElementalOutputSlot
+    {
+    var outputElemental:Elemental? { get set }
+    }
+    
+public protocol ElementalInputSlot
+    {
+    var inputElemental:Elemental? { get set }
+    }
+    
 class ElementalBrowserViewController: NSViewController,NSOutlineViewDataSource,NSOutlineViewDelegate
     {
     @IBOutlet var outliner:NSOutlineView!
     @IBOutlet var selectedField:NSTextField!
+    @IBOutlet var browser:ArgonBrowserViewController!
+    
+    public var sink:ElementalSink? = nil
     
     private var elementals = Elementals()
     
@@ -25,6 +38,7 @@ class ElementalBrowserViewController: NSViewController,NSOutlineViewDataSource,N
         (self.parent as! ArgonBrowserViewController).elementalBrowserController = self
         self.outliner.target = self
         self.outliner.action = #selector(onItemClicked)
+        ArgonBrowserViewController.instance?.elementalBrowserController = self
         }
         
     @IBAction func onItemClicked(_ sender:Any?)
@@ -35,8 +49,13 @@ class ElementalBrowserViewController: NSViewController,NSOutlineViewDataSource,N
             return
             }
         let item = self.outliner.item(atRow: clickedRow) as! Elemental
-        self.selectedField.stringValue = item.title
-        self.selectedField.textColor = item.elementalColor
+        let view = self.outliner.view(atColumn: 0, row: clickedRow, makeIfNecessary: false)
+        if let cell = view as? ItemBrowserCell
+            {
+            self.selectedField.stringValue = item.title
+            self.selectedField.textColor = cell.textColor
+            self.sink?.setElemental(item)
+            }
 //        let editor = item.editorCell
         }
         

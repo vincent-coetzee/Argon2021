@@ -11,7 +11,7 @@ public class RawSlot:Slot
     {
     public override var cloned:Slot
         {
-        return(RawSlot(shortName:self.shortName,class:self._class,container:self.containingSymbol,attributes:self.attributes))
+        return(RawSlot(shortName:self.shortName,class:self._class,container:self.container,attributes:self.attributes))
         }
         
     public override var isRawSlot:Bool
