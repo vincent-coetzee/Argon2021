@@ -198,15 +198,15 @@ public class StylePalette
             self.font = NSFontManager.shared.font(withFamily: fontFamilyName, traits: fontTraitMask, weight: fontWeight, size: fontSize)
             }
             
-        public func apply(to pane:TextPane)
-            {
-            if let font = self.font
-                {
-                pane.font = font
-                }
-            pane.textColor = self.textColor
-            pane.backgroundColor = self.backgroundColor.cgColor
-            }
+//        public func apply(to pane:TextPane)
+//            {
+//            if let font = self.font
+//                {
+//                pane.font = font
+//                }
+//            pane.textColor = self.textColor
+//            pane.backgroundColor = self.backgroundColor.cgColor
+//            }
         }
         
     public class BorderStyle:Style
@@ -226,13 +226,13 @@ public class StylePalette
             self.gutterWidth = gutterWidth
             }
             
-        public func apply(to pane:Pane)
-            {
-            pane.borderWidth = self.borderWidth
-            pane.borderColor = self.borderColor.cgColor
-            pane.cornerRadius = self.cornerRadius
-            pane.maskedCorners = self.maskedCorners
-            }
+//        public func apply(to pane:Pane)
+//            {
+//            pane.borderWidth = self.borderWidth
+//            pane.borderColor = self.borderColor.cgColor
+//            pane.cornerRadius = self.cornerRadius
+//            pane.maskedCorners = self.maskedCorners
+//            }
         }
         
     public class ShadowStyle:Style
@@ -250,13 +250,13 @@ public class StylePalette
             self.shadowOpacity = shadowOpacity
             }
             
-        public func apply(to pane:Pane)
-            {
-            pane.shadowColor = self.shadowColor.cgColor
-            pane.shadowRadius = self.shadowRadius
-            pane.shadowOffset = self.shadowOffset
-            pane.shadowOpacity = self.shadowOpacity
-            }
+//        public func apply(to pane:Pane)
+//            {
+//            pane.shadowColor = self.shadowColor.cgColor
+//            pane.shadowRadius = self.shadowRadius
+//            pane.shadowOffset = self.shadowOffset
+//            pane.shadowOpacity = self.shadowOpacity
+//            }
         }
         
     public class GroundStyle:Style
@@ -268,10 +268,10 @@ public class StylePalette
             self.backgroundColor = backgroundColor
             }
             
-        public func apply(to pane:Pane)
-            {
-            pane.backgroundColor = self.backgroundColor.cgColor
-            }
+//        public func apply(to pane:Pane)
+//            {
+//            pane.backgroundColor = self.backgroundColor.cgColor
+//            }
         }
         
     public class CompositeStyle:Style
@@ -290,24 +290,24 @@ public class StylePalette
             self.groundStyle = ground
             }
             
-        public func apply(to pane:Pane)
-            {
-            self.borderStyle.apply(to: pane)
-            self.groundStyle.apply(to: pane)
-            }
+//        public func apply(to pane:Pane)
+//            {
+//            self.borderStyle.apply(to: pane)
+//            self.groundStyle.apply(to: pane)
+//            }
             
-        public func apply<P>(to aPane: P) where P:TextStylable
-            {
-            var pane = aPane
-            if let style = self.textStyles[pane.textType]
-                {
-                pane.textColor = style.textColor
-                if let font = style.font
-                    {
-                    pane.textFont = font
-                    }
-                }
-            }
+//        public func apply<P>(to aPane: P) where P:TextStylable
+//            {
+//            var pane = aPane
+//            if let style = self.textStyles[pane.textType]
+//                {
+//                pane.textColor = style.textColor
+//                if let font = style.font
+//                    {
+//                    pane.textFont = font
+//                    }
+//                }
+//            }
         }
         
     public var moduleStyle:SystemStyle

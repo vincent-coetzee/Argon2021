@@ -11,6 +11,11 @@ public typealias SymbolDictionary = Dictionary<String,SymbolSet>
 
 extension SymbolDictionary
     {
+    public var symbols:Symbols
+        {
+        return(self.values.reduce(into:[]){$0.append(contentsOf:$1.symbols)})
+        }
+        
     public mutating func addSymbol(_ symbol:Symbol)
         {
         if let set = self[symbol.shortName]
@@ -23,13 +28,18 @@ extension SymbolDictionary
             }
         }
         
-    public func lookup(shortName:String) -> SymbolSet
+    public func lookup(shortName:String) -> SymbolSet?
         {
-        if let set = self[shortName]
+        return(self[shortName])
+        }
+        
+    public func lookup(name:Name) -> SymbolSet?
+        {
+        if let set = self[name.first]
             {
-            return(set)
+            return(set.lookup(name:name.withoutFirst()))
             }
-        return(SymbolSet())
+        return(nil)
         }
     }
 

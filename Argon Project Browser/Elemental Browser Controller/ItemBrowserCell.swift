@@ -15,18 +15,9 @@ public class ItemCell:NSTableCellView
     
 public class ItemBrowserCell:ItemCell
     {
-    private static var cachedImages:[SymbolKind:NSImage] = [:]
-    
     internal func cachedImage(for symbol:Symbol) -> NSImage
         {
-        let kind = symbol.symbolKind
-        if let image = Self.cachedImages[kind]
-            {
-            return(image)
-            }
-        let image = symbol.icon.coloredWith(color: self.textColor).resized(to: NSSize(width:Self.kRowHeight,height:Self.kRowHeight))
-        Self.cachedImages[kind] = image
-        return(image)
+        return(symbol.icon.tintedWith(self.textColor).resized(to: NSSize(width:Self.kRowHeight,height:Self.kRowHeight)))
         }
         
     public var textColor:NSColor

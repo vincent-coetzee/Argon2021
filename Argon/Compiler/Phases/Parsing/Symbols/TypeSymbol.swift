@@ -45,14 +45,4 @@ internal class TypeSymbol:Symbol,NSCoding
         coder.encode(self.baseType,forKey: "baseType")
         super.encode(with:coder)
         }
-        
-    internal override func pushScope()
-        {
-        super.pushScope()
-        }
-    
-    internal override func popScope()
-        {
-        super.popScope()
-        }
     }

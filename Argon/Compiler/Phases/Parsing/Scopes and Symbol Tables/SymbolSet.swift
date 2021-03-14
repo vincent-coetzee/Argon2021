@@ -39,6 +39,18 @@ public class SymbolSet:Equatable
         return(nil)
         }
         
+    internal var module:Module?
+        {
+        for symbol in self.symbols
+            {
+            if symbol is Module
+                {
+                return(symbol as? Module)
+                }
+            }
+        return(nil)
+        }
+        
     internal var `class`:Class?
         {
         for symbol in self.symbols

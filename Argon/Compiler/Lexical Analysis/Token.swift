@@ -208,12 +208,14 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         case marker
         case error
         case end
+        case compoundIdentifier
         }
         
     case none
     case comment(String,SourceLocation)
     case end(SourceLocation)
     case identifier(String,SourceLocation)
+    case compoundIdentifier(String,SourceLocation)
     case keyword(Keyword,SourceLocation)
     case symbol(Symbol,SourceLocation)
     case hashString(String,SourceLocation)
@@ -290,6 +292,8 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             return(type == .marker)
         case .error(_):
             return(type == .error)
+        case .compoundIdentifier(_,_):
+            return(type == .compoundIdentifier)
             }
         }
         
@@ -339,6 +343,8 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             return(19)
         case .error(_):
             return(20)
+        case .compoundIdentifier:
+            return(21)
             }
         }
         
@@ -409,6 +415,8 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
                 return(".marker")
             case .byte(let value,_):
                 return(".byte(\(value))")
+            case .compoundIdentifier(let value,_):
+                return(".compoundIdentifier(\(value))")
             }
         }
         
@@ -458,6 +466,8 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
                 return(26)
             case .error:
                 return(-1)
+            case .compoundIdentifier:
+                return(27)
             }
         }
         
@@ -507,6 +517,8 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
                 return(.marker)
             case .error:
                 return(.error)
+            case .compoundIdentifier:
+                return(.compoundIdentifier)
             }
         }
         
@@ -598,6 +610,8 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         {
         switch(self)
             {
+            case .compoundIdentifier(_,let location):
+                return(location)
             case .true(let location):
                 return(location)
             case .false( let location):
@@ -681,6 +695,17 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         switch(self)
             {
             case .identifier(let name,_):
+                return(name)
+            default:
+                fatalError("This should not be called on a Token of class \(Swift.type(of: self))")
+            }
+        }
+        
+    public var compoundIdentifier:String
+        {
+        switch(self)
+            {
+            case .compoundIdentifier(let name,_):
                 return(name)
             default:
                 fatalError("This should not be called on a Token of class \(Swift.type(of: self))")
@@ -2567,6 +2592,17 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         switch(self)
             {
             case .identifier:
+                return(true)
+            default:
+                return(false)
+            }
+        }
+        
+    public var isCompoundIdentifier:Bool
+        {
+        switch(self)
+            {
+            case .compoundIdentifier:
                 return(true)
             default:
                 return(false)

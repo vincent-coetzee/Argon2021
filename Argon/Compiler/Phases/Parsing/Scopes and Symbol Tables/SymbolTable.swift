@@ -10,23 +10,24 @@ import Foundation
 
 public protocol SymbolTable
     {
-    var container:SymbolContainer { get }
+    func lookupModule(name:Name) -> Module?
     func lookupClass(name:Name) -> Class?
     func lookupVariable(name:Name) -> Variable?
     func lookupMethod(name:Name) -> Method?
     func lookup(name:Name) -> SymbolSet?
+    func lookup(shortName:String) -> SymbolSet?
     func addSymbol(_ symbol:Symbol)
     }
     
 extension SymbolTable
     {
-    public var topSymbolTable:SymbolTable
+    public func lookupModule(name:Name) -> Module?
         {
-        if self.container.isNothing
+        if let set = self.lookup(name:name)
             {
-            return(self)
+            return(set.module)
             }
-        return(self.container.topSymbolTable)
+        return(nil)
         }
         
     public func lookupClass(name:Name) -> Class?

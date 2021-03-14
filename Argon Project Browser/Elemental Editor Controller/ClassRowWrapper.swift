@@ -34,7 +34,7 @@ public class ClassRowWrapper:RowWrapper
         
     private func allClassNames() -> Array<String>
         {
-        let rootClass = Module.argonModule.lookupClass("Root")!
+        let rootClass = Module.argonModule.lookupClass(name: Name("Root"))!
         let allSubclasses = rootClass.allSubclasses
         return(allSubclasses.map{$0.completeName}.sorted{$0<$1})
         }

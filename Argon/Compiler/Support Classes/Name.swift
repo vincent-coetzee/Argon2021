@@ -8,8 +8,14 @@
 
 import Foundation
     
-public struct Name:Hashable,ExpressibleByArrayLiteral
+public struct Name:Hashable,ExpressibleByArrayLiteral,Collection
     {
+    public typealias Element = String
+    
+    public typealias Index = Int
+    
+    public static let anchor = Name(anchored:true)
+    
     public static let kNameSeparator = "\\"
     
     public static func anchoredName() -> Name
@@ -45,6 +51,16 @@ public struct Name:Hashable,ExpressibleByArrayLiteral
             }
         }
     
+    public var startIndex:Int
+        {
+        return(0)
+        }
+        
+    public var endIndex:Int
+        {
+        return(self.components.count)
+        }
+        
     public var displayString:String
         {
         return(self.stringName)
@@ -190,5 +206,15 @@ public struct Name:Hashable,ExpressibleByArrayLiteral
     public init()
         {
         self.components = []
+        }
+        
+    public subscript(index:Int) -> String
+        {
+        return(self.components[index].string)
+        }
+        
+    public func index(after:Int) -> Int
+        {
+        return(after+1)
         }
     }

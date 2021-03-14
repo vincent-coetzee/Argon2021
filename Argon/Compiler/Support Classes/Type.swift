@@ -165,28 +165,6 @@ public indirect enum Type:Equatable
             }
         }
         
-    internal func slotType(_ slotNames:[String]) -> Type
-        {
-        switch(self)
-            {
-            case .class(let aClass):
-                return(aClass.slotType(slotNames))
-            default:
-                fatalError("Attempt to find slotTypes of type that is not a class but is \(self)")
-            }
-        }
-        
-    internal func slotType(_ slotName:String) -> Type
-        {
-        switch(self)
-            {
-            case .class(let aClass):
-                return(aClass.slotType(slotName))
-            default:
-                fatalError("Attempt to find slotTypes of type that is not a class but is \(self)")
-            }
-        }
-        
     internal var isArrayType:Bool
         {
         switch(self)
@@ -259,7 +237,7 @@ public indirect enum Type:Equatable
             case .closure(let closure):
                 if case let Type.closure(thatClosure) = self
                     {
-                    return(closure.type == thatClosure.type)
+                    return(closure.typeClass == thatClosure.typeClass)
                     }
                 return(false)
             case .pointer(let aClass):

@@ -35,11 +35,6 @@ public class Enumeration:Class
         self._elementals = self.cases.map{ElementalSymbol(symbol:$0)}
         return(self._elementals!)
         }
-        
-    internal override var isModuleLevelSymbol:Bool
-        {
-        return(true)
-        }
 
     public override var icon:NSImage
         {

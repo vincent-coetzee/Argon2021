@@ -9,11 +9,6 @@ import Foundation
 
 public class SystemPlaceholderClass:Class
     {
-    public override var symbolKind:SymbolKind
-        {
-        return(.placeholderClass)
-        }
-        
     public override var isPlaceholder:Bool
         {
         return(true)

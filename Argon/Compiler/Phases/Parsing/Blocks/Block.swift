@@ -8,11 +8,16 @@
 
 import Foundation
 
-public class Block:Statement
+public class Block:Statement,Scope
     {
+    public func asSymbolContainer() -> SymbolContainer
+        {
+        return(.block(self))
+        }
+    
     static func ==(lhs:Block,rhs:Block) -> Bool
         {
-        return(lhs.statements == rhs.statements && lhs.localVariables == rhs.localVariables)
+        return(lhs.statements == rhs.statements && lhs.symbols == rhs.symbols)
         }
         
     internal var lastStatementIsNotReturn:Bool
@@ -27,13 +32,17 @@ public class Block:Statement
         
     internal var blockLocalVariables:[LocalVariable]
         {
-        return(self.localVariables.values.map{$0 as! LocalVariable})
+        return(self.symbols.symbols.filter{$0 is LocalVariable}.map{$0 as! LocalVariable})
         }
         
-    internal var statements:[Statement] = []
-    internal var localVariables = Dictionary<String,LocalVariable>()
+    public var rootSymbol:Symbol
+        {
+        return(self.container.rootSymbol)
+        }
+        
+    internal var statements = Statements()
+    internal var symbols = SymbolDictionary()
     internal var marker:Int?
-    internal var container:SymbolContainer = .nothing
     
     convenience init(container:SymbolContainer)
         {        
@@ -44,19 +53,15 @@ public class Block:Statement
     init(block:Block)
         {
         self.statements = block.statements
-        self.localVariables = block.localVariables
+        self.symbols = block.symbols
         self.marker = block.marker
-        }
-    
-    init(statement:Statement)
-        {
         }
         
     init(inductionVariable:InductionVariable)
         {
         self.marker = Argon.nextIndex()
         super.init()
-        self.addLocalVariable(inductionVariable)
+        self.addVariable(inductionVariable)
         }
         
     override init(location:SourceLocation = .zero)
@@ -83,10 +88,9 @@ public class Block:Statement
         return(self.statements.last!)
         }
         
-    
-    internal func addLocalVariable(_ variable:LocalVariable)
+    internal func addVariable(_ variable:Variable)
         {
-        self.localVariables[variable.shortName] = variable
+        self.symbols.addSymbol(variable)
         }
         
     internal override func addStatement(_ statement:Statement?)
@@ -102,24 +106,24 @@ public class Block:Statement
         self.statements = statements
         }
         
-    public override func lookup(shortName:String) -> SymbolSet
+    public override func lookup(shortName:String) -> SymbolSet?
         {
-        if let variable = self.localVariables[shortName]
+        if let set = self.symbols.lookup(shortName:shortName)
             {
-            return(SymbolSet(variable))
+            return(set)
             }
         return(self.container.lookup(shortName:shortName))
         }
         
-    public override func lookup(name:Name) -> SymbolSet
+    public override func lookup(name:Name) -> SymbolSet?
         {
         if name.isAnchored
             {
             return(Module.rootModule.lookup(name:name))
             }
-        if let variable = self.localVariables[name.first]
+        if let set = self.symbols.lookup(name:name)
             {
-            return(SymbolSet(variable))
+            return(set)
             }
         return(self.container.lookup(name:name))
         }

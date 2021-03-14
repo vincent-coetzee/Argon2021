@@ -10,7 +10,7 @@ import Cocoa
     
 public typealias Symbols = Array<Symbol>
 
-public class Symbol:ParseNode,SymbolVisitorAcceptor,Browsable
+public class Symbol:ParseNode,SymbolVisitorAcceptor,Browsable,Scope
     {
     public static func ==(lhs:Symbol,rhs:Symbol) -> Bool
         {
@@ -35,8 +35,30 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Browsable
     internal var memoryAddress:MemoryAddress = .zero
     internal var parentId:UUID?
     internal var _elementals:Elementals?
-    public var container:SymbolContainer = .nothing
     
+    public var isRootModule:Bool
+        {
+        return(false)
+        }
+        
+    public var rootModule:RootModule
+        {
+        if self.isRootModule
+            {
+            return(self as! RootModule)
+            }
+        return(self.container.rootModule)
+        }
+        
+    public var rootSymbol:Symbol
+        {
+        if self.container.isNothing
+            {
+            return(self)
+            }
+        return(self.container.rootSymbol)
+        }
+        
     public var symbolTable:SymbolTable?
         {
         return(nil)
@@ -77,11 +99,6 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Browsable
         return(self.container.fullName + self.shortName)
         }
         
-    internal var isModuleLevelSymbol:Bool
-        {
-        return(false)
-        }
-        
     public var browserCell:ItemBrowserCell
         {
         fatalError("This should have been overridden in a subclass")
@@ -90,19 +107,24 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Browsable
     internal init(shortName:String = "",container:SymbolContainer = .nothing)
         {
         self.shortName = shortName
-        self.container = container
         self.id = UUID()
         super.init()
+        self.container = container
         }
     
     internal init(name:Name,container:SymbolContainer = .nothing)
         {
         self.shortName = name.last
-        self.container = container
         self.id = UUID()
         super.init()
+        self.container = container
         }
 
+    public func asSymbolContainer() -> SymbolContainer
+        {
+        fatalError("This needs to be overridden in a subclass")
+        }
+        
     public func menu(for:NSEvent,in:Int,on:Elemental) -> NSMenu?
         {
         return(nil)
@@ -167,7 +189,7 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Browsable
         self.references.append(.declaration(location))
         }
         
-    internal override func lookup(name:Name) -> SymbolSet?
+    public override func lookup(name:Name) -> SymbolSet?
         {
         fatalError("\(#function) should have been overridden in a subclass of Symbol")
         }
@@ -215,12 +237,8 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Browsable
             self.references.append(SourceReference(coder:coder)!)
             }
         self.accessLevel = AccessModifier(rawValue: (coder.decodeObject(forKey:"accessLevel") as! String))!
+        super.init()
         self.container = SymbolContainer(with:coder)
         self.memoryAddress = coder.decodeObject(forKey:"memoryAddress") as! MemoryAddress
         }
-    }
-
-extension UUID
-    {
-    static let zero = Self(uuidString: "00000000-0000-0000-0000-000000000000")!
     }

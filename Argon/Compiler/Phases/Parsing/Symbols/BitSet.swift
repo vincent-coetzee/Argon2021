@@ -132,10 +132,5 @@ public class BitSetClass:Class
         {
         fatalError("init(coder:) has not been implemented")
         }
-    
-    internal override func typeWithIndex(_ type:Type.ArrayIndexType) -> Type
-        {
-        return(Type.bitset(keyType:self.keyType,valueType:self.valueType))
-        }
     }
 

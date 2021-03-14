@@ -48,6 +48,7 @@ public class TokenStream:Equatable
     private let alphanumerics = NSCharacterSet.alphanumerics.union(CharacterSet(charactersIn: "_"))
     private let symbolString = NSCharacterSet.alphanumerics.union(CharacterSet(charactersIn: "_"))
     private let letters = NSCharacterSet.letters.union(CharacterSet(charactersIn: "_"))
+    private let compoundNameCharacters = NSCharacterSet.letters.union(CharacterSet.decimalDigits)
     private let digits = NSCharacterSet.decimalDigits
     private let whitespace = NSCharacterSet.whitespaces
     private let newline = NSCharacterSet.newlines
@@ -200,7 +201,7 @@ public class TokenStream:Equatable
     @inline(__always)
     public func popPosition()
         {
-        let position = self.positionStack.popScope()
+        let position = self.positionStack.pop()
         self.currentChar = position.current
         self.line = position.line
         self.characterOffset = position.offset
@@ -368,6 +369,10 @@ public class TokenStream:Equatable
                 return(Token("/",self.sourceLocation()))
                 }
             }
+        if self.currentChar == "\\"
+            {
+            return(self.nextCompoundIdentifier(with:"\\"))
+            }
         currentString = ""
         startIndex = characterOffset
         if letters.contains(self.currentChar) || self.currentChar == "$" || self.currentChar == "?"
@@ -414,16 +419,28 @@ public class TokenStream:Equatable
         return(.error(CompilerError(.invalidCharacter(Character(self.currentChar)),self.sourceLocation())))
         }
     
+    private func nextCompoundIdentifier(with inputName:String) -> Token
+        {
+        var name = inputName
+        self.nextChar()
+        while (self.compoundNameCharacters.contains(self.currentChar) || self.currentChar == "\\") && !self.atEnd && !self.atEndOfLine
+            {
+            name.append(String(self.currentChar))
+            self.nextChar()
+            }
+        return(Token.compoundIdentifier(name, self.sourceLocation()))
+        }
+        
     private func nextString() -> Token
         {
         var string = ""
-        nextChar()
-        while self.currentChar != "\"" && !atEnd
+        self.nextChar()
+        while self.currentChar != "\"" && !self.atEnd && !self.atEndOfLine
             {
             string += String(self.currentChar)
-            nextChar()
+            self.nextChar()
             }
-        nextChar()
+        self.nextChar()
         return(Token.string(string,self.sourceLocation()))
         }
     
@@ -585,6 +602,12 @@ public class TokenStream:Equatable
             self.nextChar()
             }
         while alphanumerics.contains(self.currentChar) && !self.atEnd && !self.atEndOfLine
+        if self.currentChar == "\\"
+            {
+            self.nextChar()
+            self.currentString += String("\\")
+            return(self.nextCompoundIdentifier(with: self.currentString))
+            }
         if currentString == "?"
             {
             self.nextChar()

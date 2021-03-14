@@ -9,6 +9,11 @@ import Foundation
 
 public class StackFrame:SymbolTable
     {
+    public var topSymbol:Symbol
+        {
+        return(self.container.topSymbol)
+        }
+        
     public let id = UUID()
     public var container:SymbolContainer = .nothing
     private var symbols = SymbolDictionary()
@@ -17,7 +22,7 @@ public class StackFrame:SymbolTable
         {
         if name.isAnchored
             {
-            return(self.container.topSymbolTable.lookup(name:name))
+            return(self.container.topSymbol.lookup(name:name))
             }
         if let set = self.symbols[name.first]
             {

@@ -51,7 +51,7 @@ public class Import:Symbol
         fatalError("init(coder:) has not been implemented")
         }
         
-    override func lookup(name:Name) -> SymbolSet?
+    public override func lookup(name:Name) -> SymbolSet?
         {
         return(self.importedModule?.lookup(name:name))
         }
@@ -101,20 +101,20 @@ public struct ImportVector
         
     func lookup(shortName:String) -> SymbolSet?
         {
-        for section in self.imports
-            {
-            if let cachedSymbols = self.cachedSymbolsByImport[section]
-                {
-                if let symbol = cachedSymbols[shortName]
-                    {
-                    return(SymbolSet(symbol))
-                    }
-                }
-            else
-                {
-                let cachedSymbols = section.exportedSymbolsByShortName
-                }
-            }
+//        for section in self.imports
+//            {
+//            if let cachedSymbols = self.cachedSymbolsByImport[section]
+//                {
+//                if let symbol = cachedSymbols[shortName]
+//                    {
+//                    return(SymbolSet(symbol))
+//                    }
+//                }
+//            else
+//                {
+//                let cachedSymbols = section.exportedSymbolsByShortName
+//                }
+//            }
         return(SymbolSet())
         }
     }

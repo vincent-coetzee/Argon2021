@@ -99,16 +99,9 @@
 		BF0A932025E5D7CE000AFDA6 /* SlotEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF0A931E25E5D7CE000AFDA6 /* SlotEditorViewController.swift */; };
 		BF0A932125E5D7CE000AFDA6 /* SlotEditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF0A931F25E5D7CE000AFDA6 /* SlotEditorViewController.xib */; };
 		BF0A932425E5DA44000AFDA6 /* SlotEditorCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF0A932325E5DA44000AFDA6 /* SlotEditorCellView.xib */; };
-		BF13ACD725E93FC700FE32B3 /* Pane.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACD625E93FC700FE32B3 /* Pane.swift */; };
-		BF13ACDC25E94A8300FE32B3 /* PaneLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACDB25E94A8300FE32B3 /* PaneLayer.swift */; };
-		BF13ACE525E9550D00FE32B3 /* CompositePane.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACE425E9550D00FE32B3 /* CompositePane.swift */; };
-		BF13ACE825E9552C00FE32B3 /* TextPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACE725E9552C00FE32B3 /* TextPane.swift */; };
-		BF13ACEB25E9553800FE32B3 /* PaneIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACEA25E9553800FE32B3 /* PaneIcon.swift */; };
 		BF13ACEE25E9556500FE32B3 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACED25E9556500FE32B3 /* Array+Extensions.swift */; };
 		BF13ACF225E9859700FE32B3 /* CGSize+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACF125E9859700FE32B3 /* CGSize+Extensions.swift */; };
 		BF13ACF525E9863300FE32B3 /* NSRect+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACF425E9863300FE32B3 /* NSRect+Extensions.swift */; };
-		BF13ACF825E9885C00FE32B3 /* PaneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACF725E9885C00FE32B3 /* PaneView.swift */; };
-		BF13ACFB25E9A3DE00FE32B3 /* DragHand.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACFA25E9A3DE00FE32B3 /* DragHand.swift */; };
 		BF13ACFE25E9B7F200FE32B3 /* NSPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF13ACFD25E9B7F200FE32B3 /* NSPoint+Extensions.swift */; };
 		BF163E7325E59C7900A3C4B0 /* NSColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF163E7225E59C7900A3C4B0 /* NSColor+Extensions.swift */; };
 		BF1DAA1D25EA793200F065E4 /* NSBezierPath+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1DAA1C25EA793200F065E4 /* NSBezierPath+Extensions.swift */; };
@@ -122,16 +115,9 @@
 		BF2A147825EBADDE0088513B /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2A147725EBADDE0088513B /* String+Extensions.swift */; };
 		BF2A147B25EBAF6F0088513B /* words.txt in Resources */ = {isa = PBXBuildFile; fileRef = BF2A147A25EBAF6F0088513B /* words.txt */; };
 		BF2A147E25EBAF850088513B /* EnglishWord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2A147D25EBAF850088513B /* EnglishWord.swift */; };
-		BF2A148225EBD0810088513B /* BorderedPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2A148125EBD0810088513B /* BorderedPane.swift */; };
 		BF2A148525EBEB1C0088513B /* Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2A148425EBEB1C0088513B /* Border.swift */; };
-		BF2A148925EBFD250088513B /* RowPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2A148825EBFD250088513B /* RowPane.swift */; };
-		BF2A148C25EBFD470088513B /* ColumnPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2A148B25EBFD470088513B /* ColumnPane.swift */; };
-		BF2A148F25EBFD660088513B /* DecoratorPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2A148E25EBFD660088513B /* DecoratorPane.swift */; };
-		BF2A149225EBFDA30088513B /* TitledPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2A149125EBFDA30088513B /* TitledPane.swift */; };
-		BF2A149625EC1E1F0088513B /* Alignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2A149525EC1E1F0088513B /* Alignment.swift */; };
 		BF30D01B25F6E9F7003FDBAD /* Macro.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF30D01A25F6E9F7003FDBAD /* Macro.swift */; };
 		BF30D02425F6F995003FDBAD /* OutlinerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF30D02325F6F995003FDBAD /* OutlinerRowView.swift */; };
-		BF365BC025FCA29100C23F13 /* BlockStatement.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF365BBF25FCA29100C23F13 /* BlockStatement.swift */; };
 		BF365BC425FCA90700C23F13 /* StackFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF365BC325FCA90700C23F13 /* StackFrame.swift */; };
 		BF3B7FD02589356500582C17 /* CCreole.argon in Resources */ = {isa = PBXBuildFile; fileRef = BF3B7FCF2589356500582C17 /* CCreole.argon */; };
 		BF3B7FDC25893CA900582C17 /* ArgonNumbers.argon in Resources */ = {isa = PBXBuildFile; fileRef = BF3B7FD725893CA900582C17 /* ArgonNumbers.argon */; };
@@ -157,6 +143,7 @@
 		BF45F1E02593EF6000376006 /* ClassLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF45F1DF2593EF6000376006 /* ClassLayout.swift */; };
 		BF45F1E62596629100376006 /* Metaclass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF45F1E52596629100376006 /* Metaclass.swift */; };
 		BF45F1E92596783800376006 /* HandlerSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF45F1E82596783800376006 /* HandlerSymbol.swift */; };
+		BF4A6D7F25FE3372003F7798 /* UUID+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4A6D7E25FE3372003F7798 /* UUID+Extensions.swift */; };
 		BF558F3425E57CF20055087B /* ItemBrowserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF558F3325E57CF20055087B /* ItemBrowserCell.swift */; };
 		BF57C36925B6FE760024F95F /* LayoutSlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF57C36825B6FE760024F95F /* LayoutSlot.swift */; };
 		BF5A547025C1A2F200C8D55F /* CodeSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5A546F25C1A2F200C8D55F /* CodeSegment.swift */; };
@@ -280,8 +267,6 @@
 		BFA4BFE5258BF5AD0040DE86 /* People.argon in Resources */ = {isa = PBXBuildFile; fileRef = BFA4BFE0258BF5AD0040DE86 /* People.argon */; };
 		BFBB0F3A25B39293008F8E3E /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBB0F3925B39293008F8E3E /* Int+Extensions.swift */; };
 		BFBB0F3D25B3A41F008F8E3E /* IndirectMemoryRegisterOffsetAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBB0F3C25B3A41F008F8E3E /* IndirectMemoryRegisterOffsetAddress.swift */; };
-		BFC008EC25ECEAAD00A28897 /* ComposingRowPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC008EB25ECEAAD00A28897 /* ComposingRowPane.swift */; };
-		BFC008EF25ECEEC800A28897 /* PaneEdge.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC008EE25ECEEC800A28897 /* PaneEdge.swift */; };
 		BFC008FA25ED26CF00A28897 /* ElementalBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC008F925ED26CF00A28897 /* ElementalBrowserViewController.swift */; };
 		BFC008FD25ED272600A28897 /* ListBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC008FC25ED272600A28897 /* ListBrowserViewController.swift */; };
 		BFC0090125ED274C00A28897 /* ElementalEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC0090025ED274C00A28897 /* ElementalEditorViewController.swift */; };
@@ -432,16 +417,9 @@
 		BF0A931E25E5D7CE000AFDA6 /* SlotEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlotEditorViewController.swift; sourceTree = "<group>"; };
 		BF0A931F25E5D7CE000AFDA6 /* SlotEditorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SlotEditorViewController.xib; sourceTree = "<group>"; };
 		BF0A932325E5DA44000AFDA6 /* SlotEditorCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SlotEditorCellView.xib; sourceTree = "<group>"; };
-		BF13ACD625E93FC700FE32B3 /* Pane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pane.swift; sourceTree = "<group>"; };
-		BF13ACDB25E94A8300FE32B3 /* PaneLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneLayer.swift; sourceTree = "<group>"; };
-		BF13ACE425E9550D00FE32B3 /* CompositePane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositePane.swift; sourceTree = "<group>"; };
-		BF13ACE725E9552C00FE32B3 /* TextPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPane.swift; sourceTree = "<group>"; };
-		BF13ACEA25E9553800FE32B3 /* PaneIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneIcon.swift; sourceTree = "<group>"; };
 		BF13ACED25E9556500FE32B3 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		BF13ACF125E9859700FE32B3 /* CGSize+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Extensions.swift"; sourceTree = "<group>"; };
 		BF13ACF425E9863300FE32B3 /* NSRect+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRect+Extensions.swift"; sourceTree = "<group>"; };
-		BF13ACF725E9885C00FE32B3 /* PaneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneView.swift; sourceTree = "<group>"; };
-		BF13ACFA25E9A3DE00FE32B3 /* DragHand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragHand.swift; sourceTree = "<group>"; };
 		BF13ACFD25E9B7F200FE32B3 /* NSPoint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSPoint+Extensions.swift"; sourceTree = "<group>"; };
 		BF163E7225E59C7900A3C4B0 /* NSColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Extensions.swift"; sourceTree = "<group>"; };
 		BF1DAA1C25EA793200F065E4 /* NSBezierPath+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSBezierPath+Extensions.swift"; sourceTree = "<group>"; };
@@ -457,16 +435,9 @@
 		BF2A147725EBADDE0088513B /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		BF2A147A25EBAF6F0088513B /* words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words.txt; sourceTree = SOURCE_ROOT; };
 		BF2A147D25EBAF850088513B /* EnglishWord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnglishWord.swift; sourceTree = "<group>"; };
-		BF2A148125EBD0810088513B /* BorderedPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedPane.swift; sourceTree = "<group>"; };
 		BF2A148425EBEB1C0088513B /* Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Border.swift; sourceTree = "<group>"; };
-		BF2A148825EBFD250088513B /* RowPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowPane.swift; sourceTree = "<group>"; };
-		BF2A148B25EBFD470088513B /* ColumnPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnPane.swift; sourceTree = "<group>"; };
-		BF2A148E25EBFD660088513B /* DecoratorPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecoratorPane.swift; sourceTree = "<group>"; };
-		BF2A149125EBFDA30088513B /* TitledPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitledPane.swift; sourceTree = "<group>"; };
-		BF2A149525EC1E1F0088513B /* Alignment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alignment.swift; sourceTree = "<group>"; };
 		BF30D01A25F6E9F7003FDBAD /* Macro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Macro.swift; sourceTree = "<group>"; };
 		BF30D02325F6F995003FDBAD /* OutlinerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlinerRowView.swift; sourceTree = "<group>"; };
-		BF365BBF25FCA29100C23F13 /* BlockStatement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockStatement.swift; sourceTree = "<group>"; };
 		BF365BC325FCA90700C23F13 /* StackFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackFrame.swift; sourceTree = "<group>"; };
 		BF3B7FCF2589356500582C17 /* CCreole.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CCreole.argon; sourceTree = "<group>"; };
 		BF3B7FD725893CA900582C17 /* ArgonNumbers.argon */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ArgonNumbers.argon; sourceTree = "<group>"; };
@@ -492,6 +463,7 @@
 		BF45F1DF2593EF6000376006 /* ClassLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassLayout.swift; sourceTree = "<group>"; };
 		BF45F1E52596629100376006 /* Metaclass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metaclass.swift; sourceTree = "<group>"; };
 		BF45F1E82596783800376006 /* HandlerSymbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandlerSymbol.swift; sourceTree = "<group>"; };
+		BF4A6D7E25FE3372003F7798 /* UUID+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UUID+Extensions.swift"; sourceTree = "<group>"; };
 		BF558F3325E57CF20055087B /* ItemBrowserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemBrowserCell.swift; sourceTree = "<group>"; };
 		BF558F3B25E58A260055087B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		BF57C36825B6FE760024F95F /* LayoutSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutSlot.swift; sourceTree = "<group>"; };
@@ -619,8 +591,6 @@
 		BFA4F6A325DAD8C20057C375 /* ArgonFFI.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ArgonFFI.c; sourceTree = "<group>"; };
 		BFBB0F3925B39293008F8E3E /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		BFBB0F3C25B3A41F008F8E3E /* IndirectMemoryRegisterOffsetAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndirectMemoryRegisterOffsetAddress.swift; sourceTree = "<group>"; };
-		BFC008EB25ECEAAD00A28897 /* ComposingRowPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposingRowPane.swift; sourceTree = "<group>"; };
-		BFC008EE25ECEEC800A28897 /* PaneEdge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneEdge.swift; sourceTree = "<group>"; };
 		BFC008F925ED26CF00A28897 /* ElementalBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementalBrowserViewController.swift; sourceTree = "<group>"; };
 		BFC008FC25ED272600A28897 /* ListBrowserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListBrowserViewController.swift; sourceTree = "<group>"; };
 		BFC0090025ED274C00A28897 /* ElementalEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementalEditorViewController.swift; sourceTree = "<group>"; };
@@ -905,7 +875,6 @@
 				BF08FB8C25803A6A00C4AC6F /* TimesStatement.swift */,
 				BF08FB8A25803A6A00C4AC6F /* WhenClause.swift */,
 				BF08FBA125803A6A00C4AC6F /* WhileStatement.swift */,
-				BF365BBF25FCA29100C23F13 /* BlockStatement.swift */,
 			);
 			path = Statements;
 			sourceTree = "<group>";
@@ -1053,28 +1022,6 @@
 			path = Optimisation;
 			sourceTree = "<group>";
 		};
-		BF13ACD525E93FAD00FE32B3 /* Lantern */ = {
-			isa = PBXGroup;
-			children = (
-				BF2A149525EC1E1F0088513B /* Alignment.swift */,
-				BF2A148125EBD0810088513B /* BorderedPane.swift */,
-				BF2A148B25EBFD470088513B /* ColumnPane.swift */,
-				BF13ACE425E9550D00FE32B3 /* CompositePane.swift */,
-				BF2A148E25EBFD660088513B /* DecoratorPane.swift */,
-				BF13ACFA25E9A3DE00FE32B3 /* DragHand.swift */,
-				BF13ACD625E93FC700FE32B3 /* Pane.swift */,
-				BF13ACEA25E9553800FE32B3 /* PaneIcon.swift */,
-				BF13ACDB25E94A8300FE32B3 /* PaneLayer.swift */,
-				BF13ACF725E9885C00FE32B3 /* PaneView.swift */,
-				BF2A148825EBFD250088513B /* RowPane.swift */,
-				BF13ACE725E9552C00FE32B3 /* TextPane.swift */,
-				BF2A149125EBFDA30088513B /* TitledPane.swift */,
-				BFC008EB25ECEAAD00A28897 /* ComposingRowPane.swift */,
-				BFC008EE25ECEEC800A28897 /* PaneEdge.swift */,
-			);
-			path = Lantern;
-			sourceTree = "<group>";
-		};
 		BF1F082025D28A89001A8DC5 /* RawMemory */ = {
 			isa = PBXGroup;
 			children = (
@@ -1109,17 +1056,18 @@
 		BF3EC5DC25E8CB7C000AD5C7 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				BF163E7225E59C7900A3C4B0 /* NSColor+Extensions.swift */,
-				BFC3FDA025E2C8360099944C /* NSImage+Extensions.swift */,
 				BF13ACED25E9556500FE32B3 /* Array+Extensions.swift */,
 				BF13ACF125E9859700FE32B3 /* CGSize+Extensions.swift */,
-				BF13ACF425E9863300FE32B3 /* NSRect+Extensions.swift */,
-				BF13ACFD25E9B7F200FE32B3 /* NSPoint+Extensions.swift */,
-				BF1DAA1C25EA793200F065E4 /* NSBezierPath+Extensions.swift */,
-				BF979DB825832410002AFB7F /* NSFont+Extension.swift */,
 				BFBB0F3925B39293008F8E3E /* Int+Extensions.swift */,
 				BF1F082D25D2F676001A8DC5 /* Max+Extensions.swift */,
+				BF1DAA1C25EA793200F065E4 /* NSBezierPath+Extensions.swift */,
+				BF163E7225E59C7900A3C4B0 /* NSColor+Extensions.swift */,
+				BF979DB825832410002AFB7F /* NSFont+Extension.swift */,
+				BFC3FDA025E2C8360099944C /* NSImage+Extensions.swift */,
+				BF13ACFD25E9B7F200FE32B3 /* NSPoint+Extensions.swift */,
+				BF13ACF425E9863300FE32B3 /* NSRect+Extensions.swift */,
 				BF2A147725EBADDE0088513B /* String+Extensions.swift */,
+				BF4A6D7E25FE3372003F7798 /* UUID+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1255,7 +1203,6 @@
 			children = (
 				BF8F4A0C25F632B400E7335E /* Elemental Editor Controller */,
 				BF8F4A0B25F6328D00E7335E /* Elemental Browser Controller */,
-				BF13ACD525E93FAD00FE32B3 /* Lantern */,
 				BF3EC5E825E8EAAF000AD5C7 /* Resources */,
 				BF3EC5E725E8E685000AD5C7 /* Source Editing */,
 				BF999C9F25E7681B00FED411 /* ArgonFile.swift */,
@@ -1390,14 +1337,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF08FC0C25803A6A00C4AC6F /* UndefinedSymbol.swift in Sources */,
+				BF4A6D7F25FE3372003F7798 /* UUID+Extensions.swift in Sources */,
 				BF45F1E92596783800376006 /* HandlerSymbol.swift in Sources */,
 				BF7B472725C009DA00FB22DC /* FunctionExpression.swift in Sources */,
 				BF7B475725C00C4800FB22DC /* VariableExpression.swift in Sources */,
-				BF2A148925EBFD250088513B /* RowPane.swift in Sources */,
 				BF7B46D325C0071900FB22DC /* BinaryExpression.swift in Sources */,
 				BF7B476325C00CB800FB22DC /* SubscriptExpression.swift in Sources */,
 				BF7B473325C00A4300FB22DC /* MethodInvocationExpression.swift in Sources */,
-				BF365BC025FCA29100C23F13 /* BlockStatement.swift in Sources */,
 				BF979DD32583B28E002AFB7F /* TokenLocation.swift in Sources */,
 				BF08FC2625803A6A00C4AC6F /* ClassMaker.swift in Sources */,
 				BF3EC5EB25E8EECA000AD5C7 /* StylePalette.swift in Sources */,
@@ -1410,12 +1356,10 @@
 				BF08FBFA25803A6A00C4AC6F /* AliasStatement.swift in Sources */,
 				BF13ACF525E9863300FE32B3 /* NSRect+Extensions.swift in Sources */,
 				BF08FC1325803A6A00C4AC6F /* AccessModifier.swift in Sources */,
-				BF2A149625EC1E1F0088513B /* Alignment.swift in Sources */,
 				BFD04BE02590BED5003FDD90 /* RegisterIndex.swift in Sources */,
 				BF3BEC4825F4ECE2006DFEF8 /* RowWrapper.swift in Sources */,
 				BF7B474E25C00C0700FB22DC /* ModuleExpression.swift in Sources */,
 				BF08FC2025803A6A00C4AC6F /* ForInductionVariable.swift in Sources */,
-				BF2A148F25EBFD660088513B /* DecoratorPane.swift in Sources */,
 				BF7B46DF25C0078E00FB22DC /* PowerExpression.swift in Sources */,
 				BFC008FA25ED26CF00A28897 /* ElementalBrowserViewController.swift in Sources */,
 				BF7B473C25C00B7700FB22DC /* ClassMakerInvocationExpression.swift in Sources */,
@@ -1447,9 +1391,7 @@
 				BF7B46DC25C0075E00FB22DC /* AdditionExpression.swift in Sources */,
 				BFE0A0932593B2C700B85ADF /* LHSValue.swift in Sources */,
 				BF85B1C425B1208C00C40C03 /* SemanticVersionNumber.swift in Sources */,
-				BFC008EF25ECEEC800A28897 /* PaneEdge.swift in Sources */,
 				BF979DB925832410002AFB7F /* NSFont+Extension.swift in Sources */,
-				BF13ACE525E9550D00FE32B3 /* CompositePane.swift in Sources */,
 				BF5D894525E7DCDA0037E98E /* LineAnnotation.swift in Sources */,
 				BF64815C25B41A7C00D75675 /* SelectElementClause.swift in Sources */,
 				BF08FBF225803A6A00C4AC6F /* AssignmentStatement.swift in Sources */,
@@ -1480,12 +1422,10 @@
 				BF999CAE25E7BD9B00FED411 /* LineNumberTextView.swift in Sources */,
 				BFD58CE8258F07DF00B2ADDD /* Identifier.swift in Sources */,
 				BF7B473F25C00B9500FB22DC /* TypeMakerInvocationExpression.swift in Sources */,
-				BF13ACE825E9552C00FE32B3 /* TextPane.swift in Sources */,
 				BF8CF0A925C0A06900A8FE30 /* MemorySegment.swift in Sources */,
 				BF08FC1E25803A6A00C4AC6F /* Module.swift in Sources */,
 				BF7B472425C009CF00FB22DC /* LiteralArrayExpression.swift in Sources */,
 				BF08FB4725803A2900C4AC6F /* AppDelegate.swift in Sources */,
-				BF2A148225EBD0810088513B /* BorderedPane.swift in Sources */,
 				BF08FBCE25803A6A00C4AC6F /* SourceReference.swift in Sources */,
 				BFC3FD7E25E2978F0099944C /* AssociationClass.swift in Sources */,
 				BF1F082425D28B8D001A8DC5 /* RawMemory.c in Sources */,
@@ -1508,7 +1448,6 @@
 				BF72F91E25F6402400E6DC8A /* SlotRowWrapper.swift in Sources */,
 				BFEC9CD625EE25490006C40D /* ElementalList.swift in Sources */,
 				BF7B473025C00A3300FB22DC /* InvocationExpression.swift in Sources */,
-				BF13ACFB25E9A3DE00FE32B3 /* DragHand.swift in Sources */,
 				BF72F92A25F65F6500E6DC8A /* TypeVariableRowWrapper.swift in Sources */,
 				BFC008FD25ED272600A28897 /* ListBrowserViewController.swift in Sources */,
 				BFC3FD8E25E298670099944C /* ValueClass.swift in Sources */,
@@ -1521,7 +1460,6 @@
 				BF08FC1625803A6A00C4AC6F /* Enumeration.swift in Sources */,
 				BF72F93D25F6D6A900E6DC8A /* MacroExpander.swift in Sources */,
 				BF08FBCC25803A6A00C4AC6F /* Argument.swift in Sources */,
-				BF13ACEB25E9553800FE32B3 /* PaneIcon.swift in Sources */,
 				BF7B46F425C0080E00FB22DC /* ScalarExpression.swift in Sources */,
 				BFD04BE92590C6E0003FDD90 /* RegisterSet.swift in Sources */,
 				BF999CB125E7BDC100FED411 /* LineNumberGutter.swift in Sources */,
@@ -1551,7 +1489,6 @@
 				BFEC9CEE25EE4D450006C40D /* RowView.swift in Sources */,
 				BFC3FD8825E298380099944C /* ConstantClass.swift in Sources */,
 				BF64816C25B45DE100D75675 /* SystemPlaceholderModule.swift in Sources */,
-				BF13ACF825E9885C00FE32B3 /* PaneView.swift in Sources */,
 				BF7B46FD25C0088400FB22DC /* LiteralEnumerationExpression.swift in Sources */,
 				BF7952BA2592A54D00B90AE3 /* AliasSlot.swift in Sources */,
 				BF1F082E25D2F676001A8DC5 /* Max+Extensions.swift in Sources */,
@@ -1567,8 +1504,6 @@
 				BF0A932025E5D7CE000AFDA6 /* SlotEditorViewController.swift in Sources */,
 				BF2357FC25DB56CC0087E27F /* SymbolVisitor.swift in Sources */,
 				BF7B472D25C00A1100FB22DC /* IdentifierExpression.swift in Sources */,
-				BF13ACDC25E94A8300FE32B3 /* PaneLayer.swift in Sources */,
-				BF2A148C25EBFD470088513B /* ColumnPane.swift in Sources */,
 				BF57C36925B6FE760024F95F /* LayoutSlot.swift in Sources */,
 				BF08FBF325803A6A00C4AC6F /* SelectStatement.swift in Sources */,
 				BFA2064725D3E87C00376EB8 /* ArgonSourceDocument.swift in Sources */,
@@ -1587,7 +1522,6 @@
 				BF7B46F125C0080000FB22DC /* BitExpression.swift in Sources */,
 				BF08FBF625803A6A00C4AC6F /* SignalStatement.swift in Sources */,
 				BF7B474525C00BCB00FB22DC /* VectorExpression.swift in Sources */,
-				BFC008EC25ECEAAD00A28897 /* ComposingRowPane.swift in Sources */,
 				BF7B475125C00C1300FB22DC /* ClassExpression.swift in Sources */,
 				BF3EC5D825E8C45F000AD5C7 /* ItemEditorCell.swift in Sources */,
 				BF3EC5D425E8C043000AD5C7 /* FramingView.swift in Sources */,
@@ -1625,7 +1559,6 @@
 				BF08FC0125803A6A00C4AC6F /* ForkStatement.swift in Sources */,
 				BF8B026A25FA3CB00004E454 /* SystemPlaceholderFunction.swift in Sources */,
 				BFC3FD8525E2981E0099944C /* SequenceGeneratorClass.swift in Sources */,
-				BF2A149225EBFDA30088513B /* TitledPane.swift in Sources */,
 				BF7B46EB25C007E100FB22DC /* RelationalExpression.swift in Sources */,
 				BF7B475D25C00C9400FB22DC /* SlotExpression.swift in Sources */,
 				BF8B025D25FA20300004E454 /* EnumerationCaseRowWrapper.swift in Sources */,
@@ -1691,7 +1624,6 @@
 				BF3BEC3725F498C0006DFEF8 /* ClassEditorViewController.swift in Sources */,
 				BF08FC2925803A6A00C4AC6F /* PeepholeCodeOptimiser.swift in Sources */,
 				BF08FBCD25803A6A00C4AC6F /* Type.swift in Sources */,
-				BF13ACD725E93FC700FE32B3 /* Pane.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

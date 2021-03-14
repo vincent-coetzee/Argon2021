@@ -14,5 +14,5 @@ internal protocol CompilerPhase
     var name:String { get }
     func preProcess(source:String,using:Compiler) throws
     func process(source:String,using: Compiler) throws
-    func postProcess(module:TopModule,using:Compiler) throws
+    func postProcess(module:RootModule,using:Compiler) throws
     }

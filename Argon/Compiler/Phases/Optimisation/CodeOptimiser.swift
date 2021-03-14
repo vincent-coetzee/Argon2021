@@ -25,7 +25,7 @@ internal class CodeOptimiser:CompilerPhase
         {
         }
         
-    internal func postProcess(module:TopModule,using compiler:Compiler) throws
+    internal func postProcess(module:RootModule,using compiler:Compiler) throws
         {
         }
     }

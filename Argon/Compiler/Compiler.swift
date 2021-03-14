@@ -10,7 +10,7 @@ import Foundation
 
 public class Compiler
     {
-    public var topModule:TopModule?
+    public var topModule:RootModule?
     
     public let staticSegment = StaticSegment(sizeInBytes:1024*1024*10)
     public let dataSegment = DataSegment(sizeInBytes:1024*1024*10)
@@ -91,7 +91,7 @@ public class Compiler
         fatalError("Invalid segment")
         }
         
-    internal func compile(source:String) -> TopModule?
+    internal func compile(source:String) -> RootModule?
         {
         do
             {

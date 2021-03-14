@@ -13,13 +13,15 @@ public class SequenceGeneratorClass:Class
     let start:Expression
     let end:Expression
     let step:Expression
+    let range:Token.Symbol
     
-    init(baseClass:Class,start:Expression,step:Expression,end:Expression)
+    init(baseClass:Class,start:Expression,step:Expression,end:Expression,range:Token.Symbol)
         {
         self.baseClass = baseClass
         self.start = start
         self.step = step
         self.end = end
+        self.range = range
         super.init(shortName:Argon.nextName("SEQUENCE"))
         }
     

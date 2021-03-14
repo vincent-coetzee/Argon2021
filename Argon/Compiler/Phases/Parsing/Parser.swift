@@ -28,7 +28,6 @@ internal class Parser:CompilerPhase
     private var tokenStream:TokenStream = TokenStream()
     private var accessModifierStack = Stack<AccessModifier>()
     private var isFirstModule = true
-    private var currentContainer:SymbolContainer = .nothing
     
     public var effectiveAccessModifier:AccessModifier
         {
@@ -46,7 +45,7 @@ internal class Parser:CompilerPhase
             }
         if let aModule = module
             {
-            compiler.topModule = aModule as! TopModule
+            compiler.topModule = aModule as! RootModule
             }
         }
         
@@ -54,7 +53,7 @@ internal class Parser:CompilerPhase
         {
         }
         
-    internal func postProcess(module:TopModule,using compiler:Compiler) throws
+    internal func postProcess(module:RootModule,using compiler:Compiler) throws
         {
         print("halt")
         }
@@ -110,7 +109,7 @@ internal class Parser:CompilerPhase
         
     private func popAccessModifier()
         {
-        self.accessModifierStack.popScope()
+        self.accessModifierStack.pop()
         }
         
     internal func parse(using:Compiler,sourceFile:SourceFile) throws
@@ -158,10 +157,10 @@ internal class Parser:CompilerPhase
         {
         self.advance()
         let moduleName = try self.parseIdentifier()
-        var module = Module.currentScope.lookup(shortName: moduleName).first as? Module
+        var module = Module.currentScope.lookup(shortName: moduleName)?.first as? Module
         if module == nil
             {
-            module = isFirstModule ? TopModule(shortName:moduleName) : Module(shortName:moduleName)
+            module = Module(shortName:moduleName)
             Module.currentScope.addSymbol(module!)
             }
         module!.pushScope()
@@ -389,11 +388,11 @@ internal class Parser:CompilerPhase
             {
             try self.parseParentheses
                 {
-                if !self.token.isString
+                if !self.token.isCompoundIdentifier && !self.token.isIdentifier
                     {
-                    throw(CompilerError(.stringLiteralOrVariableExpected,self.token.location))
+                    throw(CompilerError(.identifierExpected,self.token.location))
                     }
-                path = self.token.string
+                path = self.token.isIdentifier ? self.token.identifier : self.token.compoundIdentifier
                 isPathBased = true
                 self.advance()
                 }
@@ -471,7 +470,7 @@ internal class Parser:CompilerPhase
         let location = self.token.location
         let name = try self.parseIdentifier()
         var theMethod:Method
-        if let method = Module.currentScope.lookup(shortName:name).first as? Method
+        if let method = Module.currentScope.lookup(shortName:name)?.first as? Method
             {
             theMethod = method
             }
@@ -631,6 +630,38 @@ internal class Parser:CompilerPhase
         aClass.accessLevel = self.effectiveAccessModifier
         }
         
+    private func makeClassAndModulesOnPath(name:Name) -> Class
+        {
+        var module:Module
+        if name.isAnchored
+            {
+            module = Module.rootModule
+            }
+        else
+            {
+            module = Module.currentModule
+            }
+        let className = name.last
+        for part in name.withoutLast()
+            {
+            if let pathModule = module.lookupModule(shortName: part)
+                {
+                module = pathModule
+                }
+            else
+                {
+                let newModule = Module(shortName: part)
+                newModule.wasDeclaredForward = true
+                module.addSymbol(newModule)
+                module = newModule
+                }
+            }
+        let theClass = Class(shortName:className)
+        theClass.wasDeclaredForward = true
+        module.addSymbol(theClass)
+        return(theClass)
+        }
+        
     private func parseClassDeclaration() throws
         {
         self.advance()
@@ -674,8 +705,15 @@ internal class Parser:CompilerPhase
             else
                 {
                 let name = try self.parseName()
-                let superclass = self.lookupClass(name: name)
-                aClass.superclasses = [superclass]
+                if let superclass = Module.currentModule.lookupClass(name: name)
+                    {
+                    aClass.superclasses = [superclass]
+                    }
+                else
+                    {
+                    let superclass = self.makeClassAndModulesOnPath(name:name)
+                    aClass.superclasses = [superclass]
+                    }
                 hasSuperclass = true
                 }
             }
@@ -888,15 +926,13 @@ internal class Parser:CompilerPhase
             {
             return(aClass)
             }
-        let newClass = Class(shortName:name.last)
-        newClass.wasDeclaredForward = true
-        try? Module.currentScope.addSymbol(newClass,atName:name)
+        let newClass = self.makeClassAndModulesOnPath(name: name)
         return(newClass)
         }
         
     private func lookupClass(name:String) -> Class
         {
-        if let aClass = Module.currentScope.lookup(shortName:name).first as? Class
+        if let aClass = Module.currentScope.lookup(shortName:name)?.first as? Class
             {
             return(aClass)
             }
@@ -1273,7 +1309,7 @@ internal class Parser:CompilerPhase
                 throw(CompilerError(.rightBrocketExpected,self.token.location))
                 }
             self.advance()
-            let pointer = Module.argonModule.lookupClass("Pointer")!
+            let pointer = Module.argonModule.lookupClass(name: Name("Pointer"))!
             return(pointer.specialize(elementType:elementType))
             }
         else if token.isLeftPar
@@ -1361,9 +1397,9 @@ internal class Parser:CompilerPhase
                 throw(CompilerError(.rightBracketExpected,self.token.location))
                 }
             self.advance()
-            let module = Module.rootModule.lookupModule("Argon/Collections")
-            let generator = SequenceGeneratorClass(baseClass: aClass, start: LiteralIntegerExpression(integer: startInteger), step: Expression(), end: LiteralIntegerExpression(integer: endInteger))
-            generator.module = module!
+            let module = Module.rootModule.lookupModule(name: Name("Argon\\Collections"))
+            let generator = SequenceGeneratorClass(baseClass: aClass, start: LiteralIntegerExpression(integer: startInteger), step: Expression(), end: LiteralIntegerExpression(integer: endInteger),range:range)
+            generator.container = .module(module!)
             return(generator)
             }
         else
@@ -1401,7 +1437,7 @@ internal class Parser:CompilerPhase
         else if self.token.isIdentifier
             {
             let name = try self.parseIdentifier()
-            if let result = Module.currentScope.lookup(shortName:name)?.first
+            if let result = Module.currentScope.lookup(name: Name(name))?.first
                 {
                 if let enumeration = result as? Enumeration
                     {
@@ -1443,7 +1479,7 @@ internal class Parser:CompilerPhase
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
         self.advance()
-        let arrayClass = Module.argonModule.lookupClass("Collections\\Array")!
+        let arrayClass = Module.argonModule.lookupClass(name: Name("Collections\\Array"))!
         let aClass = arrayClass.specialize(indexType:indexType,elementType: elementTypeClass)
         return(aClass)
         }
@@ -1462,7 +1498,7 @@ internal class Parser:CompilerPhase
             {
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
-        let pointerClass = Module.argonModule.lookupClass("Pointer")!
+        let pointerClass = Module.argonModule.lookupClass(name: Name("Pointer"))!
         let specializedClass = pointerClass.specialize(with:[elementType])
         return(specializedClass)
         }
@@ -1481,7 +1517,7 @@ internal class Parser:CompilerPhase
             {
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
-        let listClass = Module.argonModule.lookupClass("List")!
+        let listClass = Module.argonModule.lookupClass(name: Name("List"))!
         let specializedClass = listClass.specialize(elementType:elementType)
         return(specializedClass)
         }
@@ -1500,7 +1536,7 @@ internal class Parser:CompilerPhase
             {
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
-        let setClass = Module.argonModule.lookupClass("Set")!
+        let setClass = Module.argonModule.lookupClass(name: Name("Set"))!
         let specializedClass = setClass.specialize(elementType:elementType)
         return(specializedClass)
         }
@@ -1524,7 +1560,7 @@ internal class Parser:CompilerPhase
             {
             throw(CompilerError(.rightBrocketExpected,self.token.location))
             }
-        let dictionaryClass = Module.argonModule.lookupClass("Dictionary")!
+        let dictionaryClass = Module.argonModule.lookupClass(name: Name("Dictionary"))!
 //        let specializedClass = dictionaryClass.specialize(elementType:
         fatalError()
 //        return(specializedClass)
@@ -1903,7 +1939,7 @@ internal class Parser:CompilerPhase
             }
         let statement = SelectStatement(expression:selectionExpression!)
         statement.location = location
-        statement.pushScope()
+        statement.block.pushScope()
         defer
             {
             statement.popScope()

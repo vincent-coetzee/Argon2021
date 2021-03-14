@@ -22,16 +22,16 @@ public class Closure:Symbol
     internal var marker:Int?
     internal var ir3ABuffer = A3CodeBuffer()
     
-    internal override init(shortName:String = "",parent:Symbol? = nil)
+    internal override init(shortName:String = "",container:SymbolContainer = .nothing)
         {
         self.marker = Argon.nextIndex()
-        super.init(shortName:shortName,parent:parent)
+        super.init(shortName:shortName,container:container)
         }
     
-    internal override init(name:Name = Name(),parent:Symbol? = nil)
+    internal override init(name:Name = Name(),container:SymbolContainer = .nothing)
         {
         self.marker = Argon.nextIndex()
-        super.init(name:name,parent:parent)
+        super.init(name:name,container:container)
         }
     
     public required init?(coder:NSCoder)
@@ -49,12 +49,12 @@ public class Closure:Symbol
             }
         }
         
-    internal override func lookup(shortName:String) -> SymbolSet?
+    public override func lookup(shortName:String) -> SymbolSet?
         {
         return(self.block.lookup(shortName:shortName))
         }
 
-    internal override func addSymbol(_ symbol:Symbol)
+    public override func addSymbol(_ symbol:Symbol)
         {
         self.block.addSymbol(symbol)
         }

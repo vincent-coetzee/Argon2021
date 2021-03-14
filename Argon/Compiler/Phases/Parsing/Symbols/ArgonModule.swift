@@ -172,7 +172,7 @@ public class ArgonModule:Module
     private func initIOModule()
         {
         let ioModule = self.placeholderModule("IO",in: self)
-        let conduitClass = self.lookupClass("Conduits\\Conduit")!
+        let conduitClass = self.lookupClass(name: Name("Conduits\\Conduit"))!
         ioModule.placeholderMethodInstance("write",.integerClass,Parameter("conduit",conduitClass,false),Parameter("format",.stringClass,true),VariadicParameter("arguments",.allClass,false))
         }
         

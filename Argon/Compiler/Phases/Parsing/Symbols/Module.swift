@@ -26,14 +26,9 @@ public class Module:Symbol,NSCoding
         return(ItemSymbolBrowserCell(symbol:self))
         }
         
-    public var isTopModule:Bool
+    public var rootModule:RootModule
         {
-        return(false)
-        }
-        
-    public var topModule:TopModule
-        {
-        return(self.container.topModule)
+        return(self.container.rootModule)
         }
         
     public private(set) var genericTypes:[TypeVariable] = []
@@ -96,6 +91,11 @@ public class Module:Symbol,NSCoding
             }
         }
         
+    public override func asSymbolContainer() -> SymbolContainer
+        {
+        return(.module(self))
+        }
+        
     @discardableResult
     public func addFunction(toMethodNamed:String,name:String,libraryName:String,cName:String,returnClass:Class,parameters:Parameter...) -> Function
         {
@@ -151,42 +151,20 @@ public class Module:Symbol,NSCoding
         visitor.acceptModule(self)
         }
         
-    internal func lookupClass(_ name:String) -> Class?
+    public override func lookup(name inputName:Name) -> SymbolSet?
         {
-        return(self.lookup(name: Name(name))?.first as? Class)
-        }
-        
-    internal func lookupModule(_ name:String) -> Module?
-        {
-        return(self.lookup(name: Name(name))?.first as? Module)
-        }
-        
-    public override func lookup(name inputName:Name) -> SymbolSet
-        {
-        var entity:Symbol? = inputName.isAnchored ? Module.rootModule : self
-        var name = inputName
-        while !name.isEmpty && entity != nil
+        if inputName.isAnchored
             {
-            if let object = entity?.lookup(shortName: name.first).first
-                {
-                entity = object
-                name = name.withoutFirst()
-                }
-            else
-                {
-                entity = nil
-                }
+            return(self.rootSymbol.lookup(name:inputName))
             }
-        entity = (entity == nil ? self.imports.lookup(name:inputName).first : entity)
-        return(entity == nil ? nil : SymbolSet(entity!))
+        if let set = self.symbols[inputName.first]
+            {
+            return(set.lookup(name:inputName.withoutFirst()))
+            }
+        return(nil)
         }
         
-    internal override var typeClass:Class
-        {
-        return(ModuleClass(shortName:self.shortName))
-        }
-        
-    internal override func lookup(shortName:String) -> SymbolSet?
+    public override func lookup(shortName:String) -> SymbolSet?
         {
         if let set = super.lookup(shortName: shortName)
             {
@@ -202,17 +180,20 @@ public class Module:Symbol,NSCoding
         return(self.container.lookup(shortName: shortName))
         }
         
-    public override func lookupMethod(shortName:String) -> Method?
+    public func lookupClass(shortName:String) -> Class?
         {
         if let set = self.lookup(shortName:shortName)
             {
-            for symbol in set.symbols
-                {
-                if let method = symbol as? Method
-                    {
-                    return(method)
-                    }
-                }
+            return(set.class)
+            }
+        return(nil)
+        }
+        
+    public func lookupModule(shortName:String) -> Module?
+        {
+        if let set = self.lookup(shortName:shortName)
+            {
+            return(set.module)
             }
         return(nil)
         }
@@ -345,47 +326,19 @@ public class Module:Symbol,NSCoding
         }
     }
 
-public class ModuleClass:Class
-    {
-    public static func ==(lhs:ModuleClass,rhs:Class) -> Bool
-        {
-        return(Swift.type(of:rhs)==Swift.type(of:lhs) && rhs.shortName == lhs.shortName)
-        }
-    }
+//public class ModuleClass:Class
+//    {
+//    public static func ==(lhs:ModuleClass,rhs:Class) -> Bool
+//        {
+//        return(Swift.type(of:rhs)==Swift.type(of:lhs) && rhs.shortName == lhs.shortName)
+//        }
+//    }
 
 public class ImportedModuleReference:Module
     {
     public override var fullName:Name
         {
         return(self.container.fullName + self.shortName)
-        }
-        
-    internal override func lookupClass(_ name:String) -> Class?
-        {
-        if let aClass = super.lookupClass(name)
-            {
-            return(aClass)
-            }
-        let newClass = ImportedClassReference(shortName:name)
-        self.addSymbol(newClass)
-        return(newClass)
-        }
-        
-    internal func lookupClass(_ name:Name) -> Class?
-        {
-        if let set = super.lookup(name:name)
-            {
-            return(set.symbols.first as? Class)
-            }
-        let newClass = ImportedClassReference(shortName:name.last)
-        let newName = name.withoutLast()
-        let thisName = newName.last
-        if thisName != self.shortName
-            {
-            fatalError("lookup of name failed \(name)")
-            }
-        self.addSymbol(newClass)
-        return(newClass)
         }
     }
 
@@ -411,30 +364,4 @@ public class RootModule:Module
         {
         fatalError("init(coder:) has not been implemented")
         }
-    }
-
-public class TopModule:Module
-    {
-    public init(shortName:String)
-        {
-        super.init(shortName:shortName)
-        self.container = .module(Module.rootModule)
-        }
-    
-    public required init?(coder: NSCoder)
-        {
-        fatalError("init(coder:) has not been implemented")
-        }
-        
-    public override var topModule:TopModule
-        {
-        return(self)
-        }
-        
-    public override var isTopModule:Bool
-        {
-        return(true)
-        }
-        
-    public var path:String = ""
     }

@@ -9,59 +9,63 @@
 import Foundation
 
 fileprivate var scopeStack = Stack<Scope>()
-fileprivate var currentGlobalScope:Scope =
+
+fileprivate var _currentScope:Scope =
     {
     Module.argonModule.initArgonModule()
     return(Module.rootModule)
     }()
     
-fileprivate var rulingModule:Module = Module.rootModule
+fileprivate var _currentModule:Module = Module.rootModule
 
-public protocol Scope:class
+public protocol Scope:class,SymbolTable
     {
     var container:SymbolContainer { get set }
     func asSymbolContainer() -> SymbolContainer
-    func lookupSlot(name:Name) -> Slot?
-    func lookupVariable(name:Name) -> Variable? // Constant, LocalVariable or Parameter
-    func lookupClass(name:Name) -> Class?
-    func lookupMethod(name:Name) -> Method?
-    func addSymbol(_ symbol:Symbol)
-    func pushScope()
-    func popScope()
     }
     
 extension Scope
     {
     public func pushScope()
         {
-        self.container = self.asSymbolContainer()
-        scopeStack.push(currentGlobalScope)
-        currentGlobalScope = self
-        if currentGlobalScope is Module
+        self.container = _currentScope.asSymbolContainer()
+        scopeStack.push(_currentScope)
+        _currentScope = self
+        if _currentScope is Module
             {
-            rulingModule = currentGlobalScope as! Module
+            _currentModule = _currentScope as! Module
             }
         }
         
     public func popScope()
         {
-        currentGlobalScope = scopeStack.popScope()
-        if currentGlobalScope is Module
+        _currentScope = scopeStack.pop()
+        if _currentScope is Module
             {
-            rulingModule = currentGlobalScope as! Module
+            _currentModule = _currentScope as! Module
             }
-        }
-    }
-
-extension Module
-    {
-    public static var currentModule:Module
-        {
-        return(rulingModule)
         }
         
     public static var currentScope:Scope
         {
-        return(currentGlobalScope)
+        return(_currentScope)
+        }
+        
+    public static var currentModule:Module
+        {
+        return(_currentModule)
+        }
+    }
+
+extension Symbol
+    {
+    public static var currentModule:Module
+        {
+        return(_currentModule)
+        }
+        
+    public static var currentScope:Scope
+        {
+        return(_currentScope)
         }
     }

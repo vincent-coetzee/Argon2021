@@ -7,6 +7,18 @@
 
 import Cocoa
 
+public class ModuleWrapper
+    {
+    public let module:Module
+    public let source:String
+    
+    init(module:Module,source:String)
+        {
+        self.module = module
+        self.source = source
+        }
+    }
+    
 public class ArgonFile:Elemental,EditableItem
     {
     private let filename:String
@@ -14,7 +26,7 @@ public class ArgonFile:Elemental,EditableItem
     private let pathExtension:String
     private var loadFailed = false
     private var sourceChanged = false
-    private var module:TopModule?
+    private var module:RootModule?
     
     private var _source:String = ""
         {
@@ -54,17 +66,17 @@ public class ArgonFile:Elemental,EditableItem
         }
         
     @discardableResult
-    public func compile() -> Module?
+    public func compile() -> ModuleWrapper?
         {
         let compiler = Compiler()
         self.module = compiler.compile(source:self.source)
-        self.module?.path = path
         if let module = self.module,let data = try? NSKeyedArchiver.archivedData(withRootObject: self.module, requiringSecureCoding: false)
             {
             let url = URL(fileURLWithPath: "/Users/vincent/Desktop/\(module.shortName).arb")
             try? data.write(to: url)
+            return(ModuleWrapper(module:module,source:self.source))
             }
-        return(self.module)
+        return(nil)
         }
         
     public override var childCount:Int

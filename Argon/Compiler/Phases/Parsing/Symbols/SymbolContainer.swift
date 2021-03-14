@@ -9,11 +9,6 @@ import Foundation
 
 public enum SymbolContainer
     {
-    public var topSymbolTable:SymbolTable
-        {
-        
-        }
-        
     public var isNothing:Bool
         {
         switch(self)
@@ -28,8 +23,9 @@ public enum SymbolContainer
     case stackFrame(StackFrame)
     case `class`(Class)
     case module(Module)
-    case topModule(TopModule)
+    case rootModule(RootModule)
     case methodInstance(MethodInstance)
+    case block(Block)
     case nothing
     
     init(with coder:NSCoder)
@@ -44,8 +40,8 @@ public enum SymbolContainer
                 let module = coder.decodeObject(forKey:"containerModule") as! Module
                 self = .module(module)
             case(3):
-                let module = coder.decodeObject(forKey:"containerModule") as! TopModule
-                self = .topModule(module)
+                let module = coder.decodeObject(forKey:"containerModule") as! RootModule
+                self = .rootModule(module)
             case(4):
                 let instance = coder.decodeObject(forKey:"containerMethodInstance") as! MethodInstance
                 self = .methodInstance(instance)
@@ -53,6 +49,9 @@ public enum SymbolContainer
                 let frame = coder.decodeObject(forKey:"containerStackFrame") as! StackFrame
                 self = .stackFrame(frame)
             case(6):
+                let block = coder.decodeObject(forKey:"containerBlock") as! Block
+                self = .block(block)
+            case(7):
                 self = .nothing
             default:
                 fatalError("This should not happen")
@@ -65,11 +64,13 @@ public enum SymbolContainer
             {
             case .class:
                 fatalError("A class can not be added to a class")
+            case .block:
+                fatalError("A class can not be added to a block")
             case .stackFrame:
                 fatalError("A class can not be added to a stack frame")
             case .module(let module):
                 module.addClass(`class`)
-            case .topModule(let module):
+            case .rootModule(let module):
                 module.addClass(`class`)
             case .methodInstance:
                 fatalError("A class can not be added to a method instance")
@@ -82,13 +83,15 @@ public enum SymbolContainer
         {
         switch(self)
             {
+            case .block(let block):
+                block.addSymbol(constant)
             case .class(let aClass):
                 aClass.addConstant(constant)
             case .stackFrame(let frame):
                 frame.addSymbol(constant)
             case .module(let module):
                 module.addConstant(constant)
-            case .topModule(let module):
+            case .rootModule(let module):
                 module.addConstant(constant)
             case .methodInstance:
                 fatalError("A constant can not be added to a method instance")
@@ -101,13 +104,15 @@ public enum SymbolContainer
         {
         switch(self)
             {
+            case .block(let block):
+                block.addSymbol(variable)
             case .class:
                 fatalError("A local variable can not be added to a class")
             case .stackFrame(let frame):
                 frame.addSymbol(variable)
             case .module:
                 fatalError("A local variable can not be added to a module")
-            case .topModule:
+            case .rootModule:
                 fatalError("A local variable can not be added to a topModule")
             case .methodInstance(let instance):
                 instance.addLocalVariable(variable)
@@ -120,13 +125,15 @@ public enum SymbolContainer
         {
         switch(self)
             {
+            case .block(let block):
+                block.addSymbol(parameter)
             case .class:
                 fatalError("A parameter can not be added to a class")
             case .stackFrame(let frame):
                 frame.addSymbol(parameter)
             case .module:
                 fatalError("A parameter can not be added to a module")
-            case .topModule:
+            case .rootModule:
                 fatalError("A parameter can not be added to a topModule")
             case .methodInstance:
                 fatalError("A parameter should be added to a stack frame not a method instance")
@@ -139,6 +146,9 @@ public enum SymbolContainer
         {
         switch(self)
             {
+            case .block(let block):
+                coder.encode(6,forKey:"containerKind")
+                coder.encode(block,forKey:"containerBlock")
             case .class(let aClass):
                 coder.encode(1,forKey:"containerKind")
                 coder.encode(aClass,forKey:"containerClass")
@@ -148,14 +158,14 @@ public enum SymbolContainer
             case .module(let module):
                 coder.encode(2,forKey:"containerKind")
                 coder.encode(module,forKey:"containerModule")
-            case .topModule(let module):
+            case .rootModule(let module):
                 coder.encode(3,forKey:"containerKind")
                 coder.encode(module,forKey:"containerModule")
             case .methodInstance(let instance):
                 coder.encode(4,forKey:"containerKind")
                 coder.encode(instance,forKey:"containerMethodInstance")
             case .nothing:
-                coder.encode(6,forKey:"containerKind")
+                coder.encode(7,forKey:"containerKind")
             }
         }
         
@@ -163,18 +173,20 @@ public enum SymbolContainer
         {
         switch(self)
             {
+            case .block:
+                fatalError("The chain of shortName should not have reached here")
             case .class(let aClass):
                 return(aClass.shortName)
             case .stackFrame(let frame):
                 return("\(frame.id)")
             case .module(let module):
                 return(module.shortName)
-            case .topModule(let module):
+            case .rootModule(let module):
                 return(module.shortName)
             case .methodInstance(let instance):
                 return(instance.shortName)
             case .nothing:
-                fatalError("The chain of fullName should not have reached here")
+                fatalError("The chain of shortName should not have reached here")
             }
         }
         
@@ -182,54 +194,84 @@ public enum SymbolContainer
         {
         switch(self)
             {
+            case .block(let block):
+                return(block.container.fullName)
             case .class(let aClass):
                 return(aClass.fullName)
             case .stackFrame(let frame):
                 return(Name("\(frame.id)"))
             case .module(let module):
                 return(module.fullName)
-            case .topModule(let module):
+            case .rootModule(let module):
                 return(module.fullName)
             case .methodInstance(let instance):
                 return(instance.fullName)
             case .nothing:
-                fatalError("The chain of fullName should not have reached here")
+                return(Name.anchor)
             }
         }
         
-    public var topModule:TopModule
+    public var rootModule:RootModule
         {
         switch(self)
             {
+            case .block(let block):
+                return(block.container.rootModule)
             case .class(let aClass):
-                return(aClass.container.topModule)
+                return(aClass.container.rootModule)
             case .stackFrame(let frame):
-                return(frame.container.topModule)
+                return(frame.container.rootModule)
             case .module(let module):
-                return(module.container.topModule)
-            case .topModule(let module):
+                return(module.container.rootModule)
+            case .rootModule(let module):
                 return(module)
             case .methodInstance(let instance):
-                return(instance.container.topModule)
+                return(instance.container.rootModule)
             case .nothing:
                 fatalError("The chain of topModule should not have reached here")
             }
         }
         
-    public func lookup(shortName:String) -> SymbolSet
+        
+    public var rootSymbol:Symbol
         {
         switch(self)
             {
+            case .block(let block):
+                return(block.rootSymbol)
             case .class(let aClass):
-                return(aClass.container.lookup(shortName:shortName))
+                return(aClass.rootSymbol)
             case .stackFrame(let frame):
-                return(frame.container.lookup(shortName:shortName))
+                return(frame.topSymbol)
             case .module(let module):
-                return(module.lookup(shortName:shortName))
-            case .topModule(let module):
-                return(module.lookup(shortName:shortName))
+                return(module.rootSymbol)
+            case .rootModule(let module):
+                return(module.rootSymbol)
             case .methodInstance(let instance):
-                return(instance.container.lookup(shortName:shortName))
+                return(instance.rootSymbol)
+            case .nothing:
+                fatalError("The chain of topSymbolTable should not have reached here")
+            }
+        }
+        
+        
+    public func lookup(shortName:String) -> SymbolSet?
+        {
+        let name = Name(shortName)
+        switch(self)
+            {
+            case .block(let block):
+                return(block.lookup(name:name))
+            case .class(let aClass):
+                return(aClass.container.lookup(name:name))
+            case .stackFrame(let frame):
+                return(frame.container.lookup(name:name))
+            case .module(let module):
+                return(module.lookup(name:name))
+            case .rootModule(let module):
+                return(module.lookup(name:name))
+            case .methodInstance(let instance):
+                return(instance.container.lookup(name:name))
             case .nothing:
                 fatalError("The chain of topModule should not have reached here")
             }
@@ -239,13 +281,15 @@ public enum SymbolContainer
         {
         switch(self)
             {
+            case .block(let block):
+                return(block.lookup(name:name))
             case .class(let aClass):
                 return(aClass.container.lookup(name:name))
             case .stackFrame(let frame):
                 return(frame.container.lookup(name:name))
             case .module(let module):
                 return(module.lookup(name:name))
-            case .topModule(let module):
+            case .rootModule(let module):
                 return(module.lookup(name:name))
             case .methodInstance(let instance):
                 return(instance.container.lookup(name:name))
@@ -258,13 +302,15 @@ public enum SymbolContainer
         {
         switch(self)
             {
+            case .block(let block):
+                return(block.container.lookupMethod(shortName:shortName))
             case .class(let aClass):
                 return(aClass.container.lookupMethod(shortName:shortName))
             case .stackFrame(let frame):
                 return(frame.container.lookupMethod(shortName:shortName))
             case .module(let module):
                 return(module.lookupMethod(shortName:shortName))
-            case .topModule(let module):
+            case .rootModule(let module):
                 return(module.lookupMethod(shortName:shortName))
             case .methodInstance(let instance):
                 return(instance.container.lookupMethod(shortName:shortName))
