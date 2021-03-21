@@ -19,14 +19,14 @@ internal class TypeChecker:CompilerPhase
         
     internal func process(source:String,using compiler:Compiler) throws
         {
-        try self.typeCheck(compiler.topModule!)
+        try self.typeCheck(compiler.module!)
         }
         
     internal func preProcess(source:String,using compiler:Compiler) throws
         {
         }
         
-    internal func postProcess(module:RootModule,using compiler:Compiler) throws
+    internal func postProcess(module:Module,using compiler:Compiler) throws
         {
         }
         

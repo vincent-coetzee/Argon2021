@@ -31,12 +31,6 @@ public class Method:Symbol,NSCoding
         return(NSImage(named:"IconMethod64")!)
         }
         
-    public override var symbolKind:SymbolKind
-        {
-        return(.method)
-        }
-        
-        
     public override var browserCell:ItemBrowserCell
         {
         return(ItemSymbolBrowserCell(symbol:self))
@@ -45,11 +39,6 @@ public class Method:Symbol,NSCoding
     public var returnType:Type
         {
         fatalError("This should have been defined in the method instance")
-        }
-        
-    public override var childCount:Int
-        {
-        return(self.allSymbols.count)
         }
         
     public var returnTypeClass:Class
@@ -110,7 +99,7 @@ public class Method:Symbol,NSCoding
     public func addInstance(_ instance:MethodInstance)
         {
         self.instances.append(instance)
-        instance.symbolAdded(to: self)
+        instance.container = instance.container
         self._elementals = nil
         }
         

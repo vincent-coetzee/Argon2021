@@ -12,7 +12,7 @@ public class Statement:ParseNode
     {
     public static func ==(lhs:Statement,rhs:Statement) -> Bool
         {
-        return(lhs.index == rhs.index)
+        return(lhs.id == rhs.id)
         }
         
     internal var isReturnStatement:Bool
@@ -21,7 +21,7 @@ public class Statement:ParseNode
         }
         
     internal var location:SourceLocation = .zero
-    
+        
     public func typeCheck() throws
         {
         }
@@ -29,6 +29,12 @@ public class Statement:ParseNode
     public init(location:SourceLocation = .zero)
         {
         self.location = location
+        super.init()
+        }
+        
+    public required init(coder:NSCoder)
+        {
+        super.init(coder:coder)!
         }
         
     internal func allocateAddresses(using compiler:Compiler) throws

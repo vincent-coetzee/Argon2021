@@ -8,28 +8,69 @@
 
 import Foundation
 
-public class CompilerError:Error,Equatable
+public class CompilerIssue
+    {
+    internal let location:SourceLocation
+    internal let hint:String
+    
+    public var isError:Bool
+        {
+        return(false)
+        }
+        
+    public var isWarning:Bool
+        {
+        return(false)
+        }
+        
+    init(_ location:SourceLocation,hint:String = "")
+        {
+        self.location = location
+        self.hint = hint
+        }
+    }
+    
+public class CompilerError:CompilerIssue,Error,Equatable
     {
     public static func ==(lhs:CompilerError,rhs:CompilerError) -> Bool
         {
         return(lhs.code == rhs.code && lhs.location == rhs.location)
         }
         
+    public override var isError:Bool
+        {
+        return(true)
+        }
+        
     let code:SystemError
-    let location:SourceLocation
-    var hint:String = ""
+    let otherError:Error?
     
     init(error:SystemError,location:SourceLocation,hint:String)
         {
         self.code = error
-        self.location = location
-        self.hint = hint
+        self.otherError = nil
+        super.init(location)
         }
         
     init(_ error:SystemError,_ location:SourceLocation)
         {
         self.code = error
-        self.location = location
+        self.otherError = nil
+        super.init(location)
+        }
+        
+    init(_ error:SystemError)
+        {
+        self.code = error
+        self.otherError = nil
+        super.init(.zero)
+        }
+        
+    init(_ error:Error)
+        {
+        self.code = .unknownError
+        self.otherError = error
+        super.init(.zero)
         }
     }
     
@@ -151,4 +192,35 @@ public enum SystemError:Equatable,Error
     case makerForBitSetShouldHaveBeenAutoDeclared
     case typeSpecializationExpected
     case macroStartMarkerExpected
+    case identifierOrCompoundIdentifierExpected(Token)
+    case argonDirectoryIsNotValid
+    case argonRepositoryDirectoryIsNotValid
+    case creationOfArgonDirectoryFailed
+    case creationOfArgonRepositoryDirectoryFailed
+    case unableToWriteTo(String)
+    case refineMustBeSlotClassOrConstant(Token)
+    case refinedSlotMustHaveOriginalName(String,String)
+    case refinedConstantMustHaveOriginalName(String,String)
+    case refinedConstantCanOnlyChangeValue
+    case prefixOfConstantNameShouldBeDollar
+    case typeVariableExpected
+    case classExpectedCountTypesButGot(Int,Int)
+    }
+
+public typealias CompilerIssues = Array<CompilerIssue>
+
+public class CompilerWarning:CompilerIssue
+    {
+    public override var isWarning:Bool
+        {
+        return(true)
+        }
+        
+    private let warning:SystemError
+    
+    init(_ warning:SystemError,_ location:SourceLocation)
+        {
+        self.warning = warning
+        super.init(location)
+        }
     }

@@ -18,6 +18,63 @@
                             <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </view>
+                        <toolbar key="toolbar" implicitIdentifier="4D8F8574-7F62-4B19-B720-F7E2F473DB9C" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="ojO-VM-AK2">
+                            <allowedToolbarItems>
+                                <toolbarItem implicitItemIdentifier="NSToolbarShowColorsItem" id="EYY-gS-CiY"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarShowFontsItem" id="28r-dZ-3eT"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarPrintItem" id="dMZ-4c-EQc"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="6BG-8k-BAZ"/>
+                                <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="NBr-bc-zFM"/>
+                                <toolbarItem implicitItemIdentifier="421AB2DA-D56A-45E2-BCDC-58400D935E3E" label="Open" paletteLabel="Open" tag="-1" image="arrow.up.circle.fill" catalog="system" id="ffL-d5-KWK">
+                                    <size key="minSize" width="37" height="28"/>
+                                    <size key="maxSize" width="37" height="28"/>
+                                    <connections>
+                                        <action selector="onOpenFile:" target="Ldt-LY-HyS" id="yTs-y3-pra"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="CDA30BA8-1B0C-4CE8-9E53-A52D99901486" label="Save" paletteLabel="Save" tag="-1" image="arrow.down.circle.fill" catalog="system" id="qzH-IB-qwg">
+                                    <size key="minSize" width="37" height="28"/>
+                                    <size key="maxSize" width="37" height="28"/>
+                                    <connections>
+                                        <action selector="onSaveFile:" target="Ldt-LY-HyS" id="xYI-Ng-pp7"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="85C5E9BB-DA6E-4C3F-A0DB-661292D03261" label="New" paletteLabel="New" tag="-1" image="circle.fill" catalog="system" id="bXg-Cy-bnR">
+                                    <size key="minSize" width="37" height="28"/>
+                                    <size key="maxSize" width="37" height="28"/>
+                                    <connections>
+                                        <action selector="onNewFile:" target="Ldt-LY-HyS" id="lp1-qu-tze"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="E272AE5A-74B4-44EF-9385-E529B707F146" label="Compile" paletteLabel="Compile" tag="-1" image="circle.dashed" catalog="system" id="CU9-A9-8LE">
+                                    <size key="minSize" width="37" height="28"/>
+                                    <size key="maxSize" width="37" height="28"/>
+                                    <connections>
+                                        <action selector="onCompileFile:" target="Ldt-LY-HyS" id="m68-A5-7tT"/>
+                                    </connections>
+                                </toolbarItem>
+                                <toolbarItem implicitItemIdentifier="1136956A-16D3-4988-8E14-215449A63CB0" label="Import" paletteLabel="Import" tag="-1" image="arrowshape.turn.up.left.circle" catalog="system" id="OzW-wy-4ot">
+                                    <size key="minSize" width="37" height="28"/>
+                                    <size key="maxSize" width="37" height="28"/>
+                                    <connections>
+                                        <action selector="onImportFile:" target="Ldt-LY-HyS" id="pV2-Ac-fRU"/>
+                                    </connections>
+                                </toolbarItem>
+                            </allowedToolbarItems>
+                            <defaultToolbarItems>
+                                <toolbarItem reference="EYY-gS-CiY"/>
+                                <toolbarItem reference="28r-dZ-3eT"/>
+                                <toolbarItem reference="dMZ-4c-EQc"/>
+                                <toolbarItem reference="NBr-bc-zFM"/>
+                                <toolbarItem reference="bXg-Cy-bnR"/>
+                                <toolbarItem reference="NBr-bc-zFM"/>
+                                <toolbarItem reference="ffL-d5-KWK"/>
+                                <toolbarItem reference="qzH-IB-qwg"/>
+                                <toolbarItem reference="NBr-bc-zFM"/>
+                                <toolbarItem reference="CU9-A9-8LE"/>
+                                <toolbarItem reference="OzW-wy-4ot"/>
+                            </defaultToolbarItems>
+                        </toolbar>
                         <connections>
                             <outlet property="delegate" destination="1IP-T5-fMC" id="xmz-uN-ALw"/>
                         </connections>
@@ -664,4 +721,11 @@
             <point key="canvasLocation" x="2083" y="596"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="arrow.down.circle.fill" catalog="system" width="15" height="15"/>
+        <image name="arrow.up.circle.fill" catalog="system" width="15" height="15"/>
+        <image name="arrowshape.turn.up.left.circle" catalog="system" width="15" height="15"/>
+        <image name="circle.dashed" catalog="system" width="15" height="15"/>
+        <image name="circle.fill" catalog="system" width="15" height="15"/>
+    </resources>
 </document>

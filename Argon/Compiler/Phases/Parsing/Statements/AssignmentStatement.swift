@@ -19,7 +19,11 @@ internal class AssignmentStatement:Statement
         self.rvalue = rvalue
         super.init(location:location)
         }
-        
+    
+    public required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     public override func typeCheck() throws
         {
 //        let lhsType = self.lvalue.type

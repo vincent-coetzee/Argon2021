@@ -87,7 +87,7 @@ public class MemorySegment
         self.append(word: ObjectHeader(tag:Tag.header,count:10,kind:.kString).word)
         self.append(pointer:Class.stringClass.memoryAddress)
         self.append(word: Word(string.utf16.count))
-        var bufferPointerPointer = self.append(word: 0)
+        let bufferPointerPointer = self.append(word: 0)
         let count = string.utf16.count
         let size = (( count / 3 ) + 2 ) * 8
         let bufferPointer = self.allocateBuffer(ofSizeInBytes: size)

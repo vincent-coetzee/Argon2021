@@ -292,7 +292,7 @@
 			<dict>
 				<key>public.filename-extension</key>
 				<array>
-					<string>arm</string>
+					<string>ard</string>
 				</array>
 				<key>public.mime-type</key>
 				<array>
@@ -320,7 +320,7 @@
 			<dict>
 				<key>public.filename-extension</key>
 				<array>
-					<string>arb</string>
+					<string>arm</string>
 				</array>
 				<key>public.mime-type</key>
 				<array>

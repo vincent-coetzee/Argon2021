@@ -30,6 +30,14 @@ public class Block:Statement,Scope
         return(!last.isReturnStatement)
         }
         
+    public override var container:SymbolContainer
+        {
+        didSet
+            {
+            assert(self.container != .block(self),"Block should not be it's own container but is")
+            }
+        }
+        
     internal var blockLocalVariables:[LocalVariable]
         {
         return(self.symbols.symbols.filter{$0 is LocalVariable}.map{$0 as! LocalVariable})
@@ -48,6 +56,7 @@ public class Block:Statement,Scope
         {        
         self.init()
         self.container = container
+        assert(self.container != .block(self),"Block should not be it's own conatiner but is")
         }
         
     init(block:Block)
@@ -55,6 +64,7 @@ public class Block:Statement,Scope
         self.statements = block.statements
         self.symbols = block.symbols
         self.marker = block.marker
+        super.init()
         }
         
     init(inductionVariable:InductionVariable)
@@ -73,7 +83,11 @@ public class Block:Statement,Scope
         {
         super.init(location:.zero)
         }
-        
+    
+    public required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     internal override func allocateAddresses(using compiler:Compiler) throws
         {
         for statement in self.statements
@@ -93,11 +107,42 @@ public class Block:Statement,Scope
         self.symbols.addSymbol(variable)
         }
         
+    public override func addTypeSymbol(_ variable:TypeSymbol)
+        {
+        self.symbols.addSymbol(variable)
+        }
+        
+    internal func addParameter(_ variable:Parameter)
+        {
+        self.symbols.addSymbol(variable)
+        }
+        
+    public override func addLocalVariable(_ local:LocalVariable)
+        {
+        self.symbols.addSymbol(local)
+        }
+        
+    public func replaceConstant(_ constant:Constant)
+        {
+        self.symbols.replaceSymbol(constant)
+        }
+        
+    public func addInductionVariable(_ local:InductionVariable)
+        {
+        self.symbols.addSymbol(local)
+        }
+        
+    public func addConstant(_ local:Constant)
+        {
+        self.symbols.addSymbol(local)
+        }
+        
     internal override func addStatement(_ statement:Statement?)
         {
         if let aLine = statement
             {
             self.statements.append(aLine)
+            aLine.container = .block(self)
             }
         }
 
@@ -111,6 +156,10 @@ public class Block:Statement,Scope
         if let set = self.symbols.lookup(shortName:shortName)
             {
             return(set)
+            }
+        if self.container == .block(self)
+            {
+            fatalError("Block is it's own container")
             }
         return(self.container.lookup(shortName:shortName))
         }

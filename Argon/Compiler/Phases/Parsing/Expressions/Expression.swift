@@ -28,6 +28,16 @@ public class Expression:Equatable
         return(Class.voidClass)
         }
         
+    public var isIntegerExpression:Bool
+        {
+        return(false)
+        }
+        
+    public var integerValue:Argon.Integer
+        {
+        fatalError("This was called on an expression of class \(Swift.type(of:self)) and should have been overridden")
+        }
+        
     public static func ==(lhs:Expression,rhs:Expression) -> Bool
         {
         return(false)

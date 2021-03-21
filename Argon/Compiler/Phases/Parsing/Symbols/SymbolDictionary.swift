@@ -35,11 +35,31 @@ extension SymbolDictionary
         
     public func lookup(name:Name) -> SymbolSet?
         {
-        if let set = self[name.first]
+        if let set = self[name.first],name.count == 1
+            {
+            return(set)
+            }
+        else if let set = self[name.first]
             {
             return(set.lookup(name:name.withoutFirst()))
             }
         return(nil)
+        }
+        
+    public mutating func removeSlot(_ slot:Slot)
+        {
+        self[slot.shortName] = nil
+        }
+        
+    public mutating func removeConstant(_ slot:Constant)
+        {
+        self[slot.shortName] = nil
+        }
+        
+    public mutating func replaceSymbol(_ symbol:Symbol)
+        {
+        let symbolSet = (self[symbol.shortName]) ?? SymbolSet()
+        symbolSet.replaceSymbol(symbol)
         }
     }
 

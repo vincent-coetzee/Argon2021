@@ -20,15 +20,45 @@ fileprivate var _currentModule:Module = Module.rootModule
 
 public protocol Scope:class,SymbolTable
     {
+    var id:UUID { get }
+    static func equals(lhs:Scope,rhs:Scope) -> Bool
     var container:SymbolContainer { get set }
     func asSymbolContainer() -> SymbolContainer
     }
     
 extension Scope
     {
+    public static func equals(lhs:Scope,rhs:Scope) -> Bool
+        {
+        if lhs is Symbol && rhs is Symbol
+            {
+            return((lhs as! Symbol) == (rhs as! Symbol))
+            }
+        if lhs is Block && rhs is Block
+            {
+            return((lhs as! Block) == (rhs as! Block))
+            }
+        if lhs is StackFrame && rhs is StackFrame
+            {
+            return((lhs as! StackFrame) == (rhs as! StackFrame))
+            }
+        if lhs is Module && rhs is Module
+            {
+            return((lhs as! Module) == (rhs as! Module))
+            }
+        if lhs is MethodInstance && rhs is MethodInstance
+            {
+            return((lhs as! MethodInstance) == (rhs as! MethodInstance))
+            }
+        fatalError("You missed one")
+        }
+        
     public func pushScope()
         {
-        self.container = _currentScope.asSymbolContainer()
+        if self.container == .nothing && _currentScope.id != self.id
+            {
+            self.container = _currentScope.asSymbolContainer()
+            }
         scopeStack.push(_currentScope)
         _currentScope = self
         if _currentScope is Module

@@ -17,12 +17,36 @@ public class ParseNode:NSObject,SymbolTable
         
     public var container: SymbolContainer = .nothing
     
-    internal var index:Int = Argon.nextIndex()
+    public let id:UUID
 
-    
+    public override init()
+        {
+        self.id = UUID()
+        }
+        
+    public func encode(with coder: NSCoder)
+        {
+        coder.encode(self.id,forKey:"id")
+        }
+        
+    public required init?(coder: NSCoder)
+        {
+        self.id = coder.decodeObject(forKey:"id") as! UUID
+        }
+        
+    public func addLocalVariable(_ local:LocalVariable)
+        {
+        fatalError("This method \(#function) should have been overridden in a subclass but in class \(Swift.type(of:self)) was not")
+        }
+        
+    public func addTypeSymbol(_ local:TypeSymbol)
+        {
+        fatalError("This method \(#function) should have been overridden in a subclass but in class \(Swift.type(of:self)) was not")
+        }
+        
     public func addSymbol(_ symbol: Symbol)
         {
-        fatalError("This method \(#function) should have been overridden in a subclass")
+        fatalError("This method \(#function) should have been overridden in a subclass but in class \(Swift.type(of:self)) was not")
         }
     
     func addSymbol(_ symbol: Symbol,atName:Name) throws
@@ -46,6 +70,11 @@ public class ParseNode:NSObject,SymbolTable
         }
         
     func lookupMethod(shortName: String) -> Method?
+        {
+        fatalError("This method \(#function) should have been overridden in a subclass I am \(Swift.type(of:self))")
+        }
+        
+    public func removeSymbol(_ symbol:Symbol)
         {
         fatalError("This method \(#function) should have been overridden in a subclass I am \(Swift.type(of:self))")
         }

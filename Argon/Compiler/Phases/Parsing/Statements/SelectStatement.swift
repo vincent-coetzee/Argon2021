@@ -19,7 +19,11 @@ internal class SelectStatement:Statement
         self.expression = expression
         super.init(location:location)
         }
-        
+    
+    public required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     internal override func allocateAddresses(using compiler:Compiler) throws
         {
         try self.expression.allocateAddresses(using:compiler)
@@ -32,7 +36,7 @@ internal class SelectStatement:Statement
         
     override func lookup(shortName: String) -> SymbolSet?
         {
-        return(self.parentScope?.lookup(shortName:shortName))
+        return(self.container.lookup(shortName:shortName))
         }
         
     internal override func generateIntermediateCode(in module:Module,codeHolder:CodeHolder,into buffer:A3CodeBuffer,using:Compiler) throws

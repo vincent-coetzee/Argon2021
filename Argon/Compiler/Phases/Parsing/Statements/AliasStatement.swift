@@ -15,8 +15,13 @@ internal class AliasStatement:Statement
     init(alias:TypeSymbol)
         {
         self.alias = alias
+        super.init()
         }
-        
+    
+    public required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     public override func typeCheck() throws
         {
         throw(CompilerError(.notImplemented("AliasStatement>>typeCheck"),.zero))

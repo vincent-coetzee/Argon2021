@@ -6,13 +6,23 @@
 //  Copyright © 2020 Vincent Coetzee. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 
-internal class TypeSymbol:Symbol,NSCoding
+public class TypeSymbol:Symbol,NSCoding
     {
     override internal var typeClass:Class
         {
         return(self.baseType)
+        }
+        
+    public override var icon: NSImage
+        {
+        return(NSImage(named:"IconType64")!)
+        }
+        
+    public override var browserCell:ItemBrowserCell
+        {
+        return(ItemSymbolBrowserCell(symbol:self))
         }
         
     internal var baseType:Class

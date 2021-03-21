@@ -19,6 +19,16 @@ public class LiteralIntegerExpression:LiteralExpression
         return(Class.integerClass)
         }
         
+    public override var isIntegerExpression:Bool
+        {
+        return(true)
+        }
+        
+    public override var integerValue:Argon.Integer
+        {
+        return(self.integer)
+        }
+        
     let integer:Argon.Integer
     
     init()

@@ -15,7 +15,11 @@ internal class OtherwiseClause:SelectElementClause
         super.init(location:location)
         self.block = block
         }
-        
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     internal override func allocateAddresses(using compiler:Compiler) throws
         {
         try self.block.allocateAddresses(using:compiler)

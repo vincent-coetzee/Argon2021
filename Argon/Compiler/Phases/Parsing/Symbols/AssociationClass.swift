@@ -19,6 +19,13 @@ public class AssociationClass:Class
         super.init(shortName:"ASSOCIATION")
         }
     
+    override init(shortName:String)
+        {
+        self.keyClass = .voidClass
+        self.valueClass = .voidClass
+        super.init(shortName:shortName)
+        }
+        
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

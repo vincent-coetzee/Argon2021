@@ -62,7 +62,6 @@ public class ArgonModule:Module
         self.addSymbol(Class.conduitClass)
         self.addSymbol(Class.keyedConduitClass)
         self.addSymbol(Class.sequentialConduitClass)
-        self.addSymbol(Class.allClass)
         self.addSymbol(Class.constantClass)
         self.addSymbol(Class.enumerationClass)
         self.addSymbol(Class.bitValueClass)
@@ -87,7 +86,7 @@ public class ArgonModule:Module
             return(self)
             }
         self.wasInitialized = true
-        self.reset()
+        self.symbols = SymbolDictionary()
         self.initBaseModules()
         self.initBaseClasses()
         self.initSystemModules()
@@ -155,14 +154,10 @@ public class ArgonModule:Module
         collectionsModule.addSymbol(Class.listClass)
         collectionsModule.addSymbol(Class.setClass)
         collectionsModule.addSymbol(Class.dictionaryClass)
+        collectionsModule.addSymbol(Class.byteArrayClass)
         let indexClass = collectionsModule.placeholderClass("Index",parents:[.valueClass])
         let processionClass = collectionsModule.placeholderClass("Procession",parents:[.valueClass]).placeholderSlot("currentIndex",class:indexClass).placeholderSlot("nextIndex",class:indexClass).placeholderSlot("previousIndex",class:indexClass).placeholderSlot("isLastIndex",class:.booleanClass)
-        let collectionClass = Class.collectionClass.placeholderSlot("count",class:.integerClass).placeholderSlot("firstIndex",class:indexClass).placeholderSlot("lastIndex",class:indexClass)
-        let arrayClass = Class.arrayClass.superclasses([collectionClass])
-        collectionsModule.placeholderClass("ByteArray",parents:[arrayClass])
-        Class.listClass.superclasses([collectionClass])
-        Class.setClass.superclasses([collectionClass])
-        Class.dictionaryClass.superclasses([collectionClass])
+        Class.collectionClass.placeholderSlot("count",class:.integerClass).placeholderSlot("firstIndex",class:indexClass).placeholderSlot("lastIndex",class:indexClass)
         collectionsModule.placeholderMethodInstance("proceed",processionClass,Parameter("collection",Class.listClass, true))
         collectionsModule.placeholderMethodInstance("proceed",processionClass,Parameter("collection",Class.arrayClass, true))
         collectionsModule.placeholderMethodInstance("proceed",processionClass,Parameter("collection",Class.setClass, true))
@@ -173,7 +168,7 @@ public class ArgonModule:Module
         {
         let ioModule = self.placeholderModule("IO",in: self)
         let conduitClass = self.lookupClass(name: Name("Conduits\\Conduit"))!
-        ioModule.placeholderMethodInstance("write",.integerClass,Parameter("conduit",conduitClass,false),Parameter("format",.stringClass,true),VariadicParameter("arguments",.allClass,false))
+        ioModule.placeholderMethodInstance("write",.integerClass,Parameter("conduit",conduitClass,false),Parameter("format",.stringClass,true),VariadicParameter("arguments",.rootClass,false))
         }
         
     private func initSocketsModule()
@@ -186,7 +181,7 @@ public class ArgonModule:Module
         socketClass.placeholderSlot("isConnected",class:.booleanClass).placeholderSlot("flags",class:.uInteger64Class)
         socketsModule.addFunction(toMethodNamed:"connect",name:"connect",libraryName:"Sockets",cName:"_connectSocket",returnClass:.booleanClass,parameters:Parameter("socket",socketClass, true),Parameter("address",Class.addressClass, true),Parameter("port",Class.uInteger16Class, true))
         socketsModule.addFunction(toMethodNamed:"close",name:"close",libraryName:"Sockets",cName:"_closeSocket",returnClass:.booleanClass,parameters:Parameter("socket",socketClass, true))
-        let byteArrayClass = self.lookupClass("Collections\\ByteArray")!
+        let byteArrayClass = self.lookupClass(name: Name("Collections\\ByteArray"))!
         socketsModule.addFunction(toMethodNamed:"read",name:"read",libraryName:"Sockets",cName:"_readSocket",returnClass:byteArrayClass,parameters:Parameter("socket",socketClass, true))
         socketsModule.addFunction(toMethodNamed:"write",name:"write",libraryName:"Sockets",cName:"_writeSocket",returnClass:.integerClass,parameters:Parameter("socket",socketClass, true),Parameter("bytes",byteArrayClass, true))
         }
@@ -226,5 +221,14 @@ public class ArgonModule:Module
         searchModule.addSymbol(module)
         module.container = .module(searchModule)
         return(module)
+        }
+        
+    public override func lookup(name inputName:Name) -> SymbolSet?
+        {
+        if let set = self.symbols[inputName.first],let symbolSet = set.lookup(name:inputName.withoutFirst())
+            {
+            return(symbolSet)
+            }
+        return(nil)
         }
     }

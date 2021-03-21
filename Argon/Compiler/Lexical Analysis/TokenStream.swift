@@ -45,17 +45,19 @@ public class TokenStream:Equatable
     private var keywords:[String] = []
     private var nativeTypes:[String] = []
     private var startIndex:Int = 0
+    private var identifierCharacters = NSCharacterSet.alphanumerics.union(CharacterSet(charactersIn: "_\\$"))
     private let alphanumerics = NSCharacterSet.alphanumerics.union(CharacterSet(charactersIn: "_"))
     private let symbolString = NSCharacterSet.alphanumerics.union(CharacterSet(charactersIn: "_"))
     private let letters = NSCharacterSet.letters.union(CharacterSet(charactersIn: "_"))
-    private let compoundNameCharacters = NSCharacterSet.letters.union(CharacterSet.decimalDigits)
+    private let compoundNameCharacters = NSCharacterSet.letters.union(CharacterSet.decimalDigits).union(CharacterSet(charactersIn:"$.:_-"))
     private let digits = NSCharacterSet.decimalDigits
     private let whitespace = NSCharacterSet.whitespaces
     private let newline = NSCharacterSet.newlines
     private let symbols = CharacterSet(charactersIn: "=<>-+*/%!&|^\\/~:.,$()[]:.{},@")
     private let hexDigits = CharacterSet(charactersIn: "ABCDEF0123456789_")
     private let binaryDigits = CharacterSet(charactersIn: "01_")
-    private let operatorSymbols = CharacterSet(charactersIn: "=<-+*/%!&|^\\~@$")
+    private let operatorSymbols = CharacterSet(charactersIn: "=<-+*/%!&|^~@")
+    private let hashStringCharacters = NSCharacterSet.alphanumerics.union(CharacterSet(charactersIn: "_-+*"))
     private var tokenStart:Int = 0
     private var tokenStop:Int = 0
     private var lineStart:Int = 0
@@ -66,7 +68,13 @@ public class TokenStream:Equatable
     private var lineLength:Int = 0
     private var tokenLine:Int = 0
     private var positionStack = Stack<StreamPosition>()
+    private var _braceDepth = 0
     
+    public var braceDepth:Int
+        {
+        return(self._braceDepth)
+        }
+        
     public var lineNumber:Int
         {
         get
@@ -397,8 +405,9 @@ public class TokenStream:Equatable
             }
         else if self.currentChar == "#"
             {
-            var string:String = ""
-            while !whitespace.contains(self.currentChar) && !symbols.contains(self.currentChar) && !self.newline.contains(self.currentChar)
+            var string:String = "#"
+            self.nextChar()
+            while hashStringCharacters.contains(self.currentChar) && !self.atEnd && !self.atEndOfLine
                 {
                 string += String(self.currentChar)
                 nextChar()
@@ -731,11 +740,13 @@ public class TokenStream:Equatable
                 self.nextChar()
                 return(.symbol(.macroEnd,self.sourceLocation()))
                 }
+            self._braceDepth -= 1
             return(.symbol(.rightBrace,self.sourceLocation()))
             }
         else if self.currentChar == "{"
             {
             self.nextChar()
+            self._braceDepth += 1
             return(.symbol(.leftBrace,self.sourceLocation()))
             }
         else if self.currentChar == "]"

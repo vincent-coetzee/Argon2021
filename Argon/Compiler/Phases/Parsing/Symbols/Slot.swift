@@ -32,7 +32,14 @@ public class Slot:Variable,NSCoding
         
     public var cloned:Slot
         {
-        return(Slot(shortName:self.shortName,class:self._class,container:self.container,attributes:self.attributes))
+        return(Self(shortName:self.shortName,class:self._class,container:self.container,attributes:self.attributes))
+        }
+        
+    public func cloned(withInitialValue:Expression?) -> Slot
+        {
+        let slot = self.cloned
+        slot.initialValue = withInitialValue
+        return(slot)
         }
         
     public var isRawSlot:Bool
@@ -83,7 +90,7 @@ public class Slot:Variable,NSCoding
         self._class = `class`
         }
         
-    internal init(shortName:String,class:Class,container:SymbolContainer = .nothing,attributes:SlotAttributes)
+    internal required init(shortName:String,class:Class,container:SymbolContainer = .nothing,attributes:SlotAttributes)
         {
         self.attributes = attributes
         super.init(shortName: shortName,class: .voidClass)

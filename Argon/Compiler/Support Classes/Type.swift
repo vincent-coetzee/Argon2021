@@ -12,11 +12,10 @@ public indirect enum Type:Equatable
     {
     public enum ArrayIndexType:Equatable
         {
-        case enumeration(Enumeration)
-        case bounded(lowerBound:Argon.Integer,upperBound:Argon.Integer)
-        case upperBounded(Argon.Integer)
-        case unbounded
-        case none
+        case enumeration(Enumeration)                                           // Array<SomeEnum,Element>
+        case bounded(lowerBound:Argon.Integer,upperBound:Argon.Integer)         // Array<10,20,Element>
+        case size(Argon.Integer)                                                // Array<20,Element>
+        case unbounded                                                          // Array<Element>
         }
         
     case all

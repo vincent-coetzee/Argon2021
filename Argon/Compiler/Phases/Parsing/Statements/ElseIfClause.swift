@@ -17,4 +17,8 @@ internal class ElseIfClause:ElseClause
         self.condition = condition
         super.init(location:location,block:block)
         }
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
+}

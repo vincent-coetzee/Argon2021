@@ -20,7 +20,15 @@ internal class TimesStatement:ControlFlowStatement
         super.init(location:location)
         self.location = location
         }
-        
+    
+    required init(coder: NSCoder)
+        {
+        self.expression = coder.decodeObject(forKey:"expression") as! Expression
+        self.block = coder.decodeObject(forKey:"block") as! Block
+        super.init(coder:coder)
+        }
+    
+    
     internal override func allocateAddresses(using compiler:Compiler) throws
         {
         try self.expression.allocateAddresses(using:compiler)

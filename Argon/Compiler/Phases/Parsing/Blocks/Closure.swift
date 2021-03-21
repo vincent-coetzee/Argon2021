@@ -12,13 +12,13 @@ public class Closure:Symbol
     {
     public var displayString: String
         {
-        return("CLOSURE_\(self.index)")
+        return("CLOSURE_\(self.id)")
         }
     
     internal var returnTypeClass:Class = .voidClass
     internal var parameters = Parameters()
     internal var block = Block()
-    internal var symbols:[String:SymbolSet] = [:]
+    internal var symbols = SymbolDictionary()
     internal var marker:Int?
     internal var ir3ABuffer = A3CodeBuffer()
     
@@ -54,9 +54,29 @@ public class Closure:Symbol
         return(self.block.lookup(shortName:shortName))
         }
 
-    public override func addSymbol(_ symbol:Symbol)
+    public override func asSymbolContainer() -> SymbolContainer
         {
-        self.block.addSymbol(symbol)
+        return(.closure(self))
+        }
+        
+    public func replaceConstant(_ constant:Constant)
+        {
+        self.symbols.replaceSymbol(constant)
+        }
+        
+    public override func addLocalVariable(_ local:LocalVariable)
+        {
+        self.block.addLocalVariable(local)
+        }
+        
+    public func addConstant(_ local:Constant)
+        {
+        self.block.addConstant(local)
+        }
+        
+    public func addParameter(_ local:Parameter)
+        {
+        self.block.addParameter(local)
         }
         
     internal override func addStatement(_ statement:Statement?)

@@ -13,11 +13,15 @@ class SourceViewController: NSViewController,ElementalSink
     
     private var elemental:Elemental?
     
-    public var source:String = ""
+    public var source:String
         {
-        didSet
+        get
             {
-            self.sourceView.source = self.source
+            return(sourceView.source)
+            }
+        set
+            {
+            self.sourceView.source = newValue
             }
         }
         
@@ -25,6 +29,9 @@ class SourceViewController: NSViewController,ElementalSink
         {
         super.viewDidLoad()
         ArgonBrowserViewController.instance?.sourceViewController = self
+        self.sourceView.gutterForegroundColor = .white
+        self.sourceView.gutterBackgroundColor = .black
+        self.sourceView.backgroundColor = .black
         }
         
     func setElemental(_ elemental: Elemental)
@@ -33,6 +40,18 @@ class SourceViewController: NSViewController,ElementalSink
         if elemental.hasSource
             {
             self.sourceView.source = elemental.source
+            if elemental is ArgonFile
+                {
+                let file = elemental as! ArgonFile
+                if file.hasErrors
+                    {
+                    let annotations = file.errorAnnotations
+                    for annotation in annotations
+                        {
+                        self.sourceView.addAnnotation(annotation)
+                        }
+                    }
+                }
             }
         }
     }

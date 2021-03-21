@@ -17,4 +17,8 @@ internal class ForkStatement:ControlFlowStatement
         self.expression = expression
         super.init(location:location)
         }
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
+}

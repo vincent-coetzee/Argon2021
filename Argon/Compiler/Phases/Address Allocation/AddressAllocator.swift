@@ -19,14 +19,14 @@ internal class AddressAllocator:CompilerPhase
         
     internal func process(source:String,using compiler:Compiler) throws
         {
-        try self.allocateAddresses(in:compiler.topModule!,using:compiler)
+        try self.allocateAddresses(in:compiler.module!,using:compiler)
         }
         
     internal func preProcess(source:String,using compiler:Compiler) throws
         {
         }
         
-    internal func postProcess(module:RootModule,using compiler:Compiler) throws
+    internal func postProcess(module:Module,using compiler:Compiler) throws
         {
         }
         

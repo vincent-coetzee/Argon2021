@@ -19,11 +19,29 @@ public class Constant:Variable,NSCoding
         return(NSImage(named:"IconConstant64")!)
         }
         
+    public var integerValue:Argon.Integer
+        {
+        if self.initialValue == nil
+            {
+            fatalError("Value of constant is nil and should not be")
+            }
+        return(self.initialValue!.integerValue)
+        }
+        
+    public var isIntegerConstant:Bool
+        {
+        if let value = self.initialValue
+            {
+            return(value.isIntegerExpression)
+            }
+        return(false)
+        }
+        
     internal override var typeClass:Class
         {
         get
             {
-            return(ConstantClass(shortName: Argon.nextName("CONSTANT"),class: self._class))
+            return(.constantClass)
             }
         set
             {
@@ -62,6 +80,12 @@ public class Constant:Variable,NSCoding
         {
         super.init(shortName:shortName,class:`class`)
         self.initialValue = LiteralFloatExpression(float:float)
+        }
+        
+    public func cloned(withValue:Expression) -> Constant
+        {
+        let oldClass = self._class
+        return(Constant(shortName:self.shortName,class:oldClass,value:withValue))
         }
         
     internal required init() {

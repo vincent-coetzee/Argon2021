@@ -11,7 +11,7 @@ public class ArgonSourceTokenizingTextView:LineNumberTextView
     {
     public static let defaultTokenTypes:[TokenType] =
         {
-        let font = NSFont(name:"Menlo",size:12)!
+        let font = NSFont(name:"Menlo",size:10)!
         var types:[TokenType] = []
         types.append(TokenType(type:.comment,color:NSColor.argonPurple,font: font))
         types.append(TokenType(type:.keyword,color:NSColor.argonNeonPink,font: font))
@@ -75,7 +75,7 @@ public class ArgonSourceTokenizingTextView:LineNumberTextView
         
     private let tokenStream = TokenStream()
     private var indexedTypes:[Token.TokenType:TokenType] = [:]
-    private var defaultType:TokenType = TokenType(type:.none,color:NSColor.argonMangoGreen,font:NSFont(name:"Menlo-Regular",size:12)!)
+    private var defaultType:TokenType = TokenType(type:.none,color:NSColor.argonMangoGreen,font:NSFont(name:"Menlo-Regular",size:9)!)
     private var _source:String = ""
     
     private func indexTokenTypes()
@@ -94,7 +94,7 @@ public class ArgonSourceTokenizingTextView:LineNumberTextView
 //        self.string = self._source
         self.textStorage?.font = self.defaultType.font
         self.textStorage?.foregroundColor = self.defaultType.color
-        let string = NSMutableAttributedString(string:self.string,attributes:[:])
+        let _ = NSMutableAttributedString(string:self.string,attributes:[:])
         self.tokenStream.reset(source:self.string)
         let tokens = self.tokenStream.tokens(withComments:true)
         let storage = self.textStorage!

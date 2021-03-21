@@ -23,7 +23,11 @@ internal class InvocationStatement:MethodInvocationStatement
         self.arguments = arguments
         super.init(location:location)
         }
-        
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     internal override func allocateAddresses(using compiler:Compiler) throws
         {
         for argument in self.arguments

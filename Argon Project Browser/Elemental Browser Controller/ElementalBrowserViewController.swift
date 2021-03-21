@@ -55,8 +55,8 @@ class ElementalBrowserViewController: NSViewController,NSOutlineViewDataSource,N
             self.selectedField.stringValue = item.title
             self.selectedField.textColor = cell.textColor
             self.sink?.setElemental(item)
+            ArgonBrowserViewController.instance?.setSelectedElemental(item)
             }
-//        let editor = item.editorCell
         }
         
     public func outlineView(_ tableView: NSOutlineView, rowViewForItem row: Any) -> NSTableRowView?
@@ -68,14 +68,6 @@ class ElementalBrowserViewController: NSViewController,NSOutlineViewDataSource,N
         {
         self.elementals.append(item)
         self.outliner.reloadData()
-        }
-        
-    public func outlineViewSelectionDidChange(_ notification: Notification)
-        {
-        let item = self.outliner.item(atRow: self.outliner.selectedRow)
-        if item is Class
-            {
-            }
         }
         
     public func outlineView(_ outlineView: NSOutlineView,shouldEdit tableColumn: NSTableColumn?,item: Any) -> Bool

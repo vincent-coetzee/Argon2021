@@ -17,6 +17,9 @@ public protocol SymbolTable
     func lookup(name:Name) -> SymbolSet?
     func lookup(shortName:String) -> SymbolSet?
     func addSymbol(_ symbol:Symbol)
+    func addLocalVariable(_ variable:LocalVariable)
+    func addTypeSymbol(_ symbol:TypeSymbol)
+    func removeSymbol(_ symbol:Symbol)
     }
     
 extension SymbolTable

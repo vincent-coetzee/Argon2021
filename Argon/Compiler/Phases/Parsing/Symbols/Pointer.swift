@@ -16,6 +16,12 @@ public class PointerClass:Class
         self.elementType = elementType
         }
     
+    public override init(shortName:String)
+        {
+        super.init(shortName:shortName)
+        self.elementType = .voidClass
+        }
+        
     required init() {
         fatalError("init() has not been implemented")
     }

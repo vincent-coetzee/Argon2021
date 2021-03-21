@@ -26,7 +26,7 @@ public class Module:Symbol,NSCoding
         return(ItemSymbolBrowserCell(symbol:self))
         }
         
-    public var rootModule:RootModule
+    public override var rootModule:RootModule
         {
         return(self.container.rootModule)
         }
@@ -38,6 +38,7 @@ public class Module:Symbol,NSCoding
     private var versionKey:SemanticVersionNumber = .one
     private var moduleSlots:Dictionary<String,Slot> = [:]
     internal var symbols = SymbolDictionary()
+    public var source:String = ""
     
     public override var elementals:Elementals
         {
@@ -54,17 +55,13 @@ public class Module:Symbol,NSCoding
                 }
             }
         classes.removeAll(where: {classesToRemove.contains($0)})
+        let types = self.symbols.values.reduce(into: Array<TypeSymbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is TypeSymbol}
         let constants = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Constant}
         let enumerations = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Enumeration}
         let methods = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Method}
         let modules = self.symbols.values.reduce(into: Array<Symbol>()){$0.append(contentsOf:$1.symbols)}.filter{$0 is Module}
-        self._elementals = constants.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)}  + enumerations.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)} + modules.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)} + classes.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)} + methods.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)}
+        self._elementals = constants.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)}  + types.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)} + enumerations.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)} + modules.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)} + classes.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)} + methods.sorted{$0.shortName<$1.shortName}.map{ElementalSymbol(symbol:$0)}
         return(self._elementals!)
-        }
-
-    public override var isModuleLevelSymbol:Bool
-        {
-        return(true)
         }
         
     public override var icon: NSImage
@@ -72,7 +69,7 @@ public class Module:Symbol,NSCoding
         return(NSImage(named:"IconModule64")!)
         }
         
-    public var isRootModule:Bool
+    public override var isRootModule:Bool
         {
         return(false)
         }
@@ -130,6 +127,11 @@ public class Module:Symbol,NSCoding
         self.symbols.addSymbol(`class`)
         }
         
+    public override func addTypeSymbol(_ symbol:TypeSymbol)
+        {
+        self.symbols.addSymbol(symbol)
+        }
+        
     public func addLocal(_ local:LocalVariable)
         {
         self.symbols.addSymbol(local)
@@ -151,22 +153,32 @@ public class Module:Symbol,NSCoding
         visitor.acceptModule(self)
         }
         
+    public func replaceSlot(_ slot:Slot)
+        {
+        self.symbols.replaceSymbol(slot)
+        }
+        
+    public func replaceConstant(_ constant:Constant)
+        {
+        self.symbols.replaceSymbol(constant)
+        }
+        
     public override func lookup(name inputName:Name) -> SymbolSet?
         {
         if inputName.isAnchored
             {
-            return(self.rootSymbol.lookup(name:inputName))
+            return(Module.rootModule.lookup(name:inputName.withoutFirst()))
             }
-        if let set = self.symbols[inputName.first]
+        if let set = self.symbols[inputName.first],let symbolSet = set.lookup(name:inputName.withoutFirst())
             {
-            return(set.lookup(name:inputName.withoutFirst()))
+            return(symbolSet)
             }
-        return(nil)
+        return(Module.argonModule.lookup(name:inputName))
         }
         
     public override func lookup(shortName:String) -> SymbolSet?
         {
-        if let set = super.lookup(shortName: shortName)
+        if let set = self.symbols.lookup(shortName:shortName)
             {
             return(set)
             }
@@ -209,6 +221,11 @@ public class Module:Symbol,NSCoding
             {
             throw(CompilerError(.nameCanNotBeFound(name),SourceLocation.zero))
             }
+        }
+        
+    public override func addSymbol(_ symbol:Symbol)
+        {
+        self.symbols.addSymbol(symbol)
         }
         
     func setEntry(_ function:ModuleFunction)

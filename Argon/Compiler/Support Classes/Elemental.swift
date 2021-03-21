@@ -23,13 +23,8 @@ public class Elemental
         {
         return(false)
         }
-        
-    public var lists:Array<ElementalList>
-        {
-        return([])
-        }
-        
-    public var elementalColor:NSColor
+
+    public var textColor:NSColor
         {
         return(.white)
         }
@@ -102,6 +97,14 @@ public class Elemental
     public var source:String
         {
         return("")
+        }
+        
+    public func update(source:String?)
+        {
+        }
+        
+    public func save()
+        {
         }
         
     public func accept(_ visitor:SymbolVisitor)

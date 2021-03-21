@@ -21,7 +21,7 @@ public class MethodInstance:Symbol,NSCoding
             self._parameters = newValue
             for parameter in newValue
                 {
-                self.block.addSymbol(parameter)
+                self.block.addParameter(parameter)
                 }
             }
         }
@@ -66,7 +66,7 @@ public class MethodInstance:Symbol,NSCoding
     public required init?(coder:NSCoder)
         {
         self.returnTypeClass = coder.decodeObject(forKey:"returnTypeClass") as! Class
-        self.functionName = coder.decodeObject(forKey:"functionName") as! String
+        self.functionName = (coder.decodeObject(forKey:"functionName") as! String)
         self._parameters = coder.decodeObject(forKey:"parameters") as! Parameters
         self.localVariables = coder.decodeObject(forKey:"localVariables") as! Array<LocalVariable>
         self.stackLocalStorageSizeInBytes = Int(coder.decodeInt64(forKey:"stackLocalStorageSizeInBytes"))
@@ -87,9 +87,9 @@ public class MethodInstance:Symbol,NSCoding
         return(MethodInstanceClass(shortName:self.shortName,argumentClasses:self._parameters.map{$0.typeClass},returnTypeClass: self.returnTypeClass))
         }
         
-    internal func addLocalVariable(_ local:LocalVariable)
+    public override func addLocalVariable(_ local:LocalVariable)
         {
-        self.block.addLocalVariable(local)
+        self.block.addVariable(local)
         }
 
     internal override func addStatement(_ statement: Statement)
@@ -120,7 +120,7 @@ public class MethodInstance:Symbol,NSCoding
         self._parameters.append(parameter)
         }
         
-    public override func lookup(shortName:String) -> SymbolSet
+    public override func lookup(shortName:String) -> SymbolSet?
         {
         return(self.block.lookup(shortName:shortName))
         }

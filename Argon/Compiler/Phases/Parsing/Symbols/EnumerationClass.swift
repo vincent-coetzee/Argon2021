@@ -9,11 +9,6 @@ import Foundation
 
 public class EnumerationClass:Class
     {
-    public override var symbolKind:SymbolKind
-        {
-        return(.enumeration)
-        }
-        
     let baseClass:Class
     
     init(shortName:String,baseClass:Class)

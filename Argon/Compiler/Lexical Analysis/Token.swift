@@ -78,8 +78,6 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
 
     public enum Keyword:String,CaseIterable,Equatable
         {
-        case abstract
-        case All
         case alias
         case Array
         case `as`
@@ -134,9 +132,10 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         case next
         case `nil`
         case Object
-        case otherwise
+        case opaque
         case `open`
         case `operator`
+        case otherwise
         case Pointer
         case postfix
         case prefix
@@ -147,6 +146,7 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
         case read
         case readonly
         case readwrite
+        case refine
         case `repeat`
         case `return`
         case resume
@@ -1321,6 +1321,17 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             }
         }
         
+    public var isRefine:Bool
+        {
+        switch(self)
+            {
+            case .keyword(let value,_):
+                return(value == .refine)
+            default:
+                return(false)
+            }
+        }
+        
     public var isRun:Bool
         {
         switch(self)
@@ -1525,6 +1536,17 @@ public enum Token:Equatable,CustomStringConvertible,CustomDebugStringConvertible
             {
             case .keyword(let value,_):
                 return(value == .otherwise)
+            default:
+                return(false)
+            }
+        }
+        
+    public var isOpaque:Bool
+        {
+        switch(self)
+            {
+            case .keyword(let value,_):
+                return(value == .opaque)
             default:
                 return(false)
             }

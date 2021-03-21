@@ -24,7 +24,11 @@ internal class VirtualSlotWriteBlock:VirtualSlotBlock
         {
         super.init()
         }
-        
+    
+    public required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 //    internal init(location:SourceLocation = .zero,block:Block)
 //        {
 //        super.init(location:location)

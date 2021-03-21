@@ -18,62 +18,111 @@ public class Class:Symbol,NSCoding
     public static let rootClass = SystemPlaceholderClass(shortName:"Root")
     public static let classClass = SystemPlaceholderClass(shortName:"Class").superclass(.rootClass)
     public static let metaClass = SystemPlaceholderClass(shortName:"Metaclass").superclass(.classClass)
-    public static let allClass = SystemPlaceholderClass(shortName:"All").superclass(.rootClass)
     public static let voidClass = SystemPlaceholderClass(shortName:"Void").superclass(.rootClass)
     public static let valueClass = SystemPlaceholderClass(shortName:"Value").superclass(.rootClass)
-    public static let constantClass = ConstantClass(shortName:"Constant").superclass(.valueClass)
-    public static let addressClass = AddressClass(shortName:"Address").superclass(.valueClass)
+    public static let constantClass = SystemPlaceholderClass(shortName:"Constant").superclass(.valueClass).becomeValue()
+    public static let addressClass = SystemPlaceholderClass(shortName:"Address").superclass(.valueClass).becomeValue()
     public static let objectClass = SystemPlaceholderClass(shortName:"Object").superclass(.rootClass)
-    public static let enumerationClass = SystemPlaceholderClass(shortName:"Enumeration").superclass(.valueClass)
-    public static let bitValueClass = SystemPlaceholderValueClass(shortName:"BitValue").superclass(.valueClass)
+    public static let enumerationClass = Class(shortName:"Enumeration").superclass(.valueClass)
+    public static let bitValueClass = SystemPlaceholderClass(shortName:"BitValue").superclass(.valueClass).becomeValue()
     public static let nilClass = SystemPlaceholderClass(shortName:"Nil").superclass(.rootClass)
-    public static let booleanClass = SystemPlaceholderValueClass(shortName:"Boolean").superclass(.valueClass)
-    public static let byteClass = SystemPlaceholderValueClass(shortName:"Byte").superclass(.valueClass)
-    public static let characterClass = SystemPlaceholderValueClass(shortName:"Character").superclass(.valueClass)
+    public static let booleanClass = BooleanClass(shortName:"Boolean").superclass(.valueClass).becomeValue()
+    public static let byteClass = ByteClass(shortName:"Byte").superclass(.valueClass).becomeValue()
+    public static let characterClass = CharacterClass(shortName:"Character").superclass(.valueClass).becomeValue()
     public static let tupleClass = SystemPlaceholderClass(shortName:"Tuple").superclass(.objectClass)
     public static let bufferClass = SystemPlaceholderClass(shortName:"Buffer").superclass(.objectClass)
     public static let conduitClass = SystemPlaceholderClass(shortName:"Conduit").superclass(.objectClass)
     public static let keyedConduitClass = SystemPlaceholderClass(shortName:"KeyedConduit").superclass(.conduitClass)
     public static let sequentialConduitClass = SystemPlaceholderClass(shortName:"SequentialConduitClass").superclass(.conduitClass)
-    public static let dateClass = SystemPlaceholderClass(shortName:"Date").superclass(.valueClass)
-    public static let timeClass = SystemPlaceholderClass(shortName:"Time").superclass(.valueClass)
-    public static let dateTimeClass = SystemPlaceholderClass(shortName:"DateTime").superclass(.valueClass)
+    public static let dateClass = DateClass(shortName:"Date").superclass(.valueClass)
+    public static let timeClass = TimeClass(shortName:"Time").superclass(.valueClass)
+    public static let dateTimeClass = DateTimeClass(shortName:"DateTime").superclass(.valueClass)
     public static let signalClass = SystemPlaceholderClass(shortName:"Signal").superclass(.valueClass)
     public static let semaphoreClass = SystemPlaceholderClass(shortName:"Semaphore").superclass(.objectClass)
     public static let moduleClass = SystemPlaceholderClass(shortName:"Module").superclass(.objectClass)
-    public static let stringClass = SystemPlaceholderClass(shortName:"String").superclass(.valueClass)
-    public static let symbolClass = SystemPlaceholderClass(shortName:"Symbol").superclass(.stringClass)
+    public static let stringClass = StringClass(shortName:"String").superclass(.valueClass).becomeArray()
+    public static let symbolClass = SymbolClass(shortName:"Symbol").superclass(Class.stringClass)
     public static let lockClass = SystemPlaceholderClass(shortName:"Lock").superclass(.valueClass)
     public static let threadClass = SystemPlaceholderClass(shortName:"Thread").superclass(.objectClass)
     public static let behaviorClass = SystemPlaceholderClass(shortName:"Behavior").superclass(.objectClass)
     public static let methodClass = SystemPlaceholderClass(shortName:"Method").superclass(.behaviorClass)
     public static let closureClass = SystemPlaceholderClass(shortName:"Closure").superclass(.behaviorClass)
     public static let functionClass = SystemPlaceholderClass(shortName:"Function").superclass(.behaviorClass)
-    public static let integerClass = SystemPlaceholderValueClass(shortName:"Integer").superclass(.bitValueClass)
-    public static let integer8Class = SystemPlaceholderValueClass(shortName:"Integer8").superclass(.bitValueClass)
-    public static let integer16Class = SystemPlaceholderValueClass(shortName:"Integer16").superclass(.bitValueClass)
-    public static let integer32Class = SystemPlaceholderValueClass(shortName:"Integer32").superclass(.bitValueClass)
-    public static let integer64Class = SystemPlaceholderValueClass(shortName:"Integer64").superclass(.bitValueClass)
-    public static let uIntegerClass = SystemPlaceholderValueClass(shortName:"UInteger").superclass(.bitValueClass)
-    public static let uInteger8Class = SystemPlaceholderValueClass(shortName:"UInteger8").superclass(.bitValueClass)
-    public static let uInteger16Class = SystemPlaceholderValueClass(shortName:"UInteger16").superclass(.bitValueClass)
-    public static let uInteger32Class = SystemPlaceholderValueClass(shortName:"UInteger32").superclass(.bitValueClass)
-    public static let uInteger64Class = SystemPlaceholderValueClass(shortName:"UInteger64").superclass(.bitValueClass)
-    public static let wordClass = SystemPlaceholderValueClass(shortName:"Word").superclass(.uInteger64Class)
-    public static let floatClass = SystemPlaceholderValueClass(shortName:"Float").superclass(.bitValueClass)
-    public static let float32Class = SystemPlaceholderValueClass(shortName:"Float32").superclass(.bitValueClass)
-    public static let float64Class = SystemPlaceholderValueClass(shortName:"Float64").superclass(.bitValueClass)
-    public static let float16Class = SystemPlaceholderValueClass(shortName:"Float16").superclass(.bitValueClass)
+    public static let integerClass = IntegerClass(shortName:"Integer").superclass(.bitValueClass).becomeValue()
+    public static let integer8Class = Integer8Class(shortName:"Integer8").superclass(.bitValueClass).becomeValue()
+    public static let integer16Class = Integer16Class(shortName:"Integer16").superclass(.bitValueClass).becomeValue()
+    public static let integer32Class = Integer32Class(shortName:"Integer32").superclass(.bitValueClass).becomeValue()
+    public static let integer64Class = Integer64Class(shortName:"Integer64").superclass(.bitValueClass).becomeValue()
+    public static let uIntegerClass = UIntegerClass(shortName:"UInteger").superclass(.bitValueClass).becomeValue()
+    public static let uInteger8Class = UInteger8Class(shortName:"UInteger8").superclass(.bitValueClass).becomeValue()
+    public static let uInteger16Class = UInteger16Class(shortName:"UInteger16").superclass(.bitValueClass).becomeValue()
+    public static let uInteger32Class = UInteger32Class(shortName:"UInteger32").superclass(.bitValueClass).becomeValue()
+    public static let uInteger64Class = UInteger64Class(shortName:"UInteger64").superclass(.bitValueClass).becomeValue()
+    public static let wordClass = WordClass(shortName:"Word").superclass(.uInteger64Class).becomeValue()
+    public static let floatClass = FloatClass(shortName:"Float").superclass(.bitValueClass).becomeValue()
+    public static let float32Class = Float32Class(shortName:"Float32").superclass(.bitValueClass).becomeValue()
+    public static let float64Class = Float64Class(shortName:"Float64").superclass(.bitValueClass).becomeValue()
+    public static let float16Class = Float16Class(shortName:"Float16").superclass(.bitValueClass).becomeValue()
     public static let hashedClass = SystemPlaceholderClass(shortName:"Hashed").superclass(.objectClass)
-    public static let collectionClass = SystemPlaceholderClass(shortName:"Collection").typeVariable("ELEMENT",.hashedClass).superclass(.objectClass)
-    public static let arrayClass = SystemPlaceholderClass(shortName:"Array").superclass(.collectionClass).typeVariable("ELEMENT")
-    public static let setClass = SystemPlaceholderClass(shortName:"Set").superclass(.collectionClass).typeVariable("ELEMENT")
-    public static let listClass = SystemPlaceholderClass(shortName:"List").superclass(.collectionClass).typeVariable("ELEMENT")
+    public static let collectionClass = CollectionClass(shortName:"Collection").typeVariable("ELEMENT",.hashedClass).superclass(.objectClass)
+    public static let arrayClass = ArrayClass(shortName:"Array").superclass(.collectionClass).typeVariable("ELEMENT").becomeArray().becomeSubscriptable()
+    public static let byteArrayClass = ByteArrayClass(shortName:"ByteArray").superclass(.arrayClass).typeVariable("ELEMENT").becomeArray().becomeSubscriptable()
+    public static let setClass = SetClass(shortName:"Set").superclass(.collectionClass).typeVariable("ELEMENT").becomeGeneric().genericArity(1)
+    public static let listClass = ListClass(shortName:"List").superclass(.collectionClass).typeVariable("ELEMENT").becomeGeneric().genericArity(1)
     public static let bitSetClass = BitSetClass(shortName:"BitSet",keyType:.void,valueType:.void).superclass(.collectionClass)
-    public static let associationClass = SystemPlaceholderClass(shortName:"Association").typeVariable("KEY").typeVariable("VALUE").superclass(.objectClass)
-    public static let dictionaryClass = SystemPlaceholderClass(shortName:"Dictionary").typeVariable("ELEMENT",.associationClass).superclass(.collectionClass)
-    public static let pointerClass = SystemPlaceholderClass(shortName:"Pointer").superclass(.objectClass).typeVariable("ELEMENT")
+    public static let associationClass = AssociationClass(shortName:"Association").typeVariable("KEY").typeVariable("VALUE").superclass(.objectClass).becomeGeneric().genericArity(2)
+    public static let dictionaryClass = DictionaryClass(shortName:"Dictionary").typeVariable("ELEMENT",.associationClass).superclass(.collectionClass).becomeGeneric().genericArity(1).becomeSubscriptable()
+    public static let pointerClass = PointerClass(shortName:"Pointer").superclass(.objectClass).typeVariable("ELEMENT").becomeGeneric().genericArity(1)
 
+    public struct StructureAttributes:OptionSet
+        {
+        public let rawValue:Int
+
+        public typealias RawValue = Int
+
+        static let opaque = StructureAttributes(rawValue: 1 << 0)
+        static let value = StructureAttributes(rawValue: 1 << 1)
+        static let `class` = StructureAttributes(rawValue: 1 << 2)
+        static let array = StructureAttributes(rawValue: 1 << 3)
+        static let generic = StructureAttributes(rawValue: 1 << 4)
+        static let subscriptable = StructureAttributes(rawValue: 1 << 5)
+        
+        public init(rawValue:Int)
+            {
+            self.rawValue = rawValue
+            }
+        }
+        
+    public var isClass:Bool
+        {
+        return(self.structureAttributes.contains(.class))
+        }
+        
+    public var isValue:Bool
+        {
+        return(self.structureAttributes.contains(.value))
+        }
+        
+    public var isOpaque:Bool
+        {
+        return(self.structureAttributes.contains(.opaque))
+        }
+        
+    public var isArray:Bool
+        {
+        return(self.structureAttributes.contains(.array))
+        }
+        
+    public var isGeneric:Bool
+        {
+        return(self.structureAttributes.contains(.generic))
+        }
+        
+    public var isSubscriptable:Bool
+        {
+        return(self.structureAttributes.contains(.subscriptable))
+        }
+        
     public var displayString:String
         {
         return("$\(self.shortName)")
@@ -101,7 +150,7 @@ public class Class:Symbol,NSCoding
         return(subclasses.sorted{$0.shortName<$1.shortName})
         }
         
-    public override var editorCell:ItemEditorCell
+    public var editorCell:ItemEditorCell
         {
         return(ClassEditorCell(class:self))
         }
@@ -136,7 +185,27 @@ public class Class:Symbol,NSCoding
     public var indexType:Type.ArrayIndexType?
     public var elementType:Class?
     public var constants:[String:Constant] = [:]
+    public var structureAttributes = StructureAttributes()
+    public var typeArity:Int = 0
     
+    public func copy() -> Class
+        {
+        let copy = Class(shortName:self.shortName)
+        copy.container = self.container
+        copy.typeVariables = self.typeVariables
+        copy.localSlots = self.localSlots
+        copy.localClassSlots = self.localClassSlots
+        copy.makers = self.makers
+        copy.wasLaidOut = self.wasLaidOut
+        copy.subclasses = self.subclasses
+        copy.indexType = self.indexType
+        copy.elementType = self.elementType
+        copy.constants = self.constants
+        copy.structureAttributes = self.structureAttributes
+        copy.typeArity = self.typeArity
+        return(copy)
+        }
+        
     public var isGenericClass:Bool
         {
         return(!self.typeVariables.isEmpty)
@@ -190,9 +259,89 @@ public class Class:Symbol,NSCoding
         super.init(coder:coder)
         }
         
+    @discardableResult
+    public func becomeValue() -> Class
+        {
+        self.structureAttributes.remove(.class)
+        self.structureAttributes.insert(.value)
+        return(self)
+        }
+        
+    @discardableResult
+    public func becomeClass() -> Class
+        {
+        self.structureAttributes.remove(.value)
+        self.structureAttributes.insert(.class)
+        return(self)
+        }
+        
+    @discardableResult
+    public func becomeOpaque() -> Class
+        {
+        self.structureAttributes.insert(.opaque)
+        return(self)
+        }
+        
+    @discardableResult
+    public func becomeArray() -> Class
+        {
+        self.structureAttributes.insert(.array)
+        return(self)
+        }
+        
+    @discardableResult
+    public func becomeGeneric() -> Class
+        {
+        self.structureAttributes.insert(.generic)
+        return(self)
+        }
+        
+    @discardableResult
+    public func becomeSubscriptable() -> Class
+        {
+        self.structureAttributes.insert(.subscriptable)
+        return(self)
+        }
+        
+    @discardableResult
+    public func genericArity(_ arity:Int) -> Class
+        {
+        self.typeArity = arity
+        return(self)
+        }
+        
+    public func instanciateArray(withIndex:Type.ArrayIndexType) -> Class
+        {
+        let copy:Class = self.copy()
+        copy.indexType = withIndex
+        return(copy)
+        }
+        
+    public func replaceSlot(_ slot:Slot)
+        {
+        if slot.isRegularSlot
+            {
+            self.localSlots[slot.shortName] = slot
+            }
+        else if slot.isClassSlot
+            {
+            self.localClassSlots[slot.shortName] = slot
+            }
+        }
+        
+    public func replaceConstant(_ slot:Constant)
+        {
+        self.constants[slot.shortName] = slot
+        }
+        
     internal override var typeClass:Class
         {
         return(self)
+        }
+        
+    public override func asSymbolContainer() -> SymbolContainer
+        {
+        return(.class(self))
         }
         
     public func addSubclass(_ aClass:Class)

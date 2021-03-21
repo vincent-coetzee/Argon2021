@@ -78,7 +78,7 @@ public class ElementalSymbol:Elemental
             }
         }
         
-    public override var elementalColor:NSColor
+    public override var textColor:NSColor
         {
         if self.symbol is Module
             {
@@ -103,6 +103,10 @@ public class ElementalSymbol:Elemental
         else if symbol is Slot
             {
             return(NSColor.argonNeonPink)
+            }
+        else if symbol is TypeSymbol
+            {
+            return(NSColor.argonCoral)
             }
         else
             {

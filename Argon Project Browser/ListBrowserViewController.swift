@@ -33,7 +33,7 @@ class ListBrowserViewController: NSViewController,ElementalSink,NSOutlineViewDat
         if elemental.isListable
             {
             self.inputField.stringValue = elemental.title
-            self.inputField.textColor = elemental.elementalColor
+            self.inputField.textColor = elemental.textColor
             self.elementals = [elemental]
             self.outliner.reloadData()
             }
@@ -49,8 +49,9 @@ class ListBrowserViewController: NSViewController,ElementalSink,NSOutlineViewDat
             }
         let item = self.outliner.item(atRow: clickedRow) as! Elemental
         self.outputField.stringValue = item.title
-        self.outputField.textColor = item.elementalColor
+        self.outputField.textColor = item.textColor
         self.sink?.setElemental(item)
+        ArgonBrowserViewController.instance?.setSelectedElemental(item)
 //        let editor = item.editorCell
         }
         
@@ -67,7 +68,7 @@ class ListBrowserViewController: NSViewController,ElementalSink,NSOutlineViewDat
         
     public func outlineViewSelectionDidChange(_ notification: Notification)
         {
-        let item = self.outliner.item(atRow: self.outliner.selectedRow)
+        let elemental = self.outliner.item(atRow: self.outliner.selectedRow) as! Elemental
         }
         
     public func outlineView(_ outlineView: NSOutlineView,shouldEdit tableColumn: NSTableColumn?,item: Any) -> Bool
@@ -83,7 +84,7 @@ class ListBrowserViewController: NSViewController,ElementalSink,NSOutlineViewDat
             }
         if let item = item as? Elemental
             {
-            return(item.lists.count)
+            return(item.childCount)
             }
         return(0)
         }
@@ -96,7 +97,7 @@ class ListBrowserViewController: NSViewController,ElementalSink,NSOutlineViewDat
             return(self.elementals[0])
             }
         let outlineItem = item as! Elemental
-        return(outlineItem.lists[index])
+        return(outlineItem[index])
         }
 
     public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool
@@ -117,25 +118,6 @@ class ListBrowserViewController: NSViewController,ElementalSink,NSOutlineViewDat
 
     public func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat
         {
-        let elemental = item as! Elemental
-        if elemental.isList
-            {
-            let list = elemental as! ElementalList
-            let font = ItemListCell.kDefaultFont
-            var titles = list.titles
-            titles.append(list.title)
-            let attributes:[NSAttributedString.Key:Any] = [.font:font]
-            var size:NSSize = .zero
-            for title in titles
-                {
-                let string = NSAttributedString(string:title,attributes:attributes)
-                size += string.size()
-                }
-            return(size.height)
-            }
-        else
-            {
-            return(ItemBrowserCell.kRowHeight)
-            }
+        return(ItemBrowserCell.kRowHeight)
         }
     }

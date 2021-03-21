@@ -17,12 +17,21 @@ internal class ReturnStatement:ControlFlowStatement
         
     internal var value:Expression?
     
+    init()
+        {
+        super.init()
+        }
+        
     init(location:SourceLocation = .zero,value:Expression?)
         {
         self.value = value
         super.init(location:location)
         }
-        
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     internal override func allocateAddresses(using compiler:Compiler) throws
         {
         try self.value?.allocateAddresses(using:compiler)

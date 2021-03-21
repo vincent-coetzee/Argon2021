@@ -19,6 +19,9 @@ public class ArgonBrowserViewController: NSViewController
     
     @IBOutlet var splitView:NSSplitView!
     @IBOutlet var elementalBrowserController:ElementalBrowserViewController!
+    
+    private var selectedItem:Elemental?
+    
     @IBOutlet var sourceViewController:SourceViewController!
         {
         didSet
@@ -29,6 +32,11 @@ public class ArgonBrowserViewController: NSViewController
     
     @IBOutlet var container1:NSView!
     
+    public func setSelectedElemental(_ item:Elemental)
+        {
+        self.view.window?.title = "Argon [ \(item.title) ]"
+        }
+        
     @IBAction func onNewFile(_ sender:Any?)
         {
         }
@@ -50,6 +58,7 @@ public class ArgonBrowserViewController: NSViewController
             let outlineItem = ArgonFile(path: filename.path)
             outlineItem.compile()
             elementalBrowserController.addBrowsableItem(outlineItem)
+            self.selectedItem = outlineItem
             }
         }
         
@@ -58,8 +67,18 @@ public class ArgonBrowserViewController: NSViewController
 
         }
         
+    @IBAction func onImportFile(_ sender:Any?)
+        {
+        }
+        
+    @IBAction func onCompileFile(_ sender:Any?)
+        {
+        }
+        
     @IBAction func onSaveFile(_ sender:Any?)
         {
+        self.selectedItem?.update(source:sourceViewController?.source)
+        self.selectedItem?.save()
         }
         
     @IBAction func onSaveAs(_ sender:Any?)
@@ -82,18 +101,21 @@ extension ArgonBrowserViewController:NSSplitViewDelegate
     {
     public func splitView(_ splitView: NSSplitView,constrainMaxCoordinate proposedMaximumPosition: CGFloat,ofSubviewAt dividerIndex: Int) -> CGFloat
         {
-//        let viewSize = self.view.bounds.size
-//        if proposedMaximumPosition > 0.66 * viewSize.width
-//            {
-//            return(0.66 * viewSize.width)
-//            }
+        let viewSize = self.view.bounds.size
+        if proposedMaximumPosition > 0.66 * viewSize.width
+            {
+            return(0.66 * viewSize.width)
+            }
         return(proposedMaximumPosition)
         }
         
     public func splitView(_ splitView: NSSplitView,constrainMinCoordinate proposedMinimumPosition: CGFloat,ofSubviewAt dividerIndex: Int) -> CGFloat
         {
-//        let viewSize = self.view.bounds.size
-//        if proposedMinimumPosition < 0.25 * viewSize.width
+        let viewSize = self.view.bounds.size
+        if proposedMinimumPosition < 0.25 * viewSize.width
+            {
+            return(0.25 * viewSize.width)
+            }
         return(proposedMinimumPosition)
         }
     }

@@ -16,7 +16,7 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Browsable,Scope
         {
         return(lhs.id == rhs.id)
         }
-    
+        
     public override var debugDescription: String
         {
         return("\(Swift.type(of:self))(\(self.shortName))")
@@ -27,7 +27,6 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Browsable,Scope
         return(self.fullName.stringName)
         }
         
-    public let id:UUID
     internal var shortName:String
     internal var wasDeclaredForward = false
     internal var references:[SourceReference] = []
@@ -107,7 +106,6 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Browsable,Scope
     internal init(shortName:String = "",container:SymbolContainer = .nothing)
         {
         self.shortName = shortName
-        self.id = UUID()
         super.init()
         self.container = container
         }
@@ -115,7 +113,6 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Browsable,Scope
     internal init(name:Name,container:SymbolContainer = .nothing)
         {
         self.shortName = name.last
-        self.id = UUID()
         super.init()
         self.container = container
         }
@@ -191,7 +188,7 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Browsable,Scope
         
     public override func lookup(name:Name) -> SymbolSet?
         {
-        fatalError("\(#function) should have been overridden in a subclass of Symbol")
+        return(self.container.lookup(name:name))
         }
         
     internal func typeCheck() throws
@@ -211,9 +208,9 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Browsable,Scope
         {
         }
         
-    public func encode(with coder: NSCoder)
+    public override func encode(with coder: NSCoder)
         {
-        coder.encode(self.id,forKey:"id")
+        super.encode(with:coder)
         coder.encode(self.shortName,forKey:"shortName")
         coder.encode(self.wasDeclaredForward,forKey:"wasDeclaredForward")
         coder.encode(self.references.count,forKey:"referencesCount")
@@ -228,7 +225,6 @@ public class Symbol:ParseNode,SymbolVisitorAcceptor,Browsable,Scope
     
     public required init?(coder: NSCoder)
         {
-        self.id = coder.decodeObject(forKey:"id") as! UUID
         self.shortName = coder.decodeObject(forKey:"shortName") as! String
         self.wasDeclaredForward = coder.decodeBool(forKey:"wasDeclaredForward")
         let count = Int(coder.decodeInt64(forKey:"referencesCount"))

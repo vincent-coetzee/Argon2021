@@ -27,4 +27,8 @@ internal class LocalStatement:LetStatement
         {
         fatalError("init() has not been implemented")
         }
+    
+    public required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
+}

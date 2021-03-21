@@ -26,13 +26,35 @@ public class ArgonFile:Elemental,EditableItem
     private let pathExtension:String
     private var loadFailed = false
     private var sourceChanged = false
-    private var module:RootModule?
+    private var module:Module?
+    private var errors:[CompilerError] = []
     
+    public var hasErrors:Bool
+        {
+        return(!self.errors.isEmpty)
+        }
+        
+    public var errorAnnotations:[LineAnnotation]
+        {
+        var annotations:[LineAnnotation] = []
+        
+        for error in self.errors
+            {
+            let line = error.location.line
+            annotations.append(LineAnnotation(line: line, icon: NSImage(named:"IconError64")!.tintedWith(.yellow).resized(to:NSSize(width:18,height:18))))
+            }
+        return(annotations)
+        }
+        
     private var _source:String = ""
         {
         didSet
             {
-            self.compile()
+            let result = self.compile()
+            if case let Result.failure(error) = result
+                {
+                print(error)
+                }
             }
         }
         
@@ -66,17 +88,42 @@ public class ArgonFile:Elemental,EditableItem
         }
         
     @discardableResult
-    public func compile() -> ModuleWrapper?
+    public func compile() -> Result<ModuleWrapper,CompilerError>
         {
-        let compiler = Compiler()
-        self.module = compiler.compile(source:self.source)
-        if let module = self.module,let data = try? NSKeyedArchiver.archivedData(withRootObject: self.module, requiringSecureCoding: false)
+        self.errors = []
+        do
             {
-            let url = URL(fileURLWithPath: "/Users/vincent/Desktop/\(module.shortName).arb")
-            try? data.write(to: url)
-            return(ModuleWrapper(module:module,source:self.source))
+            let compiler = try Compiler()
+            let result = compiler.compile(source:self.source)
+            if case let Result.failure(failureReason) = result
+                {
+                self.errors.append(failureReason)
+                return(Result.failure(failureReason))
+                }
+            else if case let Result.success(aModule) = result
+                {
+                self.module = aModule
+                }
+            let module = self.module!
+            if let data = try? NSKeyedArchiver.archivedData(withRootObject: (self.module as Any), requiringSecureCoding: false)
+                {
+                let url = URL(fileURLWithPath: "/Users/vincent/Desktop/\(module.shortName).arb")
+                try? data.write(to: url)
+                return(Result.success(ModuleWrapper(module:module,source:self.source)))
+                }
+            let error = CompilerError(.unableToWriteTo("/Users/vincent/Desktop/\(module.shortName).arb"))
+            self.errors.append(error)
+            return(Result.failure(error))
             }
-        return(nil)
+        catch let error as CompilerError
+            {
+            self.errors.append(error)
+            return(Result.failure(error))
+            }
+        catch let error
+            {
+            return(Result.failure(CompilerError(error)))
+            }
         }
         
     public override var childCount:Int
@@ -127,6 +174,19 @@ public class ArgonFile:Elemental,EditableItem
         else
             {
             self.loadFailed = true
+            }
+        }
+        
+    public override func update(source:String?)
+        {
+        self._source = source ?? ""
+        }
+        
+    public override func save()
+        {
+        if !self.loadFailed
+            {
+            try? self._source.write(toFile:self.path,atomically: true,encoding: String.Encoding.utf8)
             }
         }
     }

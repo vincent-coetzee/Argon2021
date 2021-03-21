@@ -218,8 +218,8 @@ class LineNumberGutter: NSRulerView {
         // Get the NSZeroPoint from the text view.
         let relativePoint    = self.convert(NSZeroPoint, from: textView)
         // Calculate the x position, within the gutter.
-        let xPosition        = GUTTER_WIDTH - (attributedString.size().width + 5)
+        let xPosition        = GUTTER_WIDTH - (attributedString.size().width)
         // Draw the attributed string to the calculated point.
-        attributedString.draw(at: NSPoint(x: xPosition - 12, y: relativePoint.y + yPos))
+        attributedString.draw(at: NSPoint(x: xPosition - 17, y: relativePoint.y + yPos))
     }
 }

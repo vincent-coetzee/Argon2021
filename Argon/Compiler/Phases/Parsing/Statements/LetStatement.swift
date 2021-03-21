@@ -17,7 +17,11 @@ internal class LetStatement:Statement
         self.variable = variable
         super.init(location:location)
         }
-        
+    
+    public required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     internal override func allocateAddresses(using compiler:Compiler) throws
         {
         try self.variable.allocateAddresses(using:compiler)

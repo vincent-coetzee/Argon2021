@@ -55,7 +55,6 @@ public class IconTitleCell:NSBrowserCell
         
     private func drawSlots()
         {
-        let aClass = item as! Class
         
         }
     }

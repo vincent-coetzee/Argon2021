@@ -80,6 +80,11 @@ public class SymbolSet:Equatable
         self.symbols.append(symbol)
         }
         
+    internal init(_ someSymbols:[Symbol])
+        {
+        self.symbols = someSymbols
+        }
+        
     internal init()
         {
         }
@@ -111,13 +116,28 @@ public class SymbolSet:Equatable
         
     public func lookup(name:Name) -> SymbolSet?
         {
-        for symbol in self.symbols
+        if name.isEmpty
             {
-            if let set = symbol.symbolTable?.lookup(name:name)
-                {
-                return(set)
-                }
+            return(self)
             }
-        return(nil)
+        return(self.module?.lookup(name:name))
+        }
+        
+    public func replaceSymbol(_ symbol:Symbol)
+        {
+        if self.isEmpty
+            {
+            self.symbols.append(symbol)
+            return
+            }
+        self.symbols.removeAll(where:{Swift.type(of:$0) == Swift.type(of:symbol) && symbol.shortName == $0.shortName})
+        self.symbols.append(symbol)
+        }
+        
+    public func withoutSymbol(_ symbol:Symbol) -> SymbolSet
+        {
+        let newSet = SymbolSet(self.symbols)
+        newSet.symbols.removeAll(where: {Swift.type(of:$0) == Swift.type(of:symbol) && $0.shortName == symbol.shortName})
+        return(newSet)
         }
     }

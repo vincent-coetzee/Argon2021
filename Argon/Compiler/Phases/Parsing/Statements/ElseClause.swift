@@ -17,6 +17,10 @@ public class ElseClause:Clause
         self.block = block
         super.init(location:location)
         }
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
+}
 
 public typealias ElseClauses = Array<ElseClause>

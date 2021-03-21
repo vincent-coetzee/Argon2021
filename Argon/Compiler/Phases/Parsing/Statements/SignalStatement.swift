@@ -18,7 +18,11 @@ internal class SignalStatement:ControlFlowStatement
         super.init(location:location)
         self.location = location
         }
-        
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     internal override func allocateAddresses(using compiler:Compiler) throws
         {
         try self.signal.allocateAddresses(using:compiler)
